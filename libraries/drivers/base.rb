@@ -7,19 +7,19 @@ module Drivers
     end
 
     # Dummy methods for children to redefine
-    def setup
+    def setup(_context)
     end
 
-    def configure
+    def configure(_context)
     end
 
-    def deploy
+    def deploy(_context)
     end
 
-    def undeploy
+    def undeploy(_context)
     end
 
-    def shutdown
+    def shutdown(_context)
     end
   end
 end

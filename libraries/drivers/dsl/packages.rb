@@ -1,33 +1,24 @@
 module Drivers
   module Dsl
     module Packages
-      include Drivers::Dsl::Base
-
-      param :packages_default_action, default: 'install'
-      param :packages, default: []
-
-      def handle_packages
-        case packages
-        when Array
-          if multipackage_supported?
-            package packages do
-              action packages_default_action.to_sym
-            end
-          else
-            packages.each do |pkg|
-              package pkg do
-                action packages_default_action.to_sym
-              end
-            end
+      def self.included(klass)
+        klass.instance_eval do
+          def packages(*to_support)
+            @packages = to_support.map(&:to_s) if to_support.present?
+            @packages || []
           end
-        when Hash
-          packages.each do |pkg, act|
-            package pkg.to_s do
-              action act.to_sym
-            end
+        end
+      end
+
+      def packages
+        self.class.packages
+      end
+
+      def handle_packages(context)
+        packages.each do |pkg|
+          context.package pkg do
+            action :install
           end
-        else
-          Chef::Log.warn('`packages` must be an Array or Hash.')
         end
       end
     end

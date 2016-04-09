@@ -1,6 +1,7 @@
 module Drivers
   module Db
     class Base < Drivers::Base
+      include Drivers::Dsl::Packages
       attr_reader :app, :node, :options
 
       def initialize(app, node, options = {})
@@ -24,6 +25,10 @@ module Drivers
           host: options[:rds]['address'],
           database: app['data_sources'].first['database_name']
         )
+      end
+
+      def configure(context)
+        handle_packages(context)
       end
 
       protected
