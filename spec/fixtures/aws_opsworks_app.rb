@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+# rubocop:disable Metrics/MethodLength
 def aws_opsworks_app(override = {})
   item = {
     app_id: '3aef37c1-7e2b-4255-bbf1-03e06f07701a',
@@ -18,7 +20,7 @@ def aws_opsworks_app(override = {})
     data_sources: [
       { arn: 'arn:aws:rds:us-west-2:850906259207:db:dummy-project', type: 'RdsDbInstance', database_name: 'dummydb' }
     ],
-    domains: [ 'dummy-project.example.com', 'dummy_project' ],
+    domains: ['dummy-project.example.com', 'dummy_project'],
     enable_ssl: true,
     environment: {
       'ENV_VAR1' => 'test',
@@ -29,7 +31,7 @@ def aws_opsworks_app(override = {})
     ssl_configuration: {
       certificate: '--- SSL CERTIFICATE ---',
       private_key: '--- SSL PRICATE KEY ---',
-      chain: '--- SSL CERTIFICATE CHAIN ---',
+      chain: '--- SSL CERTIFICATE CHAIN ---'
     },
     type: 'other',
     deploy: true,
@@ -38,3 +40,4 @@ def aws_opsworks_app(override = {})
 
   JSON.parse(item.to_json)
 end
+# rubocop:enable Metrics/MethodLength

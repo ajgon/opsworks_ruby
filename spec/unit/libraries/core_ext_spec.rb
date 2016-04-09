@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe 'Core extensions' do
@@ -25,7 +26,7 @@ describe 'Core extensions' do
     end
 
     it 'Drivers::Dsl::Basic' do
-      expect('Drivers::Dsl::Basic'.constantize).to eq Drivers::Dsl::Basic
+      expect('Drivers::Dsl::Packages'.constantize).to eq Drivers::Dsl::Packages
     end
   end
 

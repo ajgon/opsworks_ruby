@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 #
 # Cookbook Name:: opsworks_ruby
 # Spec:: default

@@ -1,6 +1,7 @@
+# frozen_string_literal: true
 class Object
   def try(*a, &b)
-      try!(*a, &b) if a.empty? || respond_to?(a.first)
+    try!(*a, &b) if a.empty? || respond_to?(a.first)
   end
 
   def try!(*a, &b)
@@ -16,7 +17,7 @@ class Object
   end
 
   def blank?
-    respond_to?(:empty?) ? !!empty? : !self
+    respond_to?(:empty?) ? empty? : !self
   end
 
   def present?
@@ -24,13 +25,13 @@ class Object
   end
 
   def self.descendants
-    ObjectSpace.each_object(Class).select { |klass| klass < self  }
+    ObjectSpace.each_object(Class).select { |klass| klass < self }
   end
 end
 
 class String
   def constantize
-    split('::').inject(Object) {|o,c| o.const_get c}
+    split('::').inject(Object) { |a, e| a.const_get(e) }
   end
 
   def classify
@@ -38,6 +39,6 @@ class String
   end
 
   def underscore
-    gsub(/[A-Z]/) { |s| "_#{s.downcase}"  }.sub(/^_/, '')
+    gsub(/[A-Z]/) { |s| "_#{s.downcase}" }.sub(/^_/, '')
   end
 end

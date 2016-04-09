@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Drivers
   module Db
     class Base < Drivers::Base
@@ -10,6 +11,7 @@ module Drivers
         @connection_data_source = validate_engine
       end
 
+      # rubocop:disable Metrics/AbcSize
       def out
         deploy_db_data = JSON.parse(node['deploy'][app['shortname']]['database'].to_json, symbolize_names: true) || {}
         if @connection_data_source == :adapter
@@ -19,19 +21,15 @@ module Drivers
         end
 
         deploy_db_data.merge(
-          adapter: adapter,
-          username: options[:rds]['db_user'],
-          password: options[:rds]['db_password'],
-          host: options[:rds]['address'],
-          database: app['data_sources'].first['database_name']
+          adapter: adapter, username: options[:rds]['db_user'], password: options[:rds]['db_password'],
+          host: options[:rds]['address'], database: app['data_sources'].first['database_name']
         )
       end
+      # rubocop:enable Metrics/AbcSize
 
       def configure(context)
         handle_packages(context)
       end
-
-      protected
 
       def self.allowed_engines(*engines)
         @allowed_engines = engines.map(&:to_s) if engines.present?
@@ -42,6 +40,8 @@ module Drivers
         @adapter = adapter if adapter.present?
         (@adapter || self.class.name.underscore).to_s
       end
+
+      protected
 
       def allowed_engines
         self.class.allowed_engines
@@ -64,9 +64,6 @@ module Drivers
       end
 
       def validate_adapter
-        connection_data = node['deploy'][app['shortname']]['database']
-        adapter_engine = connection_data.try(:[], 'adapter')
-
         raise ArgumentError, "Missing :rds engine, expected #{allowed_engines.inspect}." if adapter_engine.blank?
         unless allowed_engines.include?(adapter_engine)
           raise ArgumentError,
@@ -74,6 +71,10 @@ module Drivers
         end
 
         :adapter
+      end
+
+      def adapter_engine
+        node['deploy'][app['shortname']]['database'].try(:[], 'adapter')
       end
     end
   end

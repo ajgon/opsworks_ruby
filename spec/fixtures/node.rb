@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+# rubocop:disable Metrics/MethodLength
 def node(override = {})
   item = {
     deploy: {
@@ -16,3 +18,4 @@ def node(override = {})
 
   JSON.parse(item.to_json)
 end
+# rubocop:enable Metrics/MethodLength
