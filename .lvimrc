@@ -1,0 +1,16 @@
+let test#ruby#rspec#options = {
+  \ 'nearest': '--format documentation --color',
+  \ 'file':    '--format documentation --color',
+  \ 'suite':   '--format documentation --color',
+\}
+let test#ruby#rspec#executable = 'chef exec rspec'
+let test#ruby#bundle_exec = 0
+
+let g:projectionist_heuristics = {
+  \ "*.rb": {
+    \ "libraries/*.rb": { "alternate": "spec/unit/libraries/{}_spec.rb", "type": "source" },
+    \ "recipes/*.rb": { "alternate": "spec/unit/recipes/{}_spec.rb", "type": "source" },
+    \ "spec/unit/libraries/*_spec.rb": { "alternate": "libraries/{}.rb", "type": "spec" },
+    \ "spec/unit/recipes/*_spec.rb": { "alternate": "recipes/{}.rb", "type": "spec" }
+  \ }
+\ }
