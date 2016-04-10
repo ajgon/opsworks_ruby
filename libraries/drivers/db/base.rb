@@ -27,7 +27,7 @@ module Drivers
       end
       # rubocop:enable Metrics/AbcSize
 
-      def configure(context)
+      def setup(context)
         handle_packages(context)
       end
 
