@@ -13,19 +13,27 @@ module Drivers
 
       # rubocop:disable Metrics/AbcSize
       def out
-        deploy_db_data = JSON.parse(node['deploy'][app['shortname']]['database'].to_json, symbolize_names: true) || {}
         if @connection_data_source == :adapter
-          return deploy_db_data.merge(adapter: adapter).merge(
-            database: deploy_db_data[:database] || app['data_sources'].first['database_name']
+          return out_defaults.merge(
+            database: out_defaults[:database] || app['data_sources'].first['database_name']
           )
         end
 
-        deploy_db_data.merge(
+        out_defaults.merge(
           adapter: adapter, username: options[:rds]['db_user'], password: options[:rds]['db_password'],
           host: options[:rds]['address'], database: app['data_sources'].first['database_name']
         )
       end
       # rubocop:enable Metrics/AbcSize
+
+      def out_defaults
+        base = JSON.parse(node['deploy'][app['shortname']]['database'].to_json, symbolize_names: true) || {}
+        {
+          encoding: 'utf8',
+          host: 'localhost',
+          reconnect: true
+        }.merge(base).merge(adapter: adapter)
+      end
 
       def setup(context)
         handle_packages(context)

@@ -110,6 +110,8 @@ describe Drivers::Db::Postgresql do
   context 'connection data' do
     after(:each) do
       expect(@item.out).to eq(
+        encoding: 'utf8',
+        reconnect: true,
         adapter: 'postgresql',
         username: 'dbuser',
         password: '03c1bc98cdd5eb2f9c75',

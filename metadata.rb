@@ -7,7 +7,8 @@ description 'Installs/Configures opsworks_ruby'
 long_description 'Installs/Configures opsworks_ruby'
 version '0.1.0'
 
-depends 'packages'
+depends 'deployer'
+depends 'application_ruby'
 
 source_url 'https://github.com/ajgon/opsworks_ruby'
 issues_url 'https://github.com/ajgon/opsworks_ruby/issues'

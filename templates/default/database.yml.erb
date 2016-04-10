@@ -1,0 +1,7 @@
+<%=
+  config = {}
+  (['development', 'production'] + Array.wrap(@environment)).select(&:present?).uniq.each do |env|
+    config[env] = @database
+  end
+  JSON.parse(config.to_json).to_yaml
+-%>

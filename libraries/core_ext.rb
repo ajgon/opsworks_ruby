@@ -29,6 +29,18 @@ class Object
   end
 end
 
+class Array
+  def self.wrap(object)
+    if object.nil?
+      []
+    elsif object.respond_to?(:to_ary)
+      object.to_ary || [object]
+    else
+      [object]
+    end
+  end
+end
+
 class String
   def constantize
     split('::').inject(Object) { |a, e| a.const_get(e) }
