@@ -12,7 +12,7 @@ module Drivers
       end
 
       def packages
-        self.class.packages
+        self.class.packages.presence || (self.class.superclass.respond_to?(:packages) && self.class.superclass.packages)
       end
 
       def handle_packages(context)

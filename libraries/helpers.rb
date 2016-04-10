@@ -20,21 +20,20 @@ def www_group
 end
 
 def create_deploy_dir(application, subdir = '/')
-  dir = File.join('/', 'srv', 'www', application['shortname'], subdir)
-  directory dir do
-    mode '0755'
-    recursive true
-    owner node['deployer']['user'] || 'root'
-    group www_group
-
-    action :create
-    not_if { File.directory?(dir) }
+  subdirs = subdir.split(File::SEPARATOR).select(&:present?)
+  (0..(subdirs.length - 1)).each do |i|
+    directory File.join(deploy_dir(application), subdirs[0..i]) do
+      mode '0755'
+      recursive true
+      owner node['deployer']['user'] || 'root'
+      group www_group
+    end
   end
-  dir
+  File.join(deploy_dir(application), subdir)
 end
 
 def deploy_dir(application)
-  create_deploy_dir(application)
+  File.join('/', 'srv', 'www', application['shortname'])
 end
 
 def every_enabled_application

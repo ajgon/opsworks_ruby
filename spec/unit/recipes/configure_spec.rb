@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 #
 # Cookbook Name:: opsworks_ruby
-# Spec:: default
+# Spec:: configure
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 

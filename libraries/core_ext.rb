@@ -24,6 +24,10 @@ class Object
     !blank?
   end
 
+  def presence
+    self if present?
+  end
+
   def self.descendants
     ObjectSpace.each_object(Class).select { |klass| klass < self }
   end

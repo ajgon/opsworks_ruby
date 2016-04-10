@@ -5,14 +5,10 @@
 #
 
 every_enabled_application do |application, _deploy|
+  create_deploy_dir(application, File.join('shared', 'config'))
+
   every_enabled_rds do |rds|
     database = Drivers::Db::Factory.build(application, node, rds: rds)
-    template File.join(create_deploy_dir(application, File.join('shared', 'config')), 'database.yml') do
-      source 'database.yml.erb'
-      mode '0660'
-      owner node['deployer']['user'] || 'root'
-      group www_group
-      variables(database: database.out, environment: application['attributes']['rails_env'])
-    end
+    database.configure(self)
   end
 end

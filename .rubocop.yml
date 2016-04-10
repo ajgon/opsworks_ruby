@@ -5,6 +5,9 @@ Metrics/LineLength:
 Style/Documentation:
   Enabled: false
 
+Metrics/AbcSize:
+  Max: 20
+
 AllCops:
   TargetRubyVersion: 2.3
   DisplayCopNames: true

@@ -2,18 +2,36 @@
 module Drivers
   module Db
     class Base < Drivers::Base
+      include Drivers::Dsl::Defaults
       include Drivers::Dsl::Packages
-      attr_reader :app, :node, :options
+
+      defaults encoding: 'utf8', host: 'localhost', reconnect: true
 
       def initialize(app, node, options = {})
-        super
         raise ArgumentError, ':rds option is not set.' unless options[:rds]
-        @connection_data_source = validate_engine
+        super
+      end
+
+      def setup(context)
+        handle_packages(context)
+      end
+
+      def configure(context)
+        database = out
+        rails_env = app['attributes']['rails_env']
+
+        context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do
+          source 'database.yml.erb'
+          mode '0660'
+          owner node['deployer']['user'] || 'root'
+          group www_group
+          variables(database: database, environment: rails_env)
+        end
       end
 
       # rubocop:disable Metrics/AbcSize
       def out
-        if @connection_data_source == :adapter
+        if configuration_data_source == :node_engine
           return out_defaults.merge(
             database: out_defaults[:database] || app['data_sources'].first['database_name']
           )
@@ -27,61 +45,17 @@ module Drivers
       # rubocop:enable Metrics/AbcSize
 
       def out_defaults
-        base = JSON.parse(node['deploy'][app['shortname']]['database'].to_json, symbolize_names: true) || {}
-        {
-          encoding: 'utf8',
-          host: 'localhost',
-          reconnect: true
-        }.merge(base).merge(adapter: adapter)
-      end
-
-      def setup(context)
-        handle_packages(context)
-      end
-
-      def self.allowed_engines(*engines)
-        @allowed_engines = engines.map(&:to_s) if engines.present?
-        @allowed_engines || []
-      end
-
-      def self.adapter(adapter = nil)
-        @adapter = adapter if adapter.present?
-        (@adapter || self.class.name.underscore).to_s
+        base = JSON.parse((node['deploy'][app['shortname']]['database'] || {}).to_json, symbolize_names: true)
+        defaults.merge(base).merge(adapter: adapter)
       end
 
       protected
 
-      def allowed_engines
-        self.class.allowed_engines
+      def app_engine
+        options[:rds]['engine']
       end
 
-      def adapter
-        self.class.adapter
-      end
-
-      def validate_engine
-        rds_engine = options[:rds]['engine']
-
-        return validate_adapter if rds_engine.blank?
-
-        unless allowed_engines.include?(rds_engine)
-          raise ArgumentError, "Incorrect :rds engine, expected #{allowed_engines.inspect}, got '#{rds_engine}'."
-        end
-
-        :rds
-      end
-
-      def validate_adapter
-        raise ArgumentError, "Missing :rds engine, expected #{allowed_engines.inspect}." if adapter_engine.blank?
-        unless allowed_engines.include?(adapter_engine)
-          raise ArgumentError,
-                "Incorrect engine provided by adapter, expected #{allowed_engines.inspect}, got '#{adapter_engine}'."
-        end
-
-        :adapter
-      end
-
-      def adapter_engine
+      def node_engine
         node['deploy'][app['shortname']]['database'].try(:[], 'adapter')
       end
     end

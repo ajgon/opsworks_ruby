@@ -12,7 +12,7 @@ describe Drivers::Db::Postgresql do
 
   it 'raises error when no rds is present' do
     expect do
-      described_class.new(aws_opsworks_app, node, dummy_option: true)
+      described_class.new(aws_opsworks_app, node, dummy_option: true).out
     end.to raise_error ArgumentError, ':rds option is not set.'
   end
 
@@ -21,24 +21,25 @@ describe Drivers::Db::Postgresql do
       expect do
         described_class.new(
           aws_opsworks_app, node(deploy: { dummy_project: {} }), rds: aws_opsworks_rds_db_instance(engine: nil)
-        )
-      end.to raise_error ArgumentError, "Missing :rds engine, expected #{described_class.allowed_engines.inspect}."
+        ).out
+      end.to raise_error ArgumentError,
+                         "Missing :app or :node engine, expected #{described_class.allowed_engines.inspect}."
     end
 
     it 'adapter = missing, engine = wrong' do
       expect do
         described_class.new(
           aws_opsworks_app, node(deploy: { dummy_project: {} }), rds: aws_opsworks_rds_db_instance(engine: 'mysql')
-        )
+        ).out
       end.to raise_error ArgumentError,
-                         "Incorrect :rds engine, expected #{described_class.allowed_engines.inspect}, got 'mysql'."
+                         "Incorrect :app engine, expected #{described_class.allowed_engines.inspect}, got 'mysql'."
     end
 
     it 'adapter = missing, engine = correct' do
       expect do
         described_class.new(
           aws_opsworks_app, node(deploy: { dummy_project: {} }), rds: aws_opsworks_rds_db_instance
-        )
+        ).out
       end.not_to raise_error
     end
 
@@ -48,10 +49,9 @@ describe Drivers::Db::Postgresql do
           aws_opsworks_app,
           node(deploy: { dummy_project: { database: { adapter: 'mysql' } } }),
           rds: aws_opsworks_rds_db_instance(engine: nil)
-        )
+        ).out
       end.to raise_error ArgumentError,
-                         "Incorrect engine provided by adapter, expected #{described_class.allowed_engines.inspect}," \
-                         ' got \'mysql\'.'
+                         "Incorrect :node engine, expected #{described_class.allowed_engines.inspect}, got 'mysql'."
     end
 
     it 'adapter = wrong, engine = wrong' do
@@ -60,9 +60,9 @@ describe Drivers::Db::Postgresql do
           aws_opsworks_app,
           node(deploy: { dummy_project: { database: { adapter: 'mysql' } } }),
           rds: aws_opsworks_rds_db_instance(engine: 'mysql')
-        )
+        ).out
       end.to raise_error ArgumentError,
-                         "Incorrect :rds engine, expected #{described_class.allowed_engines.inspect}, got 'mysql'."
+                         "Incorrect :app engine, expected #{described_class.allowed_engines.inspect}, got 'mysql'."
     end
 
     it 'adapter = wrong, engine = correct' do
@@ -71,7 +71,7 @@ describe Drivers::Db::Postgresql do
           aws_opsworks_app,
           node(deploy: { dummy_project: { database: { adapter: 'mysql' } } }),
           rds: aws_opsworks_rds_db_instance
-        )
+        ).out
       end.not_to raise_error
     end
 
@@ -80,8 +80,8 @@ describe Drivers::Db::Postgresql do
         described_class.new(
           aws_opsworks_app,
           node(deploy: { dummy_project: { database: { adapter: 'postgresql' } } }),
-          rds: aws_opsworks_rds_db_instance
-        )
+          rds: aws_opsworks_rds_db_instance(engine: nil)
+        ).out
       end.not_to raise_error
     end
 
@@ -91,9 +91,9 @@ describe Drivers::Db::Postgresql do
           aws_opsworks_app,
           node(deploy: { dummy_project: { database: { adapter: 'postgresql' } } }),
           rds: aws_opsworks_rds_db_instance(engine: 'mysql')
-        )
+        ).out
       end.to raise_error ArgumentError,
-                         "Incorrect :rds engine, expected #{described_class.allowed_engines.inspect}, got 'mysql'."
+                         "Incorrect :app engine, expected #{described_class.allowed_engines.inspect}, got 'mysql'."
     end
 
     it 'adapter = correct, engine = correct' do
@@ -102,7 +102,7 @@ describe Drivers::Db::Postgresql do
           aws_opsworks_app,
           node(deploy: { dummy_project: { database: { adapter: 'postgresql' } } }),
           rds: aws_opsworks_rds_db_instance
-        )
+        ).out
       end.not_to raise_error
     end
   end
