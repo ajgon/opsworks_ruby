@@ -20,7 +20,11 @@ describe 'opsworks_ruby::deploy' do
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
   end
 
-  context 'Postgresql + Git' do
+  it 'includes recipes' do
+    expect(chef_run).to include_recipe('opsworks_ruby::configure')
+  end
+
+  context 'Postgresql + Git + Unicorn' do
     it 'creates git wrapper script' do
       expect(chef_run).to create_template('/tmp/ssh-git-wrapper.sh')
     end
@@ -31,6 +35,8 @@ describe 'opsworks_ruby::deploy' do
     end
 
     it 'performs a deploy' do
+      deploy = chef_run.deploy(aws_opsworks_app['shortname'])
+
       expect(chef_run).to deploy_deploy('dummy_project').with(
         repository: 'git@git.example.com:repo/project.git',
         revision: 'master',
@@ -38,6 +44,7 @@ describe 'opsworks_ruby::deploy' do
         enable_submodules: false,
         ssh_wrapper: '/tmp/ssh-git-wrapper.sh'
       )
+      expect(deploy).to notify("service[unicorn_#{aws_opsworks_app['shortname']}]").to(:restart).immediately
     end
   end
 end

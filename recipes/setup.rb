@@ -4,6 +4,8 @@
 # Recipe:: setup
 #
 
+include_recipe 'deployer'
+
 every_enabled_application do |application|
   scm = Drivers::Scm::Factory.build(application, node)
   scm.setup(self)

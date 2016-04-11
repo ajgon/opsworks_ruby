@@ -4,6 +4,7 @@ include_recipe 'opsworks_ruby::configure'
 every_enabled_application do |application, _deploy|
   scm = Drivers::Scm::Factory.build(application, node)
   scm.before_deploy(self)
+  appserver = Drivers::Appserver::Factory.build(application, node)
 
   deploy application['shortname'] do
     deploy_to deploy_dir(application)
@@ -12,6 +13,12 @@ every_enabled_application do |application, _deploy|
 
     scm.out.each do |scm_key, scm_value|
       send(scm_key, scm_value)
+    end
+
+    appserver.notifies.each do |config|
+      notifies config[:action],
+               config[:resource].respond_to?(:call) ? config[:resource].call(application) : config[:resource],
+               config[:timer]
     end
   end
 

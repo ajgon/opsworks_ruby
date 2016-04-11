@@ -20,16 +20,15 @@ def www_group
 end
 
 def create_deploy_dir(application, subdir = '/')
-  subdirs = subdir.split(File::SEPARATOR).select(&:present?)
-  (0..(subdirs.length - 1)).each do |i|
-    directory File.join(deploy_dir(application), subdirs[0..i]) do
-      mode '0755'
-      recursive true
-      owner node['deployer']['user'] || 'root'
-      group www_group
-    end
+  dir = File.join(deploy_dir(application), subdir)
+  directory dir do
+    mode '0755'
+    recursive true
+    owner node['deployer']['user'] || 'root'
+    group www_group
+    not_if { File.directory?(dir) }
   end
-  File.join(deploy_dir(application), subdir)
+  dir
 end
 
 def deploy_dir(application)

@@ -45,6 +45,24 @@ class Array
   end
 end
 
+class Hash
+  def symbolize_keys
+    each_with_object({}) do |(key, value), options|
+      options[(begin
+                 key.to_sym
+               rescue
+                 key
+               end) || key] = value
+    end
+  end
+
+  def stringify_keys
+    each_with_object({}) do |(key, value), options|
+      options[key.to_s] = value
+    end
+  end
+end
+
 class String
   def constantize
     split('::').inject(Object) { |a, e| a.const_get(e) }
