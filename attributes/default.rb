@@ -1,5 +1,9 @@
-
 # frozen_string_literal: true
+# ruby
+
+default['build-essential']['compile_time'] = true
+default['ruby-ng']['ruby_version'] = node['ruby'].try(:[], 'version') || '2.3'
+
 # appserver
 ## common
 

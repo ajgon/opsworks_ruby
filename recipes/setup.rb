@@ -5,6 +5,9 @@
 #
 
 include_recipe 'deployer'
+include_recipe 'ruby-ng::dev'
+
+gem_package 'bundler'
 
 every_enabled_application do |application|
   scm = Drivers::Scm::Factory.build(application, node)

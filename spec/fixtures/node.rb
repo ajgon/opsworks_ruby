@@ -2,6 +2,9 @@
 # rubocop:disable Metrics/MethodLength
 def node(override = {})
   item = {
+    lsb: {
+      codename: 'trusty'
+    },
     deploy: {
       dummy_project: {
         database: {
