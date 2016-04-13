@@ -8,9 +8,12 @@ module Drivers
         engine.new(app, node, options)
       end
 
-      def self.detect_engine(_app, node, _options)
+      def self.detect_engine(app, node, _options)
         Drivers::Appserver::Base.descendants.detect do |appserver_driver|
-          appserver_driver.allowed_engines.include?(node['appserver']['adapter'].presence || 'unicorn')
+          appserver_driver.allowed_engines.include?(
+            node['deploy'][app['shortname']]['appserver'].try(:[], 'adapter') ||
+            node['defaults']['appserver']['adapter']
+          )
         end
       end
     end

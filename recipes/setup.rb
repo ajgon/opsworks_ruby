@@ -4,10 +4,14 @@
 # Recipe:: setup
 #
 
+# Ruby and bundler
 include_recipe 'deployer'
 include_recipe 'ruby-ng::dev'
 
 gem_package 'bundler'
+link '/usr/local/bin/bundle' do
+  to '/usr/bin/bundle'
+end
 
 every_enabled_application do |application|
   scm = Drivers::Scm::Factory.build(application, node)

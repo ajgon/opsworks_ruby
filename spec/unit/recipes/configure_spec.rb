@@ -60,6 +60,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
         .with_content('worker_processes 4')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
+        .with_content(':delay => 3')
     end
 
     it 'creates proper unicorn.service file' do

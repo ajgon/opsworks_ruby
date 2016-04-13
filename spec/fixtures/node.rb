@@ -26,6 +26,9 @@ def node(override = {})
           ssh_wrapper: 'ssh-wrap',
           submodules: false,
           wrong_param: 'bad'
+        },
+        appserver: {
+          delay: 3
         }
       }
     }

@@ -10,17 +10,12 @@ module Drivers
       end
 
       def raw_out
-        node_engine.symbolize_keys
+        node['defaults']['appserver'].merge(
+          node['deploy'][app['shortname']]['appserver'] || {}
+        ).symbolize_keys
       end
-
-      protected
 
       def validate_app_engine
-        :node_engine
-      end
-
-      def node_engine
-        node['appserver']
       end
     end
   end

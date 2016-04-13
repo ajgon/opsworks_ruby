@@ -68,6 +68,7 @@ describe 'opsworks_ruby::setup' do
   context 'Gems' do
     it 'bundler' do
       expect(chef_run).to install_gem_package(:bundler)
+      expect(chef_run).to create_link('/usr/local/bin/bundle')
     end
   end
 

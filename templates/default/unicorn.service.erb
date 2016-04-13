@@ -37,7 +37,7 @@ def different_gemfile?
 end
 
 def start_unicorn
-  run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec unicorn_rails --env <%= @rails_env %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
+  run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/bin/bundle exec unicorn_rails --env <%= @rails_env %> --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf"
 end
 
 def stop_unicorn
