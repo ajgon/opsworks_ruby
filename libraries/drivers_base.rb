@@ -19,16 +19,6 @@ module Drivers
       (@adapter || self.class.name.underscore).to_s
     end
 
-    protected
-
-    def allowed_engines
-      self.class.allowed_engines
-    end
-
-    def adapter
-      self.class.adapter
-    end
-
     # Dummy methods for children to redefine
     def setup(_context)
     end
@@ -46,6 +36,16 @@ module Drivers
     end
 
     def shutdown(_context)
+    end
+
+    protected
+
+    def allowed_engines
+      self.class.allowed_engines
+    end
+
+    def adapter
+      self.class.adapter
     end
 
     def validate_app_engine

@@ -1,17 +1,26 @@
 # frozen_string_literal: true
 include_recipe 'opsworks_ruby::configure'
 
-do_migrate = true
-
-every_enabled_application do |app, _deploy|
+every_enabled_application do |app, deploy|
   scm = Drivers::Scm::Factory.build(app, node)
-  scm.before_deploy(self)
   appserver = Drivers::Appserver::Factory.build(app, node)
+  framework = Drivers::Framework::Factory.build(app, node)
+
+  scm.before_deploy(self)
+  appserver.before_deploy(self)
+  framework.before_deploy(self)
 
   deploy app['shortname'] do
     deploy_to deploy_dir(app)
     user node['deployer']['user'] || 'root'
     group www_group
+    environment framework.out[:deploy_environment]
+
+    create_dirs_before_symlink deploy[:create_dirs_before_symlink]
+    keep_releases deploy[:keep_releases]
+    purge_before_symlink deploy[:purge_before_symlink] if deploy[:purge_before_symlink]
+    symlink_before_migrate deploy[:symlink_before_migrate]
+    symlinks deploy[:symlinks] if deploy[:symlinks]
 
     scm.out.each do |scm_key, scm_value|
       send(scm_key, scm_value)
@@ -23,40 +32,31 @@ every_enabled_application do |app, _deploy|
                config[:timer]
     end
 
-    migration_command(
-      'bundle exec rake db:version > /dev/null 2>&1 && bundle exec rake db:migrate || bundle exec rake db:setup'
-    )
-    migrate do_migrate
+    migration_command(framework.out[:migration_command])
+    migrate framework.out[:migrate]
     before_migrate do
-      bundle_install File.join(release_path, 'Gemfile') do
-        deployment true
-        without %w(development test)
-      end
+      perform_bundle_install(release_path)
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_migrate.rb'))
     end
 
     before_symlink do
-      bundle_install File.join(release_path, 'Gemfile') do
-        deployment true
-        without %w(development test)
-      end unless do_migrate
+      perform_bundle_install(release_path) unless framework.out[:migrate]
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_symlink.rb'))
     end
+
+    before_restart do
+      directory File.join(release_path, '.git') do
+        recursive true
+        action :delete
+      end
+
+      run_callback_from_file(File.join(release_path, 'deploy', 'before_restart.rb'))
+    end
   end
 
+  framework.after_deploy(self)
+  appserver.after_deploy(self)
   scm.after_deploy(self)
 end
-
-# every_enabled_app do |app, deploy|
-# deploy app['shortname'] do
-# deploy_to deploy_dir
-# environment app['environment'] || {}
-# group www_group
-# migrate false
-# repository app['app_source']['url']
-# rollback_on_error true
-# user node['deployer']['user']
-# end
-# end

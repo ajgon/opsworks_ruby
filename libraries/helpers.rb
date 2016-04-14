@@ -39,7 +39,6 @@ def every_enabled_application
   node['deploy'].each do |deploy_app_shortname, deploy|
     application = applications.detect { |app| app['shortname'] == deploy_app_shortname }
     next unless application
-    deploy = deploy[application['shortname']]
     yield application, deploy
   end
 end
@@ -47,5 +46,12 @@ end
 def every_enabled_rds
   rdses.each do |rds|
     yield rds
+  end
+end
+
+def perform_bundle_install(release_path)
+  bundle_install File.join(release_path, 'Gemfile') do
+    deployment true
+    without %w(development test)
   end
 end

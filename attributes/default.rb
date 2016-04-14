@@ -20,3 +20,14 @@ default['defaults']['appserver']['tcp_nodelay'] = true
 default['defaults']['appserver']['tcp_nopush'] = false
 default['defaults']['appserver']['tries'] = 5
 default['defaults']['appserver']['timeout'] = 60
+
+# framework
+## common
+
+default['defaults']['framework']['adapter'] = 'rails'
+
+## rails
+
+default['defaults']['framework']['migrate'] = true
+default['defaults']['framework']['migration_command'] =
+  'bundle exec rake db:version > /dev/null 2>&1 && bundle exec rake db:migrate || bundle exec rake db:setup'
