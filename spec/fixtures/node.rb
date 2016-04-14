@@ -28,8 +28,23 @@ def node(override = {})
           wrong_param: 'bad'
         },
         appserver: {
+          adapter: 'unicorn',
           delay: 3
+        },
+        framework: {
+          adapter: 'rails',
+          migrate: false
         }
+      }
+    },
+    defaults: {
+      appserver: {
+        adapter: 'unicorn',
+        worker_processes: 8
+      },
+      framework: {
+        adapter: 'rails',
+        migration_command: 'rake db:migrate'
       }
     }
   }.merge(override)
