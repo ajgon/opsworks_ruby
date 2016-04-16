@@ -1,0 +1,24 @@
+---
+sudo: false
+rvm:
+  - '2.2'
+addons:
+  apt:
+    sources:
+      - chef-stable-precise
+    packages:
+      - chefdk
+
+before_install: "gem install bundler"
+install: bundle install --without chef
+
+before_script:
+  - chef gem install coveralls
+  - git config --global user.email "travis@travis.ci"
+  - git config --global user.name "Travis CI"
+  - bundle exec overcommit --sign
+  - bundle exec overcommit --sign pre-commit
+
+script:
+  - bundle exec overcommit -r
+  - chef exec rspec

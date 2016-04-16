@@ -41,6 +41,8 @@ PreCommit:
     enabled: true
   TrailingWhitespace:
     enabled: true
+  TravisLint:
+    enabled: true
   XmlLint:
     enabled: true
   XmlSyntax:

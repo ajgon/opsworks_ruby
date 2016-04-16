@@ -4,17 +4,18 @@ source 'https://rubygems.org/'
 group :lint do
   gem 'brakeman'
   gem 'bundler-audit'
+  gem 'coveralls'
   gem 'foodcritic'
   gem 'mdl'
   gem 'overcommit'
   gem 'rubocop'
+  gem 'travis'
 end
 
-group :development do
-  gem 'rspec'
+group :chef do
+  gem 'berkshelf'
   gem 'chefspec'
+  gem 'kitchen-vagrant'
+  gem 'rspec'
+  gem 'test-kitchen'
 end
-
-gem 'test-kitchen'
-gem 'kitchen-vagrant'
-gem 'berkshelf'
