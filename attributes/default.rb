@@ -21,6 +21,23 @@ default['defaults']['appserver']['tcp_nopush'] = false
 default['defaults']['appserver']['tries'] = 5
 default['defaults']['appserver']['timeout'] = 60
 
+# webserver
+## common
+
+default['defaults']['webserver']['adapter'] = 'nginx'
+
+## nginx
+
+default['defaults']['webserver']['build_type'] = 'default'
+default['defaults']['webserver']['client_body_timeout'] = '12'
+default['defaults']['webserver']['client_header_timeout'] = '12'
+default['defaults']['webserver']['client_max_body_size'] = '10m'
+default['defaults']['webserver']['keepalive_timeout'] = '15'
+default['defaults']['webserver']['log_dir'] = '/var/log/nginx'
+default['defaults']['webserver']['proxy_read_timeout'] = '60'
+default['defaults']['webserver']['proxy_send_timeout'] = '60'
+default['defaults']['webserver']['send_timeout'] = '10'
+
 # framework
 ## common
 

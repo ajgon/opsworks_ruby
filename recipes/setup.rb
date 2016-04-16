@@ -16,6 +16,8 @@ end
 every_enabled_application do |application|
   scm = Drivers::Scm::Factory.build(application, node)
   scm.setup(self)
+  webserver = Drivers::Webserver::Factory.build(application, node)
+  webserver.setup(self)
 
   every_enabled_rds do |rds|
     database = Drivers::Db::Factory.build(application, node, rds: rds)

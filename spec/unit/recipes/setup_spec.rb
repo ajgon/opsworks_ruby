@@ -72,8 +72,9 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
-  context 'Postgresql + git' do
+  context 'Postgresql + git + nginx' do
     it 'installs required packages' do
+      expect(chef_run).to install_package('nginx')
       expect(chef_run).to install_package('git')
       expect(chef_run).to install_package('libpq-dev')
     end

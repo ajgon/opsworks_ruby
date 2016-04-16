@@ -30,7 +30,7 @@ def aws_opsworks_app(override = {})
     shortname: 'dummy_project',
     ssl_configuration: {
       certificate: '--- SSL CERTIFICATE ---',
-      private_key: '--- SSL PRICATE KEY ---',
+      private_key: '--- SSL PRIVATE KEY ---',
       chain: '--- SSL CERTIFICATE CHAIN ---'
     },
     type: 'other',

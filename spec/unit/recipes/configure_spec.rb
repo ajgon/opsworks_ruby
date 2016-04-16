@@ -44,7 +44,7 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Postgresql + Git + Unicorn' do
+  context 'Postgresql + Git + Unicorn + Nginx' do
     it 'creates proper database.yml template' do
       db_config = Drivers::Db::Postgresql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance).out
       expect(chef_run)
@@ -88,6 +88,32 @@ describe 'opsworks_ruby::configure' do
         .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service restart"
       expect(service.status_command)
         .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service status"
+    end
+
+    it 'creates nginx unicorn proxy handler config' do
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('client_max_body_size 125m;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('keepalive_timeout 15;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
+      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
+    end
+
+    it 'creates SSL keys for nginx' do
+      expect(chef_run).to create_directory('/etc/nginx/ssl')
+      expect(chef_run)
+        .to render_file("/etc/nginx/ssl/#{aws_opsworks_app['domains'].first}.key")
+        .with_content('--- SSL PRIVATE KEY ---')
+      expect(chef_run)
+        .to render_file("/etc/nginx/ssl/#{aws_opsworks_app['domains'].first}.crt")
+        .with_content('--- SSL CERTIFICATE ---')
+      expect(chef_run)
+        .to render_file("/etc/nginx/ssl/#{aws_opsworks_app['domains'].first}.ca")
+        .with_content('--- SSL CERTIFICATE CHAIN ---')
     end
   end
 end

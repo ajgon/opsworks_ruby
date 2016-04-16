@@ -31,6 +31,10 @@ def node(override = {})
           adapter: 'unicorn',
           delay: 3
         },
+        webserver: {
+          adapter: 'nginx',
+          client_max_body_size: '125m'
+        },
         framework: {
           adapter: 'rails',
           migrate: false
@@ -41,6 +45,10 @@ def node(override = {})
       appserver: {
         adapter: 'unicorn',
         worker_processes: 8
+      },
+      webserver: {
+        adapter: 'nginx',
+        keepalive_timeout: '15'
       },
       framework: {
         adapter: 'rails',

@@ -24,7 +24,7 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to include_recipe('opsworks_ruby::configure')
   end
 
-  context 'Postgresql + Git + Unicorn' do
+  context 'Postgresql + Git + Unicorn + Nginx' do
     it 'creates git wrapper script' do
       expect(chef_run).to create_template('/tmp/ssh-git-wrapper.sh')
     end
