@@ -7,7 +7,7 @@ module Drivers
       output filter: [
         :accept_filter, :backlog, :delay, :preload_app, :tcp_nodelay, :tcp_nopush, :tries, :timeout, :worker_processes
       ]
-      notifies action: :restart,
+      notifies action: :start,
                resource: proc { |app| "service[unicorn_#{app['shortname']}]" },
                timer: :immediately
 
@@ -17,7 +17,24 @@ module Drivers
         add_unicorn_service_context(context)
       end
 
+      def before_deploy(context)
+        manual_action(context, :stop)
+      end
+
+      def after_deploy(context)
+        manual_action(context, :start)
+      end
+
       private
+
+      def manual_action(context, action)
+        deploy_to = deploy_dir(app)
+        service_script = File.join(deploy_to, File.join('shared', 'scripts', 'unicorn.service'))
+
+        context.execute "#{action} unicorn" do
+          command "#{service_script} #{action}"
+        end
+      end
 
       def add_unicorn_config(context)
         deploy_to = deploy_dir(app)
