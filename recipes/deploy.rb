@@ -1,17 +1,24 @@
 # frozen_string_literal: true
 include_recipe 'opsworks_ruby::configure'
 
-every_enabled_application do |app, deploy|
-  scm = Drivers::Scm::Factory.build(app, node)
-  appserver = Drivers::Appserver::Factory.build(app, node)
-  framework = Drivers::Framework::Factory.build(app, node)
+every_enabled_application do |application, deploy|
+  every_enabled_rds do |rds|
+    database = Drivers::Db::Factory.build(application, node, rds: rds)
+    database.before_deploy(self)
+  end
+
+  scm = Drivers::Scm::Factory.build(application, node)
+  framework = Drivers::Framework::Factory.build(application, node)
+  appserver = Drivers::Appserver::Factory.build(application, node)
+  webserver = Drivers::Webserver::Factory.build(application, node)
 
   scm.before_deploy(self)
-  appserver.before_deploy(self)
   framework.before_deploy(self)
+  appserver.before_deploy(self)
+  webserver.before_deploy(self)
 
-  deploy app['shortname'] do
-    deploy_to deploy_dir(app)
+  deploy application['shortname'] do
+    deploy_to deploy_dir(application)
     user node['deployer']['user'] || 'root'
     group www_group
     rollback_on_error true
@@ -29,7 +36,7 @@ every_enabled_application do |app, deploy|
 
     appserver.notifies[:deploy].each do |config|
       notifies config[:action],
-               config[:resource].respond_to?(:call) ? config[:resource].call(app) : config[:resource],
+               config[:resource].respond_to?(:call) ? config[:resource].call(application) : config[:resource],
                config[:timer]
     end
 
@@ -57,7 +64,13 @@ every_enabled_application do |app, deploy|
     end
   end
 
-  framework.after_deploy(self)
+  webserver.after_deploy(self)
   appserver.after_deploy(self)
+  framework.after_deploy(self)
   scm.after_deploy(self)
+
+  every_enabled_rds do |rds|
+    database = Drivers::Db::Factory.build(application, node, rds: rds)
+    database.after_deploy(self)
+  end
 end

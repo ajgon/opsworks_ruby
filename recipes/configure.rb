@@ -17,6 +17,10 @@ every_enabled_application do |application, _deploy|
     database.configure(self)
   end
 
+  scm = Drivers::Scm::Factory.build(application, node)
+  scm.configure(self)
+  framework = Drivers::Framework::Factory.build(application, node)
+  framework.configure(self)
   appserver = Drivers::Appserver::Factory.build(application, node)
   appserver.configure(self)
   webserver = Drivers::Webserver::Factory.build(application, node)
