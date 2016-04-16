@@ -14,6 +14,7 @@ every_enabled_application do |app, deploy|
     deploy_to deploy_dir(app)
     user node['deployer']['user'] || 'root'
     group www_group
+    rollback_on_error true
     environment framework.out[:deploy_environment]
 
     create_dirs_before_symlink deploy[:create_dirs_before_symlink]
@@ -26,7 +27,7 @@ every_enabled_application do |app, deploy|
       send(scm_key, scm_value)
     end
 
-    appserver.notifies.each do |config|
+    appserver.notifies[:deploy].each do |config|
       notifies config[:action],
                config[:resource].respond_to?(:call) ? config[:resource].call(app) : config[:resource],
                config[:timer]

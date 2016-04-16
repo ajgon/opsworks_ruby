@@ -7,9 +7,6 @@ module Drivers
       output filter: [
         :accept_filter, :backlog, :delay, :preload_app, :tcp_nodelay, :tcp_nopush, :tries, :timeout, :worker_processes
       ]
-      notifies action: :start,
-               resource: proc { |app| "service[unicorn_#{app['shortname']}]" },
-               timer: :immediately
 
       def configure(context)
         add_unicorn_config(context)
@@ -20,10 +17,12 @@ module Drivers
       def before_deploy(context)
         manual_action(context, :stop)
       end
+      alias before_undeploy before_deploy
 
       def after_deploy(context)
         manual_action(context, :start)
       end
+      alias after_undeploy after_deploy
 
       private
 

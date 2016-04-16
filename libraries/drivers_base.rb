@@ -32,7 +32,10 @@ module Drivers
     def after_deploy(_context)
     end
 
-    def undeploy(_context)
+    def before_undeploy(_context)
+    end
+
+    def after_undeploy(_context)
     end
 
     def shutdown(_context)
