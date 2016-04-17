@@ -5,8 +5,8 @@ module Drivers
       adapter :nginx
       allowed_engines :nginx
       output filter: [
-        :build_type, :client_body_timeout, :client_header_timeout, :client_max_body_size, :keepalive_timeout,
-        :log_dir, :proxy_read_timeout, :proxy_send_timeout, :send_timeout
+        :build_type, :client_body_timeout, :client_header_timeout, :client_max_body_size, :dhparams, :keepalive_timeout,
+        :log_dir, :proxy_read_timeout, :proxy_send_timeout, :send_timeout, :ssl_for_legacy_browsers
       ]
       # notifies action: :restart,
       # resource: proc { |app| "service[nginx_#{app['shortname']}]" },
@@ -21,6 +21,7 @@ module Drivers
         add_ssl_item(context, :private_key)
         add_ssl_item(context, :certificate)
         add_ssl_item(context, :chain)
+        add_dhparams(context)
 
         add_unicorn_config(context) if Drivers::Appserver::Factory.build(app, node).adapter == 'unicorn'
         enable_appserver_config(context)
@@ -44,9 +45,22 @@ module Drivers
         context.template "/etc/nginx/ssl/#{app[:domains].first}.#{extensions[name]}" do
           owner 'root'
           group 'root'
-          mode '0644'
+          mode name == :private_key ? '0600' : '0644'
           source 'ssl_key.erb'
           variables key_data: key_data
+        end
+      end
+
+      def add_dhparams(context)
+        dhparams = out[:dhparams]
+        return if dhparams.blank?
+
+        context.template "/etc/nginx/ssl/#{app[:domains].first}.dhparams.pem" do
+          owner 'root'
+          group 'root'
+          mode '0600'
+          source 'ssl_key.erb'
+          variables key_data: dhparams
         end
       end
 

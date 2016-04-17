@@ -5,6 +5,9 @@ def node(override = {})
     lsb: {
       codename: 'trusty'
     },
+    nginx: {
+      version: '1.4.6'
+    },
     deploy: {
       dummy_project: {
         database: {
@@ -33,7 +36,8 @@ def node(override = {})
         },
         webserver: {
           adapter: 'nginx',
-          client_max_body_size: '125m'
+          client_max_body_size: '125m',
+          dhparams: '--- DH PARAMS ---'
         },
         framework: {
           adapter: 'rails',

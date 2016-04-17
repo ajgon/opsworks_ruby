@@ -25,6 +25,7 @@ default['defaults']['appserver']['timeout'] = 60
 ## common
 
 default['defaults']['webserver']['adapter'] = 'nginx'
+default['defaults']['webserver']['ssl_for_legacy_browsers'] = false
 
 ## nginx
 

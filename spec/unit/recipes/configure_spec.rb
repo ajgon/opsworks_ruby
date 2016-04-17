@@ -11,6 +11,7 @@ describe 'opsworks_ruby::configure' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |solo_node|
       solo_node.set['deploy'] = node['deploy']
+      solo_node.set['nginx'] = node['nginx']
     end.converge(described_recipe)
   end
   before do
@@ -100,7 +101,42 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
         .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_ecdh_curve secp384r1;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_stapling on;')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_session_tickets off;')
       expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
+    end
+
+    it 'enables ssl rules for legacy browsers in nginx config' do
+      chef_run = ChefSpec::SoloRunner.new do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['ssl_for_legacy_browsers'] = true
+        solo_node.set['deploy'] = deploy
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+      expect(chef_run).to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}").with_content(
+        'ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:ECDHE-RSA-AES128-GCM-SHA384:' \
+        'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA128:DHE-RSA-AES128-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:' \
+        'DHE-RSA-AES128-GCM-SHA128:ECDHE-RSA-AES128-SHA384:ECDHE-RSA-AES128-SHA128:ECDHE-RSA-AES128-SHA:' \
+        'ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA128:DHE-RSA-AES128-SHA128:DHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA:' \
+        'ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA384:AES128-GCM-SHA128:AES128-SHA128:AES128-SHA128:' \
+        'AES128-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";'
+      )
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_ecdh_curve secp384r1;')
     end
 
     it 'creates SSL keys for nginx' do
@@ -114,6 +150,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/nginx/ssl/#{aws_opsworks_app['domains'].first}.ca")
         .with_content('--- SSL CERTIFICATE CHAIN ---')
+      expect(chef_run)
+        .to render_file("/etc/nginx/ssl/#{aws_opsworks_app['domains'].first}.dhparams.pem")
+        .with_content('--- DH PARAMS ---')
     end
   end
 end
