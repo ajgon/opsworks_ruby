@@ -19,6 +19,7 @@ describe 'opsworks_ruby::setup' do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
     stub_node { |n| n.merge(node) }
+    stub_command('which nginx').and_return(false)
   end
 
   it 'includes recipes' do

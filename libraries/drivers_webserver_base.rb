@@ -2,6 +2,7 @@
 module Drivers
   module Webserver
     class Base < Drivers::Base
+      include Drivers::Dsl::Notifies
       include Drivers::Dsl::Output
 
       def out

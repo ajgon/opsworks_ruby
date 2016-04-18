@@ -34,10 +34,12 @@ every_enabled_application do |application, deploy|
       send(scm_key, scm_value)
     end
 
-    appserver.notifies[:deploy].each do |config|
-      notifies config[:action],
-               config[:resource].respond_to?(:call) ? config[:resource].call(application) : config[:resource],
-               config[:timer]
+    [appserver, webserver].each do |server|
+      server.notifies[:deploy].each do |config|
+        notifies config[:action],
+                 config[:resource].respond_to?(:call) ? config[:resource].call(application) : config[:resource],
+                 config[:timer]
+      end
     end
 
     migration_command(framework.out[:migration_command])

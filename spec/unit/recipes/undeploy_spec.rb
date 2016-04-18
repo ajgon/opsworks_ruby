@@ -22,9 +22,15 @@ describe 'opsworks_ruby::undeploy' do
 
   context 'Postgresql + Git + Unicorn + Nginx' do
     it 'performs a rollback' do
+      undeploy = chef_run.deploy(aws_opsworks_app['shortname'])
+      service = chef_run.service('nginx')
+
       expect(chef_run).to rollback_deploy('dummy_project')
       expect(chef_run).to run_execute('stop unicorn')
       expect(chef_run).to run_execute('start unicorn')
+
+      expect(undeploy).to notify('service[nginx]').to(:reload).delayed
+      expect(service).to do_nothing
     end
   end
 end

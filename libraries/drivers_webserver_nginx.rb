@@ -8,12 +8,13 @@ module Drivers
         :build_type, :client_body_timeout, :client_header_timeout, :client_max_body_size, :dhparams, :keepalive_timeout,
         :log_dir, :proxy_read_timeout, :proxy_send_timeout, :send_timeout, :ssl_for_legacy_browsers
       ]
-      # notifies action: :restart,
-      # resource: proc { |app| "service[nginx_#{app['shortname']}]" },
-      # timer: :immediately
+      notifies :deploy, action: :reload, resource: 'service[nginx]', timer: :delayed
+      notifies :undeploy, action: :reload, resource: 'service[nginx]', timer: :delayed
 
       def setup(context)
-        context.include_recipe("nginx::#{out[:build_type]}")
+        node.default['nginx']['install_method'] = out[:build_type].to_s == 'source' ? 'source' : 'package'
+        recipe = out[:build_type].to_s == 'source' ? 'source' : 'default'
+        context.include_recipe("nginx::#{recipe}")
       end
 
       def configure(context)
@@ -26,6 +27,13 @@ module Drivers
         add_unicorn_config(context) if Drivers::Appserver::Factory.build(app, node).adapter == 'unicorn'
         enable_appserver_config(context)
       end
+
+      def before_deploy(context)
+        context.service 'nginx' do
+          supports status: true, restart: true, reload: true
+        end
+      end
+      alias before_undeploy before_deploy
 
       private
 

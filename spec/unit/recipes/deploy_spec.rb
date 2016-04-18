@@ -35,6 +35,9 @@ describe 'opsworks_ruby::deploy' do
     end
 
     it 'performs a deploy' do
+      deploy = chef_run.deploy(aws_opsworks_app['shortname'])
+      service = chef_run.service('nginx')
+
       expect(chef_run).to deploy_deploy('dummy_project').with(
         repository: 'git@git.example.com:repo/project.git',
         revision: 'master',
@@ -45,6 +48,8 @@ describe 'opsworks_ruby::deploy' do
 
       expect(chef_run).to run_execute('stop unicorn')
       expect(chef_run).to run_execute('start unicorn')
+      expect(deploy).to notify('service[nginx]').to(:reload).delayed
+      expect(service).to do_nothing
     end
   end
 end

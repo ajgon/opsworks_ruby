@@ -21,10 +21,12 @@ every_enabled_application do |application, _deploy|
     user node['deployer']['user'] || 'root'
     group www_group
 
-    appserver.notifies[:undeploy].each do |config|
-      notifies config[:action],
-               config[:resource].respond_to?(:call) ? config[:resource].call(application) : config[:resource],
-               config[:timer]
+    [appserver, webserver].each do |server|
+      server.notifies[:undeploy].each do |config|
+        notifies config[:action],
+                 config[:resource].respond_to?(:call) ? config[:resource].call(application) : config[:resource],
+                 config[:timer]
+      end
     end
 
     action :rollback

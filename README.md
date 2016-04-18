@@ -137,7 +137,7 @@ Webserver configuration. Proxy passing to application is handled out-of-the-box.
 Currently only nginx is supported.
 
 * `app['webserver']['build_type']`
-  * **Supported values:** `default`, `repo` and `source`
+  * **Supported values:** `default` or `source`
   * **Default:** `default`
   * The way the [nginx](https://supermarket.chef.io/cookbooks/nginx) cookbooks
     handles `nginx` installation. Check out [the corresponding docs](https://github.com/miketheman/nginx/tree/2.7.x#recipes)

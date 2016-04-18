@@ -4,10 +4,11 @@ module Drivers
     module Notifies
       def self.included(klass)
         klass.instance_eval do
-          def notifies(options = {})
+          def notifies(*options)
             @notifies ||= { setup: [], configure: [], deploy: [], undeploy: [], shutdown: [] }
             action = options.shift
             @notifies[action.to_sym].push(options) if options.present?
+            @notifies[action.to_sym].flatten!.uniq! if options.present?
             @notifies
           end
         end
