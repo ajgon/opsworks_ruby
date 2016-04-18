@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+
+prepare_recipe
+
 include_recipe 'opsworks_ruby::configure'
 
 every_enabled_application do |application, deploy|

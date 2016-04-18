@@ -4,6 +4,8 @@
 # Recipe:: shutdown
 #
 
+prepare_recipe
+
 every_enabled_application do |application, _deploy|
   every_enabled_rds do |rds|
     database = Drivers::Db::Factory.build(application, node, rds: rds)

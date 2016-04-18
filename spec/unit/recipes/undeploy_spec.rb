@@ -26,11 +26,20 @@ describe 'opsworks_ruby::undeploy' do
       service = chef_run.service('nginx')
 
       expect(chef_run).to rollback_deploy('dummy_project')
-      expect(chef_run).to run_execute('stop unicorn')
-      expect(chef_run).to run_execute('start unicorn')
+      expect(chef_run).to run_execute('restart unicorn')
 
       expect(undeploy).to notify('service[nginx]').to(:reload).delayed
       expect(service).to do_nothing
     end
+  end
+
+  it 'empty node[\'deploy\']' do
+    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+      solo_node.set['lsb'] = node['lsb']
+    end.converge(described_recipe)
+
+    expect do
+      chef_run
+    end.not_to raise_error
   end
 end

@@ -41,6 +41,7 @@ default['defaults']['appserver']['timeout'] = 60
 # webserver
 ## common
 
+default['nginx']['default_site_enabled'] = false
 default['defaults']['webserver']['adapter'] = 'nginx'
 default['defaults']['webserver']['ssl_for_legacy_browsers'] = false
 

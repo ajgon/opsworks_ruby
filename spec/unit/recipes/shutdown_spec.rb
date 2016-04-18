@@ -23,4 +23,14 @@ describe 'opsworks_ruby::shutdown' do
       chef_run
     end.not_to raise_error
   end
+
+  it 'empty node[\'deploy\']' do
+    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+      solo_node.set['lsb'] = node['lsb']
+    end.converge(described_recipe)
+
+    expect do
+      chef_run
+    end.not_to raise_error
+  end
 end

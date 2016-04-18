@@ -84,4 +84,14 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run).to start_service('nginx')
     end
   end
+
+  it 'empty node[\'deploy\']' do
+    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+      solo_node.set['lsb'] = node['lsb']
+    end.converge(described_recipe)
+
+    expect do
+      chef_run
+    end.not_to raise_error
+  end
 end

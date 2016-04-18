@@ -4,6 +4,8 @@
 # Recipe:: configure
 #
 
+prepare_recipe
+
 every_enabled_application do |application, _deploy|
   create_deploy_dir(application, File.join('shared'))
   create_deploy_dir(application, File.join('shared', 'config'))

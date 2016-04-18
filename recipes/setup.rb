@@ -4,6 +4,8 @@
 # Recipe:: setup
 #
 
+prepare_recipe
+
 # Ruby and bundler
 include_recipe 'deployer'
 include_recipe 'ruby-ng::dev'

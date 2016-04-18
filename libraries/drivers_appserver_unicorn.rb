@@ -14,13 +14,8 @@ module Drivers
         add_unicorn_service_context(context)
       end
 
-      def before_deploy(context)
-        manual_action(context, :stop)
-      end
-      alias before_undeploy before_deploy
-
       def after_deploy(context)
-        manual_action(context, :start)
+        manual_action(context, :restart)
       end
       alias after_undeploy after_deploy
 
