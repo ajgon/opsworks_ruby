@@ -24,11 +24,15 @@ every_enabled_application do |application, deploy|
     rollback_on_error true
     environment framework.out[:deploy_environment]
 
-    create_dirs_before_symlink deploy[:create_dirs_before_symlink]
     keep_releases deploy[:keep_releases]
-    purge_before_symlink deploy[:purge_before_symlink] if deploy[:purge_before_symlink]
+    create_dirs_before_symlink(
+      (node['defaults']['deploy']['create_dirs_before_symlink'] + Array.wrap(deploy[:create_dirs_before_symlink])).uniq
+    )
+    purge_before_symlink(
+      (node['defaults']['deploy']['purge_before_symlink'] + Array.wrap(deploy[:purge_before_symlink])).uniq
+    )
     symlink_before_migrate deploy[:symlink_before_migrate]
-    symlinks deploy[:symlinks] if deploy[:symlinks]
+    symlinks(node['defaults']['deploy']['symlinks'].merge(deploy[:symlinks] || {}))
 
     scm.out.each do |scm_key, scm_value|
       send(scm_key, scm_value)

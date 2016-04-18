@@ -42,10 +42,24 @@ def node(override = {})
         framework: {
           adapter: 'rails',
           migrate: false
-        }
+        },
+        create_dirs_before_symlink: %(../shared/test),
+        purge_before_symlink: %w(public/test),
+        symlinks: { 'test' => 'public/test' }
       }
     },
     defaults: {
+      deploy: {
+        symlinks: {
+          system: 'public/system',
+          assets: 'public/assets',
+          cache: 'tmp/cache',
+          pids: 'tmp/pids',
+          log: 'log'
+        },
+        create_dirs_before_symlink: %w(tmp public config ../../shared/cache ../../shared/assets),
+        purge_before_symlink: %w(log tmp/cache tmp/pids public/system public/assets)
+      },
       appserver: {
         adapter: 'unicorn',
         worker_processes: 8

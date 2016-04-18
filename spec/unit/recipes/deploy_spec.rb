@@ -43,7 +43,17 @@ describe 'opsworks_ruby::deploy' do
         revision: 'master',
         scm_provider: Chef::Provider::Git,
         enable_submodules: false,
-        ssh_wrapper: '/tmp/ssh-git-wrapper.sh'
+        ssh_wrapper: '/tmp/ssh-git-wrapper.sh',
+        symlinks: {
+          'system' => 'public/system',
+          'assets' => 'public/assets',
+          'cache' => 'tmp/cache',
+          'pids' => 'tmp/pids',
+          'log' => 'log',
+          'test' => 'public/test'
+        },
+        'create_dirs_before_symlink' => %w(tmp public config ../../shared/cache ../../shared/assets ../shared/test),
+        'purge_before_symlink' => %w(log tmp/cache tmp/pids public/system public/assets public/test)
       )
 
       expect(chef_run).to run_execute('stop unicorn')
