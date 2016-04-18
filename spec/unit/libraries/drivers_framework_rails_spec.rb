@@ -12,6 +12,8 @@ describe Drivers::Framework::Rails do
 
   it 'returns proper out data' do
     expect(described_class.new(aws_opsworks_app, node).out).to eq(
+      assets_precompile: true,
+      assets_precompilation_command: 'bundle exec rake assets:precompile',
       deploy_environment: { 'RAILS_ENV' => 'production' },
       migration_command: 'rake db:migrate',
       migrate: false

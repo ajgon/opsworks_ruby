@@ -7,7 +7,7 @@ server {
   server_name <%= @application[:domains].join(" ") %> <%= node['hostname'] %>;
   access_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>.access.log;
 
-  root <%= File.join(@deploy_dir, 'public') %>;
+  root <%= File.join(@deploy_dir, 'current', 'public') %>;
 
   client_max_body_size <%= @out[:client_max_body_size] || '1m' %>;
   client_body_timeout <%= @out[:client_body_timeout] || '12' %>;
@@ -17,6 +17,15 @@ server {
 
   location / {
     try_files $uri/index.html $uri/index.htm @unicorn;
+  }
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+    add_header Access-Control-Allow-Origin "$http_origin";
+    add_header Access-Control-Allow-Methods 'GET, PUT, POST, DELETE';
+    add_header Access-Control-Expose-Headers ETag;
   }
 
   location @unicorn {
@@ -84,7 +93,7 @@ server {
   ssl_dhparam /etc/nginx/ssl/<%= @application[:domains].first %>.dhparams.pem;
   <% end -%>
 
-  root <%= File.join(@deploy_dir, 'public') %>;
+  root <%= File.join(@deploy_dir, 'current', 'public') %>;
 
   client_max_body_size <%= @out[:client_max_body_size] || '1m' %>;
   client_body_timeout <%= @out[:client_body_timeout] || '12' %>;
@@ -94,6 +103,15 @@ server {
 
   location / {
     try_files $uri/index.html $uri/index.htm @unicorn;
+  }
+
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+    add_header Access-Control-Allow-Origin "$http_origin";
+    add_header Access-Control-Allow-Methods 'GET, PUT, POST, DELETE';
+    add_header Access-Control-Expose-Headers ETag;
   }
 
   location @unicorn {

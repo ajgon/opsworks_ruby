@@ -32,10 +32,10 @@ every_enabled_application do |application, _deploy|
     action :rollback
   end
 
-  webserver.after_undeploy(self)
-  appserver.after_undeploy(self)
-  framework.after_undeploy(self)
   scm.after_undeploy(self)
+  framework.after_undeploy(self)
+  appserver.after_undeploy(self)
+  webserver.after_undeploy(self)
 
   every_enabled_rds do |rds|
     database = Drivers::Db::Factory.build(application, node, rds: rds)

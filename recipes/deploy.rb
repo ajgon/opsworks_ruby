@@ -66,10 +66,10 @@ every_enabled_application do |application, deploy|
     end
   end
 
-  webserver.after_deploy(self)
-  appserver.after_deploy(self)
-  framework.after_deploy(self)
   scm.after_deploy(self)
+  framework.after_deploy(self)
+  appserver.after_deploy(self)
+  webserver.after_deploy(self)
 
   every_enabled_rds do |rds|
     database = Drivers::Db::Factory.build(application, node, rds: rds)

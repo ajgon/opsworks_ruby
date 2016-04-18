@@ -103,6 +103,11 @@ Currently only `Rails` is supported.
   * A command which will be invoked to perform migration. This cookbook comes
     with predefined migration commands, well suited for the task, and usually
     you don't have to change this parameter.
+* `app['framework']['assets_precompile']`
+  * **Supported values:** `true`, `false`
+  * **Default:** `true`
+* `app['framework']['assets_precompilation_command']`
+  * A command which will be invoked to precompile assets.
 
 ### appserver
 

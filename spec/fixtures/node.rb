@@ -56,7 +56,9 @@ def node(override = {})
       },
       framework: {
         adapter: 'rails',
-        migration_command: 'rake db:migrate'
+        migration_command: 'rake db:migrate',
+        assets_precompile: true,
+        assets_precompilation_command: 'bundle exec rake assets:precompile'
       }
     }
   }.merge(override)
