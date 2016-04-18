@@ -146,7 +146,8 @@ Currently only nginx is supported.
   * **Default:** `default`
   * The way the [nginx](https://supermarket.chef.io/cookbooks/nginx) cookbooks
     handles `nginx` installation. Check out [the corresponding docs](https://github.com/miketheman/nginx/tree/2.7.x#recipes)
-    for more details.
+    for more details. Never use `node['nginx']['install_method']`, as it will
+    be always overwritten by this attribute.
 * [`app['webserver']['client_body_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_timeout)
   * **Default:** `12`
 * [`app['webserver']['client_header_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_header_timeout)
