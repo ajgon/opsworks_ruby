@@ -15,6 +15,7 @@ module Drivers
         node.default['nginx']['install_method'] = out[:build_type].to_s == 'source' ? 'source' : 'package'
         recipe = out[:build_type].to_s == 'source' ? 'source' : 'default'
         context.include_recipe("nginx::#{recipe}")
+        define_service(context, :start)
       end
 
       def configure(context)
@@ -29,13 +30,18 @@ module Drivers
       end
 
       def before_deploy(context)
-        context.service 'nginx' do
-          supports status: true, restart: true, reload: true
-        end
+        define_service(context)
       end
       alias before_undeploy before_deploy
 
       private
+
+      def define_service(context, default_action = :nothing)
+        context.service 'nginx' do
+          supports status: true, restart: true, reload: true
+          action default_action
+        end
+      end
 
       def add_ssl_directory(context)
         context.directory '/etc/nginx/ssl' do

@@ -79,5 +79,9 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run).to install_package('git')
       expect(chef_run).to install_package('libpq-dev')
     end
+
+    it 'defines service which starts nginx' do
+      expect(chef_run).to start_service('nginx')
+    end
   end
 end
