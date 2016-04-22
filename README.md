@@ -32,7 +32,7 @@ be added soon. However, other Debian family distributions are assumed to work.
 
 Attributes format follows the guidelines of old Chef 11.x based OpsWorks stack.
 So all of them, need to be placed under `node['deploy'][<application_shortname>]`.
-Attributes (and whole logic of this cookbook) are divided to five sections.
+Attributes (and whole logic of this cookbook) are divided to six sections.
 Following convention is used: `app == node['deploy'][<application_shortname>]`
 so for example `app['framework']['adapter']` actually means
 `node['deploy'][<application_shortname>]['framework']['adapter']`.
@@ -120,6 +120,11 @@ Currently only `Rails` is supported.
 Configuration parameters for the ruby application server. Currently only
 `Unicorn` is supported.
 
+* `app['appserver']['adapter']`
+  * **Default:** `unicorn`
+  * **Supported values:** `unicorn`
+  * Server on the application side, which will receive requests from webserver
+    in front.
 * [`app['appserver']['accept_filter']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
   * **Default:** `httpready`
 * [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
@@ -142,11 +147,37 @@ Configuration parameters for the ruby application server. Currently only
 * [`app['appserver']['worker_processes']`](https://unicorn.bogomips.org/TUNING.html)
   * **Default:** `4`
 
+### worker
+
+Configuration for ruby workers. Currenty `Null` (no worker) and `Sidekiq`
+are supported. Every worker is covered by `monitd` daemon out-of-the-box.
+
+* `app['worker']['adapter']`
+  * **Default:** `null`
+  * **Supported values:** `null`, `sidekiq`
+  * Worker used to perform background tasks. `null` means no worker enabled.
+* `app['worker']['process_count']`
+  * ** Default:** `2`
+  * How many separate worker processes will be launched.
+* `app['worker']['syslog']`
+  * **Default:** `true`
+  * **Supported values:** `true`, `false`
+  * Log worker output to syslog?
+* `app['worker']['config']`
+  * Configuration parameters which will be directly passed to the worker.
+    For example, for `sidekiq` they will be serialized to
+    [`sidekiq.yml` config file](https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file).
+
 ### webserver
 
 Webserver configuration. Proxy passing to application is handled out-of-the-box.
 Currently only nginx is supported.
 
+* `app['webserver']['adapter']`
+  * **Default:** `nginx`
+  * **Supported values:** `nginx`
+  * Webserver in front of the instance. It runs on port 80,
+    and receives all requests from Load Balancer/Internet.
 * `app['webserver']['build_type']`
   * **Supported values:** `default` or `source`
   * **Default:** `default`

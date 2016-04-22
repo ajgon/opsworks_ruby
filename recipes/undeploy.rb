@@ -11,11 +11,13 @@ every_enabled_application do |application, _deploy|
   scm = Drivers::Scm::Factory.build(application, node)
   framework = Drivers::Framework::Factory.build(application, node)
   appserver = Drivers::Appserver::Factory.build(application, node)
+  worker = Drivers::Worker::Factory.build(application, node)
   webserver = Drivers::Webserver::Factory.build(application, node)
 
   scm.before_undeploy(self)
   framework.before_undeploy(self)
   appserver.before_undeploy(self)
+  worker.before_undeploy(self)
   webserver.before_undeploy(self)
 
   deploy application['shortname'] do
@@ -37,6 +39,7 @@ every_enabled_application do |application, _deploy|
   scm.after_undeploy(self)
   framework.after_undeploy(self)
   appserver.after_undeploy(self)
+  worker.after_undeploy(self)
   webserver.after_undeploy(self)
 
   every_enabled_rds do |rds|

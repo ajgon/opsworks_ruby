@@ -24,7 +24,7 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to include_recipe('opsworks_ruby::configure')
   end
 
-  context 'Postgresql + Git + Unicorn + Nginx' do
+  context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
     it 'creates git wrapper script' do
       expect(chef_run).to create_template('/tmp/ssh-git-wrapper.sh')
     end
@@ -56,7 +56,8 @@ describe 'opsworks_ruby::deploy' do
         'purge_before_symlink' => %w(log tmp/cache tmp/pids public/system public/assets public/test)
       )
 
-      expect(chef_run).to run_execute('restart unicorn')
+      expect(chef_run).to run_execute('stop unicorn')
+      expect(chef_run).to run_execute('start unicorn')
       expect(chef_run).to run_execute('assets:precompile').with(
         command: 'bundle exec rake assets:precompile',
         environment: { 'RAILS_ENV' => 'production' },
@@ -64,6 +65,12 @@ describe 'opsworks_ruby::deploy' do
       )
       expect(deploy).to notify('service[nginx]').to(:reload).delayed
       expect(service).to do_nothing
+    end
+
+    it 'restarts sidekiqs via monit' do
+      expect(chef_run).to run_execute('monit reload')
+      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-1")
+      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-2")
     end
   end
 

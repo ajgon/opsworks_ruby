@@ -16,7 +16,9 @@ module Drivers
       end
 
       def handle_output(out)
-        out = out.select { |k, _v| output[:filter].include?(k.to_sym) } if output[:filter].present?
+        if output[:filter] && output[:filter].is_a?(Array)
+          out = out.select { |k, _v| output[:filter].include?(k.to_sym) }
+        end
         out
       end
     end

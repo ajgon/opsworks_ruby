@@ -20,16 +20,23 @@ describe 'opsworks_ruby::undeploy' do
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
   end
 
-  context 'Postgresql + Git + Unicorn + Nginx' do
+  context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
     it 'performs a rollback' do
       undeploy = chef_run.deploy(aws_opsworks_app['shortname'])
       service = chef_run.service('nginx')
 
       expect(chef_run).to rollback_deploy('dummy_project')
-      expect(chef_run).to run_execute('restart unicorn')
+      expect(chef_run).to run_execute('stop unicorn')
+      expect(chef_run).to run_execute('start unicorn')
 
       expect(undeploy).to notify('service[nginx]').to(:reload).delayed
       expect(service).to do_nothing
+    end
+
+    it 'restarts sidekiqs via monit' do
+      expect(chef_run).to run_execute('monit reload')
+      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-1")
+      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-2")
     end
   end
 

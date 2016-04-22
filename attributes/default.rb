@@ -69,3 +69,14 @@ default['defaults']['framework']['migration_command'] =
   'bundle exec rake db:version > /dev/null 2>&1 && bundle exec rake db:migrate || bundle exec rake db:setup'
 default['defaults']['framework']['assets_precompile'] = true
 default['defaults']['framework']['assets_precompilation_command'] = 'bundle exec rake assets:precompile'
+
+# worker
+## common
+
+default['defaults']['worker']['adapter'] = 'null'
+default['defaults']['worker']['process_count'] = 2
+default['defaults']['worker']['syslog'] = true
+
+## sidekiq
+
+default['defaults']['worker']['config'] = { 'concurency' => 5, 'verbose' => false, 'queues' => ['default'] }

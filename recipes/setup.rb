@@ -27,6 +27,8 @@ every_enabled_application do |application, _deploy|
   framework.setup(self)
   appserver = Drivers::Appserver::Factory.build(application, node)
   appserver.setup(self)
+  worker = Drivers::Worker::Factory.build(application, node)
+  worker.setup(self)
   webserver = Drivers::Webserver::Factory.build(application, node)
   webserver.setup(self)
 end

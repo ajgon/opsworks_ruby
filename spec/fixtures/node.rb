@@ -43,6 +43,10 @@ def node(override = {})
           adapter: 'rails',
           migrate: false
         },
+        worker: {
+          adapter: 'sidekiq',
+          require: 'lorem_ipsum.rb'
+        },
         create_dirs_before_symlink: %(../shared/test),
         purge_before_symlink: %w(public/test),
         symlinks: { 'test' => 'public/test' }
@@ -73,6 +77,12 @@ def node(override = {})
         migration_command: 'rake db:migrate',
         assets_precompile: true,
         assets_precompilation_command: 'bundle exec rake assets:precompile'
+      },
+      worker: {
+        adapter: 'null',
+        process_count: 2,
+        syslog: true,
+        config: { 'concurency' => 5, 'verbose' => false, 'queues' => ['default'] }
       }
     }
   }.merge(override)

@@ -1,0 +1,14 @@
+<% ([@out[:process_count].to_i || 1].max).times do |n| %>
+  <% identifier = "#{@application}-#{n+1}" %>
+  <% conf_file = "#{@deploy_to}/shared/config/sidekiq_#{n+1}.yml" %>
+  <% pid_file = "#{@deploy_to}/shared/pids/sidekiq_#{identifier}.pid" %>
+  <% syslog = !!@out[:syslog] ? "2>&1 | logger -t sidekiq-#{identifier}" : '' %>
+  <% to_require = @out[:require].present? ? " -r #{File.join(@deploy_to, 'current', @out[:require])}" : '' %>
+
+check process sidekiq_<%= identifier.to_s %>
+  with pidfile <%= pid_file.to_s %>
+start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %> bundle exec sidekiq -C <%= conf_file.to_s %> -P <%= pid_file.to_s %><%= to_require.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
+  stop  program = "/bin/su - <%= node['deployer']['user'] %> -c 'kill -s TERM `cat <%= pid_file.to_s %>`'" with timeout 90 seconds
+  group sidekiq_<%= @application.to_s %>_group
+
+<% end %>

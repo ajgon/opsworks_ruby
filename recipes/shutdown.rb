@@ -18,6 +18,8 @@ every_enabled_application do |application, _deploy|
   framework.shutdown(self)
   appserver = Drivers::Appserver::Factory.build(application, node)
   appserver.shutdown(self)
+  worker = Drivers::Worker::Factory.build(application, node)
+  worker.shutdown(self)
   webserver = Drivers::Webserver::Factory.build(application, node)
   webserver.shutdown(self)
 end
