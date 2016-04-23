@@ -48,6 +48,7 @@ describe 'opsworks_ruby::configure' do
   context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
     it 'creates proper database.yml template' do
       db_config = Drivers::Db::Postgresql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance).out
+      expect(db_config[:adapter]).to eq 'postgresql'
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
           JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
@@ -215,6 +216,21 @@ describe 'opsworks_ruby::configure' do
     expect(chef_run)
       .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
       .with_content('group sidekiq_dummy_project_group')
+  end
+
+  context 'Mysql' do
+    before do
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
+    end
+
+    it 'creates proper database.yml template' do
+      db_config = Drivers::Db::Mysql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance(engine: 'mysql')).out
+      expect(db_config[:adapter]).to eq 'mysql2'
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
+          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+        )
+    end
   end
 
   it 'empty node[\'deploy\']' do

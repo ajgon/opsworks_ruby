@@ -1,7 +1,9 @@
 # opsworks_ruby Cookbook
 
+[![Chef cookbook](https://img.shields.io/cookbook/v/opsworks_ruby.svg)](https://supermarket.chef.io/cookbooks/opsworks_ruby)
 [![Build Status](https://travis-ci.org/ajgon/opsworks_ruby.svg?branch=master)](https://travis-ci.org/ajgon/opsworks_ruby)
 [![Coverage Status](https://coveralls.io/repos/github/ajgon/opsworks_ruby/badge.svg?branch=master)](https://coveralls.io/github/ajgon/opsworks_ruby?branch=master)
+[![license](https://img.shields.io/github/license/ajgon/opsworks_ruby.svg?maxAge=2592000)](https://opsworks-ruby.mit-license.org/)
 
 A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon OpsWorks.
 
@@ -11,8 +13,22 @@ This cookbook is design to "just work". So in base case scenario, all you have
 to do is create a layer and application with assigned RDS data source, then
 [add recipes to the corresponding OpsWorks actions](#recipes).
 
-**Currently only PostgreSQL database, GIT SCM, Rails framework, Unicorn
-appserver and nginx webserver are supported.** New drivers will be added soon.
+## Support
+
+* Database
+  * MySQL
+  * PostgreSQL
+* SCM
+  * git
+* Framework
+  * Ruby on Rails
+* App server
+  * Unicorn
+* Web server
+  * nginx
+* Worker
+  * Null (no worker)
+  * sidekiq
 
 ## Requirements
 
@@ -51,10 +67,9 @@ you don't need to use them. The chef will do all the job, and determine them
 for you.
 
 * `app['database']['adapter']`
-  * **Supported values:** `postgresql`
+  * **Supported values:** `postgresql`, `mysql`
   * **Default:** `postgresql`
-  * ActiveRecord adapter which will be used for database connection. Currently
-    only PostgreSQL is supported.
+  * ActiveRecord adapter which will be used for database connection.
 * `app['database']['username']`
   * Username used to authenticate to the DB
 * `app['database']['password']`
@@ -147,27 +162,6 @@ Configuration parameters for the ruby application server. Currently only
 * [`app['appserver']['worker_processes']`](https://unicorn.bogomips.org/TUNING.html)
   * **Default:** `4`
 
-### worker
-
-Configuration for ruby workers. Currenty `Null` (no worker) and `Sidekiq`
-are supported. Every worker is covered by `monitd` daemon out-of-the-box.
-
-* `app['worker']['adapter']`
-  * **Default:** `null`
-  * **Supported values:** `null`, `sidekiq`
-  * Worker used to perform background tasks. `null` means no worker enabled.
-* `app['worker']['process_count']`
-  * ** Default:** `2`
-  * How many separate worker processes will be launched.
-* `app['worker']['syslog']`
-  * **Default:** `true`
-  * **Supported values:** `true`, `false`
-  * Log worker output to syslog?
-* `app['worker']['config']`
-  * Configuration parameters which will be directly passed to the worker.
-    For example, for `sidekiq` they will be serialized to
-    [`sidekiq.yml` config file](https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file).
-
 ### webserver
 
 Webserver configuration. Proxy passing to application is handled out-of-the-box.
@@ -215,6 +209,27 @@ Currently only nginx is supported.
     well. If your application needs a support for those browsers, set this
     parameter to `true`.
 
+### worker
+
+Configuration for ruby workers. Currenty `Null` (no worker) and `Sidekiq`
+are supported. Every worker is covered by `monitd` daemon out-of-the-box.
+
+* `app['worker']['adapter']`
+  * **Default:** `null`
+  * **Supported values:** `null`, `sidekiq`
+  * Worker used to perform background tasks. `null` means no worker enabled.
+* `app['worker']['process_count']`
+  * ** Default:** `2`
+  * How many separate worker processes will be launched.
+* `app['worker']['syslog']`
+  * **Default:** `true`
+  * **Supported values:** `true`, `false`
+  * Log worker output to syslog?
+* `app['worker']['config']`
+  * Configuration parameters which will be directly passed to the worker.
+    For example, for `sidekiq` they will be serialized to
+    [`sidekiq.yml` config file](https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file).
+
 Since this driver is basically a wrapper for [nginx cookbook](https://github.com/miketheman/nginx/tree/2.7.x),
 you can also configure [`node['nginx']` attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
 as well (notice that `node['deploy'][<application_shortname>]` logic doesn't
@@ -239,4 +254,5 @@ for details.
 ## Author and License
 
 Author: Igor Rzegocki <[igor@rzegocki.pl](mailto:igor@rzegocki.pl)>
+
 License: [MIT](http://opsworks-ruby.mit-license.org/)

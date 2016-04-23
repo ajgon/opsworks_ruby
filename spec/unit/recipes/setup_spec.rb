@@ -85,6 +85,16 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
+  context 'Mysql' do
+    before do
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
+    end
+
+    it 'installs required packages' do
+      expect(chef_run).to install_package('libmysqlclient-dev')
+    end
+  end
+
   it 'empty node[\'deploy\']' do
     chef_run = ChefSpec::SoloRunner.new do |solo_node|
       solo_node.set['lsb'] = node['lsb']
