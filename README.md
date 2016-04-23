@@ -9,7 +9,7 @@ A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon Op
 
 ## Quick Start
 
-This cookbook is design to "just work". So in base case scenario, all you have
+This cookbook is designed to "just work". So in base case scenario, all you have
 to do is create a layer and application with assigned RDS data source, then
 [add recipes to the corresponding OpsWorks actions](#recipes).
 
@@ -41,8 +41,15 @@ to do is create a layer and application with assigned RDS data source, then
 
 ### Platform
 
-Currenty this cookbook was tested only under Ubuntu 14.04, more platforms will
-be added soon. However, other Debian family distributions are assumed to work.
+This cookbook was tested on the following OpsWorks platforms:
+
+* Amazon Linux 2016.03
+* Amazon Linux 2015.09
+* Amazon Linux 2015.03
+* Ubuntu 14.04 LTS
+* Ubuntu 12.04 LTS
+
+In addition, all recent Debian family distrubutions are assumed to work.
 
 ## Attributes
 

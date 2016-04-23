@@ -66,9 +66,10 @@ default['defaults']['framework']['adapter'] = 'rails'
 
 default['defaults']['framework']['migrate'] = true
 default['defaults']['framework']['migration_command'] =
-  'bundle exec rake db:version > /dev/null 2>&1 && bundle exec rake db:migrate || bundle exec rake db:setup'
+  '/usr/local/bin/bundle exec rake db:version > /dev/null 2>&1 ' \
+  '&& /usr/local/bin/bundle exec rake db:migrate || /usr/local/bin/bundle exec rake db:setup'
 default['defaults']['framework']['assets_precompile'] = true
-default['defaults']['framework']['assets_precompilation_command'] = 'bundle exec rake assets:precompile'
+default['defaults']['framework']['assets_precompilation_command'] = '/usr/local/bin/bundle exec rake assets:precompile'
 
 # worker
 ## common

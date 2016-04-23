@@ -9,7 +9,7 @@ require 'spec_helper'
 
 describe 'opsworks_ruby::deploy' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new do |solo_node|
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       deploy = node['deploy']
       deploy['dummy_project']['scm'].delete('ssh_wrapper')
       solo_node.set['deploy'] = deploy
@@ -59,7 +59,7 @@ describe 'opsworks_ruby::deploy' do
       expect(chef_run).to run_execute('stop unicorn')
       expect(chef_run).to run_execute('start unicorn')
       expect(chef_run).to run_execute('assets:precompile').with(
-        command: 'bundle exec rake assets:precompile',
+        command: '/usr/local/bin/bundle exec rake assets:precompile',
         environment: { 'RAILS_ENV' => 'production' },
         cwd: "/srv/www/#{aws_opsworks_app['shortname']}/current"
       )
@@ -75,7 +75,7 @@ describe 'opsworks_ruby::deploy' do
   end
 
   it 'empty node[\'deploy\']' do
-    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+    chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
     end.converge(described_recipe)
 
@@ -89,7 +89,7 @@ describe 'opsworks_ruby::deploy' do
                                                        aws_opsworks_app.merge(shortname: 'a1'),
                                                        aws_opsworks_app.merge(shortname: 'a2')
                                                      ])
-    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+    chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
       solo_node.set['deploy'] = { 'a1' => {}, 'a2' => {} }
       solo_node.set['applications'] = ['a1']

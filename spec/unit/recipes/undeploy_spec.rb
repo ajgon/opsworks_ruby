@@ -9,7 +9,7 @@ require 'spec_helper'
 
 describe 'opsworks_ruby::undeploy' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new do |solo_node|
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       deploy = node['deploy']
       deploy['dummy_project']['scm'].delete('ssh_wrapper')
       solo_node.set['deploy'] = deploy
@@ -41,7 +41,7 @@ describe 'opsworks_ruby::undeploy' do
   end
 
   it 'empty node[\'deploy\']' do
-    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+    chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
     end.converge(described_recipe)
 

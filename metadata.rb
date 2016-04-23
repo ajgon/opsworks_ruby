@@ -13,5 +13,8 @@ depends 'ruby-ng'
 depends 'nginx', '~> 2.7'
 depends 'application_ruby'
 
+supports 'amazon', '>= 2015.03'
+supports 'ubuntu', '>= 12.04'
+
 source_url 'https://github.com/ajgon/opsworks_ruby'
 issues_url 'https://github.com/ajgon/opsworks_ruby/issues'

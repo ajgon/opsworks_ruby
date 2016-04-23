@@ -3,6 +3,11 @@ module Drivers
   module Framework
     class Base < Drivers::Base
       include Drivers::Dsl::Output
+      include Drivers::Dsl::Packages
+
+      def setup(context)
+        handle_packages(context)
+      end
 
       def out
         handle_output(raw_out)

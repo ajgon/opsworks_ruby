@@ -9,7 +9,7 @@ require 'spec_helper'
 
 describe 'opsworks_ruby::configure' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new do |solo_node|
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['deploy'] = node['deploy']
       solo_node.set['nginx'] = node['nginx']
     end.converge(described_recipe)
@@ -121,7 +121,7 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'enables ssl rules for legacy browsers in nginx config' do
-      chef_run = ChefSpec::SoloRunner.new do |solo_node|
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy[aws_opsworks_app['shortname']]['webserver']['ssl_for_legacy_browsers'] = true
         solo_node.set['deploy'] = deploy
@@ -234,7 +234,7 @@ describe 'opsworks_ruby::configure' do
   end
 
   it 'empty node[\'deploy\']' do
-    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+    chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
     end.converge(described_recipe)
 

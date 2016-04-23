@@ -9,7 +9,7 @@ require 'spec_helper'
 
 describe 'opsworks_ruby::shutdown' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new do |solo_node|
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['deploy'] = node['deploy']
     end.converge(described_recipe)
   end
@@ -25,7 +25,7 @@ describe 'opsworks_ruby::shutdown' do
   end
 
   it 'empty node[\'deploy\']' do
-    chef_run = ChefSpec::SoloRunner.new do |solo_node|
+    chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
     end.converge(described_recipe)
 

@@ -5,8 +5,11 @@ module Drivers
       def self.included(klass)
         klass.instance_eval do
           def packages(*to_support)
-            @packages = to_support.map(&:to_s) if to_support.present?
-            @packages || []
+            @packages ||= []
+            (to_support || []).each do |pkg|
+              @packages.push((pkg.is_a?(Hash) ? pkg : { all: pkg.to_s }).stringify_keys)
+            end
+            @packages.uniq
           end
         end
       end
@@ -17,7 +20,7 @@ module Drivers
 
       def handle_packages(context)
         packages.each do |pkg|
-          context.package pkg do
+          context.package(pkg.key?('all') ? pkg['all'] : pkg[node['platform_family']] || pkg[node['platform']]) do
             action :install
           end
         end

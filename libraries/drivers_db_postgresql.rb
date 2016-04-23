@@ -4,7 +4,7 @@ module Drivers
     class Postgresql < Base
       adapter :postgresql
       allowed_engines :postgres, :postgresql
-      packages 'libpq-dev'
+      packages debian: 'libpq-dev', rhel: 'postgresql94-devel'
     end
   end
 end
