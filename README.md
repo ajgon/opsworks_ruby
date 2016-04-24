@@ -16,6 +16,7 @@ to do is create a layer and application with assigned RDS data source, then
 ## Support
 
 * Database
+  * MariaDB
   * MySQL
   * PostgreSQL
 * SCM
@@ -74,7 +75,7 @@ you don't need to use them. The chef will do all the job, and determine them
 for you.
 
 * `app['database']['adapter']`
-  * **Supported values:** `postgresql`, `mysql`
+  * **Supported values:** `mariadb`, `mysql`, `postgresql`
   * **Default:** `postgresql`
   * ActiveRecord adapter which will be used for database connection.
 * `app['database']['username']`
