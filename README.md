@@ -36,6 +36,7 @@ to do is create a layer and application with assigned RDS data source, then
 
 ### Cookbooks
 
+* [build-essential (~> 2.0)](https://supermarket.chef.io/cookbooks/build-essential/versions/2.4.0)
 * [deployer](https://supermarket.chef.io/cookbooks/deployer)
 * [ruby-ng](https://supermarket.chef.io/cookbooks/ruby-ng)
 * [nginx (~> 2.7)](https://supermarket.chef.io/cookbooks/nginx)
