@@ -163,6 +163,20 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
+  context 'Sqlite' do
+    before do
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
+    end
+
+    it 'installs required packages for debian' do
+      expect(chef_run).to install_package('libsqlite3-dev')
+    end
+
+    it 'installs required packages for rhel' do
+      expect(chef_run_rhel).to install_package('sqlite-devel')
+    end
+  end
+
   it 'empty node[\'deploy\']' do
     chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']

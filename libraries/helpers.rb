@@ -44,8 +44,12 @@ def every_enabled_application
 end
 
 def every_enabled_rds
-  rdses.each do |rds|
-    yield rds
+  if rdses.blank?
+    yield('engine' => 'sqlite')
+  else
+    rdses.each do |rds|
+      yield rds
+    end
   end
 end
 

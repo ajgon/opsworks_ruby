@@ -3,6 +3,7 @@ module Drivers
   module Db
     class Base < Drivers::Base
       include Drivers::Dsl::Defaults
+      include Drivers::Dsl::Output
       include Drivers::Dsl::Packages
 
       defaults encoding: 'utf8', host: 'localhost', reconnect: true
@@ -39,7 +40,7 @@ module Drivers
 
         out_defaults.merge(
           adapter: adapter, username: options[:rds]['db_user'], password: options[:rds]['db_password'],
-          host: options[:rds]['address'], database: app['data_sources'].first['database_name']
+          host: options[:rds]['address'], database: app['data_sources'].first.try(:[], 'database_name')
         )
       end
       # rubocop:enable Metrics/AbcSize

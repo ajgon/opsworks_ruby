@@ -233,6 +233,34 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
+  context 'Sqlite3' do
+    let(:dummy_node) do
+      node(deploy: { dummy_project: { database: { adapter: 'sqlite3' } } })
+    end
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = dummy_node['deploy']
+      end.converge(described_recipe)
+    end
+
+    before do
+      stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(data_sources: [])])
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
+    end
+
+    it 'creates proper database.yml template' do
+      db_config = Drivers::Db::Sqlite.new(
+        aws_opsworks_app(data_sources: []), dummy_node, rds: aws_opsworks_rds_db_instance(engine: 'sqlite3')
+      ).out
+      expect(db_config[:adapter]).to eq 'sqlite3'
+      expect(db_config[:database]).to eq 'db/data.sqlite3'
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
+          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+        )
+    end
+  end
+
   it 'empty node[\'deploy\']' do
     chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
