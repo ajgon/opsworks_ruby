@@ -60,7 +60,7 @@ module Drivers
       end
 
       def configuration
-        JSON.parse(out[:config].stringify_keys.to_json)
+        JSON.parse(out[:config].to_json, symbolize_names: true)
       end
     end
   end

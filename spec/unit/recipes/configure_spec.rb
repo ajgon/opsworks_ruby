@@ -159,10 +159,10 @@ describe 'opsworks_ruby::configure' do
     it 'creates sidekiq.conf.yml' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/sidekiq_1.yml")
-        .with_content("---\nconcurency: 5\nverbose: false\nqueues:\n- default")
+        .with_content("---\n:concurrency: 5\n:verbose: false\n:queues:\n- default")
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/sidekiq_2.yml")
-        .with_content("---\nconcurency: 5\nverbose: false\nqueues:\n- default")
+        .with_content("---\n:concurrency: 5\n:verbose: false\n:queues:\n- default")
     end
 
     it 'creates sidekiq.monitrc conf' do

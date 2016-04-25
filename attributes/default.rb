@@ -85,4 +85,4 @@ default['defaults']['worker']['syslog'] = true
 
 ## sidekiq
 
-default['defaults']['worker']['config'] = { 'concurency' => 5, 'verbose' => false, 'queues' => ['default'] }
+default['defaults']['worker']['config'] = { 'concurrency' => 5, 'verbose' => false, 'queues' => ['default'] }
