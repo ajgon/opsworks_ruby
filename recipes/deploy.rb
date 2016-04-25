@@ -27,7 +27,7 @@ every_enabled_application do |application, deploy|
     user node['deployer']['user'] || 'root'
     group www_group
     rollback_on_error true
-    environment framework.out[:deploy_environment]
+    environment application['environment'].merge(framework.out[:deploy_environment])
 
     keep_releases deploy[:keep_releases]
     create_dirs_before_symlink(
