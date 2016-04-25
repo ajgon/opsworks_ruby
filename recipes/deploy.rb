@@ -40,7 +40,7 @@ every_enabled_application do |application, deploy|
     symlinks(node['defaults']['deploy']['symlinks'].merge(deploy[:symlinks] || {}))
 
     scm.out.each do |scm_key, scm_value|
-      send(scm_key, scm_value)
+      send(scm_key, scm_value) if respond_to?(scm_key)
     end
 
     [appserver, webserver].each do |server|
@@ -69,7 +69,7 @@ every_enabled_application do |application, deploy|
       directory File.join(release_path, '.git') do
         recursive true
         action :delete
-      end
+      end if scm.out[:remove_scm_files]
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_restart.rb'))
     end

@@ -64,6 +64,9 @@ def node(override = {})
         create_dirs_before_symlink: %w(tmp public config ../../shared/cache ../../shared/assets),
         purge_before_symlink: %w(log tmp/cache tmp/pids public/system public/assets)
       },
+      scm: {
+        remove_scm_files: true
+      },
       appserver: {
         adapter: 'unicorn',
         worker_processes: 8

@@ -101,6 +101,10 @@ you don't need to provide them here. Currently only `git` is supported.
   * **Supported values:** `git`
   * **Default:** `git`
   * SCM used by the cookbook to clone the repo.
+* `app['scm']['remove_scm_files']`
+  * **Supported values:** `true`, `false`
+  * **Default:** `true`
+  * If set to true, all SCM leftovers (like `.git`) will be removed.
 * `app['scm']['repository']`
   * Repository URL
 * `app['scm']['revision']`

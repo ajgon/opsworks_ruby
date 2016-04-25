@@ -21,6 +21,11 @@ default['nginx']['source']['modules'] = %w(
   nginx::http_stub_status_module
 )
 
+# scm
+## common
+
+default['defaults']['scm']['remove_scm_files'] = true
+
 # appserver
 ## common
 

@@ -26,7 +26,8 @@ module Drivers
       end
 
       def out_defaults
-        base = JSON.parse((node['deploy'][app['shortname']]['scm'] || {}).to_json, symbolize_names: true)
+        base = node['defaults']['scm'].to_h.symbolize_keys
+        base = base.merge(JSON.parse((node['deploy'][app['shortname']]['scm'] || {}).to_json, symbolize_names: true))
         defaults.merge(base).merge(scm_provider: adapter.constantize)
       end
 

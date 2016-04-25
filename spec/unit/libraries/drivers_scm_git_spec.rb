@@ -91,7 +91,8 @@ describe Drivers::Scm::Git do
         revision: 'master',
         repository: 'git@git.example.com:repo/project.git',
         enable_submodules: false,
-        ssh_wrapper: 'ssh-wrap'
+        ssh_wrapper: 'ssh-wrap',
+        remove_scm_files: true
       )
     end
 

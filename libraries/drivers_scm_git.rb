@@ -5,7 +5,7 @@ module Drivers
       adapter Chef::Provider::Git
       allowed_engines :git
       packages :git
-      output filter: [:scm_provider, :repository, :revision, :enable_submodules, :ssh_wrapper]
+      output filter: [:scm_provider, :repository, :revision, :enable_submodules, :ssh_wrapper, :remove_scm_files]
       defaults enable_submodules: true, ssh_wrapper: '/tmp/ssh-git-wrapper.sh'
 
       def before_deploy(context)
