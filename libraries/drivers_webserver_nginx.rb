@@ -11,6 +11,12 @@ module Drivers
       notifies :deploy, action: :reload, resource: 'service[nginx]', timer: :delayed
       notifies :undeploy, action: :reload, resource: 'service[nginx]', timer: :delayed
 
+      def raw_out
+        node['defaults']['webserver'].merge(node['nginx']).merge(
+          node['deploy'][app['shortname']]['webserver'] || {}
+        ).symbolize_keys
+      end
+
       def setup(context)
         node.default['nginx']['install_method'] = out[:build_type].to_s == 'source' ? 'source' : 'package'
         recipe = out[:build_type].to_s == 'source' ? 'source' : 'default'

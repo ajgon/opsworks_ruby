@@ -6,7 +6,8 @@ def node(override = {})
       codename: 'trusty'
     },
     nginx: {
-      version: '1.4.6'
+      version: '1.4.6',
+      client_body_timeout: '30'
     },
     deploy: {
       dummy_project: {

@@ -13,6 +13,7 @@ describe Drivers::Webserver::Nginx do
   it 'returns proper out data' do
     expect(described_class.new(aws_opsworks_app, node).out).to eq(
       client_max_body_size: '125m',
+      client_body_timeout: '30',
       dhparams: '--- DH PARAMS ---',
       keepalive_timeout: '15'
     )
