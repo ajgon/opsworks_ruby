@@ -16,14 +16,19 @@ module Drivers
       def after_deploy(context)
         output = out
         deploy_to = deploy_dir(app)
+        env = environment
 
         context.execute 'assets:precompile' do
           command output[:assets_precompilation_command]
           user node['deployer']['user']
           cwd File.join(deploy_to, 'current')
           group www_group
-          environment output[:deploy_environment]
+          environment env
         end if out[:assets_precompile]
+      end
+
+      def environment
+        app['environment'].merge(out[:deploy_environment])
       end
     end
   end
