@@ -15,7 +15,19 @@ describe Drivers::Webserver::Nginx do
       client_max_body_size: '125m',
       client_body_timeout: '30',
       dhparams: '--- DH PARAMS ---',
-      keepalive_timeout: '15'
+      keepalive_timeout: '15',
+      extra_config: 'extra_config {}',
+      extra_config_ssl: 'extra_config_ssl {}'
+    )
+  end
+
+  it 'copies extra_config to extra_config_ssl if extra_config_ssl is set to true' do
+    expect(described_class.new(aws_opsworks_app, node(defaults: { webserver: { extra_config_ssl: true } })).out).to eq(
+      client_max_body_size: '125m',
+      client_body_timeout: '30',
+      dhparams: '--- DH PARAMS ---',
+      extra_config: 'extra_config {}',
+      extra_config_ssl: 'extra_config {}'
     )
   end
 end

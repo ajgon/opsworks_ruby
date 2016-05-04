@@ -48,6 +48,8 @@ default['defaults']['appserver']['timeout'] = 60
 
 default['defaults']['webserver']['adapter'] = 'nginx'
 default['defaults']['webserver']['ssl_for_legacy_browsers'] = false
+default['defaults']['webserver']['extra_config'] = ''
+default['defaults']['webserver']['extra_config_ssl'] = ''
 
 ## nginx
 

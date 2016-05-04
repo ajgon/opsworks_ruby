@@ -38,7 +38,8 @@ def node(override = {})
         webserver: {
           adapter: 'nginx',
           client_max_body_size: '125m',
-          dhparams: '--- DH PARAMS ---'
+          dhparams: '--- DH PARAMS ---',
+          extra_config: 'extra_config {}'
         },
         framework: {
           adapter: 'rails',
@@ -74,7 +75,8 @@ def node(override = {})
       },
       webserver: {
         adapter: 'nginx',
-        keepalive_timeout: '15'
+        keepalive_timeout: '15',
+        extra_config_ssl: 'extra_config_ssl {}'
       },
       framework: {
         adapter: 'rails',

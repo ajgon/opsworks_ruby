@@ -120,6 +120,12 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
         .with_content('ssl_session_tickets off;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('extra_config {}')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('extra_config_ssl {}')
       expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
     end
 

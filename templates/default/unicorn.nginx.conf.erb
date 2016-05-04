@@ -51,6 +51,8 @@ server {
     deny all;
   }
 
+  <%= @out[:extra_config] %>
+
   error_page 500 502 503 504 /500.html;
   location = /500.html {
     root <%= File.join(@deploy_dir, 'public') %>;
@@ -130,6 +132,8 @@ server {
       break;
     }
   }
+
+  <%= @out[:extra_config_ssl] %>
 
   error_page 500 502 503 504 /500.html;
   location = /500.html {

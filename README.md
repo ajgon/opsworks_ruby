@@ -203,6 +203,12 @@ Currently only nginx is supported.
   * If you wish to use custom generated DH primes, instead of common ones
     (which is a very good practice), put the contents (not file name) of the
     `dhparams.pem` file into this attribute. [Read more here.](https://weakdh.org/sysadmin.html)
+* `app['webserver']['extra_config']`
+  * Raw nginx configuration, which will be inserted into `server` section of the
+    application for HTTP port.
+* `app['webserver']['extra_config_ssl']`
+  * Raw nginx configuration, which will be inserted into `server` section of the
+    application for HTTPS port. If set to `true`, the `extra_config` will be copied.
 * [`app['webserver']['keepalive_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#keepalive_timeout)
   * **Default**: `15`
 * `app['webserver']['log_dir']`
