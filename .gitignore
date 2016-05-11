@@ -12,5 +12,7 @@ coverage
 Gemfile.lock
 .bundle/*
 
+node_modules/
+
 .kitchen/
 .kitchen.local.yml

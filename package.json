@@ -1,0 +1,24 @@
+{
+  "name": "opsworks_ruby",
+  "version": "0.2.1",
+  "description": "Set of chef recipes for OpsWorks based Ruby projects.",
+  "dependencies": {},
+  "devDependencies": {
+    "cz-conventional-changelog": "^1.1.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajgon/opsworks_ruby.git"
+  },
+  "author": "Igor Rzegocki <igor@rzegocki.pl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajgon/opsworks_ruby/issues"
+  },
+  "homepage": "https://github.com/ajgon/opsworks_ruby#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
