@@ -55,7 +55,7 @@ server {
 
   error_page 500 502 503 504 /500.html;
   location = /500.html {
-    root <%= File.join(@deploy_dir, 'public') %>;
+    root <%= File.join(@deploy_dir, 'current', 'public') %>;
   }
 }
 
@@ -137,7 +137,7 @@ server {
 
   error_page 500 502 503 504 /500.html;
   location = /500.html {
-    root <%= File.join(@deploy_dir, 'public') %>;
+    root <%= File.join(@deploy_dir, 'current', 'public') %>;
   }
 }
 <% end %>
