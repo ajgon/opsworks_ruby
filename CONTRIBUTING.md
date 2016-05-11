@@ -26,11 +26,13 @@ We accept contributions via Pull Requests on [Github][1].
   request is meaningful. If you had to make multiple intermediate commits while
   developing, please squash them before submitting.
 
+- **Commit convention** - We follow [AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#)
+
 ## Running Tests
 
 Ensure, that you have [Chef DK][4] installed.
 
-```
+```bash
 bundle exec overcommit -r
 chef exec rspec
 ```

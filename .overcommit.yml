@@ -32,6 +32,8 @@ PreCommit:
     enabled: true
   Mdl:
     enabled: true
+    exclude:
+      - CHANGELOG.md
   MergeConflicts:
     enabled: true
   RuboCop:
@@ -49,3 +51,8 @@ PreCommit:
     enabled: true
   YamlSyntax:
     enabled: true
+CommitMsg:
+  ALL:
+    on_warn: fail
+  CapitalizedSubject:
+    enabled: false

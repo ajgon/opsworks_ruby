@@ -9,7 +9,6 @@ Berksfile.lock
 coverage
 
 # Bundler
-Gemfile.lock
 .bundle/*
 
 node_modules/
