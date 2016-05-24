@@ -33,6 +33,11 @@ every_enabled_application do |application, _deploy|
     database.setup(self)
   end
 
+  if rdses.blank?
+    database = Drivers::Db::Factory.build(application, node)
+    database.setup(self)
+  end
+
   scm = Drivers::Scm::Factory.build(application, node)
   scm.setup(self)
   framework = Drivers::Framework::Factory.build(application, node)

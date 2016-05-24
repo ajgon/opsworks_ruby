@@ -8,12 +8,6 @@ RSpec.shared_examples 'db parameters and connection' do |rdbms, options = {}|
     expect(driver.options[:rds]).to eq aws_opsworks_rds_db_instance(engine: rdbms)
   end
 
-  it 'raises error when no rds is present' do
-    expect do
-      described_class.new(aws_opsworks_app, node, dummy_option: true).out
-    end.to raise_error ArgumentError, ':rds option is not set.'
-  end
-
   context 'connection data' do
     it 'taken from engine' do
       item = described_class.new(

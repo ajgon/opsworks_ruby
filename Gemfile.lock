@@ -44,9 +44,9 @@ GEM
     celluloid-io (0.16.2)
       celluloid (>= 0.16.0)
       nio4r (>= 1.1.0)
-    chef (12.9.41)
+    chef (12.10.24)
       bundler (>= 1.10)
-      chef-config (= 12.9.41)
+      chef-config (= 12.10.24)
       chef-zero (~> 4.5)
       diff-lcs (~> 1.2, >= 1.2.4)
       erubis (~> 2.7)
@@ -70,7 +70,7 @@ GEM
       specinfra (~> 2.10)
       syslog-logger (~> 1.6)
       uuidtools (~> 2.1.5)
-    chef-config (12.9.41)
+    chef-config (12.10.24)
       fuzzyurl (~> 0.8.0)
       mixlib-config (~> 2.0)
       mixlib-shellout (~> 2.0)
@@ -80,7 +80,7 @@ GEM
       mixlib-log (~> 1.3)
       rack
       uuidtools (~> 2.1)
-    chefspec (4.6.1)
+    chefspec (4.7.0)
       chef (>= 11.14)
       fauxhai (~> 3.2)
       rspec (~> 3.0)
@@ -109,7 +109,7 @@ GEM
     ffi (1.9.10)
     ffi-yajl (2.2.3)
       libyajl2 (~> 1.2)
-    foodcritic (6.2.0)
+    foodcritic (6.3.0)
       cucumber-core (>= 1.3)
       erubis
       nokogiri (>= 1.5, < 2.0)
@@ -160,7 +160,7 @@ GEM
     mixlib-shellout (2.2.6)
     mixlib-versioning (1.1.0)
     molinillo (0.4.5)
-    multi_json (1.12.0)
+    multi_json (1.12.1)
     multipart-post (2.0.0)
     net-http-persistent (2.9.4)
     net-http-pipeline (1.0.1)
@@ -180,7 +180,7 @@ GEM
       mini_portile2 (~> 2.0.0.rc2)
     octokit (4.3.0)
       sawyer (~> 0.7.0, >= 0.5.3)
-    ohai (8.15.1)
+    ohai (8.16.0)
       chef-config (>= 12.5.0.alpha.1, < 13)
       ffi (~> 1.9)
       ffi-yajl (~> 2.2)
@@ -208,7 +208,7 @@ GEM
     rainbow (2.1.0)
     rake (11.1.2)
     retryable (2.0.3)
-    ridley (4.5.0)
+    ridley (4.5.1)
       addressable
       buff-config (~> 1.0)
       buff-extensions (~> 1.0)
@@ -251,14 +251,14 @@ GEM
       rainbow (>= 1.99.1, < 3.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
-    ruby-progressbar (1.8.0)
+    ruby-progressbar (1.8.1)
     rufus-lru (1.1.0)
     safe_yaml (1.0.4)
     sawyer (0.7.0)
       addressable (>= 2.3.5, < 2.5)
       faraday (~> 0.8, < 0.10)
     semverse (1.2.1)
-    serverspec (2.34.0)
+    serverspec (2.36.0)
       multi_json
       rspec (~> 3.0)
       rspec-its
@@ -272,7 +272,7 @@ GEM
     solve (2.0.3)
       molinillo (~> 0.4.2)
       semverse (~> 1.1)
-    specinfra (2.57.2)
+    specinfra (2.57.4)
       net-scp
       net-ssh (>= 2.7, < 4.0)
       net-telnet
@@ -333,4 +333,4 @@ DEPENDENCIES
   travis
 
 BUNDLED WITH
-   1.12.3
+   1.12.4

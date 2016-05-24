@@ -10,8 +10,8 @@ A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon Op
 ## Quick Start
 
 This cookbook is designed to "just work". So in base case scenario, all you have
-to do is create a layer and application with assigned RDS data source, then
-[add recipes to the corresponding OpsWorks actions](#recipes).
+to do is create a layer and application with an optional assigned RDS data source,
+then [add recipes to the corresponding OpsWorks actions](#recipes).
 
 ## Support
 
@@ -78,7 +78,8 @@ for you.
 
 * `app['database']['adapter']`
   * **Supported values:** `mariadb`, `mysql`, `postgresql`, `sqlite3`
-  * **Default:** `sqlite3` (if no RDBMS is detected)
+  * **Note:** There is no default database adapter if a RDS resource is not
+    defined in your stack.
   * ActiveRecord adapter which will be used for database connection.
 * `app['database']['username']`
   * Username used to authenticate to the DB

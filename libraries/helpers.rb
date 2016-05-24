@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 def applications
   if Chef::Config[:solo]
     Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
@@ -44,12 +45,8 @@ def every_enabled_application
 end
 
 def every_enabled_rds
-  if rdses.blank?
-    yield('engine' => 'sqlite')
-  else
-    rdses.each do |rds|
-      yield rds
-    end
+  rdses.each do |rds|
+    yield rds
   end
 end
 

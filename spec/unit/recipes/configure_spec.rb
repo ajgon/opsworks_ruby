@@ -235,6 +235,7 @@ describe 'opsworks_ruby::configure' do
     it 'creates proper database.yml template' do
       db_config = Drivers::Db::Mysql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance(engine: 'mysql')).out
       expect(db_config[:adapter]).to eq 'mysql2'
+
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
           JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
@@ -258,11 +259,48 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper database.yml template' do
-      db_config = Drivers::Db::Sqlite.new(
-        aws_opsworks_app(data_sources: []), dummy_node, rds: aws_opsworks_rds_db_instance(engine: 'sqlite3')
-      ).out
+      db_config = Drivers::Db::Sqlite.new(aws_opsworks_app(data_sources: []), dummy_node).out
       expect(db_config[:adapter]).to eq 'sqlite3'
       expect(db_config[:database]).to eq 'db/data.sqlite3'
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
+          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+        )
+    end
+  end
+
+  context 'No RDS (Database defined in node)' do
+    let(:supplied_node) do
+      node(deploy: {
+             dummy_project: {
+               database: {
+                 adapter: 'postgresql',
+                 username: 'user_936',
+                 password: 'password_936',
+                 host: 'dummy-project.936.us-west-2.rds.amazon.com',
+                 database: 'database_936'
+               }
+             }
+           })
+    end
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = supplied_node['deploy']
+      end.converge(described_recipe)
+    end
+
+    before do
+      stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(data_sources: [])])
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
+    end
+
+    it 'creates proper database.yml template' do
+      db_config = Drivers::Db::Postgresql.new(aws_opsworks_app(data_sources: []), supplied_node).out
+      expect(db_config[:adapter]).to eq 'postgresql'
+      expect(db_config[:username]).to eq 'user_936'
+      expect(db_config[:password]).to eq 'password_936'
+      expect(db_config[:host]).to eq 'dummy-project.936.us-west-2.rds.amazon.com'
+      expect(db_config[:database]).to eq 'database_936'
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
           JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml

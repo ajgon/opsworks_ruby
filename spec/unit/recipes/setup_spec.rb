@@ -164,6 +164,22 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Sqlite' do
+    temp_node = node['deploy']
+    temp_node['dummy_project']['database'] = {}
+    temp_node['dummy_project']['database']['adapter'] = 'sqlite'
+
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = temp_node
+        solo_node.set['lsb'] = node['lsb']
+      end.converge(described_recipe)
+    end
+    let(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        solo_node.set['deploy'] = temp_node
+      end.converge(described_recipe)
+    end
+
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
     end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Drivers
   module Db
     class Base < Drivers::Base
@@ -9,7 +10,6 @@ module Drivers
       defaults encoding: 'utf8', host: 'localhost', reconnect: true
 
       def initialize(app, node, options = {})
-        raise ArgumentError, ':rds option is not set.' unless options[:rds]
         super
       end
 
@@ -20,7 +20,6 @@ module Drivers
       def configure(context)
         database = out
         rails_env = app['attributes']['rails_env']
-
         context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do
           source 'database.yml.erb'
           mode '0660'
@@ -34,7 +33,7 @@ module Drivers
       def out
         if configuration_data_source == :node_engine
           return out_defaults.merge(
-            database: out_defaults[:database] || app['data_sources'].first['database_name']
+            database: out_defaults[:database] || app['data_sources'].first.try(:[], 'database_name')
           )
         end
 
@@ -53,7 +52,7 @@ module Drivers
       protected
 
       def app_engine
-        options[:rds]['engine']
+        options.try(:[], :rds).try(:[], 'engine')
       end
 
       def node_engine

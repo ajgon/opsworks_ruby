@@ -8,6 +8,11 @@ every_enabled_application do |application, _deploy|
     database.before_undeploy(self)
   end
 
+  if rdses.blank?
+    database = Drivers::Db::Factory.build(application, node)
+    database.before_undeploy(self)
+  end
+
   scm = Drivers::Scm::Factory.build(application, node)
   framework = Drivers::Framework::Factory.build(application, node)
   appserver = Drivers::Appserver::Factory.build(application, node)
@@ -44,6 +49,11 @@ every_enabled_application do |application, _deploy|
 
   every_enabled_rds do |rds|
     database = Drivers::Db::Factory.build(application, node, rds: rds)
+    database.after_undeploy(self)
+  end
+
+  if rdses.blank?
+    database = Drivers::Db::Factory.build(application, node)
     database.after_undeploy(self)
   end
 end
