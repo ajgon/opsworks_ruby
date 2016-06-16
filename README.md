@@ -3,6 +3,7 @@
 [![Chef cookbook](https://img.shields.io/cookbook/v/opsworks_ruby.svg)](https://supermarket.chef.io/cookbooks/opsworks_ruby)
 [![Build Status](https://travis-ci.org/ajgon/opsworks_ruby.svg?branch=master)](https://travis-ci.org/ajgon/opsworks_ruby)
 [![Coverage Status](https://coveralls.io/repos/github/ajgon/opsworks_ruby/badge.svg?branch=master)](https://coveralls.io/github/ajgon/opsworks_ruby?branch=master)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![license](https://img.shields.io/github/license/ajgon/opsworks_ruby.svg?maxAge=2592000)](https://opsworks-ruby.mit-license.org/)
 
 A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon OpsWorks.
@@ -272,8 +273,14 @@ to corresponding OpsWorks actions.
 Please see [CONTRIBUTING](https://github.com/ajgon/opsworks_ruby/blob/master/CONTRIBUTING.md)
 for details.
 
-## Author and License
+## Author and Contributors
 
 Author: Igor Rzegocki <[igor@rzegocki.pl](mailto:igor@rzegocki.pl)>
+
+### Contributors
+
+* Nathan Flood ([@npflood](https://github.com/npflood))
+
+## License
 
 License: [MIT](http://opsworks-ruby.mit-license.org/)

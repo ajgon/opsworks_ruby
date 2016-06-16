@@ -18,6 +18,8 @@ module Drivers
       end
 
       def configure(context)
+        return unless applicable_for_configuration?
+
         database = out
         rails_env = app['attributes']['rails_env']
         context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do
@@ -57,6 +59,13 @@ module Drivers
 
       def node_engine
         node['deploy'][app['shortname']]['database'].try(:[], 'adapter')
+      end
+
+      private
+
+      def applicable_for_configuration?
+        configuration_data_source == :node_engine || app['data_sources'].first.blank? || options[:rds].blank? ||
+          app['data_sources'].first['arn'] == options[:rds]['rds_db_instance_arn']
       end
     end
   end
