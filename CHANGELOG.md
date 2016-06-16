@@ -1,3 +1,14 @@
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/ajgon/opsworks_ruby/compare/v0.3.0...v0.3.1) (2016-06-16)
+
+
+### Bug Fixes
+
+* Change path to 500.html to be in the "current" dir ([4aeac7f](https://github.com/ajgon/opsworks_ruby/commit/4aeac7f))
+* Support for multiple RDSes with multiple applications ([a23df47](https://github.com/ajgon/opsworks_ruby/commit/a23df47))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/ajgon/opsworks_ruby/compare/v0.2.1...v0.3.0) (2016-06-08)
 
