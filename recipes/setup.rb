@@ -28,24 +28,18 @@ else
   end
 end
 every_enabled_application do |application, _deploy|
+  databases = []
   every_enabled_rds do |rds|
-    database = Drivers::Db::Factory.build(application, node, rds: rds)
-    database.setup(self)
+    databases.push(Drivers::Db::Factory.build(application, node, rds: rds))
   end
 
-  if rdses.blank?
-    database = Drivers::Db::Factory.build(application, node)
-    database.setup(self)
-  end
+  databases = [Drivers::Db::Factory.build(application, node)] if rdses.blank?
 
   scm = Drivers::Scm::Factory.build(application, node)
-  scm.setup(self)
   framework = Drivers::Framework::Factory.build(application, node)
-  framework.setup(self)
   appserver = Drivers::Appserver::Factory.build(application, node)
-  appserver.setup(self)
   worker = Drivers::Worker::Factory.build(application, node)
-  worker.setup(self)
   webserver = Drivers::Webserver::Factory.build(application, node)
-  webserver.setup(self)
+
+  fire_hook(:setup, context: self, items: databases + [scm, framework, appserver, worker, webserver])
 end

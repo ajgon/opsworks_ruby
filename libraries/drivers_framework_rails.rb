@@ -13,10 +13,10 @@ module Drivers
         super.merge(deploy_environment: { 'RAILS_ENV' => 'production' })
       end
 
-      def after_deploy(context)
+      def deploy_before_restart(context)
         output = out
         deploy_to = deploy_dir(app)
-        env = environment
+        env = environment.merge('HOME' => node['deployer']['home'])
 
         context.execute 'assets:precompile' do
           command output[:assets_precompilation_command]

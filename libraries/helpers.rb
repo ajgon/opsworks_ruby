@@ -14,6 +14,14 @@ def rdses
   search(:aws_opsworks_rds_db_instance)
 end
 
+def fire_hook(name, options)
+  raise ArgumentError 'context is missing' if options[:context].blank?
+
+  Array.wrap(options[:items]).each do |item|
+    item.send(name, options[:context])
+  end
+end
+
 def www_group
   value_for_platform_family(
     'debian' => 'www-data'

@@ -7,24 +7,18 @@
 prepare_recipe
 
 every_enabled_application do |application, _deploy|
+  databases = []
   every_enabled_rds do |rds|
-    database = Drivers::Db::Factory.build(application, node, rds: rds)
-    database.shutdown(self)
+    databases.push(Drivers::Db::Factory.build(application, node, rds: rds))
   end
 
-  if rdses.blank?
-    database = Drivers::Db::Factory.build(application, node)
-    database.shutdown(self)
-  end
+  databases = [Drivers::Db::Factory.build(application, node)] if rdses.blank?
 
   scm = Drivers::Scm::Factory.build(application, node)
-  scm.shutdown(self)
   framework = Drivers::Framework::Factory.build(application, node)
-  framework.shutdown(self)
   appserver = Drivers::Appserver::Factory.build(application, node)
-  appserver.shutdown(self)
   worker = Drivers::Worker::Factory.build(application, node)
-  worker.shutdown(self)
   webserver = Drivers::Webserver::Factory.build(application, node)
-  webserver.shutdown(self)
+
+  fire_hook(:shutdown, context: self, items: databases + [scm, framework, appserver, worker, webserver])
 end

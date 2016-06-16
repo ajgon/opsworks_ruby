@@ -231,6 +231,11 @@ Currently only nginx is supported.
     well. If your application needs a support for those browsers, set this
     parameter to `true`.
 
+Since this driver is basically a wrapper for [nginx cookbook](https://github.com/miketheman/nginx/tree/2.7.x),
+you can also configure [`node['nginx']` attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
+as well (notice that `node['deploy'][<application_shortname>]` logic doesn't
+apply here.)
+
 ### worker
 
 Configuration for ruby workers. Currenty `Null` (no worker) and `Sidekiq`
@@ -251,11 +256,6 @@ are supported. Every worker is covered by `monitd` daemon out-of-the-box.
   * Configuration parameters which will be directly passed to the worker.
     For example, for `sidekiq` they will be serialized to
     [`sidekiq.yml` config file](https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file).
-
-Since this driver is basically a wrapper for [nginx cookbook](https://github.com/miketheman/nginx/tree/2.7.x),
-you can also configure [`node['nginx']` attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
-as well (notice that `node['deploy'][<application_shortname>]` logic doesn't
-apply here.)
 
 ## Recipes
 

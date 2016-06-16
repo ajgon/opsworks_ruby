@@ -3,15 +3,12 @@
 prepare_recipe
 
 every_enabled_application do |application, _deploy|
+  databases = []
   every_enabled_rds do |rds|
-    database = Drivers::Db::Factory.build(application, node, rds: rds)
-    database.before_undeploy(self)
+    databases.push(Drivers::Db::Factory.build(application, node, rds: rds))
   end
 
-  if rdses.blank?
-    database = Drivers::Db::Factory.build(application, node)
-    database.before_undeploy(self)
-  end
+  databases = [Drivers::Db::Factory.build(application, node)] if rdses.blank?
 
   scm = Drivers::Scm::Factory.build(application, node)
   framework = Drivers::Framework::Factory.build(application, node)
@@ -19,11 +16,7 @@ every_enabled_application do |application, _deploy|
   worker = Drivers::Worker::Factory.build(application, node)
   webserver = Drivers::Webserver::Factory.build(application, node)
 
-  scm.before_undeploy(self)
-  framework.before_undeploy(self)
-  appserver.before_undeploy(self)
-  worker.before_undeploy(self)
-  webserver.before_undeploy(self)
+  fire_hook(:before_undeploy, context: self, items: databases + [scm, framework, appserver, worker, webserver])
 
   deploy application['shortname'] do
     deploy_to deploy_dir(application)
@@ -41,19 +34,5 @@ every_enabled_application do |application, _deploy|
     action :rollback
   end
 
-  scm.after_undeploy(self)
-  framework.after_undeploy(self)
-  appserver.after_undeploy(self)
-  worker.after_undeploy(self)
-  webserver.after_undeploy(self)
-
-  every_enabled_rds do |rds|
-    database = Drivers::Db::Factory.build(application, node, rds: rds)
-    database.after_undeploy(self)
-  end
-
-  if rdses.blank?
-    database = Drivers::Db::Factory.build(application, node)
-    database.after_undeploy(self)
-  end
+  fire_hook(:after_undeploy, context: self, items: databases + [scm, framework, appserver, worker, webserver])
 end

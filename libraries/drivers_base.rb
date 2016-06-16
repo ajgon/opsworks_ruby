@@ -29,6 +29,18 @@ module Drivers
     def before_deploy(_context)
     end
 
+    def deploy_before_migrate(_context)
+    end
+
+    def deploy_before_symlink(_context)
+    end
+
+    def deploy_before_restart(_context)
+    end
+
+    def deploy_after_restart(_context)
+    end
+
     def after_deploy(_context)
     end
 
