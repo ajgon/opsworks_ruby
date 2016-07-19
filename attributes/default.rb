@@ -85,6 +85,12 @@ default['defaults']['worker']['adapter'] = 'null'
 default['defaults']['worker']['process_count'] = 2
 default['defaults']['worker']['syslog'] = true
 
+default['monit']['basedir'] = if platform?('centos', 'redhat', 'fedora', 'amazon')
+                                '/etc/monit.d'
+                              else
+                                '/etc/monit/conf.d'
+                              end
+
 ## sidekiq
 
 default['defaults']['worker']['config'] = { 'concurrency' => 5, 'verbose' => false, 'queues' => ['default'] }
