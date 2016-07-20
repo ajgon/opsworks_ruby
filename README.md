@@ -153,9 +153,9 @@ Configuration parameters for the ruby application server. Currently only
 
 * `app['appserver']['adapter']`
   * **Default:** `unicorn`
-  * **Supported values:** `unicorn`
+  * **Supported values:** `unicorn`, `null`
   * Server on the application side, which will receive requests from webserver
-    in front.
+    in front. `null` means no appserver enabled.
 * [`app['appserver']['accept_filter']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
   * **Default:** `httpready`
 * [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
@@ -185,9 +185,9 @@ Currently only nginx is supported.
 
 * `app['webserver']['adapter']`
   * **Default:** `nginx`
-  * **Supported values:** `nginx`
+  * **Supported values:** `nginx`, `null`
   * Webserver in front of the instance. It runs on port 80,
-    and receives all requests from Load Balancer/Internet.
+    and receives all requests from Load Balancer/Internet. `null` means no webserver enabled.
 * `app['webserver']['build_type']`
   * **Supported values:** `default` or `source`
   * **Default:** `default`
