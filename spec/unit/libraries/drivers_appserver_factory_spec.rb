@@ -15,4 +15,18 @@ describe Drivers::Appserver::Factory do
     appserver = described_class.build(aws_opsworks_app, node)
     expect(appserver).to be_instance_of(Drivers::Appserver::Unicorn)
   end
+
+  context 'when adapter is null' do
+    it 'returns a Null class' do
+      appserver = described_class.build(aws_opsworks_app, node(deploy:
+                                                                {
+                                                                  dummy_project: {
+                                                                    appserver: {
+                                                                      adapter: 'null'
+                                                                    }
+                                                                  }
+                                                                }))
+      expect(appserver).to be_instance_of(Drivers::Appserver::Null)
+    end
+  end
 end

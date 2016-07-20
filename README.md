@@ -187,7 +187,8 @@ Currently only nginx is supported.
   * **Default:** `nginx`
   * **Supported values:** `nginx`, `null`
   * Webserver in front of the instance. It runs on port 80,
-    and receives all requests from Load Balancer/Internet. `null` means no webserver enabled.
+    and receives all requests from Load Balancer/Internet.
+    `null` means no webserver enabled.
 * `app['webserver']['build_type']`
   * **Supported values:** `default` or `source`
   * **Default:** `default`
