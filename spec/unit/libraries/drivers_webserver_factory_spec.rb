@@ -15,4 +15,18 @@ describe Drivers::Webserver::Factory do
     webserver = described_class.build(aws_opsworks_app, node)
     expect(webserver).to be_instance_of(Drivers::Webserver::Nginx)
   end
+
+  context 'when adapter is null' do
+    it 'returns a Null class' do
+      webserver = described_class.build(aws_opsworks_app, node(deploy:
+                                                                {
+                                                                  dummy_project: {
+                                                                    webserver: {
+                                                                      adapter: 'null'
+                                                                    }
+                                                                  }
+                                                                }))
+      expect(webserver).to be_instance_of(Drivers::Webserver::Null)
+    end
+  end
 end
