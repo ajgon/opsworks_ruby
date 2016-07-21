@@ -1,3 +1,14 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/ajgon/opsworks_ruby/compare/v0.4.0...v0.5.0) (2016-07-21)
+
+
+### Features
+
+* Added configuration for isolated worker servers w/o app/webserver ([56642f1](https://github.com/ajgon/opsworks_ruby/commit/56642f1))
+* Added monit compatibility with amazon linux ([2ef12b9](https://github.com/ajgon/opsworks_ruby/commit/2ef12b9))
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/ajgon/opsworks_ruby/compare/v0.3.1...v0.4.0) (2016-06-16)
 
