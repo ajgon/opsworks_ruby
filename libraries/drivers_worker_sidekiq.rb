@@ -43,7 +43,7 @@ module Drivers
         output = out
         env = environment
 
-        context.template File.join('/', 'etc', 'monit', 'conf.d', "sidekiq_#{app_shortname}.monitrc") do
+        context.template File.join(node['monit']['basedir'], "sidekiq_#{app_shortname}.monitrc") do
           mode '0640'
           source 'sidekiq.monitrc.erb'
           variables application: app_shortname, out: output, deploy_to: deploy_to, environment: env
