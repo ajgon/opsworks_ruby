@@ -6,7 +6,7 @@ class Object
 
   def try!(*a, &b)
     if a.empty? && block_given?
-      if b.arity == 0
+      if b.arity.zero?
         instance_eval(&b)
       else
         yield self
