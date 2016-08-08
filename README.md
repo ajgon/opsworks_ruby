@@ -41,7 +41,6 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 * [deployer](https://supermarket.chef.io/cookbooks/deployer)
 * [ruby-ng](https://supermarket.chef.io/cookbooks/ruby-ng)
 * [nginx (~> 2.7)](https://supermarket.chef.io/cookbooks/nginx)
-* [application_ruby](https://supermarket.chef.io/cookbooks/application_ruby)
 
 ### Platform
 

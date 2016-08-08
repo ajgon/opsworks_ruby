@@ -59,9 +59,9 @@ def every_enabled_rds
 end
 
 def perform_bundle_install(release_path)
-  bundle_install File.join(release_path, 'Gemfile') do
-    deployment true
-    without %w(development test)
+  execute 'bundle_install' do
+    command 'bundle install --deployment --without development test'
+    cwd release_path
   end
 end
 
