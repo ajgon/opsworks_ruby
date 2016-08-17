@@ -37,7 +37,7 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 
 ### Cookbooks
 
-* [build-essential (~> 2.0)](https://supermarket.chef.io/cookbooks/build-essential/versions/2.4.0)
+* [build-essential](https://supermarket.chef.io/cookbooks/build-essential)
 * [deployer](https://supermarket.chef.io/cookbooks/deployer)
 * [ruby-ng](https://supermarket.chef.io/cookbooks/ruby-ng)
 * [nginx (~> 2.7)](https://supermarket.chef.io/cookbooks/nginx)
