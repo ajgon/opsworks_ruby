@@ -48,6 +48,10 @@ describe 'opsworks_ruby::configure' do
     it 'creates shared/sockets' do
       expect(chef_run).to create_directory("/srv/www/#{aws_opsworks_app['shortname']}/shared/sockets")
     end
+
+    it 'creates shared/vendor/bundle' do
+      expect(chef_run).to create_directory("/srv/www/#{aws_opsworks_app['shortname']}/shared/vendor/bundle")
+    end
   end
 
   context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
