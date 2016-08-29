@@ -5,7 +5,7 @@ module Drivers
       include Drivers::Dsl::Notifies
       include Drivers::Dsl::Output
 
-      def configure(context)
+      def deploy_before_restart(context)
         application_yml(context)
         dot_env(context)
       end

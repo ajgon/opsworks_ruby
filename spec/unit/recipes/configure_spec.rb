@@ -11,7 +11,6 @@ describe 'opsworks_ruby::configure' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['deploy'] = node['deploy']
-      solo_node.set['defaults'] = { 'appserver' => node['defaults']['appserver'] }
       solo_node.set['nginx'] = node['nginx']
     end.converge(described_recipe)
   end
@@ -61,35 +60,13 @@ describe 'opsworks_ruby::configure' do
         )
     end
 
-    it 'creates proper application.yml file' do
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/application.yml")
-        .with_content('ENV_VAR1: "test"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/application.yml")
-        .with_content('ENV_VAR2: "some data"')
-      expect(chef_run)
-        .to create_link("/srv/www/#{aws_opsworks_app['shortname']}/current/config/application.yml")
-    end
-
-    it 'creates proper dot_env file' do
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/dot_env")
-        .with_content('ENV_VAR1="test"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/dot_env")
-        .with_content('ENV_VAR2="some data"')
-      expect(chef_run)
-        .to create_link("/srv/www/#{aws_opsworks_app['shortname']}/current/.env")
-    end
-
     it 'creates proper unicorn.conf file' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
         .with_content('ENV[\'ENV_VAR1\'] = "test"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
-        .with_content('worker_processes 8')
+        .with_content('worker_processes 4')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
         .with_content(':delay => 3')
