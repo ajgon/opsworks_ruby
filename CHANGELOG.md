@@ -1,3 +1,21 @@
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/ajgon/opsworks_ruby/compare/v0.4.0...v0.7.0) (2016-08-29)
+
+
+### Bug Fixes
+
+* Moved extra env files creation, later in the stack (before_restart) ([8a5223f](https://github.com/ajgon/opsworks_ruby/commit/8a5223f))
+* Reload monit after restarting services ([eaa2aab](https://github.com/ajgon/opsworks_ruby/commit/eaa2aab))
+* Set the default DB adapter to `sqlite3` ([b4b1ee4](https://github.com/ajgon/opsworks_ruby/commit/b4b1ee4))
+* specify bundle path on bundle install ([b9d4335](https://github.com/ajgon/opsworks_ruby/commit/b9d4335))
+
+
+### Features
+
+* Added support for gems like figaro and dotenv ([c989494](https://github.com/ajgon/opsworks_ruby/commit/c989494)), closes [#28](https://github.com/ajgon/opsworks_ruby/issues/28)
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/ajgon/opsworks_ruby/compare/v0.5.0...v0.6.0) (2016-08-17)
 

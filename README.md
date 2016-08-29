@@ -288,8 +288,8 @@ Author: Igor Rzegocki <[igor@rzegocki.pl](mailto:igor@rzegocki.pl)>
 
 ### Contributors
 
-* Nathan Flood ([@npflood](https://github.com/npflood))
 * Phong Si ([@phongsi](https://github.com/phongsi))
+* Nathan Flood ([@npflood](https://github.com/npflood))
 
 ## License
 
