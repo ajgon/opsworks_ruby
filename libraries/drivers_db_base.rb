@@ -58,7 +58,8 @@ module Drivers
       end
 
       def node_engine
-        node['deploy'][app['shortname']]['database'].try(:[], 'adapter')
+        node['deploy'][app['shortname']]['database'].try(:[], 'adapter') ||
+          node['defaults'].try(:[], 'database').try(:[], 'adapter')
       end
 
       private

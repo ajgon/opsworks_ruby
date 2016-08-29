@@ -21,6 +21,11 @@ default['nginx']['source']['modules'] = %w(
   nginx::http_stub_status_module
 )
 
+# database
+## common
+
+default['defaults']['database']['adapter'] = 'sqlite3'
+
 # scm
 ## common
 

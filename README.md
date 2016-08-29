@@ -78,8 +78,7 @@ for you.
 
 * `app['database']['adapter']`
   * **Supported values:** `mariadb`, `mysql`, `postgresql`, `sqlite3`
-  * **Note:** There is no default database adapter if a RDS resource is not
-    defined in your stack.
+  * **Default:** `sqlite3`
   * ActiveRecord adapter which will be used for database connection.
 * `app['database']['username']`
   * Username used to authenticate to the DB
