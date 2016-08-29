@@ -12,12 +12,12 @@ module Drivers
       end
 
       def after_deploy(context)
-        context.execute 'monit reload'
         (1..process_count).each do |process_number|
           context.execute "monit restart sidekiq_#{app['shortname']}-#{process_number}" do
             retries 3
           end
         end
+        context.execute 'monit reload'
       end
       alias after_undeploy after_deploy
 
