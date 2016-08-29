@@ -157,10 +157,20 @@ Configuration parameters for the ruby application server. Currently only
     in front. `null` means no appserver enabled.
 * [`app['appserver']['accept_filter']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
   * **Default:** `httpready`
+* `app['appserver']['application_yml']`
+  * **Supported values:** `true`, `false`
+  * **Default:** `false`
+  * Creates a `config/application.yml` file with all pre-configured environment
+    variables. Useful for gems like [figaro](https://github.com/laserlemon/figaro)
 * [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
   * **Default:** `1024`
 * [`app['appserver']['delay']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
   * **Default:** `0.5`
+* `app['appserver']['dot_env']`
+  * **Supported values:** `true`, `false`
+  * **Default:** `false`
+  * Creates a `.env` file with all pre-configured environment
+    variables. Useful for gems like [dotenv](https://github.com/bkeepers/dotenv)
 * [`app['appserver']['preload_app']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-preload_app)
   * **Supported values:** `true`, `false`
   * **Default:** `true`

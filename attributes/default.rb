@@ -31,6 +31,8 @@ default['defaults']['scm']['remove_scm_files'] = true
 
 default['defaults']['appserver']['worker_processes'] = 4
 default['defaults']['appserver']['adapter'] = 'unicorn'
+default['defaults']['appserver']['application_yml'] = false
+default['defaults']['appserver']['dot_env'] = false
 
 ## unicorn
 

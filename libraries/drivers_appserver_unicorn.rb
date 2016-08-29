@@ -9,6 +9,7 @@ module Drivers
       ]
 
       def configure(context)
+        super
         add_unicorn_config(context)
         add_unicorn_service_script(context)
         add_unicorn_service_context(context)

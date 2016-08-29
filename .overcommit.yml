@@ -56,3 +56,7 @@ CommitMsg:
     on_warn: fail
   CapitalizedSubject:
     enabled: false
+  TextWidth:
+    enabled: true
+    max_subject_width: 100
+    max_body_width: 100

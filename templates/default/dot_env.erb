@@ -1,0 +1,3 @@
+<% @environment.each do |key, value| %>
+<%= key.to_s %>=<%= value && value.to_s.inspect %>
+<% end %>

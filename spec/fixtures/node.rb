@@ -71,7 +71,9 @@ def node(override = {})
       },
       appserver: {
         adapter: 'unicorn',
-        worker_processes: 8
+        worker_processes: 8,
+        application_yml: true,
+        dot_env: true
       },
       webserver: {
         adapter: 'nginx',
