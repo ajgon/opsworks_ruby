@@ -8,7 +8,13 @@ prepare_recipe
 
 # Ruby and bundler
 include_recipe 'deployer'
-if node['platform_family'] == 'debian'
+
+if node['ruby']['install_method'] == 'ruby_build'
+  include_recipe 'ruby_build'
+  ruby_build_ruby node['ruby-ng']['ruby_version'] do
+    prefix_path '/usr/local'
+  end
+elsif node['platform_family'] == 'debian'
   include_recipe 'ruby-ng::dev'
 else
   ruby_pkg_version = node['ruby-ng']['ruby_version'].split('.')[0..1]
