@@ -84,6 +84,7 @@ default['defaults']['framework']['migration_command'] =
   '&& /usr/local/bin/bundle exec rake db:migrate || /usr/local/bin/bundle exec rake db:setup'
 default['defaults']['framework']['assets_precompile'] = true
 default['defaults']['framework']['assets_precompilation_command'] = '/usr/local/bin/bundle exec rake assets:precompile'
+default['defaults']['framework']['rails_env'] = 'production'
 
 # worker
 ## common

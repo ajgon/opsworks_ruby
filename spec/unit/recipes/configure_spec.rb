@@ -191,7 +191,7 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="production" bundle exec sidekiq ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
@@ -214,7 +214,7 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="production" bundle exec sidekiq ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
@@ -245,7 +245,7 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="production" bundle exec sidekiq ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
@@ -268,7 +268,7 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="production" bundle exec sidekiq ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \

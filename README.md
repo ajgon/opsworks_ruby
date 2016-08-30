@@ -143,6 +143,10 @@ Currently only `Rails` is supported.
   * **Default:** `true`
 * `app['framework']['assets_precompilation_command']`
   * A command which will be invoked to precompile assets.
+* `app['framework']['rails_env']`
+  * **Default:** `production`
+  * `rails` framework only. Sets the `RAILS_ENV` variable for all the ruby-related
+    actions in the project (server, worker, etc.)
 
 ### appserver
 

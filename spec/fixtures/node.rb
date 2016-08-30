@@ -43,6 +43,7 @@ def node(override = {})
         },
         framework: {
           adapter: 'rails',
+          rails_env: 'staging',
           migrate: false
         },
         worker: {
