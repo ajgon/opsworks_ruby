@@ -52,7 +52,7 @@ every_enabled_application do |application, deploy|
     migration_command(framework.out[:migration_command])
     migrate framework.out[:migrate]
     before_migrate do
-      perform_bundle_install(release_path)
+      perform_bundle_install(shared_path)
 
       fire_hook(:deploy_before_migrate, context: self,
                                         items: databases + [scm, framework, appserver, worker, webserver])
@@ -61,7 +61,7 @@ every_enabled_application do |application, deploy|
     end
 
     before_symlink do
-      perform_bundle_install(release_path) unless framework.out[:migrate]
+      perform_bundle_install(shared_path) unless framework.out[:migrate]
 
       fire_hook(:deploy_before_symlink, context: self,
                                         items: databases + [scm, framework, appserver, worker, webserver])

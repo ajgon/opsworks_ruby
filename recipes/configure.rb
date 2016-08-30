@@ -13,6 +13,7 @@ every_enabled_application do |application, _deploy|
   create_deploy_dir(application, File.join('shared', 'pids'))
   create_deploy_dir(application, File.join('shared', 'scripts'))
   create_deploy_dir(application, File.join('shared', 'sockets'))
+  create_deploy_dir(application, File.join('shared', 'vendor/bundle'))
 
   databases = []
   every_enabled_rds do |rds|
