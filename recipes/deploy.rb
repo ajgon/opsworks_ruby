@@ -17,6 +17,7 @@ every_enabled_application do |application, deploy|
   appserver = Drivers::Appserver::Factory.build(application, node)
   worker = Drivers::Worker::Factory.build(application, node)
   webserver = Drivers::Webserver::Factory.build(application, node)
+  bundle_env = scm.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => scm.out[:ssh_wrapper] } : {}
 
   fire_hook(:before_deploy, context: self, items: databases + [scm, framework, appserver, worker, webserver])
 
@@ -52,7 +53,7 @@ every_enabled_application do |application, deploy|
     migration_command(framework.out[:migration_command])
     migrate framework.out[:migrate]
     before_migrate do
-      perform_bundle_install(shared_path)
+      perform_bundle_install(shared_path, bundle_env)
 
       fire_hook(:deploy_before_migrate, context: self,
                                         items: databases + [scm, framework, appserver, worker, webserver])
@@ -61,7 +62,7 @@ every_enabled_application do |application, deploy|
     end
 
     before_symlink do
-      perform_bundle_install(shared_path) unless framework.out[:migrate]
+      perform_bundle_install(shared_path, bundle_env) unless framework.out[:migrate]
 
       fire_hook(:deploy_before_symlink, context: self,
                                         items: databases + [scm, framework, appserver, worker, webserver])

@@ -58,11 +58,12 @@ def every_enabled_rds
   end
 end
 
-def perform_bundle_install(shared_path)
+def perform_bundle_install(shared_path, envs = {})
   bundle_path = "#{shared_path}/vendor/bundle"
 
   execute 'bundle_install' do
     command "/usr/local/bin/bundle install --deployment --without development test --path #{bundle_path}"
+    environment envs
     cwd release_path
   end
 end
