@@ -17,7 +17,7 @@ describe Drivers::Framework::Rails do
       deploy_environment: { 'RAILS_ENV' => 'staging' },
       migration_command: 'rake db:migrate',
       migrate: false,
-      rails_env: 'staging'
+      deploy_env: 'staging'
     )
   end
 end

@@ -6,12 +6,12 @@ module Drivers
       allowed_engines :rails
       output filter: [
         :migrate, :migration_command, :deploy_environment, :assets_precompile, :assets_precompilation_command,
-        :rails_env
+        :deploy_env
       ]
       packages debian: 'zlib1g-dev', rhel: 'zlib-devel'
 
       def raw_out
-        super.merge(deploy_environment: { 'RAILS_ENV' => super[:rails_env] })
+        super.merge(deploy_environment: { 'RAILS_ENV' => super[:deploy_env] })
       end
 
       def deploy_before_restart(context)

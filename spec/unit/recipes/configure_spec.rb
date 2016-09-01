@@ -60,7 +60,7 @@ describe 'opsworks_ruby::configure' do
       expect(db_config[:adapter]).to eq 'postgresql'
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
-          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+          JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
     end
 
@@ -85,7 +85,7 @@ describe 'opsworks_ruby::configure' do
         .with_content("ROOT_PATH=\"/srv/www/#{aws_opsworks_app['shortname']}\"")
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('unicorn_rails --env production')
+        .with_content('unicorn_rails --env staging')
     end
 
     it 'defines unicorn service' do
@@ -303,14 +303,14 @@ describe 'opsworks_ruby::configure' do
 
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
-          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+          JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
     end
   end
 
   context 'Sqlite3' do
     let(:dummy_node) do
-      node(deploy: { dummy_project: { database: { adapter: 'sqlite3' } } })
+      node(deploy: { dummy_project: { database: { adapter: 'sqlite3' }, framework: { deploy_env: 'staging' } } })
     end
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
@@ -329,7 +329,7 @@ describe 'opsworks_ruby::configure' do
       expect(db_config[:database]).to eq 'db/data.sqlite3'
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
-          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+          JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
     end
   end
@@ -344,6 +344,9 @@ describe 'opsworks_ruby::configure' do
                  password: 'password_936',
                  host: 'dummy-project.936.us-west-2.rds.amazon.com',
                  database: 'database_936'
+               },
+               framework: {
+                 deploy_env: 'staging'
                }
              }
            })
@@ -368,7 +371,7 @@ describe 'opsworks_ruby::configure' do
       expect(db_config[:database]).to eq 'database_936'
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
-          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+          JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
     end
   end

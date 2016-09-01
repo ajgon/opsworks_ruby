@@ -17,21 +17,23 @@ module Drivers
         handle_packages(context)
       end
 
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       def configure(context)
         return unless applicable_for_configuration?
 
         database = out
-        rails_env = app['attributes']['rails_env']
+        deploy_env = node['deploy'][app['shortname']].try(:[], 'framework').try(:[], 'deploy_env') ||
+                     app['attributes']['rails_env']
+
         context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do
           source 'database.yml.erb'
           mode '0660'
           owner node['deployer']['user'] || 'root'
           group www_group
-          variables(database: database, environment: rails_env)
+          variables(database: database, environment: deploy_env)
         end
       end
 
-      # rubocop:disable Metrics/AbcSize
       def out
         if configuration_data_source == :node_engine
           return out_defaults.merge(

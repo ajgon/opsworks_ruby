@@ -46,19 +46,22 @@ module Drivers
         end
       end
 
+      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
       def add_unicorn_service_script(context)
         deploy_to = deploy_dir(app)
         app_shortname = app['shortname']
-        rails_env = app['attributes']['rails_env'] || 'production'
+        deploy_env = node['deploy'][app['shortname']].try(:[], 'framework').try(:[], 'deploy_env') ||
+                     app['attributes']['rails_env'] || 'production'
 
         context.template File.join(deploy_to, File.join('shared', 'scripts', 'unicorn.service')) do
           owner node['deployer']['user']
           group www_group
           mode '0755'
           source 'unicorn.service.erb'
-          variables app_shortname: app_shortname, deploy_dir: deploy_to, rails_env: rails_env
+          variables app_shortname: app_shortname, deploy_dir: deploy_to, deploy_env: deploy_env
         end
       end
+      # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
       def add_unicorn_service_context(context)
         deploy_to = deploy_dir(app)
