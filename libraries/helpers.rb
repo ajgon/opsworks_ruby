@@ -63,6 +63,8 @@ def perform_bundle_install(shared_path, envs = {})
 
   execute 'bundle_install' do
     command "/usr/local/bin/bundle install --deployment --without development test --path #{bundle_path}"
+    user node['deployer']['user'] || 'root'
+    group www_group
     environment envs
     cwd release_path
   end
