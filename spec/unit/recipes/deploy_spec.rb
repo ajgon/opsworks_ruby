@@ -98,6 +98,7 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to create_directory('/srv/www/a1/shared/pids')
     expect(chef_run).to create_directory('/srv/www/a1/shared/scripts')
     expect(chef_run).to create_directory('/srv/www/a1/shared/sockets')
+    expect(chef_run).to create_directory('/srv/www/a1/shared/vendor/bundle')
     expect(chef_run).to create_template('/srv/www/a1/shared/config/database.yml')
     expect(chef_run).to create_template('/srv/www/a1/shared/config/unicorn.conf')
     expect(chef_run).to create_template('/srv/www/a1/shared/scripts/unicorn.service')
