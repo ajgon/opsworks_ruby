@@ -1,5 +1,5 @@
-upstream unicorn_<%= @application[:domains].first %> {
- server unix:<%= @deploy_dir.to_s %>/shared/sockets/unicorn.sock fail_timeout=0;
+upstream <%= @name %>_<%= @application[:domains].first %> {
+ server unix:<%= @deploy_dir.to_s %>/shared/sockets/<%= @name %>.sock fail_timeout=0;
 }
 
 server {
@@ -16,7 +16,7 @@ server {
   send_timeout <%= @out[:send_timeout] || '10' %>;
 
   location / {
-    try_files $uri/index.html $uri/index.htm @unicorn;
+    try_files $uri/index.html $uri/index.htm @<%= @name %>;
   }
 
   location ^~ /assets/ {
@@ -28,7 +28,7 @@ server {
     add_header Access-Control-Expose-Headers ETag;
   }
 
-  location @unicorn {
+  location @<%= @name %> {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
@@ -37,9 +37,9 @@ server {
     proxy_send_timeout <%= @out[:proxy_send_timeout] || '60' %>;
 
     # If you don't find the filename in the static files
-    # Then request it from the unicorn server
+    # Then request it from the <%= @name %> server
     if (!-f $request_filename) {
-      proxy_pass http://unicorn_<%= @application[:domains].first %>;
+      proxy_pass http://<%= @name %>_<%= @application[:domains].first %>;
       break;
     }
   }
@@ -104,7 +104,7 @@ server {
   send_timeout <%= @out[:send_timeout] || '10' %>;
 
   location / {
-    try_files $uri/index.html $uri/index.htm @unicorn;
+    try_files $uri/index.html $uri/index.htm @<%= @name %>;
   }
 
   location ^~ /assets/ {
@@ -116,7 +116,7 @@ server {
     add_header Access-Control-Expose-Headers ETag;
   }
 
-  location @unicorn {
+  location @<%= @name %> {
     proxy_set_header X-Forwarded-Proto https;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
@@ -126,9 +126,9 @@ server {
     proxy_send_timeout <%= @out[:proxy_send_timeout] || '60' %>;
 
     # If you don't find the filename in the static files
-    # Then request it from the unicorn server
+    # Then request it from the <%= @name %> server
     if (!-f $request_filename) {
-      proxy_pass http://unicorn_<%= @application[:domains].first %>;
+      proxy_pass http://<%= @name %>_<%= @application[:domains].first %>;
       break;
     }
   }

@@ -34,7 +34,7 @@ module Drivers
         add_ssl_item(context, :chain)
         add_dhparams(context)
 
-        add_unicorn_config(context) if Drivers::Appserver::Factory.build(app, node).adapter == 'unicorn'
+        add_appserver_config(context)
         enable_appserver_config(context)
       end
 
@@ -87,17 +87,17 @@ module Drivers
         end
       end
 
-      def add_unicorn_config(context)
-        deploy_to = deploy_dir(app)
-        application = app
-        output = out
+      def add_appserver_config(context)
+        opts = { application: app, deploy_dir: deploy_dir(app), out: out,
+                 name: Drivers::Appserver::Factory.build(app, node).adapter }
+        return unless %w(unicorn puma).include?(opts[:name]) # @todo
 
         context.template "/etc/nginx/sites-available/#{app['shortname']}" do
           owner 'root'
           group 'root'
           mode '0644'
-          source 'unicorn.nginx.conf.erb'
-          variables application: application, deploy_dir: deploy_to, out: output
+          source 'appserver.nginx.conf.erb'
+          variables opts
         end
       end
 

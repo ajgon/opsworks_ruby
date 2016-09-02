@@ -26,8 +26,11 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 * Framework
   * Ruby on Rails
 * App server
+  * Null (no appserver)
+  * Puma
   * Unicorn
 * Web server
+  * Null (no webserver)
   * nginx
 * Worker
   * Null (no worker)
@@ -156,30 +159,33 @@ Currently only `Rails` is supported.
 
 ### appserver
 
-Configuration parameters for the ruby application server. Currently only
-`Unicorn` is supported.
+Configuration parameters for the ruby application server. Currently `Unicorn`
+and `Puma` are supported.
 
 * `app['appserver']['adapter']`
   * **Default:** `unicorn`
-  * **Supported values:** `unicorn`, `null`
+  * **Supported values:** `puma`, `unicorn`, `null`
   * Server on the application side, which will receive requests from webserver
     in front. `null` means no appserver enabled.
-* [`app['appserver']['accept_filter']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
-  * **Default:** `httpready`
 * `app['appserver']['application_yml']`
   * **Supported values:** `true`, `false`
   * **Default:** `false`
   * Creates a `config/application.yml` file with all pre-configured environment
     variables. Useful for gems like [figaro](https://github.com/laserlemon/figaro)
-* [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
-  * **Default:** `1024`
-* [`app['appserver']['delay']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
-  * **Default:** `0.5`
 * `app['appserver']['dot_env']`
   * **Supported values:** `true`, `false`
   * **Default:** `false`
   * Creates a `.env` file with all pre-configured environment
     variables. Useful for gems like [dotenv](https://github.com/bkeepers/dotenv)
+
+#### unicorn
+
+* [`app['appserver']['accept_filter']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+  * **Default:** `httpready`
+* [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+  * **Default:** `1024`
+* [`app['appserver']['delay']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+  * **Default:** `0.5`
 * [`app['appserver']['preload_app']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-preload_app)
   * **Supported values:** `true`, `false`
   * **Default:** `true`
@@ -194,6 +200,23 @@ Configuration parameters for the ruby application server. Currently only
 * [`app['appserver']['timeout']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-timeout)
   * **Default:** `50`
 * [`app['appserver']['worker_processes']`](https://unicorn.bogomips.org/TUNING.html)
+  * **Default:** `4`
+
+#### puma
+
+* [`app['appserver']['preload_app']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L160)
+  * **Supported values:** `true`, `false`
+  * **Default:** `true`
+* [`app['appserver']['log_requests']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L56)
+  * **Supported values:** `true`, `false`
+  * **Default:** `false`
+* [`app['appserver']['thread_max']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62)
+  * **Default:** `16`
+* [`app['appserver']['thread_min']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62)
+  * **Default:** `0`
+* [`app['appserver']['timeout']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L172)
+  * **Default:** `60`
+* [`app['appserver']['worker_processes']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L107)
   * **Default:** `4`
 
 ### webserver

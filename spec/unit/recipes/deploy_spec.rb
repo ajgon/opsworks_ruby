@@ -70,6 +70,21 @@ describe 'opsworks_ruby::deploy' do
     end
   end
 
+  context 'Puma' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['appserver']['adapter'] = 'puma'
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+
+    it 'performs a deploy' do
+      expect(chef_run).to run_execute('stop puma')
+      expect(chef_run).to run_execute('start puma')
+    end
+  end
+
   it 'empty node[\'deploy\']' do
     chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']

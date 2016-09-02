@@ -37,21 +37,26 @@ default['defaults']['scm']['remove_scm_files'] = true
 # appserver
 ## common
 
-default['defaults']['appserver']['worker_processes'] = 4
 default['defaults']['appserver']['adapter'] = 'unicorn'
 default['defaults']['appserver']['application_yml'] = false
 default['defaults']['appserver']['dot_env'] = false
+default['defaults']['appserver']['preload_app'] = true
+default['defaults']['appserver']['timeout'] = 60
+default['defaults']['appserver']['worker_processes'] = 4
 
 ## unicorn
 
 default['defaults']['appserver']['accept_filter'] = 'httpready'
 default['defaults']['appserver']['backlog'] = 1024
 default['defaults']['appserver']['delay'] = 0.5
-default['defaults']['appserver']['preload_app'] = true
 default['defaults']['appserver']['tcp_nodelay'] = true
 default['defaults']['appserver']['tcp_nopush'] = false
 default['defaults']['appserver']['tries'] = 5
-default['defaults']['appserver']['timeout'] = 60
+
+## puma
+default['defaults']['appserver']['log_requests'] = false
+default['defaults']['appserver']['thread_min'] = 0
+default['defaults']['appserver']['thread_max'] = 16
 
 # webserver
 ## common

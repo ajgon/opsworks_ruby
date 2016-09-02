@@ -34,7 +34,9 @@ def node(override = {})
         },
         appserver: {
           adapter: 'unicorn',
-          delay: 3
+          delay: 3,
+          thread_min: 0,
+          thread_max: 16
         },
         webserver: {
           adapter: 'nginx',

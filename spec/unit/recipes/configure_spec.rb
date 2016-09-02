@@ -85,7 +85,10 @@ describe 'opsworks_ruby::configure' do
         .with_content("ROOT_PATH=\"/srv/www/#{aws_opsworks_app['shortname']}\"")
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('unicorn_rails --env staging')
+        .with_content('DEPLOY_ENV="staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
+        .with_content('unicorn_rails --env #{DEPLOY_ENV} --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf')
     end
 
     it 'defines unicorn service' do
@@ -102,6 +105,9 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates nginx unicorn proxy handler config' do
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('upstream unicorn_dummy-project.example.com {')
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
         .with_content('client_max_body_size 125m;')
@@ -292,7 +298,16 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Mysql' do
+  context 'Mysql + Puma' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['appserver']['adapter'] = 'puma'
+        solo_node.set['deploy'] = deploy
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+    end
+
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
     end
@@ -305,6 +320,92 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
           JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
+    end
+
+    it 'creates proper puma.rb file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
+        .with_content('ENV[\'ENV_VAR1\'] = "test"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
+        .with_content('workers 4')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
+        .with_content('environment "staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
+        .with_content('threads 0, 16')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
+        .with_content('worker_timeout 60')
+    end
+
+    it 'creates proper puma.service file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
+        .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
+        .with_content("ROOT_PATH=\"/srv/www/#{aws_opsworks_app['shortname']}\"")
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
+        .with_content('DEPLOY_ENV="staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
+        .with_content('puma -C #{ROOT_PATH}/shared/config/puma.rb')
+    end
+
+    it 'defines puma service' do
+      service = chef_run.service("puma_#{aws_opsworks_app['shortname']}")
+      expect(service).to do_nothing
+      expect(service.start_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service start"
+      expect(service.stop_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service stop"
+      expect(service.restart_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service restart"
+      expect(service.status_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service status"
+    end
+
+    it 'creates nginx puma proxy handler config' do
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('upstream puma_dummy-project.example.com {')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('client_max_body_size 125m;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('client_body_timeout 30;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('keepalive_timeout 15;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_ecdh_curve secp384r1;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_stapling on;')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_session_tickets off;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('extra_config {}')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('extra_config_ssl {}')
+      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
     end
   end
 

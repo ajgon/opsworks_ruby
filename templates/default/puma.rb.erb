@@ -1,0 +1,71 @@
+#!/usr/bin/env puma
+
+<% @environment.each do |key, value| %>
+ENV['<%= key.to_s %>'] = "<%= value.to_s %>"
+<% end %>
+
+# The directory to operate out of.
+directory "<%= @deploy_dir %>/current"
+
+<% if @out[:preload_app] %>
+  preload_app!
+<% end %>
+
+# Set the environment in which the rack's app will run. The value must be a string.
+# The default is "development".
+environment "<%= @deploy_env %>"
+
+# Daemonize the server into the background. Highly suggest that
+# this be combined with "pidfile" and "stdout_redirect".
+#
+# The default is "false".
+#
+# daemonize
+daemonize true
+
+# Store the pid of the server in the file at "path".
+# pidfile '/u/apps/lolcat/tmp/pids/puma.pid'
+pidfile  "<%= @deploy_dir %>/shared/pids/puma.pid"
+
+# Use "path" as the file to store the server info state. This is
+# used by "pumactl" to query and control the server.
+# state_path '/u/apps/lolcat/tmp/pids/puma.state'
+state_path "<%= @deploy_dir %>/shared/pids/puma.state"
+
+# Redirect STDOUT and STDERR to files specified. The 3rd parameter
+# ("append") specifies whether the output is appended, the default is
+# "false".
+# stdout_redirect '/u/apps/lolcat/log/stdout', '/u/apps/lolcat/log/stderr'
+# stdout_redirect '/u/apps/lolcat/log/stdout', '/u/apps/lolcat/log/stderr', true
+stdout_redirect "<%= @deploy_dir %>/shared/log/puma.stdout.log", "<%= @deploy_dir %>/shared/log/puma.stderr.log", true
+
+
+# Disable request logging.
+# The default is "false".
+<% unless @out[:log_requests] %>
+quiet
+<% end %>
+
+# Configure "min" to be the minimum number of threads to use to answer
+# requests and "max" the maximum.
+# The default is "0, 16".
+threads <%= @out[:thread_min] %>, <%= @out[:thread_max] %>
+
+# Bind the server to "url". "tcp://", "unix://" and "ssl://" are the only
+# accepted protocols.
+# The default is "tcp://0.0.0.0:9292".
+# bind 'tcp://0.0.0.0:9292'
+# bind 'unix:///var/run/puma.sock'
+# bind 'unix:///var/run/puma.sock?umask=0777'
+# bind 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'
+bind "unix://<%= @deploy_dir %>/shared/sockets/puma.sock"
+
+# === Cluster mode ===
+# How many worker processes to run.
+# The default is "0".
+workers <%= @out[:worker_processes] %>
+
+# Change the default timeout of worker startup
+# The default is 60
+worker_timeout <%= @out[:timeout] %>
+
