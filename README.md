@@ -69,6 +69,16 @@ so for example `app['framework']['adapter']` actually means
   * An array of application shortnames which should be deployed to given layer.
     If not provided, all detected applications will be deployed.
 
+### global
+
+Global parameters apply to the whole application, and can be used by any section
+(framework, appserver etc.).
+
+* `app['environment']`
+  * **Default:** `production`
+  * Sets the "deploy environment" for all the app-related (for example `RAILS_ENV`
+    in Rails) actions in the project (server, worker, etc.)
+
 ### database
 
 Those parameters will be passed without any alteration to the `database.yml`
@@ -143,10 +153,6 @@ Currently only `Rails` is supported.
   * **Default:** `true`
 * `app['framework']['assets_precompilation_command']`
   * A command which will be invoked to precompile assets.
-* `app['framework']['deploy_env']`
-  * **Default:** `production`
-  * Sets the "environment" for all the app-related (for example `RAILS_ENV` in
-    Rails) actions in the project (server, worker, etc.)
 
 ### appserver
 

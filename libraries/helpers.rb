@@ -14,6 +14,13 @@ def rdses
   search(:aws_opsworks_rds_db_instance)
 end
 
+def globals
+  {
+    environment: node['deploy'][app['shortname']].try(:[], 'environment') ||
+      app['attributes']['rails_env'] || node['defaults']['environment'] || 'production'
+  }
+end
+
 def fire_hook(name, options)
   raise ArgumentError 'context is missing' if options[:context].blank?
 

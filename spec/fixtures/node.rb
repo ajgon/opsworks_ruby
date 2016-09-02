@@ -11,6 +11,7 @@ def node(override = {})
     },
     deploy: {
       dummy_project: {
+        environment: 'staging',
         # database: {
         #   adapter: 'postgresql',
         #   username: 'dbuser',
@@ -43,7 +44,6 @@ def node(override = {})
         },
         framework: {
           adapter: 'rails',
-          deploy_env: 'staging',
           migrate: false
         },
         worker: {

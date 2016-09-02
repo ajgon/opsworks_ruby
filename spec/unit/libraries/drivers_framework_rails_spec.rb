@@ -16,8 +16,7 @@ describe Drivers::Framework::Rails do
       assets_precompilation_command: 'bundle exec rake assets:precompile',
       deploy_environment: { 'RAILS_ENV' => 'staging' },
       migration_command: 'rake db:migrate',
-      migrate: false,
-      deploy_env: 'staging'
+      migrate: false
     )
   end
 end

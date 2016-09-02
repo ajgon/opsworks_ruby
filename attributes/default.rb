@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# environment
+default['defaults']['environment'] = 'production'
+
 # deploy
 default['defaults']['deploy']['symlinks'] = {
   'system' => 'public/system',
@@ -75,7 +78,6 @@ default['nginx']['send_timeout'] = default['defaults']['webserver']['send_timeou
 ## common
 
 default['defaults']['framework']['adapter'] = 'rails'
-default['defaults']['framework']['deploy_env'] = 'production'
 
 ## rails
 

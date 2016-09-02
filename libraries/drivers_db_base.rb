@@ -17,13 +17,12 @@ module Drivers
         handle_packages(context)
       end
 
-      # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+      # rubocop:disable Metrics/AbcSize
       def configure(context)
         return unless applicable_for_configuration?
 
         database = out
-        deploy_env = node['deploy'][app['shortname']].try(:[], 'framework').try(:[], 'deploy_env') ||
-                     app['attributes']['rails_env']
+        deploy_env = globals[:environment]
 
         context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do
           source 'database.yml.erb'

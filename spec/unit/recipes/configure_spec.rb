@@ -310,7 +310,7 @@ describe 'opsworks_ruby::configure' do
 
   context 'Sqlite3' do
     let(:dummy_node) do
-      node(deploy: { dummy_project: { database: { adapter: 'sqlite3' }, framework: { deploy_env: 'staging' } } })
+      node(deploy: { dummy_project: { database: { adapter: 'sqlite3' }, environment: 'staging' } })
     end
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
@@ -345,9 +345,7 @@ describe 'opsworks_ruby::configure' do
                  host: 'dummy-project.936.us-west-2.rds.amazon.com',
                  database: 'database_936'
                },
-               framework: {
-                 deploy_env: 'staging'
-               }
+               environment: 'staging'
              }
            })
     end
