@@ -9,8 +9,8 @@ module Drivers
         :log_dir, :proxy_read_timeout, :proxy_send_timeout, :send_timeout, :ssl_for_legacy_browsers,
         :extra_config, :extra_config_ssl
       ]
-      notifies :deploy, action: :reload, resource: 'service[nginx]', timer: :delayed
-      notifies :undeploy, action: :reload, resource: 'service[nginx]', timer: :delayed
+      notifies :deploy, action: :restart, resource: 'service[nginx]', timer: :delayed
+      notifies :undeploy, action: :restart, resource: 'service[nginx]', timer: :delayed
 
       def raw_out
         output = node['defaults']['webserver'].merge(node['nginx']).merge(

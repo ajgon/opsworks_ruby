@@ -29,7 +29,7 @@ describe 'opsworks_ruby::undeploy' do
       expect(chef_run).to run_execute('stop unicorn')
       expect(chef_run).to run_execute('start unicorn')
 
-      expect(undeploy).to notify('service[nginx]').to(:reload).delayed
+      expect(undeploy).to notify('service[nginx]').to(:restart).delayed
       expect(service).to do_nothing
     end
 
