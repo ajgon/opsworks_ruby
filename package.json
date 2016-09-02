@@ -1,6 +1,6 @@
 {
   "name": "opsworks_ruby",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Set of chef recipes for OpsWorks based Ruby projects.",
   "dependencies": {},
   "devDependencies": {

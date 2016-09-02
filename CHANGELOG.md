@@ -1,3 +1,20 @@
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/ajgon/opsworks_ruby/compare/v0.7.0...v0.8.0) (2016-09-02)
+
+
+### Bug Fixes
+
+* Switched from `nginx reload` to `nginx restart` after succesful deploy/undeploy ([16ab9d1](https://github.com/ajgon/opsworks_ruby/commit/16ab9d1)), closes [#36](https://github.com/ajgon/opsworks_ruby/issues/36)
+
+
+### Features
+
+* Added GIT_SSH support for bundle install ([232e8ac](https://github.com/ajgon/opsworks_ruby/commit/232e8ac)), closes [#37](https://github.com/ajgon/opsworks_ruby/issues/37)
+* Caches bundler installs to speed up deployments ([baa0f44](https://github.com/ajgon/opsworks_ruby/commit/baa0f44))
+* Implemented configurable RAILS_ENV ([2567b71](https://github.com/ajgon/opsworks_ruby/commit/2567b71)), closes [#34](https://github.com/ajgon/opsworks_ruby/issues/34)
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/ajgon/opsworks_ruby/compare/v0.4.0...v0.7.0) (2016-08-29)
 

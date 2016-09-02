@@ -300,6 +300,7 @@ Author: Igor Rzegocki <[igor@rzegocki.pl](mailto:igor@rzegocki.pl)>
 
 * Phong Si ([@phongsi](https://github.com/phongsi))
 * Nathan Flood ([@npflood](https://github.com/npflood))
+* Marcos Beirigo ([@marcosbeirigo](https://github.com/marcosbeirigo))
 
 ## License
 
