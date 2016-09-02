@@ -28,6 +28,7 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 * App server
   * Null (no appserver)
   * Puma
+  * Thin
   * Unicorn
 * Web server
   * Null (no webserver)
@@ -164,7 +165,7 @@ and `Puma` are supported.
 
 * `app['appserver']['adapter']`
   * **Default:** `unicorn`
-  * **Supported values:** `puma`, `unicorn`, `null`
+  * **Supported values:** `puma`, `thin`, `unicorn`, `null`
   * Server on the application side, which will receive requests from webserver
     in front. `null` means no appserver enabled.
 * `app['appserver']['application_yml']`
@@ -217,6 +218,17 @@ and `Puma` are supported.
 * [`app['appserver']['timeout']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L172)
   * **Default:** `60`
 * [`app['appserver']['worker_processes']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L107)
+  * **Default:** `4`
+
+#### thin
+
+* `app['appserver']['max_connections']`
+  * **Default:** `1024`
+* `app['appserver']['max_persistent_connections']`
+  * **Default:** `512`
+* `app['appserver']['timeout']`
+  * **Default:** `60`
+* `app['appserver']['worker_processes']`
   * **Default:** `4`
 
 ### webserver

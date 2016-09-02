@@ -409,13 +409,23 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Sqlite3' do
+  context 'Sqlite3 + Thin' do
     let(:dummy_node) do
-      node(deploy: { dummy_project: { database: { adapter: 'sqlite3' }, environment: 'staging' } })
+      node(
+        deploy: {
+          dummy_project: {
+            database: { adapter: 'sqlite3' },
+            environment: 'staging',
+            appserver: node['deploy']['dummy_project']['appserver'].merge('adapter' => 'thin'),
+            webserver: node['deploy']['dummy_project']['webserver']
+          }
+        }
+      )
     end
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['deploy'] = dummy_node['deploy']
+        solo_node.set['nginx'] = node['nginx']
       end.converge(described_recipe)
     end
 
@@ -432,6 +442,89 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
           JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
+    end
+
+    it 'creates proper thin.yml file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('servers: 4')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('environment: "staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('max_conns: 4096')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('timeout: 60')
+    end
+
+    it 'creates proper thin.service file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
+        .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
+        .with_content("ROOT_PATH=\"/srv/www/#{aws_opsworks_app['shortname']}\"")
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
+        .with_content('DEPLOY_ENV="staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
+        .with_content('thin -C #{ROOT_PATH}/shared/config/thin.yml')
+    end
+
+    it 'defines thin service' do
+      service = chef_run.service("thin_#{aws_opsworks_app['shortname']}")
+      expect(service).to do_nothing
+      expect(service.start_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service start"
+      expect(service.stop_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service stop"
+      expect(service.restart_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service restart"
+      expect(service.status_command)
+        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service status"
+    end
+
+    it 'creates nginx thin proxy handler config' do
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('upstream thin_dummy-project.example.com {')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('client_max_body_size 125m;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('client_body_timeout 30;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('keepalive_timeout 15;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_ecdh_curve secp384r1;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_stapling on;')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('ssl_session_tickets off;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('extra_config {}')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .with_content('extra_config_ssl {}')
+      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
     end
   end
 

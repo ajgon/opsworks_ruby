@@ -19,6 +19,11 @@ module Drivers
       (@adapter || self.class.name.underscore).to_s
     end
 
+    def self.adapters(options = { include_null: false })
+      adapters = descendants.select { |descendant| descendant.respond_to?(:adapter) }.map(&:adapter)
+      options[:include_null] ? adapters : adapters - ['null']
+    end
+
     # Dummy methods for children to redefine
     def setup(_context)
     end

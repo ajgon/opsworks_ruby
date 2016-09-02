@@ -90,7 +90,7 @@ module Drivers
       def add_appserver_config(context)
         opts = { application: app, deploy_dir: deploy_dir(app), out: out,
                  name: Drivers::Appserver::Factory.build(app, node).adapter }
-        return unless %w(unicorn puma).include?(opts[:name]) # @todo
+        return unless Drivers::Appserver::Base.adapters.include?(opts[:name])
 
         context.template "/etc/nginx/sites-available/#{app['shortname']}" do
           owner 'root'

@@ -36,7 +36,8 @@ def node(override = {})
           adapter: 'unicorn',
           delay: 3,
           thread_min: 0,
-          thread_max: 16
+          thread_max: 16,
+          max_connections: 4096
         },
         webserver: {
           adapter: 'nginx',

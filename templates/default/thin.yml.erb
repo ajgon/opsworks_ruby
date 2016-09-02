@@ -1,0 +1,15 @@
+---
+user: "<%= node['deployer']['user'] %>"
+pid: "<%= @deploy_dir %>/shared/pids/thin.pid"
+timeout: <%= @out[:timeout] %>
+wait: <%= @out[:timeout] %>
+log: "<%= @deploy_dir %>/shared/log/thin.log"
+max_conns: <%= @out[:max_connections] %>
+environment: "<%= @deploy_env %>"
+max_persistent_conns: <%= @out[:max_persistent_connections] %>
+servers: <%= @out[:worker_processes] %>
+threaded: true
+no-epoll: true
+daemonize: true
+socket: "<%= @deploy_dir %>/shared/sockets/thin.sock"
+chdir: "<%= @deploy_dir %>/current"

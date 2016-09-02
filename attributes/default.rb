@@ -44,6 +44,16 @@ default['defaults']['appserver']['preload_app'] = true
 default['defaults']['appserver']['timeout'] = 60
 default['defaults']['appserver']['worker_processes'] = 4
 
+## puma
+
+default['defaults']['appserver']['log_requests'] = false
+default['defaults']['appserver']['thread_min'] = 0
+default['defaults']['appserver']['thread_max'] = 16
+
+## thin
+default['defaults']['appserver']['max_connections'] = 1024
+default['defaults']['appserver']['max_persistent_connections'] = 512
+
 ## unicorn
 
 default['defaults']['appserver']['accept_filter'] = 'httpready'
@@ -52,11 +62,6 @@ default['defaults']['appserver']['delay'] = 0.5
 default['defaults']['appserver']['tcp_nodelay'] = true
 default['defaults']['appserver']['tcp_nopush'] = false
 default['defaults']['appserver']['tries'] = 5
-
-## puma
-default['defaults']['appserver']['log_requests'] = false
-default['defaults']['appserver']['thread_min'] = 0
-default['defaults']['appserver']['thread_max'] = 16
 
 # webserver
 ## common
