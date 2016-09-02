@@ -7,8 +7,7 @@ module Drivers
       output filter: [:max_connections, :max_persistent_connections, :timeout, :worker_processes]
 
       def add_appserver_config(context)
-        opts = { environment: app['environment'], deploy_dir: deploy_dir(app), out: out,
-                 deploy_env: globals[:environment] }
+        opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: globals[:environment] }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'config', 'thin.yml')) do
           owner node['deployer']['user']

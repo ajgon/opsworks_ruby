@@ -59,7 +59,7 @@ module Drivers
 
       def add_appserver_service_script(context)
         opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], deploy_env: globals[:environment],
-                 name: adapter, command: appserver_command(context) }
+                 name: adapter, command: appserver_command(context), environment: app['environment'] }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'scripts', "#{opts[:name]}.service")) do
           owner node['deployer']['user']

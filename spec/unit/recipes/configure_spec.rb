@@ -67,9 +67,6 @@ describe 'opsworks_ruby::configure' do
     it 'creates proper unicorn.conf file' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
-        .with_content('ENV[\'ENV_VAR1\'] = "test"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
         .with_content('worker_processes 4')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
@@ -77,6 +74,9 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper unicorn.service file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
+        .with_content('ENV[\'ENV_VAR1\'] = "test"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
         .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
@@ -325,9 +325,6 @@ describe 'opsworks_ruby::configure' do
     it 'creates proper puma.rb file' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
-        .with_content('ENV[\'ENV_VAR1\'] = "test"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
         .with_content('workers 4')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
@@ -341,6 +338,9 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper puma.service file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
+        .with_content('ENV[\'ENV_VAR1\'] = "test"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
         .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
@@ -460,6 +460,9 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper thin.service file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
+        .with_content('ENV[\'ENV_VAR1\'] = "test"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
         .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")

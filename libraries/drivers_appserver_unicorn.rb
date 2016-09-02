@@ -10,7 +10,6 @@ module Drivers
 
       def add_appserver_config(context)
         deploy_to = deploy_dir(app)
-        environment = app['environment']
         output = out
 
         context.template File.join(deploy_to, File.join('shared', 'config', 'unicorn.conf')) do
@@ -18,7 +17,7 @@ module Drivers
           group www_group
           mode '0644'
           source 'unicorn.conf.erb'
-          variables environment: environment, deploy_dir: deploy_to, out: output
+          variables deploy_dir: deploy_to, out: output
         end
       end
 

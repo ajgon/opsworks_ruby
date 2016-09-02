@@ -19,10 +19,6 @@ pid "<%= @deploy_dir %>/shared/pids/unicorn.pid"
 stderr_path "<%= @deploy_dir %>/shared/log/unicorn.stderr.log"
 stdout_path "<%= @deploy_dir %>/shared/log/unicorn.stdout.log"
 
-<% @environment.each do |key, value| %>
-ENV['<%= key.to_s %>'] = "<%= value.to_s %>"
-<% end %>
-
 preload_app <%= @out[:preload_app] %>
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
 

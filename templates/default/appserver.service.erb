@@ -3,6 +3,10 @@
 require 'etc'
 require 'digest/md5'
 
+<% @environment.each do |key, value| %>
+ENV['<%= key.to_s %>'] = "<%= value.to_s %>"
+<% end %>
+
 ROOT_PATH="<%= @deploy_dir %>"
 APP_NAME="<%= @app_shortname %>"
 PID_PATH="<%= @deploy_dir %>/shared/pids/<%= @name %>.pid"
