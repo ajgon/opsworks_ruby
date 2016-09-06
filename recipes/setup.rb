@@ -11,7 +11,7 @@ include_recipe 'deployer'
 
 if node['ruby']['install_method'] == 'ruby_build'
   include_recipe 'ruby_build'
-  ruby_build_ruby node['ruby-ng']['ruby_version'] do
+  ruby_build_ruby node['ruby_build']['ruby_version'] do
     prefix_path '/usr/local'
   end
   gem_package 'bundler' do
@@ -39,6 +39,7 @@ else
     not_if { ::File.exist?('/usr/local/bin/bundle') }
   end
 end
+
 every_enabled_application do |application, _deploy|
   databases = []
   every_enabled_rds do |rds|

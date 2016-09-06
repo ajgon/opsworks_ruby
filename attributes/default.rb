@@ -18,7 +18,10 @@ default['defaults']['deploy']['purge_before_symlink'] = %w(log tmp/cache tmp/pid
 # ruby
 
 default['build-essential']['compile_time'] = true
+
 default['ruby-ng']['ruby_version'] = node['ruby'].try(:[], 'version') || '2.3'
+default['ruby_build']['ruby_version'] = node['ruby'].try(:[], 'version') || '2.3.1'
+
 default['nginx']['source']['modules'] = %w(
   nginx::http_ssl_module nginx::http_realip_module nginx::http_gzip_static_module nginx::headers_more_module
   nginx::http_stub_status_module
