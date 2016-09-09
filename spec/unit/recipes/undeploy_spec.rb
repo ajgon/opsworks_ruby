@@ -40,18 +40,38 @@ describe 'opsworks_ruby::undeploy' do
     end
   end
 
-  context 'Puma' do
+  context 'Puma + Apache' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+    let(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['appserver']['adapter'] = 'puma'
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
 
-    it 'performs a rollback' do
+    it 'performs a rollback on debian' do
+      undeploy_debian = chef_run.deploy(aws_opsworks_app['shortname'])
+
+      expect(undeploy_debian).to notify('service[apache2]').to(:restart).delayed
       expect(chef_run).to run_execute('stop puma')
       expect(chef_run).to run_execute('start puma')
+    end
+
+    it 'performs a rollback on rhel' do
+      undeploy_rhel = chef_run_rhel.deploy(aws_opsworks_app['shortname'])
+
+      expect(undeploy_rhel).to notify('service[httpd]').to(:restart).delayed
+      expect(chef_run_rhel).to run_execute('stop puma')
+      expect(chef_run_rhel).to run_execute('start puma')
     end
   end
 

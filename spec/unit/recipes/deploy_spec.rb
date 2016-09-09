@@ -70,18 +70,38 @@ describe 'opsworks_ruby::deploy' do
     end
   end
 
-  context 'Puma' do
+  context 'Puma + Apache' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+    let(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['appserver']['adapter'] = 'puma'
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
 
-    it 'performs a deploy' do
+    it 'performs a deploy on debian' do
+      deploy_debian = chef_run.deploy(aws_opsworks_app['shortname'])
+
+      expect(deploy_debian).to notify('service[apache2]').to(:restart).delayed
       expect(chef_run).to run_execute('stop puma')
       expect(chef_run).to run_execute('start puma')
+    end
+
+    it 'performs a deploy on rhel' do
+      deploy_rhel = chef_run_rhel.deploy(aws_opsworks_app['shortname'])
+
+      expect(deploy_rhel).to notify('service[httpd]').to(:restart).delayed
+      expect(chef_run_rhel).to run_execute('stop puma')
+      expect(chef_run_rhel).to run_execute('start puma')
     end
   end
 
@@ -117,8 +137,8 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to create_template('/srv/www/a1/shared/config/database.yml')
     expect(chef_run).to create_template('/srv/www/a1/shared/config/unicorn.conf')
     expect(chef_run).to create_template('/srv/www/a1/shared/scripts/unicorn.service')
-    expect(chef_run).to create_template('/etc/nginx/sites-available/a1')
-    expect(chef_run).to create_link('/etc/nginx/sites-enabled/a1')
+    expect(chef_run).to create_template('/etc/nginx/sites-available/a1.conf')
+    expect(chef_run).to create_link('/etc/nginx/sites-enabled/a1.conf')
     expect(service_a1).to do_nothing
     expect(chef_run).to deploy_deploy('a1')
     expect(chef_run).not_to deploy_deploy('a2')

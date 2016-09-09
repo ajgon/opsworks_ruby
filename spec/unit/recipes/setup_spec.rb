@@ -149,17 +149,60 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
-  context 'Mysql' do
+  context 'Mysql + apache2' do
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
     end
 
-    it 'installs required packages for debian' do
-      expect(chef_run).to install_package('libmysqlclient-dev')
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
     end
 
-    it 'installs required packages for rhel' do
-      expect(chef_run_rhel).to install_package('mysql-devel')
+    let(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+
+    context 'debian' do
+      it 'installs required packages' do
+        expect(chef_run).to install_package('libmysqlclient-dev')
+        expect(chef_run).to install_package('apache2')
+      end
+
+      it 'defines service which starts apache2' do
+        expect(chef_run).to start_service('apache2')
+      end
+
+      it 'enables necessary modules for apache2' do
+        expect(chef_run)
+          .to run_execute('a2enmod expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl')
+      end
+    end
+
+    context 'rhel' do
+      it 'installs required packages' do
+        expect(chef_run_rhel).to install_package('mysql-devel')
+        expect(chef_run_rhel).to install_package('httpd24')
+        expect(chef_run_rhel).to install_package('mod24_ssl')
+      end
+
+      it 'defines service which starts httpd' do
+        expect(chef_run_rhel).to start_service('httpd')
+      end
+
+      it 'creates sites-* directories' do
+        expect(chef_run_rhel).to create_directory('/etc/httpd/sites-available')
+        expect(chef_run_rhel).to create_directory('/etc/httpd/sites-enabled')
+        expect(chef_run_rhel)
+          .to run_execute('echo "IncludeOptional sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf')
+      end
     end
   end
 

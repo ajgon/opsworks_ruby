@@ -7,7 +7,8 @@ module Drivers
       output filter: [:log_requests, :preload_app, :thread_max, :thread_min, :timeout, :worker_processes]
 
       def add_appserver_config(context)
-        opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: globals[:environment] }
+        opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: globals[:environment],
+                 webserver: Drivers::Webserver::Factory.build(app, node).adapter }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'config', 'puma.rb')) do
           owner node['deployer']['user']

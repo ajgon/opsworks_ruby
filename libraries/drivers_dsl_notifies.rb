@@ -14,9 +14,22 @@ module Drivers
         end
       end
 
+      # rubocop:disable Metrics/LineLength
       def notifies
-        self.class.notifies.presence || (self.class.superclass.respond_to?(:notifies) && self.class.superclass.notifies)
+        notifier = self.class.notifies.presence || (self.class.superclass.respond_to?(:notifies) && self.class.superclass.notifies)
+        parsed_notifier = {}
+
+        notifier.each_pair do |action, options|
+          parsed_notifier[action] = options.map do |option|
+            option.merge(
+              resource: option[:resource].is_a?(Hash) ? option[:resource][node['platform_family'].to_sym] : option[:resource]
+            )
+          end
+        end
+
+        parsed_notifier
       end
+      # rubocop:enable Metrics/LineLength
     end
   end
 end

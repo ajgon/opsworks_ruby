@@ -70,19 +70,26 @@ default['defaults']['webserver']['adapter'] = 'nginx'
 default['defaults']['webserver']['ssl_for_legacy_browsers'] = false
 default['defaults']['webserver']['extra_config'] = ''
 default['defaults']['webserver']['extra_config_ssl'] = ''
+default['defaults']['webserver']['keepalive_timeout'] = '15'
+
+## apache2
+
+default['defaults']['webserver']['limit_request_body'] = '1048576'
+default['defaults']['webserver']['log_level'] = 'info'
+default['defaults']['webserver']['proxy_timeout'] = '60'
 
 ## nginx
 
+# These are parameters, directly for the `nginx` cookbook, not the `webserver` part!
+default['nginx']['build_type'] = 'default'
 default['nginx']['default_site_enabled'] = false
-default['defaults']['webserver']['build_type'] = 'default'
-default['nginx']['client_body_timeout'] = default['defaults']['webserver']['client_body_timeout'] = '12'
-default['nginx']['client_header_timeout'] = default['defaults']['webserver']['client_header_timeout'] = '12'
-default['nginx']['client_max_body_size'] = default['defaults']['webserver']['client_max_body_size'] = '10m'
-default['nginx']['keepalive_timeout'] = default['defaults']['webserver']['keepalive_timeout'] = '15'
-default['nginx']['log_dir'] = default['defaults']['webserver']['log_dir'] = '/var/log/nginx'
-default['nginx']['proxy_read_timeout'] = default['defaults']['webserver']['proxy_read_timeout'] = '60'
-default['nginx']['proxy_send_timeout'] = default['defaults']['webserver']['proxy_send_timeout'] = '60'
-default['nginx']['send_timeout'] = default['defaults']['webserver']['send_timeout'] = '10'
+default['nginx']['client_body_timeout'] = '12'
+default['nginx']['client_header_timeout'] = '12'
+default['nginx']['client_max_body_size'] = '10m'
+default['nginx']['log_dir'] = '/var/log/nginx'
+default['nginx']['proxy_read_timeout'] = '60'
+default['nginx']['proxy_send_timeout'] = '60'
+default['nginx']['send_timeout'] = '10'
 
 # framework
 ## common

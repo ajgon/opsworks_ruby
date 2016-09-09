@@ -43,69 +43,12 @@ module Drivers
       end
       alias before_undeploy before_deploy
 
-      private
-
-      def define_service(context, default_action = :nothing)
-        context.service 'nginx' do
-          supports status: true, restart: true, reload: true
-          action default_action
-        end
+      def conf_dir
+        File.join('/', 'etc', 'nginx')
       end
 
-      def add_ssl_directory(context)
-        context.directory '/etc/nginx/ssl' do
-          owner 'root'
-          group 'root'
-          mode '0700'
-        end
-      end
-
-      def add_ssl_item(context, name)
-        key_data = app[:ssl_configuration].try(:[], name)
-        return if key_data.blank?
-        extensions = { private_key: 'key', certificate: 'crt', chain: 'ca' }
-
-        context.template "/etc/nginx/ssl/#{app[:domains].first}.#{extensions[name]}" do
-          owner 'root'
-          group 'root'
-          mode name == :private_key ? '0600' : '0644'
-          source 'ssl_key.erb'
-          variables key_data: key_data
-        end
-      end
-
-      def add_dhparams(context)
-        dhparams = out[:dhparams]
-        return if dhparams.blank?
-
-        context.template "/etc/nginx/ssl/#{app[:domains].first}.dhparams.pem" do
-          owner 'root'
-          group 'root'
-          mode '0600'
-          source 'ssl_key.erb'
-          variables key_data: dhparams
-        end
-      end
-
-      def add_appserver_config(context)
-        opts = { application: app, deploy_dir: deploy_dir(app), out: out,
-                 name: Drivers::Appserver::Factory.build(app, node).adapter }
-        return unless Drivers::Appserver::Base.adapters.include?(opts[:name])
-
-        context.template "/etc/nginx/sites-available/#{app['shortname']}" do
-          owner 'root'
-          group 'root'
-          mode '0644'
-          source 'appserver.nginx.conf.erb'
-          variables opts
-        end
-      end
-
-      def enable_appserver_config(context)
-        application = app
-        context.link "/etc/nginx/sites-enabled/#{application['shortname']}" do
-          to "/etc/nginx/sites-available/#{application['shortname']}"
-        end
+      def service_name
+        'nginx'
       end
     end
   end

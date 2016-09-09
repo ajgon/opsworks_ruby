@@ -6,13 +6,6 @@ PreCommit:
     enabled: true
   BundleAudit:
     enabled: true
-    description: 'Run bundle-audit'
-    required_executable: './bin/bundle-audit'
-    flags: ['check', '--update']
-    install_command: 'gem install bundler-audit'
-    include:
-      - 'Gemfile'
-      - 'Gemfile.lock'
   BundleCheck:
     enabled: true
   CaseConflicts:

@@ -194,7 +194,7 @@ GEM
       plist (~> 3.1)
       systemu (~> 2.6.4)
       wmi-lite (~> 1.0)
-    overcommit (0.34.2)
+    overcommit (0.36.0)
       childprocess (~> 0.5.8)
       iniparse (~> 1.4)
     parser (2.3.1.2)

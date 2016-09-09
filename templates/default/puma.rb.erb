@@ -54,8 +54,11 @@ threads <%= @out[:thread_min] %>, <%= @out[:thread_max] %>
 # bind 'unix:///var/run/puma.sock'
 # bind 'unix:///var/run/puma.sock?umask=0777'
 # bind 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'
+<% if @webserver == 'apache2' %>
+bind "tcp://127.0.0.1:3000"
+<% else %>
 bind "unix://<%= @deploy_dir %>/shared/sockets/puma.sock"
-
+<% end %>
 # === Cluster mode ===
 # How many worker processes to run.
 # The default is "0".

@@ -67,6 +67,9 @@ describe 'opsworks_ruby::configure' do
     it 'creates proper unicorn.conf file' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
+        .with_content("listen \"/srv/www/#{aws_opsworks_app['shortname']}/shared/sockets/unicorn.sock\",")
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
         .with_content('worker_processes 4')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
@@ -106,42 +109,42 @@ describe 'opsworks_ruby::configure' do
 
     it 'creates nginx unicorn proxy handler config' do
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('upstream unicorn_dummy-project.example.com {')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('client_max_body_size 125m;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('client_body_timeout 30;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('keepalive_timeout 15;')
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('keepalive_timeout 65;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_ecdh_curve secp384r1;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_stapling on;')
       expect(chef_run)
-        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_session_tickets off;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config {}')
       expect(chef_run)
-        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config_ssl {}')
-      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
+      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
     end
 
     it 'enables ssl rules for legacy browsers in nginx config' do
@@ -151,7 +154,7 @@ describe 'opsworks_ruby::configure' do
         solo_node.set['deploy'] = deploy
         solo_node.set['nginx'] = node['nginx']
       end.converge(described_recipe)
-      expect(chef_run).to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}").with_content(
+      expect(chef_run).to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
         'ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:ECDHE-RSA-AES128-GCM-SHA384:' \
         'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA128:DHE-RSA-AES128-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:' \
         'DHE-RSA-AES128-GCM-SHA128:ECDHE-RSA-AES128-SHA384:ECDHE-RSA-AES128-SHA128:ECDHE-RSA-AES128-SHA:' \
@@ -160,7 +163,7 @@ describe 'opsworks_ruby::configure' do
         'AES128-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";'
       )
       expect(chef_run)
-        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_ecdh_curve secp384r1;')
     end
 
@@ -298,13 +301,14 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Mysql + Puma' do
+  context 'Mysql + Puma + Apache2' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        deploy['dummy_project']['webserver']['keepalive_timeout'] = '65'
         solo_node.set['deploy'] = deploy
-        solo_node.set['nginx'] = node['nginx']
       end.converge(described_recipe)
     end
 
@@ -326,6 +330,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
         .with_content('workers 4')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
+        .with_content('bind "tcp://127.0.0.1:3000"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
         .with_content('environment "staging"')
@@ -368,44 +375,97 @@ describe 'opsworks_ruby::configure' do
         .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service status"
     end
 
-    it 'creates nginx puma proxy handler config' do
+    it 'creates apache2 puma proxy handler config' do
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('upstream puma_dummy-project.example.com {')
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('<Proxy balancer://puma_dummy_project_example_com>')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('client_max_body_size 125m;')
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('LimitRequestBody 131072000')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('client_body_timeout 30;')
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('KeepAliveTimeout 65')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('keepalive_timeout 15;')
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('SSLCertificateKeyFile /etc/apache2/ssl/dummy-project.example.com.key')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('SSLOpenSSLConfCmd DHParameters "/etc/apache2/ssl/dummy-project.example.com.dhparams.pem"')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;')
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";')
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('SSLUseStapling on')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('ssl_ecdh_curve secp384r1;')
-      expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('ssl_stapling on;')
-      expect(chef_run)
-        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('ssl_session_tickets off;')
-      expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config {}')
       expect(chef_run)
-        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .not_to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config_ssl {}')
-      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
+      expect(chef_run).to create_link("/etc/apache2/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
+    end
+
+    it 'enables ssl rules for legacy browsers in apache2 config' do
+      chefrun = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['adapter'] = 'apache2'
+        deploy[aws_opsworks_app['shortname']]['webserver']['ssl_for_legacy_browsers'] = true
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+
+      expect(chefrun).to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        'SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:ECDHE-RSA-AES128-GCM-SHA384:' \
+        'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA128:DHE-RSA-AES128-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:' \
+        'DHE-RSA-AES128-GCM-SHA128:ECDHE-RSA-AES128-SHA384:ECDHE-RSA-AES128-SHA128:ECDHE-RSA-AES128-SHA:' \
+        'ECDHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA128:DHE-RSA-AES128-SHA128:DHE-RSA-AES128-SHA:DHE-RSA-AES128-SHA:' \
+        'ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA384:AES128-GCM-SHA128:AES128-SHA128:AES128-SHA128:' \
+        'AES128-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4'
+      )
+    end
+
+    it 'creates SSL keys for apache2' do
+      expect(chef_run).to create_directory('/etc/apache2/ssl')
+      expect(chef_run)
+        .to render_file("/etc/apache2/ssl/#{aws_opsworks_app['domains'].first}.key")
+        .with_content('--- SSL PRIVATE KEY ---')
+      expect(chef_run)
+        .to render_file("/etc/apache2/ssl/#{aws_opsworks_app['domains'].first}.crt")
+        .with_content('--- SSL CERTIFICATE ---')
+      expect(chef_run)
+        .to render_file("/etc/apache2/ssl/#{aws_opsworks_app['domains'].first}.ca")
+        .with_content('--- SSL CERTIFICATE CHAIN ---')
+      expect(chef_run)
+        .to render_file("/etc/apache2/ssl/#{aws_opsworks_app['domains'].first}.dhparams.pem")
+        .with_content('--- DH PARAMS ---')
+    end
+
+    it 'cleans default sites' do
+      expect(chef_run).to run_execute('find /etc/apache2/sites-enabled -maxdepth 1 -mindepth 1 -exec rm -rf {} \;')
+    end
+
+    context 'rhel' do
+      let(:chef_run_rhel) do
+        ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          deploy = node['deploy']
+          deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+          solo_node.set['deploy'] = deploy
+        end.converge(described_recipe)
+      end
+
+      it 'renders apache2 configuration files in proper place' do
+        expect(chef_run_rhel).to render_file("/etc/httpd/ssl/#{aws_opsworks_app['domains'].first}.key")
+        expect(chef_run_rhel).to render_file("/etc/httpd/ssl/#{aws_opsworks_app['domains'].first}.crt")
+        expect(chef_run_rhel).to render_file("/etc/httpd/ssl/#{aws_opsworks_app['domains'].first}.ca")
+        expect(chef_run_rhel).to render_file("/etc/httpd/ssl/#{aws_opsworks_app['domains'].first}.dhparams.pem")
+        expect(chef_run_rhel).to render_file("/etc/httpd/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        expect(chef_run_rhel).to create_directory('/etc/httpd/ssl')
+        expect(chef_run_rhel).to create_link("/etc/httpd/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
+      end
+
+      it 'cleans default sites' do
+        expect(chef_run_rhel).to run_execute('find /etc/httpd/sites-enabled -maxdepth 1 -mindepth 1 -exec rm -rf {} \;')
+      end
     end
   end
 
@@ -450,6 +510,9 @@ describe 'opsworks_ruby::configure' do
         .with_content('servers: 4')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content("socket: \"/srv/www/#{aws_opsworks_app['shortname']}/shared/sockets/thin.sock\"")
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
         .with_content('environment: "staging"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
@@ -492,42 +555,42 @@ describe 'opsworks_ruby::configure' do
 
     it 'creates nginx thin proxy handler config' do
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('upstream thin_dummy-project.example.com {')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('client_max_body_size 125m;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('client_body_timeout 30;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
-        .with_content('keepalive_timeout 15;')
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('keepalive_timeout 65;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_ecdh_curve secp384r1;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_stapling on;')
       expect(chef_run)
-        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('ssl_session_tickets off;')
       expect(chef_run)
-        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config {}')
       expect(chef_run)
-        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}")
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config_ssl {}')
-      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}")
+      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
     end
   end
 

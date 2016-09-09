@@ -32,6 +32,7 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
   * Unicorn
 * Web server
   * Null (no webserver)
+  * Apache2
   * nginx
 * Worker
   * Null (no worker)
@@ -41,7 +42,6 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 
 ### Cookbooks
 
-* [build-essential (~> 2.0)](https://supermarket.chef.io/cookbooks/build-essential)
 * [deployer](https://supermarket.chef.io/cookbooks/deployer)
 * [ruby-ng](https://supermarket.chef.io/cookbooks/ruby-ng)
 * [nginx (~> 2.7)](https://supermarket.chef.io/cookbooks/nginx)
@@ -234,14 +234,49 @@ and `Puma` are supported.
 ### webserver
 
 Webserver configuration. Proxy passing to application is handled out-of-the-box.
-Currently only nginx is supported.
+Currently Apache2 and nginx is supported.
 
 * `app['webserver']['adapter']`
   * **Default:** `nginx`
-  * **Supported values:** `nginx`, `null`
+  * **Supported values:** `apache2`, `nginx`, `null`
   * Webserver in front of the instance. It runs on port 80,
     and receives all requests from Load Balancer/Internet.
     `null` means no webserver enabled.
+* `app['webserver']['dhparams']`
+  * If you wish to use custom generated DH primes, instead of common ones
+    (which is a very good practice), put the contents (not file name) of the
+    `dhparams.pem` file into this attribute. [Read more here.](https://weakdh.org/sysadmin.html)
+* `app['webserver']['ssl_for_legacy_browsers']`
+  * **Supported values:** `true`, `false`
+  * **Default:** `false`
+  * By default webserver is configured to follow strict SSL security standards,
+    [covered in this article](https://cipherli.st/). However, old browsers
+    (like IE < 9 or Android < 2.2) wouldn't work with this configuration very
+    well. If your application needs a support for those browsers, set this
+    parameter to `true`.
+
+#### apache
+
+* `app['webserver']['extra_config']`
+  * Raw Apache2 configuration, which will be inserted into `<Virtualhost *:80>`
+    section of the application.
+* `app['webserver']['extra_config_ssl']`
+  * Raw Apache2 configuration, which will be inserted into `<Virtualhost *:443>`
+    section of the application. If set to `true`, the `extra_config` will be copied.
+* [`app['webserver']['limit_request_body']`](https://httpd.apache.org/docs/2.4/mod/core.html#limitrequestbody)
+  * **Default**: `1048576`
+* [`app['webserver']['keepalive_timeout']`](https://httpd.apache.org/docs/2.4/mod/core.html#keepalivetimeout)
+  * **Default**: `15`
+* [`app['webserver']['log_level']`](https://httpd.apache.org/docs/2.4/mod/core.html#loglevel)
+  * **Default**: `info`
+* `app['webserver']['log_dir']`
+  * **Default**: `/var/log/apache2` (debian) or `/var/log/httpd` (rhel)
+  * A place to store application-related Apache2 logs.
+* [`app['webserver']['proxy_timeout']`](https://httpd.apache.org/docs/current/mod/mod_proxy.html#proxytimeout)
+  * **Default**: `60`
+
+#### nginx
+
 * `app['webserver']['build_type']`
   * **Supported values:** `default` or `source`
   * **Default:** `default`
@@ -255,35 +290,23 @@ Currently only nginx is supported.
   * **Default:** `12`
 * [`app['webserver']['client_max_body_size']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size)
   * **Default:** `10m`
-* `app['webserver']['dhparams']`
-  * If you wish to use custom generated DH primes, instead of common ones
-    (which is a very good practice), put the contents (not file name) of the
-    `dhparams.pem` file into this attribute. [Read more here.](https://weakdh.org/sysadmin.html)
 * `app['webserver']['extra_config']`
   * Raw nginx configuration, which will be inserted into `server` section of the
     application for HTTP port.
 * `app['webserver']['extra_config_ssl']`
   * Raw nginx configuration, which will be inserted into `server` section of the
     application for HTTPS port. If set to `true`, the `extra_config` will be copied.
-* [`app['webserver']['keepalive_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#keepalive_timeout)
-  * **Default**: `15`
 * `app['webserver']['log_dir']`
   * **Default**: `/var/log/nginx`
   * A place to store application-related nginx logs.
+* [`app['webserver']['keepalive_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#keepalive_timeout)
+  * **Default**: `15`
 * [`app['webserver']['proxy_read_timeout']`](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_read_timeout)
   * **Default**: `60`
 * [`app['webserver']['proxy_send_timeout']`](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_send_timeout)
   * **Default**: `60`
 * [`app['webserver']['send_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#send_timeout)
   * **Default**: `10`
-* `app['webserver']['ssl_for_legacy_browsers']`
-  * **Supported values:** `true`, `false`
-  * **Default:** `false`
-  * By default nginx is configured to follow strict SSL security standards,
-    [covered in this article](https://cipherli.st/). However, old browsers
-    (like IE < 9 or Android < 2.2) wouldn't work with this configuration very
-    well. If your application needs a support for those browsers, set this
-    parameter to `true`.
 
 Since this driver is basically a wrapper for [nginx cookbook](https://github.com/miketheman/nginx/tree/2.7.x),
 you can also configure [`node['nginx']` attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)

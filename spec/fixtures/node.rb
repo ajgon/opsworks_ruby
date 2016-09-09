@@ -42,6 +42,7 @@ def node(override = {})
         webserver: {
           adapter: 'nginx',
           client_max_body_size: '125m',
+          limit_request_body: '131072000',
           dhparams: '--- DH PARAMS ---',
           extra_config: 'extra_config {}'
         },
@@ -79,7 +80,7 @@ def node(override = {})
       },
       webserver: {
         adapter: 'nginx',
-        keepalive_timeout: '15',
+        keepalive_timeout: '65',
         extra_config_ssl: 'extra_config_ssl {}'
       },
       framework: {
