@@ -1,0 +1,8 @@
+Rails.application.class.send(:define_method, :load_console) do |app = Rails.application|
+
+<% @environment.each do |key, value| %>
+  ENV['<%= key.to_s %>'] = "<%= value.to_s %>"
+<% end %>
+
+  super(app)
+end

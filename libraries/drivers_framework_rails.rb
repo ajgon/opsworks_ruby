@@ -5,7 +5,8 @@ module Drivers
       adapter :rails
       allowed_engines :rails
       output filter: [
-        :migrate, :migration_command, :deploy_environment, :assets_precompile, :assets_precompilation_command
+        :migrate, :migration_command, :deploy_environment, :assets_precompile, :assets_precompilation_command,
+        :envs_in_console
       ]
       packages debian: 'zlib1g-dev', rhel: 'zlib-devel'
 
@@ -25,6 +26,23 @@ module Drivers
           group www_group
           environment env
         end if out[:assets_precompile]
+      end
+
+      def deploy_after_restart(context)
+        setup_rails_console(context)
+      end
+
+      def setup_rails_console(context)
+        return unless out[:envs_in_console]
+        deploy_to = deploy_dir(app)
+        env = environment
+
+        context.template File.join(deploy_to, 'current', 'config', 'initializers', '000_console.rb') do
+          owner node['deployer']['user']
+          group www_group
+          source 'rails_console_overload.rb.erb'
+          variables environment: env
+        end
       end
 
       def environment

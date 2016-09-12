@@ -157,6 +157,11 @@ Currently only `Rails` is supported.
   * **Default:** `true`
 * `app['framework']['assets_precompilation_command']`
   * A command which will be invoked to precompile assets.
+* `app['framework']['envs_in_console']`
+  * **Supported values:** `true`, `false`
+  * **Default:** `false`
+  * If set to true, `rails console` will be invoked with all application-level
+    environment variables set.
 
 ### appserver
 

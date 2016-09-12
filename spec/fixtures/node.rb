@@ -48,7 +48,8 @@ def node(override = {})
         },
         framework: {
           adapter: 'rails',
-          migrate: false
+          migrate: false,
+          envs_in_console: true
         },
         worker: {
           adapter: 'sidekiq',
