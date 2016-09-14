@@ -122,3 +122,8 @@ default['monit']['basedir'] = if platform?('centos', 'redhat', 'fedora', 'amazon
 ## sidekiq
 
 default['defaults']['worker']['config'] = { 'concurrency' => 5, 'verbose' => false, 'queues' => ['default'] }
+
+## resque
+
+default['defaults']['worker']['queues'] = '*'
+default['defaults']['worker']['workers'] = 2

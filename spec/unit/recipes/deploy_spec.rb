@@ -70,12 +70,13 @@ describe 'opsworks_ruby::deploy' do
     end
   end
 
-  context 'Puma + Apache' do
+  context 'Puma + Apache + resque' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
@@ -84,6 +85,7 @@ describe 'opsworks_ruby::deploy' do
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
@@ -102,6 +104,12 @@ describe 'opsworks_ruby::deploy' do
       expect(deploy_rhel).to notify('service[httpd]').to(:restart).delayed
       expect(chef_run_rhel).to run_execute('stop puma')
       expect(chef_run_rhel).to run_execute('start puma')
+    end
+
+    it 'restarts resques via monit' do
+      expect(chef_run).to run_execute('monit reload')
+      expect(chef_run).to run_execute("monit restart resque_#{aws_opsworks_app['shortname']}-1")
+      expect(chef_run).to run_execute("monit restart resque_#{aws_opsworks_app['shortname']}-2")
     end
   end
 

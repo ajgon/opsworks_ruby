@@ -129,12 +129,19 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
-  context 'Postgresql + git + nginx' do
+  context 'epel' do
+    it 'rhel' do
+      expect(chef_run_rhel).to run_execute('yum-config-manager --enable epel')
+    end
+  end
+
+  context 'Postgresql + git + nginx + sidekiq' do
     it 'installs required packages for debian' do
       expect(chef_run).to install_package('nginx')
       expect(chef_run).to install_package('zlib1g-dev')
       expect(chef_run).to install_package('git')
       expect(chef_run).to install_package('libpq-dev')
+      expect(chef_run).to install_package('redis-server')
     end
 
     it 'installs required packages for rhel' do
@@ -142,6 +149,7 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run_rhel).to install_package('zlib-devel')
       expect(chef_run_rhel).to install_package('git')
       expect(chef_run_rhel).to install_package('postgresql94-devel')
+      expect(chef_run_rhel).to install_package('redis')
     end
 
     it 'defines service which starts nginx' do
@@ -149,7 +157,7 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
-  context 'Mysql + apache2' do
+  context 'Mysql + apache2 + resque' do
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
     end
@@ -158,6 +166,7 @@ describe 'opsworks_ruby::setup' do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
@@ -166,6 +175,7 @@ describe 'opsworks_ruby::setup' do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
@@ -174,6 +184,7 @@ describe 'opsworks_ruby::setup' do
       it 'installs required packages' do
         expect(chef_run).to install_package('libmysqlclient-dev')
         expect(chef_run).to install_package('apache2')
+        expect(chef_run).to install_package('redis-server')
       end
 
       it 'defines service which starts apache2' do
@@ -191,6 +202,7 @@ describe 'opsworks_ruby::setup' do
         expect(chef_run_rhel).to install_package('mysql-devel')
         expect(chef_run_rhel).to install_package('httpd24')
         expect(chef_run_rhel).to install_package('mod24_ssl')
+        expect(chef_run_rhel).to install_package('redis')
       end
 
       it 'defines service which starts httpd' do

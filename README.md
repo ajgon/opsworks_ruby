@@ -38,6 +38,7 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 * Worker
   * Null (no worker)
   * sidekiq
+  * resque
 
 ## Requirements
 
@@ -321,12 +322,12 @@ apply here.)
 
 ### worker
 
-Configuration for ruby workers. Currenty `Null` (no worker) and `Sidekiq`
+Configuration for ruby workers. Currenty `Resque` and `Sidekiq`
 are supported. Every worker is covered by `monitd` daemon out-of-the-box.
 
 * `app['worker']['adapter']`
   * **Default:** `null`
-  * **Supported values:** `null`, `sidekiq`
+  * **Supported values:** `null`, `resque`, `sidekiq`
   * Worker used to perform background tasks. `null` means no worker enabled.
 * `app['worker']['process_count']`
   * ** Default:** `2`
@@ -335,10 +336,22 @@ are supported. Every worker is covered by `monitd` daemon out-of-the-box.
   * **Default:** `true`
   * **Supported values:** `true`, `false`
   * Log worker output to syslog?
+
+#### sidekiq
+
 * `app['worker']['config']`
   * Configuration parameters which will be directly passed to the worker.
     For example, for `sidekiq` they will be serialized to
     [`sidekiq.yml` config file](https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file).
+
+#### resque
+
+* `app['worker']['workers']`
+  * **Default:** `2`
+  * Number of resque workers
+* `app['worker']['queues']`
+  * **Default:** `*`
+  * Array of queues which should be processed by resque
 
 ## Recipes
 

@@ -27,6 +27,9 @@ else
     to '/usr/local/bin/bundler'
   end
 end
+
+execute 'yum-config-manager --enable epel' if node['platform_family'] == 'rhel'
+
 every_enabled_application do |application, _deploy|
   databases = []
   every_enabled_rds do |rds|

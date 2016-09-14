@@ -194,6 +194,7 @@ describe 'opsworks_ruby::configure' do
 
     context 'rhel' do
       it 'creates sidekiq.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('check process sidekiq_dummy_project-1')
@@ -248,6 +249,7 @@ describe 'opsworks_ruby::configure' do
 
     context 'debian' do
       it 'creates sidekiq.monitrc conf' do
+        expect(chef_run).to create_template("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('check process sidekiq_dummy_project-1')
@@ -301,13 +303,14 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Mysql + Puma + Apache2' do
+  context 'Mysql + Puma + Apache2 + resque' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['webserver']['keepalive_timeout'] = '65'
+        deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
@@ -444,13 +447,116 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run).to run_execute('find /etc/apache2/sites-enabled -maxdepth 1 -mindepth 1 -exec rm -rf {} \;')
     end
 
+    it 'creates resque.monitrc conf' do
+      expect(chef_run).to create_template("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process resque_dummy_project-1')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+          'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid COUNT=2 ' \
+          'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop  program = "/bin/su - deploy -c ' \
+          '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid`\'' \
+          '" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process resque_dummy_project-2')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+          'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid COUNT=2 ' \
+          'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop  program = "/bin/su - deploy -c ' \
+          '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid`\'' \
+          '" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('group resque_dummy_project_group')
+    end
+
     context 'rhel' do
       let(:chef_run_rhel) do
         ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
           deploy = node['deploy']
+          deploy['dummy_project']['appserver']['adapter'] = 'puma'
           deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+          deploy['dummy_project']['webserver']['keepalive_timeout'] = '65'
+          deploy['dummy_project']['worker']['adapter'] = 'resque'
           solo_node.set['deploy'] = deploy
         end.converge(described_recipe)
+      end
+
+      it 'creates resque.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process resque_dummy_project-1')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+            'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid COUNT=2 ' \
+            'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" ' \
+            'with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop  program = "/bin/su - deploy -c ' \
+            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid`\'' \
+            '" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process resque_dummy_project-2')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+            'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid COUNT=2 ' \
+            'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" ' \
+            'with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop  program = "/bin/su - deploy -c ' \
+            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid`\'' \
+            '" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group resque_dummy_project_group')
       end
 
       it 'renders apache2 configuration files in proper place' do

@@ -53,7 +53,8 @@ def node(override = {})
         },
         worker: {
           adapter: 'sidekiq',
-          require: 'lorem_ipsum.rb'
+          require: 'lorem_ipsum.rb',
+          queues: 'test_queue'
         },
         create_dirs_before_symlink: %(../shared/test),
         purge_before_symlink: %w(public/test),
