@@ -18,7 +18,6 @@ module Drivers
             retries 3
           end
         end
-        context.execute 'monit reload'
       end
       alias after_undeploy after_deploy
 
@@ -49,6 +48,8 @@ module Drivers
           source 'sidekiq.monitrc.erb'
           variables application: app_shortname, out: output, deploy_to: deploy_to, environment: env
         end
+
+        context.execute 'monit reload'
       end
 
       def process_count

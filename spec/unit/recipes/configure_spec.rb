@@ -244,6 +244,7 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group sidekiq_dummy_project_group')
+        expect(chef_run_rhel).to run_execute('monit reload')
       end
     end
 
@@ -299,6 +300,7 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group sidekiq_dummy_project_group')
+        expect(chef_run).to run_execute('monit reload')
       end
     end
   end
@@ -494,6 +496,7 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content('group resque_dummy_project_group')
+      expect(chef_run).to run_execute('monit reload')
     end
 
     context 'rhel' do
@@ -557,6 +560,7 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group resque_dummy_project_group')
+        expect(chef_run_rhel).to run_execute('monit reload')
       end
 
       it 'renders apache2 configuration files in proper place' do
