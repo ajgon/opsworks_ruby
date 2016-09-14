@@ -171,7 +171,7 @@ Configuration parameters for the ruby application server. Currently `Puma`,
 `Thin` and `Unicorn` are supported.
 
 * `app['appserver']['adapter']`
-  * **Default:** `unicorn`
+  * **Default:** `puma`
   * **Supported values:** `puma`, `thin`, `unicorn`, `null`
   * Server on the application side, which will receive requests from webserver
     in front. `null` means no appserver enabled.

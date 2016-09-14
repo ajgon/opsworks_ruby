@@ -37,7 +37,7 @@ default['defaults']['scm']['remove_scm_files'] = true
 # appserver
 ## common
 
-default['defaults']['appserver']['adapter'] = 'unicorn'
+default['defaults']['appserver']['adapter'] = 'puma'
 default['defaults']['appserver']['application_yml'] = false
 default['defaults']['appserver']['dot_env'] = false
 default['defaults']['appserver']['preload_app'] = true
@@ -51,6 +51,7 @@ default['defaults']['appserver']['thread_min'] = 0
 default['defaults']['appserver']['thread_max'] = 16
 
 ## thin
+
 default['defaults']['appserver']['max_connections'] = 1024
 default['defaults']['appserver']['max_persistent_connections'] = 512
 
