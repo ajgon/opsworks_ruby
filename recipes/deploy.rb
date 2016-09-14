@@ -26,7 +26,7 @@ every_enabled_application do |application, deploy|
     user node['deployer']['user'] || 'root'
     group www_group
     rollback_on_error true
-    environment application['environment'].merge(framework.out[:deploy_environment])
+    environment application['environment'].merge(framework.out[:deploy_environment] || {})
 
     keep_releases deploy[:keep_releases]
     create_dirs_before_symlink(
@@ -50,7 +50,7 @@ every_enabled_application do |application, deploy|
       end
     end
 
-    migration_command(framework.out[:migration_command])
+    migration_command(framework.out[:migration_command]) if framework.out[:migration_command]
     migrate framework.out[:migrate]
     before_migrate do
       perform_bundle_install(shared_path, bundle_env)

@@ -24,6 +24,7 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 * SCM
   * git
 * Framework
+  * Null (no framework)
   * Ruby on Rails
 * App server
   * Null (no appserver)
@@ -141,7 +142,7 @@ Pre-optimalization for specific frameworks (like migrations, cache etc.).
 Currently only `Rails` is supported.
 
 * `app['framework']['adapter']`
-  * **Supported values:** `rails`
+  * **Supported values:** `null`, `rails`
   * **Default:** `rails`
   * Ruby framework used in project.
 * `app['framework']['migrate']`
