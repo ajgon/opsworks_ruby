@@ -167,8 +167,8 @@ Currently only `Rails` is supported.
 
 ### appserver
 
-Configuration parameters for the ruby application server. Currently `Unicorn`
-and `Puma` are supported.
+Configuration parameters for the ruby application server. Currently `Puma`,
+`Thin` and `Unicorn` are supported.
 
 * `app['appserver']['adapter']`
   * **Default:** `unicorn`
