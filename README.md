@@ -25,6 +25,7 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
   * git
 * Framework
   * Null (no framework)
+  * hanami.rb
   * Ruby on Rails
 * App server
   * Null (no appserver)
@@ -141,7 +142,7 @@ you don't need to provide them here. Currently only `git` is supported.
 ### framework
 
 Pre-optimalization for specific frameworks (like migrations, cache etc.).
-Currently only `Rails` is supported.
+Currently `hanami.rb` and `Rails` are supported.
 
 * `app['framework']['adapter']`
   * **Supported values:** `null`, `rails`
@@ -160,6 +161,9 @@ Currently only `Rails` is supported.
   * **Default:** `true`
 * `app['framework']['assets_precompilation_command']`
   * A command which will be invoked to precompile assets.
+
+#### rails
+
 * `app['framework']['envs_in_console']`
   * **Supported values:** `true`, `false`
   * **Default:** `false`

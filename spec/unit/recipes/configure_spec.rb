@@ -54,7 +54,7 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
+  context 'Postgresql + Git + Unicorn + Nginx + Rails + Sidekiq' do
     it 'creates proper database.yml template' do
       db_config = Drivers::Db::Postgresql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance).out
       expect(db_config[:adapter]).to eq 'postgresql'
@@ -77,6 +77,9 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper unicorn.service file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
+        .with_content('ENV[\'RAILS_ENV\'] = "staging"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
         .with_content('ENV[\'ENV_VAR1\'] = "test"')
@@ -305,13 +308,14 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Mysql + Puma + Apache2 + resque' do
+  context 'Mysql + Puma + Apache2 + hanami.rb + resque' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['webserver']['keepalive_timeout'] = '65'
+        deploy['dummy_project']['framework']['adapter'] = 'hanami'
         deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
@@ -321,13 +325,24 @@ describe 'opsworks_ruby::configure' do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
     end
 
-    it 'creates proper database.yml template' do
+    it 'creates proper .env.*' do
       db_config = Drivers::Db::Mysql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance(engine: 'mysql')).out
       expect(db_config[:adapter]).to eq 'mysql2'
 
       expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
-          JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/.env.staging")
+        .with_content('ENV_VAR1="test"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/.env.staging")
+        .with_content('ENV_VAR2="some data"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/.env.staging")
+        .with_content('HANAMI_ENV="staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/.env.staging")
+        .with_content(
+          "DATABASE_URL=\"mysql2://dbuser:#{db_config[:password]}@" \
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb"'
         )
     end
 
@@ -352,7 +367,16 @@ describe 'opsworks_ruby::configure' do
     it 'creates proper puma.service file' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
+        .with_content('ENV[\'HANAMI_ENV\'] = "staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
         .with_content('ENV[\'ENV_VAR1\'] = "test"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
+        .with_content(
+          'ENV[\'DATABASE_URL\'] = "mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb"'
+        )
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
         .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
@@ -461,7 +485,8 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+          'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" QUEUE=test_queue VERBOSE=1 ' \
           'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid COUNT=2 ' \
           'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" with timeout 90 seconds'
         )
@@ -482,7 +507,8 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+          'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" QUEUE=test_queue VERBOSE=1 ' \
           'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid COUNT=2 ' \
           'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" with timeout 90 seconds'
         )
@@ -506,6 +532,7 @@ describe 'opsworks_ruby::configure' do
           deploy['dummy_project']['appserver']['adapter'] = 'puma'
           deploy['dummy_project']['webserver']['adapter'] = 'apache2'
           deploy['dummy_project']['webserver']['keepalive_timeout'] = '65'
+          deploy['dummy_project']['framework']['adapter'] = 'hanami'
           deploy['dummy_project']['worker']['adapter'] = 'resque'
           solo_node.set['deploy'] = deploy
         end.converge(described_recipe)
@@ -523,7 +550,8 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+            'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
+            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" QUEUE=test_queue VERBOSE=1 ' \
             'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid COUNT=2 ' \
             'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" ' \
             'with timeout 90 seconds'
@@ -545,7 +573,8 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" QUEUE=test_queue VERBOSE=1 ' \
+            'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
+            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" QUEUE=test_queue VERBOSE=1 ' \
             'PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid COUNT=2 ' \
             'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" ' \
             'with timeout 90 seconds'

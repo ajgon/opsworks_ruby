@@ -11,9 +11,9 @@ every_enabled_application do |application, deploy|
   end
 
   scm = Drivers::Scm::Factory.build(application, node)
-  framework = Drivers::Framework::Factory.build(application, node)
+  framework = Drivers::Framework::Factory.build(application, node, databases: databases)
   appserver = Drivers::Appserver::Factory.build(application, node)
-  worker = Drivers::Worker::Factory.build(application, node)
+  worker = Drivers::Worker::Factory.build(application, node, databases: databases)
   webserver = Drivers::Webserver::Factory.build(application, node)
   bundle_env = scm.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => scm.out[:ssh_wrapper] } : {}
 

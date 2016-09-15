@@ -59,7 +59,7 @@ module Drivers
 
       def add_appserver_service_script(context)
         opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], deploy_env: globals[:environment],
-                 name: adapter, command: appserver_command(context), environment: app['environment'] }
+                 name: adapter, command: appserver_command(context), environment: environment }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'scripts', "#{opts[:name]}.service")) do
           owner node['deployer']['user']
@@ -96,13 +96,13 @@ module Drivers
       # rubocop:disable Metrics/MethodLength
       def env_config(context, options = { source_file: nil, destination_file: nil })
         deploy_to = deploy_dir(app)
-        environment = app['environment']
+        env = environment
 
         context.template File.join(deploy_to, 'shared', options[:source_file]) do
           owner node['deployer']['user']
           group www_group
           source "#{File.basename(options[:source_file])}.erb"
-          variables environment: environment
+          variables environment: env
         end
 
         context.link File.join(deploy_to, 'current', options[:destination_file]) do
@@ -110,6 +110,11 @@ module Drivers
         end
       end
       # rubocop:enable Metrics/MethodLength
+
+      def environment
+        framework = Drivers::Framework::Factory.build(app, node, options)
+        app['environment'].merge(framework.out[:deploy_environment] || {})
+      end
     end
   end
 end

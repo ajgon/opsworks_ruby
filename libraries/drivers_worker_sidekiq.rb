@@ -57,7 +57,7 @@ module Drivers
       end
 
       def environment
-        framework = Drivers::Framework::Factory.build(app, node)
+        framework = Drivers::Framework::Factory.build(app, node, options)
         app['environment'].merge(framework.out[:deploy_environment] || {})
       end
 
