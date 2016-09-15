@@ -588,6 +588,7 @@ describe 'opsworks_ruby::configure' do
             environment: 'staging',
             appserver: node['deploy']['dummy_project']['appserver'].merge('adapter' => 'thin'),
             webserver: node['deploy']['dummy_project']['webserver'],
+            framework: node['deploy']['dummy_project']['framework'],
             worker: node['deploy']['dummy_project']['worker'].merge('adapter' => 'delayed_job')
           }
         }
@@ -824,7 +825,8 @@ describe 'opsworks_ruby::configure' do
                  host: 'dummy-project.936.us-west-2.rds.amazon.com',
                  database: 'database_936'
                },
-               environment: 'staging'
+               environment: 'staging',
+               framework: { adapter: 'rails' }
              }
            })
     end

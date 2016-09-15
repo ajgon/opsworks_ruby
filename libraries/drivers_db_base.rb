@@ -18,21 +18,6 @@ module Drivers
       end
 
       # rubocop:disable Metrics/AbcSize
-      def configure(context)
-        return unless applicable_for_configuration?
-
-        database = out
-        deploy_env = globals[:environment]
-
-        context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do
-          source 'database.yml.erb'
-          mode '0660'
-          owner node['deployer']['user'] || 'root'
-          group www_group
-          variables(database: database, environment: deploy_env)
-        end
-      end
-
       def out
         if configuration_data_source == :node_engine
           return out_defaults.merge(
@@ -52,6 +37,11 @@ module Drivers
         defaults.merge(base).merge(adapter: adapter)
       end
 
+      def applicable_for_configuration?
+        configuration_data_source == :node_engine || app['data_sources'].first.blank? || options[:rds].blank? ||
+          app['data_sources'].first['arn'] == options[:rds]['rds_db_instance_arn']
+      end
+
       protected
 
       def app_engine
@@ -61,13 +51,6 @@ module Drivers
       def node_engine
         node['deploy'][app['shortname']]['database'].try(:[], 'adapter') ||
           node['defaults'].try(:[], 'database').try(:[], 'adapter')
-      end
-
-      private
-
-      def applicable_for_configuration?
-        configuration_data_source == :node_engine || app['data_sources'].first.blank? || options[:rds].blank? ||
-          app['data_sources'].first['arn'] == options[:rds]['rds_db_instance_arn']
       end
     end
   end

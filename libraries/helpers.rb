@@ -59,8 +59,9 @@ def every_enabled_application
   end
 end
 
-def every_enabled_rds
-  rdses.each do |rds|
+def every_enabled_rds(application)
+  data = rdses.presence || [Drivers::Db::Factory.build(application, node)]
+  data.each do |rds|
     yield rds
   end
 end
