@@ -1,0 +1,13 @@
+<% ([@out[:process_count].to_i || 1].max).times do |n| %>
+  <% identifier = "#{@application}-#{n+1}" %>
+  <% pid_dir = "#{@deploy_to}/shared/pids/" %>
+  <% syslog = !!@out[:syslog] ? "2>&1 | logger -t delayed_job-#{identifier}" : '' %>
+  <% queues = @out[:queues].present? ? '--queues=' + Array.wrap(@out[:queues]).join(',') : '' %>
+
+check process delayed_job_<%= identifier.to_s %>
+  with pidfile <%= pid_dir.to_s %>delayed_job.<%= n %>.pid
+  start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %> bin/delayed_job start --pid-dir=<%= pid_dir.to_s %> -i <%= n %> <%= queues.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
+  stop  program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %> bin/delayed_job stop --pid-dir=<%= pid_dir.to_s %> -i <%= n %>'" with timeout 90 seconds
+  group delayed_job_<%= @application.to_s %>_group
+
+<% end %>

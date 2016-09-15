@@ -37,8 +37,9 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
   * nginx
 * Worker
   * Null (no worker)
-  * sidekiq
+  * delayed_job
   * resque
+  * sidekiq
 
 ## Requirements
 
@@ -322,12 +323,12 @@ apply here.)
 
 ### worker
 
-Configuration for ruby workers. Currenty `Resque` and `Sidekiq`
+Configuration for ruby workers. Currenty `delayed_job`, `Resque` and `Sidekiq`
 are supported. Every worker is covered by `monitd` daemon out-of-the-box.
 
 * `app['worker']['adapter']`
   * **Default:** `null`
-  * **Supported values:** `null`, `resque`, `sidekiq`
+  * **Supported values:** `null`, `delayed_job`, `resque`, `sidekiq`
   * Worker used to perform background tasks. `null` means no worker enabled.
 * `app['worker']['process_count']`
   * ** Default:** `2`
@@ -343,6 +344,11 @@ are supported. Every worker is covered by `monitd` daemon out-of-the-box.
   * Configuration parameters which will be directly passed to the worker.
     For example, for `sidekiq` they will be serialized to
     [`sidekiq.yml` config file](https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file).
+
+#### delayed_job
+
+* `app['worker']['queues']`
+  * Array of queues which should be processed by delayed_job
 
 #### resque
 

@@ -579,7 +579,7 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Sqlite3 + Thin' do
+  context 'Sqlite3 + Thin + delayed_job' do
     let(:dummy_node) do
       node(
         deploy: {
@@ -587,13 +587,20 @@ describe 'opsworks_ruby::configure' do
             database: { adapter: 'sqlite3' },
             environment: 'staging',
             appserver: node['deploy']['dummy_project']['appserver'].merge('adapter' => 'thin'),
-            webserver: node['deploy']['dummy_project']['webserver']
+            webserver: node['deploy']['dummy_project']['webserver'],
+            worker: node['deploy']['dummy_project']['worker'].merge('adapter' => 'delayed_job')
           }
         }
       )
     end
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = dummy_node['deploy']
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+    end
+    let(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
         solo_node.set['deploy'] = dummy_node['deploy']
         solo_node.set['nginx'] = node['nginx']
       end.converge(described_recipe)
@@ -701,6 +708,108 @@ describe 'opsworks_ruby::configure' do
         .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config_ssl {}')
       expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
+    end
+
+    it 'creates delayed_job.monitrc conf' do
+      expect(chef_run).to create_template("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process delayed_job_dummy_project-1')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.0.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
+          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 --queues=test_queue 2>&1 ' \
+          '| logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
+          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process delayed_job_dummy_project-2')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.1.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
+          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 --queues=test_queue 2>&1 ' \
+          '| logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
+          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('group delayed_job_dummy_project_group')
+      expect(chef_run).to run_execute('monit reload')
+    end
+
+    context 'rhel' do
+      it 'creates delayed_job.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process delayed_job_dummy_project-1')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.0.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
+            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 --queues=test_queue 2>&1 ' \
+            '| logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
+            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process delayed_job_dummy_project-2')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.1.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
+            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 --queues=test_queue 2>&1 ' \
+            '| logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
+            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group delayed_job_dummy_project_group')
+        expect(chef_run_rhel).to run_execute('monit reload')
+      end
     end
   end
 
