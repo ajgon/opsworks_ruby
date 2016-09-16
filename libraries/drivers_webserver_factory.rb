@@ -2,10 +2,10 @@
 module Drivers
   module Webserver
     class Factory
-      def self.build(app, node, options = {})
-        engine = detect_engine(app, node, options)
+      def self.build(context, app, options = {})
+        engine = detect_engine(app, context.node, options)
         raise StandardError, 'There is no supported Webserver driver for given configuration.' if engine.blank?
-        engine.new(app, node, options)
+        engine.new(context, app, options)
       end
 
       def self.detect_engine(app, node, _options)

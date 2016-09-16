@@ -4,7 +4,9 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = missing, engine = missing' do
       expect do
         described_class.new(
-          aws_opsworks_app, node(deploy: { dummy_project: {} }), rds: aws_opsworks_rds_db_instance(engine: nil)
+          dummy_context(node(deploy: { dummy_project: {} })),
+          aws_opsworks_app,
+          rds: aws_opsworks_rds_db_instance(engine: nil)
         ).out
       end.to raise_error ArgumentError,
                          "Missing :app or :node engine, expected #{described_class.allowed_engines.inspect}."
@@ -13,7 +15,9 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = missing, engine = wrong' do
       expect do
         described_class.new(
-          aws_opsworks_app, node(deploy: { dummy_project: {} }), rds: aws_opsworks_rds_db_instance(engine: 'wrong')
+          dummy_context(node(deploy: { dummy_project: {} })),
+          aws_opsworks_app,
+          rds: aws_opsworks_rds_db_instance(engine: 'wrong')
         ).out
       end.to raise_error ArgumentError,
                          "Incorrect :app engine, expected #{described_class.allowed_engines.inspect}, got 'wrong'."
@@ -22,7 +26,9 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = missing, engine = correct' do
       expect do
         described_class.new(
-          aws_opsworks_app, node(deploy: { dummy_project: {} }), rds: aws_opsworks_rds_db_instance(engine: rdbms)
+          dummy_context(node(deploy: { dummy_project: {} })),
+          aws_opsworks_app,
+          rds: aws_opsworks_rds_db_instance(engine: rdbms)
         ).out
       end.not_to raise_error
     end
@@ -30,8 +36,8 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = wrong, engine = missing' do
       expect do
         described_class.new(
+          dummy_context(node(deploy: { dummy_project: { database: { adapter: 'wrong' } } })),
           aws_opsworks_app,
-          node(deploy: { dummy_project: { database: { adapter: 'wrong' } } }),
           rds: aws_opsworks_rds_db_instance(engine: nil)
         ).out
       end.to raise_error ArgumentError,
@@ -41,8 +47,8 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = wrong, engine = wrong' do
       expect do
         described_class.new(
+          dummy_context(node(deploy: { dummy_project: { database: { adapter: 'wrong' } } })),
           aws_opsworks_app,
-          node(deploy: { dummy_project: { database: { adapter: 'wrong' } } }),
           rds: aws_opsworks_rds_db_instance(engine: 'wrong')
         ).out
       end.to raise_error ArgumentError,
@@ -52,8 +58,8 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = wrong, engine = correct' do
       expect do
         described_class.new(
+          dummy_context(node(deploy: { dummy_project: { database: { adapter: 'wrong' } } })),
           aws_opsworks_app,
-          node(deploy: { dummy_project: { database: { adapter: 'wrong' } } }),
           rds: aws_opsworks_rds_db_instance(engine: rdbms)
         ).out
       end.not_to raise_error
@@ -62,8 +68,8 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = correct, engine = missing' do
       expect do
         described_class.new(
+          dummy_context(node(deploy: { dummy_project: { database: { adapter: rdbms } } })),
           aws_opsworks_app,
-          node(deploy: { dummy_project: { database: { adapter: rdbms } } }),
           rds: aws_opsworks_rds_db_instance(engine: nil)
         ).out
       end.not_to raise_error
@@ -72,8 +78,8 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = correct, engine = wrong' do
       expect do
         described_class.new(
+          dummy_context(node(deploy: { dummy_project: { database: { adapter: rdbms } } })),
           aws_opsworks_app,
-          node(deploy: { dummy_project: { database: { adapter: rdbms } } }),
           rds: aws_opsworks_rds_db_instance(engine: 'wrong')
         ).out
       end.to raise_error ArgumentError,
@@ -83,8 +89,8 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
     it 'adapter = correct, engine = correct' do
       expect do
         described_class.new(
+          dummy_context(node(deploy: { dummy_project: { database: { adapter: rdbms } } })),
           aws_opsworks_app,
-          node(deploy: { dummy_project: { database: { adapter: rdbms } } }),
           rds: aws_opsworks_rds_db_instance(engine: rdbms)
         ).out
       end.not_to raise_error

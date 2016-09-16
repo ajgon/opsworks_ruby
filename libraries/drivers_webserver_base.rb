@@ -29,14 +29,14 @@ module Drivers
         raise NotImplementedError
       end
 
-      def define_service(context, default_action = :nothing)
+      def define_service(default_action = :nothing)
         context.service service_name do
           supports status: true, restart: true, reload: true
           action default_action
         end
       end
 
-      def add_ssl_item(context, name)
+      def add_ssl_item(name)
         key_data = app[:ssl_configuration].try(:[], name)
         return if key_data.blank?
         extensions = { private_key: 'key', certificate: 'crt', chain: 'ca' }
@@ -50,7 +50,7 @@ module Drivers
         end
       end
 
-      def add_ssl_directory(context)
+      def add_ssl_directory
         context.directory "#{conf_dir}/ssl" do
           owner 'root'
           group 'root'
@@ -58,7 +58,7 @@ module Drivers
         end
       end
 
-      def add_dhparams(context)
+      def add_dhparams
         dhparams = out[:dhparams]
         return if dhparams.blank?
 
@@ -71,9 +71,9 @@ module Drivers
         end
       end
 
-      def add_appserver_config(context)
+      def add_appserver_config
         opts = { application: app, deploy_dir: deploy_dir(app), out: out, conf_dir: conf_dir, adapter: adapter,
-                 name: Drivers::Appserver::Factory.build(app, node).adapter }
+                 name: Drivers::Appserver::Factory.build(context, app).adapter }
         return unless Drivers::Appserver::Base.adapters.include?(opts[:name])
 
         context.template "#{opts[:conf_dir]}/sites-available/#{app['shortname']}.conf" do
@@ -85,7 +85,7 @@ module Drivers
         end
       end
 
-      def enable_appserver_config(context)
+      def enable_appserver_config
         application = app
         conf_path = conf_dir
 

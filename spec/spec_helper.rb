@@ -2,6 +2,10 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
 
+def dummy_context(node)
+  OpenStruct.new(node: node)
+end
+
 # Require all libraries
 Dir['libraries/*.rb'].each { |f| require File.expand_path(f) }
 

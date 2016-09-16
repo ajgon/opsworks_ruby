@@ -7,12 +7,12 @@ module Drivers
       output filter: [:process_count, :syslog, :workers, :queues]
       packages debian: 'redis-server', rhel: 'redis'
 
-      def configure(context)
-        add_worker_monit(context)
+      def configure
+        add_worker_monit
       end
 
-      def after_deploy(context)
-        restart_monit(context)
+      def after_deploy
+        restart_monit
       end
       alias after_undeploy after_deploy
     end

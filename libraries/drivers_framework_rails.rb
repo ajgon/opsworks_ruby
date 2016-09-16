@@ -14,24 +14,25 @@ module Drivers
         super.merge(deploy_environment: { 'RAILS_ENV' => globals[:environment] })
       end
 
-      def configure(context)
-        rdses = context.search(:aws_opsworks_rds_db_instance).presence || [Drivers::Db::Factory.build(app, node)]
+      def configure
+        rdses =
+          context.search(:aws_opsworks_rds_db_instance).presence || [Drivers::Db::Factory.build(context, app)]
         rdses.each do |rds|
-          database_yml(context, Drivers::Db::Factory.build(app, node, rds: rds))
+          database_yml(Drivers::Db::Factory.build(context, app, rds: rds))
         end
       end
 
-      def deploy_before_restart(context)
-        assets_precompile(context) if out[:assets_precompile]
+      def deploy_before_restart
+        assets_precompile if out[:assets_precompile]
       end
 
-      def deploy_after_restart(context)
-        setup_rails_console(context)
+      def deploy_after_restart
+        setup_rails_console
       end
 
       private
 
-      def database_yml(context, db)
+      def database_yml(db)
         return unless db.applicable_for_configuration?
 
         database = db.out
@@ -46,7 +47,7 @@ module Drivers
         end
       end
 
-      def assets_precompile(context)
+      def assets_precompile
         output = out
         deploy_to = deploy_dir(app)
         env = environment.merge('HOME' => node['deployer']['home'])
@@ -60,7 +61,7 @@ module Drivers
         end
       end
 
-      def setup_rails_console(context)
+      def setup_rails_console
         return unless out[:envs_in_console]
         deploy_to = deploy_dir(app)
         env = environment

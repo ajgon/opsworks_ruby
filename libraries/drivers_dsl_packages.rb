@@ -18,7 +18,7 @@ module Drivers
         self.class.packages.presence || (self.class.superclass.respond_to?(:packages) && self.class.superclass.packages)
       end
 
-      def handle_packages(context)
+      def handle_packages
         Array.wrap(packages['all'] || packages[node['platform_family']] || packages[node['platform']]).each do |pkg|
           context.package pkg do
             action :install

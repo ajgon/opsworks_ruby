@@ -20,26 +20,26 @@ module Drivers
         output
       end
 
-      def setup(context)
+      def setup
         node.default['nginx']['install_method'] = out[:build_type].to_s == 'source' ? 'source' : 'package'
         recipe = out[:build_type].to_s == 'source' ? 'source' : 'default'
         context.include_recipe("nginx::#{recipe}")
-        define_service(context, :start)
+        define_service(:start)
       end
 
-      def configure(context)
-        add_ssl_directory(context)
-        add_ssl_item(context, :private_key)
-        add_ssl_item(context, :certificate)
-        add_ssl_item(context, :chain)
-        add_dhparams(context)
+      def configure
+        add_ssl_directory
+        add_ssl_item(:private_key)
+        add_ssl_item(:certificate)
+        add_ssl_item(:chain)
+        add_dhparams
 
-        add_appserver_config(context)
-        enable_appserver_config(context)
+        add_appserver_config
+        enable_appserver_config
       end
 
-      def before_deploy(context)
-        define_service(context)
+      def before_deploy
+        define_service
       end
       alias before_undeploy before_deploy
 

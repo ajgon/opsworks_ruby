@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 module Drivers
   class Base
-    attr_reader :app, :node, :options, :configuration_data_source
-    def initialize(app, node, options = {})
+    attr_reader :context, :app, :options, :configuration_data_source
+    def initialize(context, app, options = {})
+      @context = context
       @app = app
-      @node = node
       @options = options
       @configuration_data_source = validate_app_engine
     end
@@ -25,40 +25,44 @@ module Drivers
     end
 
     # Dummy methods for children to redefine
-    def setup(_context)
+    def setup
     end
 
-    def configure(_context)
+    def configure
     end
 
-    def before_deploy(_context)
+    def before_deploy
     end
 
-    def deploy_before_migrate(_context)
+    def deploy_before_migrate
     end
 
-    def deploy_before_symlink(_context)
+    def deploy_before_symlink
     end
 
-    def deploy_before_restart(_context)
+    def deploy_before_restart
     end
 
-    def deploy_after_restart(_context)
+    def deploy_after_restart
     end
 
-    def after_deploy(_context)
+    def after_deploy
     end
 
-    def before_undeploy(_context)
+    def before_undeploy
     end
 
-    def after_undeploy(_context)
+    def after_undeploy
     end
 
-    def shutdown(_context)
+    def shutdown
     end
 
     protected
+
+    def node
+      context.node
+    end
 
     def allowed_engines
       self.class.allowed_engines

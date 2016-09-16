@@ -8,8 +8,8 @@ module Drivers
 
       defaults enable_submodules: true
 
-      def setup(context)
-        handle_packages(context)
+      def setup
+        handle_packages
       end
 
       def out

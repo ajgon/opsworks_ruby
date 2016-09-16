@@ -56,7 +56,7 @@ describe 'opsworks_ruby::configure' do
 
   context 'Postgresql + Git + Unicorn + Nginx + Rails + Sidekiq' do
     it 'creates proper database.yml template' do
-      db_config = Drivers::Db::Postgresql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance).out
+      db_config = Drivers::Db::Postgresql.new(chef_run, aws_opsworks_app, rds: aws_opsworks_rds_db_instance).out
       expect(db_config[:adapter]).to eq 'postgresql'
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
@@ -326,7 +326,8 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper .env.*' do
-      db_config = Drivers::Db::Mysql.new(aws_opsworks_app, node, rds: aws_opsworks_rds_db_instance(engine: 'mysql')).out
+      db_config =
+        Drivers::Db::Mysql.new(chef_run, aws_opsworks_app, rds: aws_opsworks_rds_db_instance(engine: 'mysql')).out
       expect(db_config[:adapter]).to eq 'mysql2'
 
       expect(chef_run)
@@ -642,7 +643,7 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper database.yml template' do
-      db_config = Drivers::Db::Sqlite.new(aws_opsworks_app(data_sources: []), dummy_node).out
+      db_config = Drivers::Db::Sqlite.new(chef_run, aws_opsworks_app(data_sources: [])).out
       expect(db_config[:adapter]).to eq 'sqlite3'
       expect(db_config[:database]).to eq 'db/data.sqlite3'
       expect(chef_run)
@@ -871,7 +872,7 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates proper database.yml template' do
-      db_config = Drivers::Db::Postgresql.new(aws_opsworks_app(data_sources: []), supplied_node).out
+      db_config = Drivers::Db::Postgresql.new(chef_run, aws_opsworks_app(data_sources: [])).out
       expect(db_config[:adapter]).to eq 'postgresql'
       expect(db_config[:username]).to eq 'user_936'
       expect(db_config[:password]).to eq 'password_936'

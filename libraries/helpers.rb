@@ -22,10 +22,8 @@ def globals
 end
 
 def fire_hook(name, options)
-  raise ArgumentError 'context is missing' if options[:context].blank?
-
   Array.wrap(options[:items]).each do |item|
-    item.send(name, options[:context])
+    item.send(name)
   end
 end
 
@@ -59,8 +57,8 @@ def every_enabled_application
   end
 end
 
-def every_enabled_rds(application)
-  data = rdses.presence || [Drivers::Db::Factory.build(application, node)]
+def every_enabled_rds(context, application)
+  data = rdses.presence || [Drivers::Db::Factory.build(context, application)]
   data.each do |rds|
     yield rds
   end

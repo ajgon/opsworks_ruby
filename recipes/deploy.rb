@@ -6,18 +6,18 @@ include_recipe 'opsworks_ruby::configure'
 
 every_enabled_application do |application, deploy|
   databases = []
-  every_enabled_rds(application) do |rds|
-    databases.push(Drivers::Db::Factory.build(application, node, rds: rds))
+  every_enabled_rds(self, application) do |rds|
+    databases.push(Drivers::Db::Factory.build(self, application, rds: rds))
   end
 
-  scm = Drivers::Scm::Factory.build(application, node)
-  framework = Drivers::Framework::Factory.build(application, node, databases: databases)
-  appserver = Drivers::Appserver::Factory.build(application, node)
-  worker = Drivers::Worker::Factory.build(application, node, databases: databases)
-  webserver = Drivers::Webserver::Factory.build(application, node)
+  scm = Drivers::Scm::Factory.build(self, application)
+  framework = Drivers::Framework::Factory.build(self, application, databases: databases)
+  appserver = Drivers::Appserver::Factory.build(self, application)
+  worker = Drivers::Worker::Factory.build(self, application, databases: databases)
+  webserver = Drivers::Webserver::Factory.build(self, application)
   bundle_env = scm.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => scm.out[:ssh_wrapper] } : {}
 
-  fire_hook(:before_deploy, context: self, items: databases + [scm, framework, appserver, worker, webserver])
+  fire_hook(:before_deploy, items: databases + [scm, framework, appserver, worker, webserver])
 
   deploy application['shortname'] do
     deploy_to deploy_dir(application)
@@ -53,8 +53,7 @@ every_enabled_application do |application, deploy|
     before_migrate do
       perform_bundle_install(shared_path, bundle_env)
 
-      fire_hook(:deploy_before_migrate, context: self,
-                                        items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(:deploy_before_migrate, items: databases + [scm, framework, appserver, worker, webserver])
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_migrate.rb'))
     end
@@ -62,8 +61,7 @@ every_enabled_application do |application, deploy|
     before_symlink do
       perform_bundle_install(shared_path, bundle_env) unless framework.out[:migrate]
 
-      fire_hook(:deploy_before_symlink, context: self,
-                                        items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(:deploy_before_symlink, items: databases + [scm, framework, appserver, worker, webserver])
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_symlink.rb'))
     end
@@ -74,19 +72,17 @@ every_enabled_application do |application, deploy|
         action :delete
       end if scm.out[:remove_scm_files]
 
-      fire_hook(:deploy_before_restart, context: self,
-                                        items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(:deploy_before_restart, items: databases + [scm, framework, appserver, worker, webserver])
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_restart.rb'))
     end
 
     after_restart do
-      fire_hook(:deploy_after_restart, context: self,
-                                       items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(:deploy_after_restart, items: databases + [scm, framework, appserver, worker, webserver])
 
       run_callback_from_file(File.join(release_path, 'deploy', 'after_restart.rb'))
     end
   end
 
-  fire_hook(:after_deploy, context: self, items: databases + [scm, framework, appserver, worker, webserver])
+  fire_hook(:after_deploy, items: databases + [scm, framework, appserver, worker, webserver])
 end

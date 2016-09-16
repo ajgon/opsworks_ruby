@@ -5,21 +5,21 @@ module Drivers
       include Drivers::Dsl::Notifies
       include Drivers::Dsl::Output
 
-      def configure(context)
+      def configure
         super
-        add_appserver_config(context)
-        add_appserver_service_script(context)
-        add_appserver_service_context(context)
+        add_appserver_config
+        add_appserver_service_script
+        add_appserver_service_context
       end
 
-      def deploy_before_restart(context)
-        setup_application_yml(context)
-        setup_dot_env(context)
+      def deploy_before_restart
+        setup_application_yml
+        setup_dot_env
       end
 
-      def after_deploy(context)
-        manual_action(context, :stop)
-        manual_action(context, :start)
+      def after_deploy
+        manual_action(:stop)
+        manual_action(:start)
       end
       alias after_undeploy after_deploy
 
@@ -38,17 +38,17 @@ module Drivers
 
       protected
 
-      def appserver_command(_context)
+      def appserver_command
         raise NotImplementedError
       end
 
-      def appserver_config(_context)
+      def appserver_config
         raise NotImplementedError
       end
 
       private
 
-      def manual_action(context, action)
+      def manual_action(action)
         deploy_to = deploy_dir(app)
         service_script = File.join(deploy_to, File.join('shared', 'scripts', "#{adapter}.service"))
 
@@ -58,9 +58,10 @@ module Drivers
       end
 
       # rubocop:disable Metrics/AbcSize
-      def add_appserver_config(context)
+      def add_appserver_config
         opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: globals[:environment],
-                 webserver: Drivers::Webserver::Factory.build(app, node).adapter, appserver_config: appserver_config }
+                 webserver: Drivers::Webserver::Factory.build(context, app).adapter,
+                 appserver_config: appserver_config }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'config', opts[:appserver_config])) do
           owner node['deployer']['user']
@@ -72,9 +73,9 @@ module Drivers
       end
       # rubocop:enable Metrics/AbcSize
 
-      def add_appserver_service_script(context)
+      def add_appserver_service_script
         opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], deploy_env: globals[:environment],
-                 name: adapter, command: appserver_command(context), environment: environment }
+                 name: adapter, command: appserver_command, environment: environment }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'scripts', "#{opts[:name]}.service")) do
           owner node['deployer']['user']
@@ -85,7 +86,7 @@ module Drivers
         end
       end
 
-      def add_appserver_service_context(context)
+      def add_appserver_service_context
         deploy_to = deploy_dir(app)
         name = adapter
 
@@ -94,22 +95,21 @@ module Drivers
           stop_command "#{deploy_to}/shared/scripts/#{name}.service stop"
           restart_command "#{deploy_to}/shared/scripts/#{name}.service restart"
           status_command "#{deploy_to}/shared/scripts/#{name}.service status"
-          action :nothing
         end
       end
 
-      def setup_application_yml(context)
+      def setup_application_yml
         return unless raw_out[:application_yml]
-        env_config(context, source_file: 'config/application.yml', destination_file: 'config/application.yml')
+        env_config(source_file: 'config/application.yml', destination_file: 'config/application.yml')
       end
 
-      def setup_dot_env(context)
+      def setup_dot_env
         return unless raw_out[:dot_env]
-        env_config(context, source_file: 'dot_env', destination_file: '.env')
+        env_config(source_file: 'dot_env', destination_file: '.env')
       end
 
       # rubocop:disable Metrics/MethodLength
-      def env_config(context, options = { source_file: nil, destination_file: nil })
+      def env_config(options = { source_file: nil, destination_file: nil })
         deploy_to = deploy_dir(app)
         env = environment
 
@@ -127,7 +127,7 @@ module Drivers
       # rubocop:enable Metrics/MethodLength
 
       def environment
-        framework = Drivers::Framework::Factory.build(app, node, options)
+        framework = Drivers::Framework::Factory.build(context, app, options)
         app['environment'].merge(framework.out[:deploy_environment] || {})
       end
     end

@@ -9,12 +9,8 @@ module Drivers
 
       defaults encoding: 'utf8', host: 'localhost', reconnect: true
 
-      def initialize(app, node, options = {})
-        super
-      end
-
-      def setup(context)
-        handle_packages(context)
+      def setup
+        handle_packages
       end
 
       # rubocop:disable Metrics/AbcSize

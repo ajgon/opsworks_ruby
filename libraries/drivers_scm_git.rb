@@ -8,12 +8,12 @@ module Drivers
       output filter: [:scm_provider, :repository, :revision, :enable_submodules, :ssh_wrapper, :remove_scm_files]
       defaults enable_submodules: true, ssh_wrapper: '/tmp/ssh-git-wrapper.sh'
 
-      def before_deploy(context)
-        add_git_wrapper_script(context)
-        add_ssh_key(context)
+      def before_deploy
+        add_git_wrapper_script
+        add_ssh_key
       end
 
-      def after_deploy(context)
+      def after_deploy
         context.file File.join('/', 'tmp', '.ssh-deploy-key') do
           action :delete
         end
@@ -27,7 +27,7 @@ module Drivers
 
       private
 
-      def add_git_wrapper_script(context)
+      def add_git_wrapper_script
         context.template File.join('/', 'tmp', 'ssh-git-wrapper.sh') do
           source 'ssh-git-wrapper.sh.erb'
           mode '0770'
@@ -36,7 +36,7 @@ module Drivers
         end
       end
 
-      def add_ssh_key(context)
+      def add_ssh_key
         ssh_key = raw_out[:ssh_key]
 
         context.template File.join('/', 'tmp', '.ssh-deploy-key') do

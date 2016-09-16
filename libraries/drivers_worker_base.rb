@@ -5,8 +5,8 @@ module Drivers
       include Drivers::Dsl::Output
       include Drivers::Dsl::Packages
 
-      def setup(context)
-        handle_packages(context)
+      def setup
+        handle_packages
       end
 
       def out
@@ -24,7 +24,7 @@ module Drivers
 
       protected
 
-      def add_worker_monit(context)
+      def add_worker_monit
         opts = { application: app['shortname'], out: out, deploy_to: deploy_dir(app), environment: environment,
                  adapter: adapter }
 
@@ -37,7 +37,7 @@ module Drivers
         context.execute 'monit reload'
       end
 
-      def restart_monit(context)
+      def restart_monit
         (1..process_count).each do |process_number|
           context.execute "monit restart #{adapter}_#{app['shortname']}-#{process_number}" do
             retries 3
@@ -50,7 +50,7 @@ module Drivers
       end
 
       def environment
-        framework = Drivers::Framework::Factory.build(app, node, options)
+        framework = Drivers::Framework::Factory.build(context, app, options)
         app['environment'].merge(framework.out[:deploy_environment] || {})
       end
     end

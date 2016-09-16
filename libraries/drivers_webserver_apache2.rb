@@ -23,27 +23,27 @@ module Drivers
         output
       end
 
-      def setup(context)
-        handle_packages(context)
-        enable_modules(context, %w(expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl))
-        add_sites_available_enabled(context)
-        define_service(context, :start)
+      def setup
+        handle_packages
+        enable_modules(%w(expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl))
+        add_sites_available_enabled
+        define_service(:start)
       end
 
-      def configure(context)
-        add_ssl_directory(context)
-        add_ssl_item(context, :private_key)
-        add_ssl_item(context, :certificate)
-        add_ssl_item(context, :chain)
-        add_dhparams(context)
+      def configure
+        add_ssl_directory
+        add_ssl_item(:private_key)
+        add_ssl_item(:certificate)
+        add_ssl_item(:chain)
+        add_dhparams
 
-        remove_defaults(context)
-        add_appserver_config(context)
-        enable_appserver_config(context)
+        remove_defaults
+        add_appserver_config
+        enable_appserver_config
       end
 
-      def before_deploy(context)
-        define_service(context)
+      def before_deploy
+        define_service
       end
       alias before_undeploy before_deploy
 
@@ -57,7 +57,7 @@ module Drivers
 
       private
 
-      def remove_defaults(context)
+      def remove_defaults
         conf_path = conf_dir
 
         context.execute 'Remove default sites' do
@@ -67,7 +67,7 @@ module Drivers
         end
       end
 
-      def add_sites_available_enabled(context)
+      def add_sites_available_enabled
         return if node['platform_family'] == 'debian'
 
         context.directory "#{conf_dir}/sites-available" do
@@ -80,7 +80,7 @@ module Drivers
         context.execute 'echo "IncludeOptional sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf'
       end
 
-      def enable_modules(context, modules = [])
+      def enable_modules(modules = [])
         return unless node['platform_family'] == 'debian'
 
         context.execute 'Enable modules' do

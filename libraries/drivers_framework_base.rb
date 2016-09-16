@@ -5,8 +5,8 @@ module Drivers
       include Drivers::Dsl::Output
       include Drivers::Dsl::Packages
 
-      def setup(context)
-        handle_packages(context)
+      def setup
+        handle_packages
       end
 
       def out

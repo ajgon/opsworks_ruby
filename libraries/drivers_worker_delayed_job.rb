@@ -6,8 +6,8 @@ module Drivers
       allowed_engines :delayed_job
       output filter: [:process_count, :syslog, :queues]
 
-      def after_deploy(context)
-        restart_monit(context)
+      def after_deploy
+        restart_monit
       end
       alias after_undeploy after_deploy
 
@@ -19,8 +19,8 @@ module Drivers
         output
       end
 
-      def configure(context)
-        add_worker_monit(context)
+      def configure
+        add_worker_monit
       end
     end
   end

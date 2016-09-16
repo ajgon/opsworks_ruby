@@ -22,18 +22,18 @@ module Drivers
         )
       end
 
-      def configure(context)
-        build_env(context)
+      def configure
+        build_env
       end
 
-      def deploy_before_restart(context)
-        link_env(context)
-        assets_precompile(context) if out[:assets_precompile]
+      def deploy_before_restart
+        link_env
+        assets_precompile if out[:assets_precompile]
       end
 
       private
 
-      def build_env(context)
+      def build_env
         deploy_to = deploy_dir(app)
         env = environment
 
@@ -45,7 +45,7 @@ module Drivers
         end
       end
 
-      def link_env(context)
+      def link_env
         deploy_to = deploy_dir(app)
         env_name = globals[:environment]
 
@@ -55,7 +55,7 @@ module Drivers
         end
       end
 
-      def assets_precompile(context)
+      def assets_precompile
         output = out
         deploy_to = deploy_dir(app)
         env = environment.merge('HOME' => node['deployer']['home'])

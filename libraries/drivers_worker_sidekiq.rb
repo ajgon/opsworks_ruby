@@ -7,19 +7,19 @@ module Drivers
       output filter: [:config, :process_count, :require, :syslog]
       packages debian: 'redis-server', rhel: 'redis'
 
-      def configure(context)
-        add_sidekiq_config(context)
-        add_worker_monit(context)
+      def configure
+        add_sidekiq_config
+        add_worker_monit
       end
 
-      def after_deploy(context)
-        restart_monit(context)
+      def after_deploy
+        restart_monit
       end
       alias after_undeploy after_deploy
 
       private
 
-      def add_sidekiq_config(context)
+      def add_sidekiq_config
         deploy_to = deploy_dir(app)
         config = configuration
 
