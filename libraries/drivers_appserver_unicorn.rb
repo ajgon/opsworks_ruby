@@ -8,18 +8,8 @@ module Drivers
         :accept_filter, :backlog, :delay, :preload_app, :tcp_nodelay, :tcp_nopush, :tries, :timeout, :worker_processes
       ]
 
-      def add_appserver_config(context)
-        deploy_to = deploy_dir(app)
-        output = out
-        webserver = Drivers::Webserver::Factory.build(app, node).adapter
-
-        context.template File.join(deploy_to, File.join('shared', 'config', 'unicorn.conf')) do
-          owner node['deployer']['user']
-          group www_group
-          mode '0644'
-          source 'unicorn.conf.erb'
-          variables deploy_dir: deploy_to, out: output, webserver: webserver
-        end
+      def appserver_config
+        'unicorn.conf'
       end
 
       def appserver_command(_context)

@@ -42,7 +42,7 @@ module Drivers
         raise NotImplementedError
       end
 
-      def add_appserver_config(_context)
+      def appserver_config(_context)
         raise NotImplementedError
       end
 
@@ -56,6 +56,21 @@ module Drivers
           command "#{service_script} #{action}"
         end
       end
+
+      # rubocop:disable Metrics/AbcSize
+      def add_appserver_config(context)
+        opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: globals[:environment],
+                 webserver: Drivers::Webserver::Factory.build(app, node).adapter, appserver_config: appserver_config }
+
+        context.template File.join(opts[:deploy_dir], File.join('shared', 'config', opts[:appserver_config])) do
+          owner node['deployer']['user']
+          group www_group
+          mode '0644'
+          source "#{opts[:appserver_config]}.erb"
+          variables opts
+        end
+      end
+      # rubocop:enable Metrics/AbcSize
 
       def add_appserver_service_script(context)
         opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], deploy_env: globals[:environment],
