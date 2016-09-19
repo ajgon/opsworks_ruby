@@ -609,7 +609,7 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Sqlite3 + Thin + delayed_job' do
+  context 'Sqlite3 + Thin + padrino + delayed_job' do
     let(:dummy_node) do
       node(
         deploy: {
@@ -618,7 +618,7 @@ describe 'opsworks_ruby::configure' do
             environment: 'staging',
             appserver: node['deploy']['dummy_project']['appserver'].merge('adapter' => 'thin'),
             webserver: node['deploy']['dummy_project']['webserver'],
-            framework: node['deploy']['dummy_project']['framework'],
+            framework: node['deploy']['dummy_project']['framework'].merge('adapter' => 'padrino'),
             worker: node['deploy']['dummy_project']['worker'].merge('adapter' => 'delayed_job')
           }
         }
@@ -640,16 +640,6 @@ describe 'opsworks_ruby::configure' do
     before do
       stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(data_sources: [])])
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
-    end
-
-    it 'creates proper database.yml template' do
-      db_config = Drivers::Db::Sqlite.new(chef_run, aws_opsworks_app(data_sources: [])).out
-      expect(db_config[:adapter]).to eq 'sqlite3'
-      expect(db_config[:database]).to eq 'db/data.sqlite3'
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
-          JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
-        )
     end
 
     it 'creates proper thin.yml file' do
@@ -674,6 +664,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
         .with_content('ENV[\'ENV_VAR1\'] = "test"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
+        .with_content('ENV[\'RACK_ENV\'] = "staging"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
         .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
@@ -753,16 +746,17 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 --queues=test_queue 2>&1 ' \
-          '| logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+          'data.sqlite3" bin/delayed_job start --pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 --queues=test_queue' \
+          ' 2>&1 | logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
         )
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" with timeout 90 seconds'
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+          'data.sqlite3" bin/delayed_job stop --pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" ' \
+          'with timeout 90 seconds'
         )
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
@@ -774,16 +768,17 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 --queues=test_queue 2>&1 ' \
-          '| logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+          'data.sqlite3" bin/delayed_job start --pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 --queues=test_queue' \
+          ' 2>&1 | logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
         )
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" with timeout 90 seconds'
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+          'data.sqlite3" bin/delayed_job stop --pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" ' \
+          'with timeout 90 seconds'
         )
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
@@ -804,16 +799,17 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 --queues=test_queue 2>&1 ' \
-            '| logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+            'data.sqlite3" bin/delayed_job start --pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 ' \
+            '--queues=test_queue 2>&1 | logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" with timeout 90 seconds'
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+            'data.sqlite3" bin/delayed_job stop --pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" ' \
+            'with timeout 90 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
@@ -825,16 +821,17 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job start ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 --queues=test_queue 2>&1 ' \
-            '| logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+            'data.sqlite3" bin/delayed_job start --pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 ' \
+            '--queues=test_queue 2>&1 | logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" bin/delayed_job stop ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" with timeout 90 seconds'
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/current/db/' \
+            'data.sqlite3" bin/delayed_job stop --pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" ' \
+            'with timeout 90 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")

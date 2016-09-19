@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'spec_helper'
 
-describe Drivers::Framework::Hanami do
+describe Drivers::Framework::Padrino do
   it 'receives and exposes app and node' do
     driver = described_class.new(dummy_context(node), aws_opsworks_app)
 
@@ -12,13 +12,13 @@ describe Drivers::Framework::Hanami do
 
   it 'returns proper out data' do
     expect(described_class.new(dummy_context(node), aws_opsworks_app).out).to eq(
-      assets_precompile: true,
-      assets_precompilation_command: '/usr/local/bin/bundle exec hanami assets precompile',
+      assets_precompile: nil,
+      assets_precompilation_command: 'bundle exec rake assets:precompile',
       deploy_environment: {
-        'HANAMI_ENV' => 'staging',
+        'RACK_ENV' => 'staging',
         'DATABASE_URL' => 'sqlite:///srv/www/dummy_project/current/db/dummy_project_staging.sqlite'
       },
-      migration_command: '/usr/local/bin/bundle exec hanami db migrate',
+      migration_command: 'rake db:migrate',
       migrate: false
     )
   end

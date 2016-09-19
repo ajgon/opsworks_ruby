@@ -7,7 +7,6 @@ module Drivers
       output filter: [
         :migrate, :migration_command, :deploy_environment, :assets_precompile, :assets_precompilation_command
       ]
-      packages debian: 'zlib1g-dev', rhel: 'zlib-devel'
 
       def raw_out
         assets_command = node['deploy'][app['shortname']]['framework']['assets_precompilation_command'] ||
@@ -53,39 +52,6 @@ module Drivers
           to File.join(deploy_to, 'shared', 'config', ".env.#{env_name}")
           ignore_failure true
         end
-      end
-
-      def assets_precompile
-        output = out
-        deploy_to = deploy_dir(app)
-        env = environment.merge('HOME' => node['deployer']['home'])
-
-        context.execute 'assets:precompile' do
-          command output[:assets_precompilation_command]
-          user node['deployer']['user']
-          cwd File.join(deploy_to, 'current')
-          group www_group
-          environment env
-        end
-      end
-
-      def database_url
-        database_url = "sqlite://db/#{app['shortname']}_#{globals[:environment]}.sqlite"
-
-        Array.wrap(options[:databases]).each do |db|
-          next unless db.applicable_for_configuration?
-
-          database_url =
-            "#{db.out[:adapter]}://#{db.out[:username]}:#{db.out[:password]}@#{db.out[:host]}/#{db.out[:database]}"
-
-          database_url = "sqlite://#{db.out[:database]}" if db.out[:adapter].start_with?('sqlite')
-        end
-
-        database_url
-      end
-
-      def environment
-        app['environment'].merge(out[:deploy_environment])
       end
     end
   end

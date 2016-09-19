@@ -26,6 +26,7 @@ then [add recipes to the corresponding OpsWorks actions](#recipes).
 * Framework
   * Null (no framework)
   * hanami.rb
+  * Padrino
   * Ruby on Rails
 * App server
   * Null (no appserver)
@@ -145,7 +146,7 @@ Pre-optimalization for specific frameworks (like migrations, cache etc.).
 Currently `hanami.rb` and `Rails` are supported.
 
 * `app['framework']['adapter']`
-  * **Supported values:** `null`, `rails`
+  * **Supported values:** `null`, `hanami`, `padrino`, `rails`
   * **Default:** `rails`
   * Ruby framework used in project.
 * `app['framework']['migrate']`
@@ -161,6 +162,22 @@ Currently `hanami.rb` and `Rails` are supported.
   * **Default:** `true`
 * `app['framework']['assets_precompilation_command']`
   * A command which will be invoked to precompile assets.
+
+#### padrino
+
+For Padrino, slight adjustments needs to be made. Since there are many database
+adapters supported, instead of creating configuration for each one, the
+`DATABASE_URL` environmental variable is provided. You need to parse it in your
+`config/database.rb` file and properly pass to the configuration options.
+For example, for ActiveRecord:
+
+```ruby
+database_url = ENV['DATABASE_URL'] && ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(ENV['DATABASE_URL']).to_hash
+ActiveRecord::Base.configurations[:production] = database_url || {
+  :adapter => 'sqlite3',
+  :database => Padrino.root('db', 'dummy_app_production.db')
+}
+```
 
 #### rails
 
