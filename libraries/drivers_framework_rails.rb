@@ -22,10 +22,6 @@ module Drivers
         end
       end
 
-      def deploy_before_restart
-        assets_precompile if out[:assets_precompile]
-      end
-
       def deploy_after_restart
         setup_rails_console
       end

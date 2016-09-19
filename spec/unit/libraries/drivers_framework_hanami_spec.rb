@@ -16,7 +16,7 @@ describe Drivers::Framework::Hanami do
       assets_precompilation_command: '/usr/local/bin/bundle exec hanami assets precompile',
       deploy_environment: {
         'HANAMI_ENV' => 'staging',
-        'DATABASE_URL' => 'sqlite:///srv/www/dummy_project/current/db/dummy_project_staging.sqlite'
+        'DATABASE_URL' => 'sqlite:///srv/www/dummy_project/shared/db/dummy_project_staging.sqlite'
       },
       migration_command: '/usr/local/bin/bundle exec hanami db migrate',
       migrate: false

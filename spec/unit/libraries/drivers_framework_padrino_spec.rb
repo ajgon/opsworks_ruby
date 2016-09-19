@@ -16,7 +16,7 @@ describe Drivers::Framework::Padrino do
       assets_precompilation_command: 'bundle exec rake assets:precompile',
       deploy_environment: {
         'RACK_ENV' => 'staging',
-        'DATABASE_URL' => 'sqlite:///srv/www/dummy_project/current/db/dummy_project_staging.sqlite'
+        'DATABASE_URL' => 'sqlite:///srv/www/dummy_project/shared/db/dummy_project_staging.sqlite'
       },
       migration_command: 'rake db:migrate',
       migrate: false

@@ -9,6 +9,11 @@ module Drivers
         handle_packages
       end
 
+      def deploy_before_restart
+        assets_precompile if out[:assets_precompile]
+        link_sqlite_database
+      end
+
       def out
         handle_output(raw_out)
       end
@@ -38,10 +43,21 @@ module Drivers
         end
       end
 
+      def link_sqlite_database
+        return unless database_url.start_with?('sqlite')
+        deploy_to = deploy_dir(app)
+        db_path = database_url.sub('sqlite://', '')
+
+        context.link File.join(deploy_to, 'current', db_path.sub(deploy_to, '').sub(%r{^/+shared/+}, '')) do
+          to db_path
+          only_if { ::File.exist?(::File.join(deploy_to, 'current', db_path)) }
+        end
+      end
+
       # rubocop:disable Metrics/AbcSize
       def database_url
         deploy_to = deploy_dir(app)
-        database_url = "sqlite://#{deploy_to}/current/db/#{app['shortname']}_#{globals[:environment]}.sqlite"
+        database_url = "sqlite://#{deploy_to}/shared/db/#{app['shortname']}_#{globals[:environment]}.sqlite"
 
         Array.wrap(options[:databases]).each do |db|
           next unless db.applicable_for_configuration?
@@ -49,7 +65,7 @@ module Drivers
           database_url =
             "#{db.out[:adapter]}://#{db.out[:username]}:#{db.out[:password]}@#{db.out[:host]}/#{db.out[:database]}"
 
-          database_url = "sqlite://#{deploy_to}/current/#{db.out[:database]}" if db.out[:adapter].start_with?('sqlite')
+          database_url = "sqlite://#{deploy_to}/shared/#{db.out[:database]}" if db.out[:adapter].start_with?('sqlite')
         end
 
         database_url

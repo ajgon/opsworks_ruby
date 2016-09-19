@@ -27,7 +27,7 @@ module Drivers
 
       def deploy_before_restart
         link_env
-        assets_precompile if out[:assets_precompile]
+        super
       end
 
       private

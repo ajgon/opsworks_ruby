@@ -14,26 +14,6 @@ module Drivers
           assets_precompile: node['deploy'][app['shortname']]['framework']['assets_precompile']
         )
       end
-
-      def deploy_before_restart
-        assets_precompile if out[:assets_precompile]
-      end
-
-      private
-
-      def assets_precompile
-        output = out
-        deploy_to = deploy_dir(app)
-        env = environment.merge('HOME' => node['deployer']['home'])
-
-        context.execute 'assets:precompile' do
-          command output[:assets_precompilation_command]
-          user node['deployer']['user']
-          cwd File.join(deploy_to, 'current')
-          group www_group
-          environment env
-        end
-      end
     end
   end
 end
