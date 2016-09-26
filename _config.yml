@@ -1,0 +1,13 @@
+sass:
+  sass_dir: _sass
+  style: :compressed
+
+baseurl: /opsworks_ruby
+gems: [bourbon]
+
+exclude:
+  - README
+  - Gemfile
+  - Gemfile.lock
+
+markdown: kramdown

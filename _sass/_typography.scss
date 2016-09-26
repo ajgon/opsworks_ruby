@@ -1,0 +1,22 @@
+body {
+  font-family: $base-font-family;
+  font-weight: 300;
+}
+
+h2 {
+  font-family: $header-font-family;
+  font-weight: normal;
+}
+
+a {
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.aqua {
+  color: $aqua;
+}
+
+.lime {
+  color: $lime;
+}
