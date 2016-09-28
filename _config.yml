@@ -1,9 +1,6 @@
-sass:
-  sass_dir: _sass
-  style: :compressed
-
 baseurl: /opsworks_ruby
-gems: [bourbon]
+gems:
+  - jekyll-assets
 
 exclude:
   - README
@@ -11,3 +8,9 @@ exclude:
   - Gemfile.lock
 
 markdown: kramdown
+
+assets:
+  autoprefixer:
+    browsers:
+      - "last 2 versions"
+      - "IE > 9"

@@ -1,0 +1,33 @@
+.navigation {
+  position: absolute;
+  top: 0.5rem;
+  right: 1.5rem;
+  z-index: 1;
+
+  a {
+    color: $white;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  img {
+    vertical-align: middle;
+  }
+
+  li {
+    list-style-type: none;
+    display: inline-block;
+    padding: 0 1rem;
+    font-size: 1rem;
+  }
+
+  ul {
+    padding: 0;
+    margin: 1rem auto;
+  }
+}
+
+.navigation__icon {
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}

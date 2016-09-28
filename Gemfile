@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
-gem "bourbon"
+gem "rake"
 gem "github-pages"
-
-group :development do
-  gem 'colorize'
-end
+gem "jekyll-assets"
+gem "sass"
+gem "uglifier"
+gem "colorize"

@@ -1,0 +1,7 @@
+//= require 'jquery'
+//= require 'bootstrap'
+//= require 'prism'
+//= require 'codeflask'
+//= require 'sticky'
+//= require 'clipboard'
+//= require 'json-builder'

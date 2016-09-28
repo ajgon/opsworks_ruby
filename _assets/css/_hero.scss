@@ -1,0 +1,45 @@
+.hero {
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  background-position: center center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, $orange, $ruby-red);
+    content: "";
+    z-index: -1;
+  }
+}
+
+.hero__heading {
+  color: rgba($white, 0.7);
+  font-weight: 300;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.hero__code {
+  background-color: rgba($navy, 0.3);
+  border-radius: 4px;
+  padding: 1.5rem 3rem;
+
+  code {
+    font-size: 1.25rem;
+  }
+}
+
+.hero__logo {
+    font-size: 10rem;
+    white-space: nowrap;
+    color: $white;
+}

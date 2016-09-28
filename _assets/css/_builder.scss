@@ -1,0 +1,101 @@
+.builder--main {
+  border-top: 70px solid $orange;
+  display: flex;
+  background: #eee;
+}
+
+.builder--form {
+  flex-basis: 50%;
+  padding: 3rem 1rem;
+}
+
+.builder--output__container {
+  flex-basis: 50%;
+  padding: 0 1rem;
+}
+
+.builder--output {
+  width: 100%;
+}
+
+.code-window-container {
+  padding: 3rem 0 0;
+}
+.code-window {
+  max-width: 700px;
+  border-radius: 4px;
+  background: #fff;
+  margin: 0 auto -5rem;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: calc(100vh - 70px - 6rem);
+}
+.code-window .code-header {
+  background: $orange;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  position: relative;
+  color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+  height: 33px;
+}
+.code-window .code-footer {
+  background: #a4a4a4;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  position: relative;
+  color: #fff;
+  text-align: center;
+  height: 33px;
+  display: flex;
+}
+.code-window .code-footer a {
+  flex-basis: 50%;
+  color: #fff;
+  cursor: pointer;
+}
+.code-window .code-header .code-buttons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: 12px;
+  margin-left: 35px;
+  width: 11px;
+  height: 11px;
+  background: #a43623;
+  border-radius: 50%;
+  box-shadow: -20px 0 0 #a43623, 20px 0 0 #a43623;
+}
+.code-window .code-editor {
+  position: relative;
+  height: calc(100vh - 136px - 6rem);
+  color: #444;
+}
+html {
+  font-size: 16px !important;
+}
+.form-group textarea {
+  resize: vertical;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 13px;
+  height: 6rem;
+}
+.bs-callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-left-width: 5px;
+  border-radius: 3px;
+  background: #fff;
+}
+.bs-callout-danger {
+  border-left-color: #ce4844;
+}
+.bs-callout-danger h4 {
+  color: #ce4844;
+  margin-top: 0;
+}
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}

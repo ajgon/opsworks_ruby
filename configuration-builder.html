@@ -4,13 +4,42 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Inconsolata" type="text/css">
-    <link rel="stylesheet" href="{{site.baseurl}}/stylesheets/styles.css">
+    {% css configure %}
   </head>
   <body>
     {% include navigation.html %}
     <main class="builder--main">
+      <form class="builder--form form-horizontal" autocomplete="off">
+        <div class="form-group">
+          <label class="col-sm-5 control-label" for="application_name">Application Short name</label>
+          <div class="col-sm-7">
+            <input type="text" data-type="string" name="application_name" class="form-control" id="application_name">
+            <p class="help-block">
+              Application Short name provided in OpsWorks "Apps" panel.
+            </p>
+          </div>
+        </div>
+      </form>
+      <div class="builder--output__container">
+        <div id="code-window-container" class="code-window-container">
+            <div class="code-window">
+              <header class="code-header">
+                <div class="code-buttons"></div>
+                Stack or Layer JSON
+              </header>
+              <div class="code-editor builder--output" data-language="json" id="builder-output"></div>
+              <footer class="code-footer">
+                  <a id="code-ctrl-c">Copy to clipboard</a>
+                  <a href="#" id="code-reset">Reset</a>
+              </footer>
+            </div>
+        </div>
+      </div>
     </main>
     {% include footer.html %}
+    <script>var BASE_URL = '{{site.baseurl}}';</script>
+    {% js main %}
   </body>
 </html>

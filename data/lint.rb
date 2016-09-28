@@ -33,7 +33,7 @@ begin
 
   msg 'Check types'
   wrong_types = validate do |item|
-    !%w(boolean float integer string text).include?(item['type'])
+    !%w(boolean float integer string text json).include?(item['type'])
   end
   error('Invalid types found', wrong_types)
   ok
@@ -51,7 +51,7 @@ begin
     valid = [true, false].include?(item['default']) if item['type'] == 'boolean'
     valid = item['default'].is_a?(Float) if item['type'] == 'float'
     valid = item['default'].is_a?(Integer) if item['type'] == 'integer'
-    valid = item['default'].is_a?(String) if item['type'] == 'string' || item['type'] == 'text'
+    valid = item['default'].is_a?(String) if item['type'] == 'string' || item['type'] == 'text' || item['type'] == 'json'
     item['default'] && !valid
   end
   error('Invalid defaults found', wrong_defaults)
@@ -73,7 +73,7 @@ begin
 
   msg 'Proper dependencies'
   wrong_deps = validate do |item, group|
-    item['depends'] && !(item['depends'] - schema[group]['adapter']['values']).empty?
+    item['depends'] && schema[group]['adapter'] && !(item['depends'] - schema[group]['adapter']['values']).empty?
   end
   error('Unknown dependency is set', wrong_deps)
   ok
