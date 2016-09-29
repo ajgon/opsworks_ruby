@@ -57,7 +57,6 @@ default['defaults']['appserver']['max_persistent_connections'] = 512
 
 ## unicorn
 
-default['defaults']['appserver']['accept_filter'] = 'httpready'
 default['defaults']['appserver']['backlog'] = 1024
 default['defaults']['appserver']['delay'] = 0.5
 default['defaults']['appserver']['tcp_nodelay'] = true

@@ -12,8 +12,7 @@ listen "<%= @deploy_dir %>/shared/sockets/unicorn.sock",
        :tcp_nodelay => <%= @out[:tcp_nodelay] %>,
        :tcp_nopush => <%= @out[:tcp_nopush] %>,
        :tries => <%= @out[:tries] %>,
-       :delay => <%= @out[:delay] %>,
-       :accept_filter => <%= @out[:accept_filter].inspect %>
+       :delay => <%= @out[:delay] %>
 
 timeout <%= @out[:timeout] %>
 

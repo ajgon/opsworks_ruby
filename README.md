@@ -210,8 +210,6 @@ Configuration parameters for the ruby application server. Currently `Puma`,
 
 #### unicorn
 
-* [`app['appserver']['accept_filter']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
-  * **Default:** `httpready`
 * [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
   * **Default:** `1024`
 * [`app['appserver']['delay']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)

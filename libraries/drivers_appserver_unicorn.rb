@@ -5,7 +5,7 @@ module Drivers
       adapter :unicorn
       allowed_engines :unicorn
       output filter: [
-        :accept_filter, :backlog, :delay, :preload_app, :tcp_nodelay, :tcp_nopush, :tries, :timeout, :worker_processes
+        :backlog, :delay, :preload_app, :tcp_nodelay, :tcp_nopush, :tries, :timeout, :worker_processes
       ]
 
       def appserver_config
