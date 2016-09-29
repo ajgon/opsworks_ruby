@@ -45,14 +45,16 @@ module Drivers
 
       def setup_rails_console
         return unless out[:envs_in_console]
-        deploy_to = deploy_dir(app)
-        env = environment
+        application_rb_path = File.join(deploy_dir(app), 'current', 'config', 'application.rb')
 
-        context.template File.join(deploy_to, 'current', 'config', 'initializers', '000_console.rb') do
-          owner node['deployer']['user']
-          group www_group
-          source 'rails_console_overload.rb.erb'
-          variables environment: env
+        if File.exist?(application_rb_path)
+          env_code = "if(defined?(Rails::Console))\n  " +
+                     environment.map { |key, value| "ENV['#{key}'] = #{value.inspect}" }.join("\n  ") +
+                     "\nend\n"
+
+          contents = File.read(application_rb_path).sub(/(^(?:module|class).*$)/, "#{env_code}\n\\1")
+
+          File.open(application_rb_path, 'w') { |file| file.write(contents) }
         end
       end
 

@@ -186,6 +186,9 @@ ActiveRecord::Base.configurations[:production] = database_url || {
   * **Default:** `false`
   * If set to true, `rails console` will be invoked with all application-level
     environment variables set.
+  * **WARNING!** This is highly unstable feature. If you experience any troubles
+    with deployments, and have this feature enabled, consider disabling it as a
+    first step in your debugging process.
 
 ### appserver
 
