@@ -1,0 +1,41 @@
+---
+PreCommit:
+  ALL:
+    on_warn: fail
+    exclude:
+      - "_assets/js/lib/*"
+      - "_assets/css/lib/*"
+  BrokenSymlinks:
+    enabled: true
+  BundleAudit:
+    enabled: true
+  BundleCheck:
+    enabled: true
+  BundleOutdated:
+    enabled: true
+  CaseConflicts:
+    enabled: true
+  EsLint:
+    enabled: true
+  ExecutePermissions:
+    enabled: true
+  HardTabs:
+    enabled: true
+  ImageOptim:
+    enabled: true
+  JsHint:
+    enabled: true
+  Jsl:
+    enabled: true
+  JsonSyntax:
+    enabled: true
+  LocalPathsInGemfile:
+    enabled: true
+  MergeConflicts:
+    enabled: true
+  ScssLint:
+    enabled: true
+  TrailingWhitespace:
+    enabled: true
+  YamlSyntax:
+    enabled: true

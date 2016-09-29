@@ -1,0 +1,10 @@
+{
+    "extends": "jquery",
+    "env": {
+        "browser": true,
+        "jquery": true
+    },
+    "rules": {
+        "max-len": ["error", 120]
+    }
+}

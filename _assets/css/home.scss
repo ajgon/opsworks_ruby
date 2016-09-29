@@ -1,14 +1,14 @@
 // Dependant on load order
-@import "variables";
+@import 'lib/icomoon';
 
 // Base styles
-@import "base";
-@import "icomoon";
-@import "typography";
+@import 'variables';
+@import 'base';
+@import 'typography';
 
 // Components
-@import "button";
-@import "content";
-@import "hero";
-@import "layout";
-@import "navigation";
+@import 'button';
+@import 'content';
+@import 'hero';
+@import 'layout';
+@import 'navigation';

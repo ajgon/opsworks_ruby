@@ -1,10 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="1800px" height="1200px" viewBox="0 0 1800 1200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs></defs>
-    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g>
-            <path d="M0,478.299519 L0,709.500365 L1800,1200 L1800,0 L0,478.299519 Z" opacity="0.239999995" fill="#C82B2B" transform="translate(900.000000, 600.000000) scale(-1, 1) translate(-900.000000, -600.000000) "></path>
-            <path d="M0,479.570007 L0,743 L1800,1200 L1800,0 L0,479.570007 Z" opacity="0.24000001" fill="#CA3921"></path>
-        </g>
-    </g>
-</svg>
+<svg width="1800" height="1200" viewBox="0 0 1800 1200" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M1800 478.3v231.2L0 1200V0l1800 478.3z" opacity=".24" fill="#C82B2B"/><path d="M0 479.57V743l1800 457V0L0 479.57z" opacity=".24" fill="#CA3921"/></g></svg>

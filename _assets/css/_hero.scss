@@ -1,35 +1,35 @@
 .hero {
-  height: 100vh;
-  width: 100vw;
   align-items: center;
   background-position: center center;
   background-size: cover;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   justify-content: center;
   position: relative;
+  width: 100vw;
 
   &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background: linear-gradient(135deg, $orange, $ruby-red);
-    content: "";
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
     z-index: -1;
   }
 }
 
 .hero__heading {
-  color: rgba($white, 0.7);
+  color: rgba($white, .7);
   font-weight: 300;
   margin-bottom: 2rem;
   text-align: center;
 }
 
 .hero__code {
-  background-color: rgba($navy, 0.3);
+  background-color: rgba($navy, .3);
   border-radius: 4px;
   padding: 1.5rem 3rem;
 
@@ -39,7 +39,7 @@
 }
 
 .hero__logo {
-    font-size: 10rem;
-    white-space: nowrap;
-    color: $white;
+  color: $white;
+  font-size: 10rem;
+  white-space: nowrap;
 }

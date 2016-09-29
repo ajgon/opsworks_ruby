@@ -12,10 +12,10 @@
 }
 
 .content--grid {
-  padding-left: 1rem;
-  padding-right: 1rem;
   display: flex;
   flex-wrap: wrap;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .content--grid__item {
@@ -26,9 +26,9 @@
   transition: padding 250ms;
 
   @media (min-width: $medium-screen) {
+    flex-basis: 33%;
     padding-left: 1rem;
     padding-right: 1rem;
-    flex-basis: 33%;
   }
 
   @media (min-width: $large-screen) {
@@ -37,11 +37,11 @@
 }
 
 .content--grid__full {
-    flex-basis: 100%;
-    flex-grow: 1;
-    flex-shrink: 0;
-    padding: 1rem;
-    transition: padding 250ms;
+  flex-basis: 100%;
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding: 1rem;
+  transition: padding 250ms;
 }
 
 .content--large {
@@ -49,23 +49,23 @@
 }
 
 .content__footer {
-  margin-top: 1rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   width: 100%;
 
   @media (min-width: $medium-screen) {
-    padding-top: 3rem;
     padding-bottom: 3rem;
+    padding-top: 3rem;
   }
 }
 
 .content--iconset {
-    white-space: nowrap;
-    font-size: 3rem;
-    color: $orange;
+  color: $orange;
+  font-size: 3rem;
+  white-space: nowrap;
 }
 
 .layout--dark .content p {
-  margin: 1rem 0;
   font-size: 1rem;
+  margin: 1rem 0;
 }
