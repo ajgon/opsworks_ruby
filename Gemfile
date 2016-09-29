@@ -5,6 +5,7 @@ group :lint do
   gem 'brakeman'
   gem 'bundler-audit'
   gem 'coveralls'
+  gem 'fasterer'
   gem 'foodcritic'
   gem 'mdl'
   gem 'overcommit'

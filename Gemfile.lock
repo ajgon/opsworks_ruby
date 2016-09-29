@@ -89,6 +89,7 @@ GEM
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     cleanroom (1.0.0)
+    colorize (0.8.1)
     coveralls (0.8.15)
       json (>= 1.8, < 3)
       simplecov (~> 0.12.0)
@@ -106,6 +107,9 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.10.0)
       faraday (>= 0.7.4, < 0.10)
+    fasterer (0.3.2)
+      colorize (~> 0.7)
+      ruby_parser (~> 3.7)
     fauxhai (3.8.0)
       net-ssh
     ffi (1.9.14)
@@ -255,6 +259,8 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
+    ruby_parser (3.8.2)
+      sexp_processor (~> 4.1)
     rufus-lru (1.1.0)
     safe_yaml (1.0.4)
     sawyer (0.7.0)
@@ -266,6 +272,7 @@ GEM
       rspec (~> 3.0)
       rspec-its
       specinfra (~> 2.53)
+    sexp_processor (4.7.0)
     sfl (2.2)
     simplecov (0.12.0)
       docile (~> 1.1.0)
@@ -326,6 +333,7 @@ DEPENDENCIES
   bundler-audit
   chefspec
   coveralls
+  fasterer
   foodcritic
   kitchen-vagrant
   mdl
