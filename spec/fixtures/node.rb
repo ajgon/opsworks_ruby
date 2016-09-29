@@ -11,7 +11,9 @@ def node(override = {})
     },
     deploy: {
       dummy_project: {
-        environment: 'staging',
+        global: {
+          environment: 'staging'
+        },
         # database: {
         #   adapter: 'postgresql',
         #   username: 'dbuser',

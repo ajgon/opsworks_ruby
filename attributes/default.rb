@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# environment
-default['defaults']['environment'] = 'production'
-
 # deploy
 default['defaults']['deploy']['symlinks'] = {
   'system' => 'public/system',
@@ -23,6 +20,9 @@ default['nginx']['source']['modules'] = %w(
   nginx::http_ssl_module nginx::http_realip_module nginx::http_gzip_static_module nginx::headers_more_module
   nginx::http_stub_status_module
 )
+
+# global
+default['defaults']['global']['environment'] = 'production'
 
 # database
 ## common

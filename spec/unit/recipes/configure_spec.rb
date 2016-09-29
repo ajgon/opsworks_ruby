@@ -615,7 +615,7 @@ describe 'opsworks_ruby::configure' do
         deploy: {
           dummy_project: {
             database: { adapter: 'sqlite3' },
-            environment: 'staging',
+            global: { environment: 'staging' },
             appserver: node['deploy']['dummy_project']['appserver'].merge('adapter' => 'thin'),
             webserver: node['deploy']['dummy_project']['webserver'],
             framework: node['deploy']['dummy_project']['framework'].merge('adapter' => 'padrino'),
@@ -852,7 +852,7 @@ describe 'opsworks_ruby::configure' do
                  host: 'dummy-project.936.us-west-2.rds.amazon.com',
                  database: 'database_936'
                },
-               environment: 'staging',
+               global: { environment: 'staging' },
                framework: { adapter: 'rails' }
              }
            })

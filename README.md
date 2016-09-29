@@ -83,7 +83,7 @@ so for example `app['framework']['adapter']` actually means
 Global parameters apply to the whole application, and can be used by any section
 (framework, appserver etc.).
 
-* `app['environment']`
+* `app['global']['environment']`
   * **Default:** `production`
   * Sets the "deploy environment" for all the app-related (for example `RAILS_ENV`
     in Rails) actions in the project (server, worker, etc.)

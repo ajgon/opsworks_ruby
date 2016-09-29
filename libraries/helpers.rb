@@ -16,9 +16,8 @@ end
 
 def globals
   {
-    environment: node['deploy'][app['shortname']].try(:[], 'environment') ||
-      app['attributes']['rails_env'] || node['defaults']['environment'] || 'production'
-  }
+    environment: 'production'
+  }.merge((node['deploy'][app['shortname']].try(:[], 'global') || node['defaults']['global'] || {}).symbolize_keys)
 end
 
 def fire_hook(name, options)
