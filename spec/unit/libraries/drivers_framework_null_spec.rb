@@ -11,6 +11,7 @@ describe Drivers::Framework::Null do
   end
 
   it 'returns proper out data' do
-    expect(described_class.new(dummy_context(node), aws_opsworks_app).out).to eq({})
+    expect(described_class.new(dummy_context(node), aws_opsworks_app).out)
+      .to eq(deploy_environment: { 'RACK_ENV' => 'staging' })
   end
 end

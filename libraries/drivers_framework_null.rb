@@ -4,7 +4,11 @@ module Drivers
     class Null < Drivers::Framework::Base
       adapter :null
       allowed_engines :null
-      output filter: []
+      output filter: [:deploy_environment]
+
+      def raw_out
+        super.merge(deploy_environment: { 'RACK_ENV' => globals[:environment] })
+      end
     end
   end
 end
