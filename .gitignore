@@ -18,3 +18,5 @@ node_modules/
 .asset-cache
 .sass-cache
 _site
+docs/build/*
+!docs/build/.keep

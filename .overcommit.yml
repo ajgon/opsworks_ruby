@@ -21,6 +21,8 @@ PreCommit:
     flags: ['-f', 'any', '-B', '.']
   HardTabs:
     enabled: true
+    exclude:
+      - docs/Makefile
   JsonSyntax:
     enabled: true
   LocalPathsInGemfile:
