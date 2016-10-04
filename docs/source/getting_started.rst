@@ -23,4 +23,4 @@ Full configuration
 You can always create your JSON file manually, just head to the :ref:`attributes` section of this documentation, and
 check which one you need.
 
-.. _JSON configurator: https://www.rzegocki.pl/opsworks_ruby/configuration-builder
+.. _JSON configurator: http://opsworks-ruby.rzegocki.pl/configuration-builder
