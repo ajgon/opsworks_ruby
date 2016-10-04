@@ -5,7 +5,7 @@ maintainer_email 'igor@rzegocki.pl'
 license 'MIT'
 description 'Set of chef recipes for OpsWorks based Ruby projects'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.8.0'
+version '1.0.0'
 
 depends 'deployer'
 depends 'ruby-ng'

@@ -1,3 +1,53 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/ajgon/opsworks_ruby/compare/v0.8.0...v1.0.0) (2016-10-04)
+
+
+### Bug Fixes
+
+* `monit reload` and `monit restart` order ([2c4a84a](https://github.com/ajgon/opsworks_ruby/commit/2c4a84a)), closes [#29](https://github.com/ajgon/opsworks_ruby/issues/29)
+* **appserver:** Removed `accept_filter` from unicorn configurator ([76a7f36](https://github.com/ajgon/opsworks_ruby/commit/76a7f36))
+* **framework:** Added missing `deploy_environment` to `null` framework ([673a21d](https://github.com/ajgon/opsworks_ruby/commit/673a21d))
+* **framework:** Fixed `envs_in_console` for `rails` ([f8856c8](https://github.com/ajgon/opsworks_ruby/commit/f8856c8))
+
+
+### Features
+
+* **appserver:** "Puma" support added ([f6e80ad](https://github.com/ajgon/opsworks_ruby/commit/f6e80ad)), closes [#38](https://github.com/ajgon/opsworks_ruby/issues/38)
+* **appserver:** "Thin" support added ([9667939](https://github.com/ajgon/opsworks_ruby/commit/9667939)), closes [#39](https://github.com/ajgon/opsworks_ruby/issues/39)
+* **appserver:** Switched default appserver from `unicorn` to `puma` ([0e72200](https://github.com/ajgon/opsworks_ruby/commit/0e72200))
+* **framework:** "hanami.rb" support added ([23fdd04](https://github.com/ajgon/opsworks_ruby/commit/23fdd04)), closes [#43](https://github.com/ajgon/opsworks_ruby/issues/43)
+* **framework:** "Null" support added ([b9e7b63](https://github.com/ajgon/opsworks_ruby/commit/b9e7b63)), closes [#47](https://github.com/ajgon/opsworks_ruby/issues/47)
+* **framework:** "Padrino" support added ([a240d92](https://github.com/ajgon/opsworks_ruby/commit/a240d92)), closes [#44](https://github.com/ajgon/opsworks_ruby/issues/44)
+* **framework:** Environemnt variables in `rails console` ([89252b3](https://github.com/ajgon/opsworks_ruby/commit/89252b3))
+* **global:** Moved `app['environment']` to `app['global']['environment']` ([432a21c](https://github.com/ajgon/opsworks_ruby/commit/432a21c)), closes [#50](https://github.com/ajgon/opsworks_ruby/issues/50)
+* **webserver:** "Apache2" support added ([1ca5b0b](https://github.com/ajgon/opsworks_ruby/commit/1ca5b0b)), closes [#40](https://github.com/ajgon/opsworks_ruby/issues/40)
+* **worker:** "delayed_job" support added ([7235720](https://github.com/ajgon/opsworks_ruby/commit/7235720)), closes [#42](https://github.com/ajgon/opsworks_ruby/issues/42)
+* **worker:** "resque" support added ([ccc13e4](https://github.com/ajgon/opsworks_ruby/commit/ccc13e4)), closes [#41](https://github.com/ajgon/opsworks_ruby/issues/41)
+
+
+### Performance Improvements
+
+* Added `fasterer` gem to overcommit ([c1ed974](https://github.com/ajgon/opsworks_ruby/commit/c1ed974))
+
+
+### BREAKING CHANGES
+
+* global: If you were using an `app['environment']` variable (for example to set env to
+staging), please update your stack/layer JSONs to `app['global']['environment']`.
+* appserver: Unicorn is no longer a default appserver, in favor of Puma. If you have a working
+instances which were relying on that, you have to either set `app['appserver']['adapter'] =
+'unicorn'` in your stack/layer JSON file, or switch the app server in your application
+* webserver: `sites-available` and `sites-enabled` file names format
+changed. From this commit, the `*.conf` extension is appended. If you
+plan to update your cookbooks on productional environments, don't forget
+to remove the old ones, otherwise you will end up with two the same
+configurations in different files, which cause `nginx` to fail.
+
+If you start noticing `duplicate upstream` errors, this is probably due
+this case.
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/ajgon/opsworks_ruby/compare/v0.7.0...v0.8.0) (2016-09-02)
 
