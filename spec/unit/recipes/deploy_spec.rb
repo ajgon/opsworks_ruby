@@ -165,7 +165,7 @@ describe 'opsworks_ruby::deploy' do
       solo_node.set['deploy'] = { 'a1' => {}, 'a2' => {} }
       solo_node.set['applications'] = ['a1']
     end.converge(described_recipe)
-    service_a1 = chef_run.service('puma_a1')
+    service = chef_run.service('puma_a1')
 
     expect(chef_run).to create_directory('/srv/www/a1/shared')
     expect(chef_run).to create_directory('/srv/www/a1/shared/config')
@@ -179,7 +179,7 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to create_template('/srv/www/a1/shared/scripts/puma.service')
     expect(chef_run).to create_template('/etc/nginx/sites-available/a1.conf')
     expect(chef_run).to create_link('/etc/nginx/sites-enabled/a1.conf')
-    expect(service_a1).to do_nothing
+    expect(service).to do_nothing
     expect(chef_run).to deploy_deploy('a1')
     expect(chef_run).not_to deploy_deploy('a2')
   end

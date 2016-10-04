@@ -47,15 +47,14 @@ module Drivers
         return unless out[:envs_in_console]
         application_rb_path = File.join(deploy_dir(app), 'current', 'config', 'application.rb')
 
-        if File.exist?(application_rb_path)
-          env_code = "if(defined?(Rails::Console))\n  " +
-                     environment.map { |key, value| "ENV['#{key}'] = #{value.inspect}" }.join("\n  ") +
-                     "\nend\n"
+        return unless File.exist?(application_rb_path)
+        env_code = "if(defined?(Rails::Console))\n  " +
+                   environment.map { |key, value| "ENV['#{key}'] = #{value.inspect}" }.join("\n  ") +
+                   "\nend\n"
 
-          contents = File.read(application_rb_path).sub(/(^(?:module|class).*$)/, "#{env_code}\n\\1")
+        contents = File.read(application_rb_path).sub(/(^(?:module|class).*$)/, "#{env_code}\n\\1")
 
-          File.open(application_rb_path, 'w') { |file| file.write(contents) }
-        end
+        File.open(application_rb_path, 'w') { |file| file.write(contents) }
       end
 
       def environment
