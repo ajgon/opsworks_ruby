@@ -1,4 +1,4 @@
-baseurl: /opsworks_ruby
+baseurl: /
 gems:
   - jekyll-assets
 

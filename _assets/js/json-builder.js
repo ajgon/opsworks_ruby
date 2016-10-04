@@ -322,7 +322,7 @@
 
   var JSONBuilderApp = {
     build: function() {
-      $.getJSON( BASE_URL + "/data/schema.json", function( data ) {
+      $.getJSON( BASE_URL + "data/schema.json", function( data ) {
         JSONBuilder.init( data );
         FormBuilder.init( data ).build();
       } );

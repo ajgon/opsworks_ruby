@@ -3,3 +3,6 @@ _site
 .jekyll-metadata
 .asset-cache
 node_modules
+Berksfile.lock
+coverage
+docs
