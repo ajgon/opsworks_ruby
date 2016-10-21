@@ -13,6 +13,10 @@ module Drivers
         add_ssh_key
       end
 
+      def deploy_before_restart
+        remove_dot_git
+      end
+
       def after_deploy
         context.file File.join('/', 'tmp', '.ssh-deploy-key') do
           action :delete
@@ -46,6 +50,13 @@ module Drivers
           group node['deployer']['group'] || 'root'
           variables ssh_key: ssh_key
         end
+      end
+
+      def remove_dot_git
+        context.directory File.join(deploy_dir(app), 'current', '.git') do
+          recursive true
+          action :delete
+        end if out[:remove_scm_files]
       end
     end
   end

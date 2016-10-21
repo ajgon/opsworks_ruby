@@ -72,11 +72,6 @@ every_enabled_application do |application, deploy|
     end
 
     before_restart do
-      directory File.join(release_path, '.git') do
-        recursive true
-        action :delete
-      end if scm.out[:remove_scm_files]
-
       fire_hook(
         :deploy_before_restart, context: self, items: databases + [scm, framework, appserver, worker, webserver]
       )
