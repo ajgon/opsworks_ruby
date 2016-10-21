@@ -14,14 +14,6 @@ Attributes
 | so for example ``app['framework']['adapter']`` actually means
 | ``node['deploy'][<application_shortname>]['framework']['adapter']``.
 
-basic
------
-
--  ``node['applications']``
-
-  -  An array of application shortnames which should be deployed to given layer.
-     If not provided, all detected applications will be deployed.
-
 global
 ------
 

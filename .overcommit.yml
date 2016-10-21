@@ -12,13 +12,10 @@ PreCommit:
     enabled: true
   Fasterer:
     enabled: true
+  FixMe:
+    enabled: true
   Foodcritic:
     enabled: true
-    description: 'Run foodcritic'
-    require_files: false
-    required_executable: './bin/foodcritic'
-    install_command: 'gem install foodcritic'
-    flags: ['-f', 'any', '-B', '.']
   HardTabs:
     enabled: true
     exclude:
@@ -45,6 +42,8 @@ PreCommit:
   XmlLint:
     enabled: true
   XmlSyntax:
+    enabled: true
+  YamlLint:
     enabled: true
   YamlSyntax:
     enabled: true

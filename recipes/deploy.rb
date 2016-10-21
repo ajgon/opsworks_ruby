@@ -4,6 +4,7 @@ prepare_recipe
 
 include_recipe 'opsworks_ruby::configure'
 
+# rubocop:disable Metrics/BlockLength
 every_enabled_application do |application, deploy|
   databases = []
   every_enabled_rds(self, application) do |rds|
@@ -86,3 +87,4 @@ every_enabled_application do |application, deploy|
 
   fire_hook(:after_deploy, items: databases + [scm, framework, appserver, worker, webserver])
 end
+# rubocop:enable Metrics/BlockLength

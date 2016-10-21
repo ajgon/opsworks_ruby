@@ -8,9 +8,12 @@ addons:
       - chef-stable-precise
     packages:
       - chefdk
+      - python-pip
 
 before_install: "gem install bundler"
-install: bundle install --without chef
+install:
+  - pip install --user yamllint
+  - bundle install --without chef
 
 before_script:
   - chef gem install coveralls

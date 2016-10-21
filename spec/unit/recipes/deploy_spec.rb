@@ -155,15 +155,14 @@ describe 'opsworks_ruby::deploy' do
     end.not_to raise_error
   end
 
-  it 'node[\'applications\']' do
+  it 'app[\'deploy\'] = false' do
     stub_search(:aws_opsworks_app, '*:*').and_return([
                                                        aws_opsworks_app.merge(shortname: 'a1'),
-                                                       aws_opsworks_app.merge(shortname: 'a2')
+                                                       aws_opsworks_app.merge(shortname: 'a2', deploy: false)
                                                      ])
     chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
       solo_node.set['deploy'] = { 'a1' => {}, 'a2' => {} }
-      solo_node.set['applications'] = ['a1']
     end.converge(described_recipe)
     service = chef_run.service('puma_a1')
 
