@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/ajgon/opsworks_ruby/compare/v1.1.0...v1.1.1) (2016-10-21)
+
+
+### Bug Fixes
+
+* **deploy:** Fixed deploy callbacks launching order ([81d31c9](https://github.com/ajgon/opsworks_ruby/commit/81d31c9))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/ajgon/opsworks_ruby/compare/v1.0.0...v1.1.0) (2016-10-21)
 
