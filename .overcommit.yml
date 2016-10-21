@@ -14,6 +14,8 @@ PreCommit:
     enabled: true
   FixMe:
     enabled: true
+    exclude:
+      - RELEASING.md
   Foodcritic:
     enabled: true
   HardTabs:
