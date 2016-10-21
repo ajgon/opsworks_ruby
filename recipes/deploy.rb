@@ -54,7 +54,9 @@ every_enabled_application do |application, deploy|
     before_migrate do
       perform_bundle_install(shared_path, bundle_env)
 
-      fire_hook(:deploy_before_migrate, items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(
+        :deploy_before_migrate, context: self, items: databases + [scm, framework, appserver, worker, webserver]
+      )
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_migrate.rb'))
     end
@@ -62,7 +64,9 @@ every_enabled_application do |application, deploy|
     before_symlink do
       perform_bundle_install(shared_path, bundle_env) unless framework.out[:migrate]
 
-      fire_hook(:deploy_before_symlink, items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(
+        :deploy_before_symlink, context: self, items: databases + [scm, framework, appserver, worker, webserver]
+      )
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_symlink.rb'))
     end
@@ -73,13 +77,17 @@ every_enabled_application do |application, deploy|
         action :delete
       end if scm.out[:remove_scm_files]
 
-      fire_hook(:deploy_before_restart, items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(
+        :deploy_before_restart, context: self, items: databases + [scm, framework, appserver, worker, webserver]
+      )
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_restart.rb'))
     end
 
     after_restart do
-      fire_hook(:deploy_after_restart, items: databases + [scm, framework, appserver, worker, webserver])
+      fire_hook(
+        :deploy_after_restart, context: self, items: databases + [scm, framework, appserver, worker, webserver]
+      )
 
       run_callback_from_file(File.join(release_path, 'deploy', 'after_restart.rb'))
     end

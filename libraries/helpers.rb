@@ -22,7 +22,10 @@ end
 
 def fire_hook(name, options)
   Array.wrap(options[:items]).each do |item|
+    old_context = item.context
+    item.context = options[:context] if options[:context].present?
     item.send(name)
+    item.context = old_context
   end
 end
 

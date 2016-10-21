@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 module Drivers
   class Base
-    attr_reader :context, :app, :options, :configuration_data_source
+    attr_reader :app, :options, :configuration_data_source
+    attr_accessor :context
+
     def initialize(context, app, options = {})
       @context = context
       @app = app
