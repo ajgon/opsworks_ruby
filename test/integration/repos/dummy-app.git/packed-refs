@@ -1,0 +1,6 @@
+# pack-refs with: peeled fully-peeled 
+cde919321e4a445ae9c03e9caea60a022eddd4d8 refs/heads/delayed_job
+2fd5c37c0c14cc2ba7dd499103d6626e1a1c01b4 refs/heads/hanami
+1726db7344c3541e7dfed76b8da842f19244e34a refs/heads/master
+e60eea7e82a26e20acc68ebe9fbbb69f1202ae9d refs/heads/padrino
+ad910c24e1ac189a670ec7bf033a293ce6257942 refs/heads/resque

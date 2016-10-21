@@ -2,6 +2,8 @@
 PreCommit:
   ALL:
     on_warn: fail    # Treat all warnings as failures
+    exclude:
+      - test/integration/repos/**/*
   BrokenSymlinks:
     enabled: true
   BundleAudit:
@@ -22,6 +24,7 @@ PreCommit:
     enabled: true
     exclude:
       - docs/Makefile
+      - test/integration/repos/**/*
   JsonSyntax:
     enabled: true
   LocalPathsInGemfile:

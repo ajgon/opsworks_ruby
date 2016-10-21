@@ -12,10 +12,15 @@ provisioner:
 
 platforms:
   - name: ubuntu-14.04
-  - name: centos-7.1
 
 suites:
   - name: default
+    data_bags_path: "test/integration/data_bags"
     run_list:
-      - recipe[opsworks_ruby::default]
+      - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::deploy]
+    # no attributes at all, to prove that cookbook can work "out of the box"
     attributes:
+    driver:
+      synced_folders:
+        - ["test/integration/repos", "/opt/repositories"]
