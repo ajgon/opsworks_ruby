@@ -17,6 +17,7 @@ group :chef do
   gem 'berkshelf'
   gem 'chefspec'
   gem 'kitchen-vagrant'
+  gem 'kitchen-docker'
   gem 'rspec'
   gem 'test-kitchen'
 end

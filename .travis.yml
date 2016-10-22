@@ -1,7 +1,10 @@
 ---
-sudo: false
+sudo: required
+services: docker
+
 rvm:
   - 'ruby-2.3.1'
+
 addons:
   apt:
     sources:
@@ -10,18 +13,23 @@ addons:
       - chefdk
       - python-pip
 
+env:
+  matrix:
+    - INSTANCE=default-ubuntu-1404
+
 before_install: "gem install bundler"
 install:
   - pip install --user yamllint
-  - bundle install --without chef
+  - chef exec bundle install --jobs=5 --retry=5
 
 before_script:
-  - chef gem install coveralls
+  - sudo iptables -L DOCKER || sudo iptables -N DOCKER
   - git config --global user.email "travis@travis.ci"
   - git config --global user.name "Travis CI"
-  - bundle exec overcommit --sign
-  - bundle exec overcommit --sign pre-commit
+  - chef exec bundle exec overcommit --sign
+  - chef exec bundle exec overcommit --sign pre-commit
 
 script:
-  - bundle exec overcommit -r
-  - chef exec rspec
+  - chef exec bundle exec overcommit -r
+  - chef exec bundle exec rspec
+  - travis_retry chef exec bundle exec rake integration:docker[${INSTANCE}]

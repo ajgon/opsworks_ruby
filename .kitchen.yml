@@ -21,6 +21,3 @@ suites:
       - recipe[opsworks_ruby::deploy]
     # no attributes at all, to prove that cookbook can work "out of the box"
     attributes:
-    driver:
-      synced_folders:
-        - ["test/integration/repos", "/opt/repositories"]
