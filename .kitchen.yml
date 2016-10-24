@@ -15,9 +15,44 @@ platforms:
 
 suites:
   - name: default
-    data_bags_path: "test/integration/data_bags"
+    data_bags_path: "test/integration/data_bags/default"
     run_list:
       - recipe[opsworks_ruby::setup]
       - recipe[opsworks_ruby::deploy]
     # no attributes at all, to prove that cookbook can work "out of the box"
     attributes:
+  - name: all_options
+    data_bags_path: "test/integration/data_bags/default"
+    run_list:
+      - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::provision]
+      - recipe[opsworks_ruby::deploy]
+    attributes:
+      deploy:
+        dummy_project:
+          global:
+            environment: "staging"
+          database:
+            reaping_frequency: 10
+          framework:
+            envs_in_console: true
+          appserver:
+            application_yml: true
+            dot_env: true
+            timeout: 120
+            worker_processes: 10
+            log_requests: true
+          webserver:
+            dhparams: '--- DH PARAMS ---'
+            ssl_for_legacy_browsers: true
+            client_max_body_size: "128m"
+            extra_config: "location /ok { return 201; }"
+            extra_config_ssl: true
+          worker:
+            adapter: "sidekiq"
+            config:
+              concurency: 5
+              verbose: true
+              queues:
+                - default
+                - mailers

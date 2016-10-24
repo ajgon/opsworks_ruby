@@ -5,7 +5,6 @@ module Drivers
       adapter :sqlite3
       allowed_engines :sqlite, :sqlite3
       packages debian: 'libsqlite3-dev', rhel: 'sqlite-devel'
-      output filter: [:adapter, :database, :pool, :timeout]
 
       def out
         output = super

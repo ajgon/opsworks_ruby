@@ -5,6 +5,7 @@ module Drivers
       adapter :delayed_job
       allowed_engines :delayed_job
       output filter: [:process_count, :syslog, :queues]
+      packages :monit
 
       def after_deploy
         restart_monit

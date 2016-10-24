@@ -5,7 +5,7 @@ module Drivers
       adapter :resque
       allowed_engines :resque
       output filter: [:process_count, :syslog, :workers, :queues]
-      packages debian: 'redis-server', rhel: 'redis'
+      packages :monit, debian: 'redis-server', rhel: 'redis'
 
       def configure
         add_worker_monit

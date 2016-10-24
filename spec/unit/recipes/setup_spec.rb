@@ -142,6 +142,7 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run).to install_package('git')
       expect(chef_run).to install_package('libpq-dev')
       expect(chef_run).to install_package('redis-server')
+      expect(chef_run).to install_package('monit')
     end
 
     it 'installs required packages for rhel' do
@@ -150,6 +151,7 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run_rhel).to install_package('git')
       expect(chef_run_rhel).to install_package('postgresql94-devel')
       expect(chef_run_rhel).to install_package('redis')
+      expect(chef_run_rhel).to install_package('monit')
     end
 
     it 'defines service which starts nginx' do
@@ -185,6 +187,7 @@ describe 'opsworks_ruby::setup' do
         expect(chef_run).to install_package('libmysqlclient-dev')
         expect(chef_run).to install_package('apache2')
         expect(chef_run).to install_package('redis-server')
+        expect(chef_run).to install_package('monit')
       end
 
       it 'defines service which starts apache2' do
@@ -203,6 +206,7 @@ describe 'opsworks_ruby::setup' do
         expect(chef_run_rhel).to install_package('httpd24')
         expect(chef_run_rhel).to install_package('mod24_ssl')
         expect(chef_run_rhel).to install_package('redis')
+        expect(chef_run_rhel).to install_package('monit')
       end
 
       it 'defines service which starts httpd' do
@@ -218,10 +222,11 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
-  context 'Sqlite' do
+  context 'Sqlite + delayed_job' do
     temp_node = node['deploy']
     temp_node['dummy_project']['database'] = {}
     temp_node['dummy_project']['database']['adapter'] = 'sqlite'
+    temp_node['dummy_project']['worker']['adapter'] = 'delayed_job'
 
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
@@ -241,10 +246,12 @@ describe 'opsworks_ruby::setup' do
 
     it 'installs required packages for debian' do
       expect(chef_run).to install_package('libsqlite3-dev')
+      expect(chef_run).to install_package('monit')
     end
 
     it 'installs required packages for rhel' do
       expect(chef_run_rhel).to install_package('sqlite-devel')
+      expect(chef_run_rhel).to install_package('monit')
     end
   end
 

@@ -5,7 +5,7 @@ module Drivers
       adapter :sidekiq
       allowed_engines :sidekiq
       output filter: [:config, :process_count, :require, :syslog]
-      packages debian: 'redis-server', rhel: 'redis'
+      packages 'monit', debian: 'redis-server', rhel: 'redis'
 
       def configure
         add_sidekiq_config

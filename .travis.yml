@@ -1,6 +1,7 @@
 ---
 sudo: required
-services: docker
+services:
+  - docker
 
 rvm:
   - 'ruby-2.3.1'
@@ -16,8 +17,11 @@ addons:
 env:
   matrix:
     - INSTANCE=default-ubuntu-1404
+    - INSTANCE=all-options-ubuntu-1404
 
-before_install: "gem install bundler"
+before_install:
+  - gem install bundler
+
 install:
   - pip install --user yamllint
   - chef exec bundle install --jobs=5 --retry=5
