@@ -43,7 +43,11 @@ suites:
             worker_processes: 10
             log_requests: true
           webserver:
-            dhparams: '--- DH PARAMS ---'
+            dhparams: |
+              -----BEGIN DH PARAMETERS-----
+              MEYCQQDaYxpaoXcGqR9AiGLCNR2iRs1CzEMvetbqEfKgXUzplylWglfqbPoDLcef
+              IEm9LTZYRszYrC3l3StpAG0VI35rAgEC
+              -----END DH PARAMETERS-----
             ssl_for_legacy_browsers: true
             client_max_body_size: "128m"
             extra_config: "location /ok { return 201; }"
@@ -56,3 +60,34 @@ suites:
               queues:
                 - default
                 - mailers
+  - name: unicorn_apache_hanami_resque
+    data_bags_path: "test/integration/data_bags/unicorn_apache_hanami_resque"
+    run_list:
+      - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::provision]
+      - recipe[opsworks_ruby::deploy]
+    attributes:
+      deploy:
+        dummy_project:
+          framework:
+            adapter: 'hanami'
+          appserver:
+            adapter: 'unicorn'
+            backlog: 2048
+            tries: 10
+          webserver:
+            adapter: 'apache2'
+            dhparams: |
+              -----BEGIN DH PARAMETERS-----
+              MEYCQQDaYxpaoXcGqR9AiGLCNR2iRs1CzEMvetbqEfKgXUzplylWglfqbPoDLcef
+              IEm9LTZYRszYrC3l3StpAG0VI35rAgEC
+              -----END DH PARAMETERS-----
+            limit_request_body: 134217728
+            extra_config: "# lorem ipsum dolor sit amet"
+            extra_config_ssl: true
+          worker:
+            adapter: 'resque'
+            workers: 3
+            queues:
+              - default
+              - mailers

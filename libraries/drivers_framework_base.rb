@@ -9,9 +9,16 @@ module Drivers
         handle_packages
       end
 
+      def deploy_before_migrate
+        link_sqlite_database
+      end
+
+      def deploy_before_symlink
+        link_sqlite_database unless out[:migrate]
+      end
+
       def deploy_before_restart
         assets_precompile if out[:assets_precompile]
-        link_sqlite_database
       end
 
       def out
@@ -43,18 +50,32 @@ module Drivers
         end
       end
 
+      # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def link_sqlite_database
         return unless database_url.start_with?('sqlite')
         deploy_to = deploy_dir(app)
         db_path = database_url.sub('sqlite://', '')
+        relative_db_path = db_path.sub(deploy_to, '').sub(%r{^/+shared/+}, '')
+        release_path = Dir[File.join(deploy_to, 'releases', '*')].last
+        shared_directory_path = File.join(deploy_to, 'shared', relative_db_path.sub(%r{/[^/]+\.sqlite3?$}, ''))
 
-        context.link File.join(deploy_to, 'current', db_path.sub(deploy_to, '').sub(%r{^/+shared/+}, '')) do
+        context.directory shared_directory_path do
+          recursive true
+          not_if { ::File.exist?(shared_directory_path) }
+        end
+
+        context.file File.join(deploy_to, 'shared', relative_db_path) do
+          action :create
+          not_if { ::File.exist?(File.join(deploy_to, 'shared', relative_db_path)) }
+        end
+
+        context.link File.join(release_path, relative_db_path) do
           to db_path
-          only_if { ::File.exist?(::File.join(deploy_to, 'current', db_path)) }
+          not_if { ::File.exist?(::File.join(release_path, relative_db_path)) }
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
-      # rubocop:disable Metrics/AbcSize
       def database_url
         deploy_to = deploy_dir(app)
         database_url = "sqlite://#{deploy_to}/shared/db/#{app['shortname']}_#{globals[:environment]}.sqlite"

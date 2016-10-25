@@ -31,15 +31,15 @@ end
 describe 'opsworks_ruby::configure' do
   context 'webserver' do
     describe file('/etc/nginx/ssl/dummy-project.example.com.key') do
-      its(:content) { should include '--- SSL PRIVATE KEY ---' }
+      its(:content) { should include '-----BEGIN RSA PRIVATE KEY-----' }
     end
 
     describe file('/etc/nginx/ssl/dummy-project.example.com.crt') do
-      its(:content) { should include '--- SSL CERTIFICATE ---' }
+      its(:content) { should include '-----BEGIN CERTIFICATE-----' }
     end
 
     describe file('/etc/nginx/ssl/dummy-project.example.com.ca') do
-      its(:content) { should include '--- SSL CERTIFICATE CHAIN ---' }
+      its(:content) { should include '-----BEGIN CERTIFICATE-----' }
     end
 
     describe file('/etc/nginx/sites-enabled/dummy_project.conf') do

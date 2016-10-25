@@ -17,6 +17,15 @@ else
   execute "/usr/sbin/alternatives --set ruby /usr/bin/ruby#{ruby_pkg_version.join('.')}"
 end
 
+apt_repository 'apache2' do
+  uri 'http://ppa.launchpad.net/ondrej/apache2/ubuntu'
+  distribution node['lsb']['codename']
+  components %w(main)
+  keyserver 'keyserver.ubuntu.com'
+  key 'E5267A6C'
+  only_if { node['platform'] == 'ubuntu' }
+end
+
 gem_package 'bundler'
 if node['platform_family'] == 'debian'
   link '/usr/local/bin/bundle' do

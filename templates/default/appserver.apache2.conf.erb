@@ -55,6 +55,7 @@
 </VirtualHost>
 
 <% if @application[:enable_ssl] %>
+SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 <VirtualHost *:443>
   ServerName <%= node['hostname'] %>
   ServerAlias <%= @application[:domains].join(" ") %>
@@ -87,7 +88,6 @@
   SSLHonorCipherOrder On
   SSLCompression off
   SSLUseStapling on
-  SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 
   <% if @out[:dhparams].present? -%>
   SSLOpenSSLConfCmd DHParameters "/etc/apache2/ssl/<%= @application[:domains].first %>.dhparams.pem"

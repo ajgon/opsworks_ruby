@@ -18,6 +18,7 @@ env:
   matrix:
     - INSTANCE=default-ubuntu-1404
     - INSTANCE=all-options-ubuntu-1404
+    - INSTANCE=unicorn-apache-hanami-resque-ubuntu-1404
 
 before_install:
   - gem install bundler

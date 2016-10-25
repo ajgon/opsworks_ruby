@@ -39,19 +39,23 @@ end
 describe 'opsworks_ruby::configure' do
   context 'webserver' do
     describe file('/etc/nginx/ssl/dummy-project.example.com.key') do
-      its(:content) { should include '--- SSL PRIVATE KEY ---' }
+      its(:content) { should include '-----BEGIN RSA PRIVATE KEY-----' }
     end
 
     describe file('/etc/nginx/ssl/dummy-project.example.com.crt') do
-      its(:content) { should include '--- SSL CERTIFICATE ---' }
+      its(:content) { should include '-----BEGIN CERTIFICATE-----' }
     end
 
     describe file('/etc/nginx/ssl/dummy-project.example.com.ca') do
-      its(:content) { should include '--- SSL CERTIFICATE CHAIN ---' }
+      its(:content) { should include '-----BEGIN CERTIFICATE-----' }
     end
 
     describe file('/etc/nginx/ssl/dummy-project.example.com.dhparams.pem') do
-      its(:content) { should include '--- DH PARAMS ---' }
+      its(:content) { should include '-----BEGIN DH PARAMETERS-----' }
+    end
+
+    describe file('/etc/nginx/sites-enabled/dummy_project.conf') do
+      it { should be_symlink }
     end
 
     describe file('/etc/nginx/sites-enabled/dummy_project.conf') do
@@ -71,6 +75,7 @@ describe 'opsworks_ruby::configure' do
       end
       its(:content) { should include 'root /srv/www/dummy_project/current/public;' }
       its(:content) { should include 'client_max_body_size 128m;' }
+      its(:content) { should include 'ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;' }
       its(:content) { should include 'location /ok { return 201; }' }
     end
   end
