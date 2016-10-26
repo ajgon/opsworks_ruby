@@ -15,5 +15,12 @@ By default webserver is configured to follow strict SSL security standards, `cov
 old browsers (like IE < 9 or Android < 2.2) wouldn't work with this configuration very well. If your application needs
 a support for those browsers, set ``app['webserver']['ssl_for_legacy_browsers']`` to true.
 
+Some applications on my Layer deploys, some of them not
+-------------------------------------------------------
+
+Check the ``node['applications']`` parameter in :ref:`Attributes` section.
+If set, it narrows down the list of applications allowed to deploy, to its value.
+If not sure what to do - try to remove from your Stack/Layer config and see if this helps.
+
 .. _covered in this article: https://cipherli.st/
 

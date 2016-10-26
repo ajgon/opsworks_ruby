@@ -14,8 +14,31 @@ Attributes
 | so for example ``app['framework']['adapter']`` actually means
 | ``node['deploy'][<application_shortname>]['framework']['adapter']``.
 
+Stack attributes
+----------------
+
+These attributes are used on Stack/Layer level globally to configure
+the opsworks_ruby cookbook itself. They should'nt be used under
+``node['deploy'][<application_shortname>]`` (notice lack of the ``app[]``
+convention).
+
+-  ``node['applications']``
+
+  -  An array of application shortnames which should be deployed to given layer.
+     If set, only applications witch ``deploy`` flag set (on OpsWorks side) included
+     in this list will be deployed. If not set, all ``deploy`` application will be
+     supported. This parameter mostly matters during the setup phase, since all
+     application in given stack are deployed to the given layer. Using this paramter
+     you can narrow the list to application which you actually intend to use.
+     **Important** thing is, that when you try to do a manual deploy from OpsWorks
+     of an application, not included in this list - it will be skipped, as this list
+     takes precedence over anything else.
+
+Application attributes
+----------------------
+
 global
-------
+~~~~~~
 
 | Global parameters apply to the whole application, and can be used by
   any section
@@ -29,7 +52,7 @@ global
      in Rails) actions in the project (server, worker, etc.)
 
 database
---------
+~~~~~~~~
 
 | Those parameters will be passed without any alteration to the
   ``database.yml``
@@ -67,7 +90,7 @@ database
      the ``database.yml``
 
 scm
----
+~~~
 
 | Those parameters can also be determined from OpsWorks application, and
   usually
@@ -113,7 +136,7 @@ scm
      also be fetched.
 
 framework
----------
+~~~~~~~~~
 
 | Pre-optimalization for specific frameworks (like migrations, cache etc.).
 | Currently ``hanami.rb`` and ``Rails`` are supported.
@@ -146,7 +169,7 @@ framework
   -  A command which will be invoked to precompile assets.
 
 padrino
-~~~~~~~
+^^^^^^^
 
 | For Padrino, slight adjustments needs to be made. Since there are many database
 | adapters supported, instead of creating configuration for each one, the
@@ -163,7 +186,7 @@ padrino
     }
 
 rails
-~~~~~
+^^^^^
 
 -  ``app['framework']['envs_in_console']``
 
@@ -176,7 +199,7 @@ rails
      it as a first step in your debugging process.
 
 appserver
----------
+~~~~~~~~~
 
 | Configuration parameters for the ruby application server. Currently ``Puma``,
 | ``Thin`` and ``Unicorn`` are supported.
@@ -220,7 +243,7 @@ appserver
      serve exactly one client at a time.
 
 unicorn
-~~~~~~~
+^^^^^^^
 
 -  |app['appserver']['backlog']|_
 
@@ -245,7 +268,7 @@ unicorn
   -  **Default:** ``5``
 
 puma
-~~~~
+^^^^
 
 -  |app['appserver']['log_requests']|_
 
@@ -261,7 +284,7 @@ puma
   -  **Default:** ``0``
 
 thin
-~~~~
+^^^^
 
 -  ``app['appserver']['max_connections']``
 
@@ -280,7 +303,7 @@ thin
   -  **Default:** ``4``
 
 webserver
----------
+~~~~~~~~~
 
 | Webserver configuration. Proxy passing to application is handled out-of-the-box.
 | Currently Apache2 and nginx is supported.
@@ -315,7 +338,7 @@ webserver
      application needs a support for those browsers, set this parameter to ``true``.
 
 apache
-~~~~~~
+^^^^^^
 
 -  ``app['webserver']['extra_config']``
 
@@ -346,7 +369,7 @@ apache
   -  **Default**: ``60``
 
 nginx
-~~~~~
+^^^^^
 
 -  ``app['webserver']['build_type']``
 
@@ -402,8 +425,11 @@ nginx
 | as well (notice that ``node['deploy'][<application_shortname>]`` logic
 | doesn't apply here.)
 
+worker
+~~~~~~
+
 sidekiq
-~~~~~~~
+^^^^^^^
 
 -  ``app['worker']['config']``
 
@@ -412,14 +438,14 @@ sidekiq
      `sidekiq.yml config file`_.
 
 delayed\_job
-~~~~~~~~~~~~
+^^^^^^^^^^^^
 
 -  ``app['worker']['queues']``
 
   -  Array of queues which should be processed by delayed\_job
 
 resque
-~~~~~~
+^^^^^^
 
 -  ``app['worker']['workers']``
 

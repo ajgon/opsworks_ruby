@@ -80,4 +80,12 @@ end
 
 def prepare_recipe
   node.default['deploy'] = Hash[applications.map { |app| [app['shortname'], {}] }].merge(node['deploy'] || {})
+  apps_not_included.each do |app_for_removal|
+    node.rm('deploy', app_for_removal)
+  end
+end
+
+def apps_not_included
+  return [] if node['applications'].blank?
+  node['deploy'].keys.select { |app_name| !node['applications'].include?(app_name) }
 end
