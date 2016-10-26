@@ -5,7 +5,7 @@ prepare_recipe
 include_recipe 'opsworks_ruby::configure'
 
 # rubocop:disable Metrics/BlockLength
-every_enabled_application do |application, deploy|
+every_enabled_application do |application, app_data|
   databases = []
   every_enabled_rds(self, application) do |rds|
     databases.push(Drivers::Db::Factory.build(self, application, rds: rds))
@@ -24,18 +24,25 @@ every_enabled_application do |application, deploy|
     deploy_to deploy_dir(application)
     user node['deployer']['user'] || 'root'
     group www_group
-    rollback_on_error true
     environment application['environment'].merge(framework.out[:deploy_environment] || {})
 
-    keep_releases deploy[:keep_releases]
+    if app_data[:rollback_on_error].nil?
+      rollback_on_error node['defaults']['deploy']['rollback_on_error']
+    else
+      rollback_on_error app_data[:rollback_on_error]
+    end
+
+    keep_releases app_data[:keep_releases]
     create_dirs_before_symlink(
-      (node['defaults']['deploy']['create_dirs_before_symlink'] + Array.wrap(deploy[:create_dirs_before_symlink])).uniq
+      (
+        node['defaults']['deploy']['create_dirs_before_symlink'] + Array.wrap(app_data[:create_dirs_before_symlink])
+      ).uniq
     )
     purge_before_symlink(
-      (node['defaults']['deploy']['purge_before_symlink'] + Array.wrap(deploy[:purge_before_symlink])).uniq
+      (node['defaults']['deploy']['purge_before_symlink'] + Array.wrap(app_data[:purge_before_symlink])).uniq
     )
-    symlink_before_migrate deploy[:symlink_before_migrate]
-    symlinks(node['defaults']['deploy']['symlinks'].merge(deploy[:symlinks] || {}))
+    symlink_before_migrate app_data[:symlink_before_migrate]
+    symlinks(node['defaults']['deploy']['symlinks'].merge(app_data[:symlinks] || {}))
 
     scm.out.each do |scm_key, scm_value|
       send(scm_key, scm_value) if respond_to?(scm_key)

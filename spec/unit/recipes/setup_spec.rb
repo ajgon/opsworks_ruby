@@ -135,6 +135,12 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
+  context 'apt_repository' do
+    it 'debian' do
+      expect(chef_run).to add_apt_repository('apache2')
+    end
+  end
+
   context 'Postgresql + git + nginx + sidekiq' do
     it 'installs required packages for debian' do
       expect(chef_run).to install_package('nginx')

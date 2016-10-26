@@ -43,6 +43,7 @@ describe 'opsworks_ruby::deploy' do
         revision: 'master',
         scm_provider: Chef::Provider::Git,
         enable_submodules: false,
+        rollback_on_error: true,
         environment: aws_opsworks_app['environment'].merge('RAILS_ENV' => 'staging'),
         ssh_wrapper: '/tmp/ssh-git-wrapper.sh',
         symlinks: {

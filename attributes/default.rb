@@ -11,6 +11,7 @@ default['defaults']['deploy']['symlinks'] = {
 default['defaults']['deploy']['create_dirs_before_symlink'] =
   %w(tmp public config ../../shared/cache ../../shared/assets)
 default['defaults']['deploy']['purge_before_symlink'] = %w(log tmp/cache tmp/pids public/system public/assets)
+default['defaults']['deploy']['rollback_on_error'] = true
 
 # ruby
 
