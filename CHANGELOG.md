@@ -1,3 +1,19 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/ajgon/opsworks_ruby/compare/v1.1.1...v1.1.2) (2016-10-27)
+
+
+### Bug Fixes
+
+* **webserver:** Improved apache2 support ([4293bff](https://github.com/ajgon/opsworks_ruby/commit/4293bff))
+* `node['applications']` are back ([5fc42c3](https://github.com/ajgon/opsworks_ruby/commit/5fc42c3)), closes [#55](https://github.com/ajgon/opsworks_ruby/issues/55)
+
+
+### Features
+
+* `app['rollback_on_error']` implemented ([e6934a7](https://github.com/ajgon/opsworks_ruby/commit/e6934a7)), closes [#54](https://github.com/ajgon/opsworks_ruby/issues/54)
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/ajgon/opsworks_ruby/compare/v1.1.0...v1.1.1) (2016-10-21)
 
