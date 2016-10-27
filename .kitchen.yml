@@ -91,3 +91,37 @@ suites:
             queues:
               - default
               - mailers
+  - name: thin_nginx_padrino_delayed_job
+    data_bags_path: "test/integration/data_bags/thin_nginx_padrino_delayed_job"
+    run_list:
+      - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::provision]
+      - recipe[opsworks_ruby::deploy]
+    attributes:
+      deploy:
+        dummy_project:
+          framework:
+            adapter: 'padrino'
+          appserver:
+            adapter: 'thin'
+            max_connections: 4096
+            max_persistent_connections: 2048
+          worker:
+            adapter: 'delayed_job'
+            queues:
+              - default
+              - mailers
+  - name: nullified
+    data_bags_path: "test/integration/data_bags/nullified"
+    run_list:
+      - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::deploy]
+    attributes:
+      deploy:
+        dummy_project:
+          framework:
+            adapter: 'null'
+          appserver:
+            adapter: 'null'
+          webserver:
+            adapter: 'null'
