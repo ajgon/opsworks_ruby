@@ -11,7 +11,7 @@ module Drivers
       packages debian: 'zlib1g-dev', rhel: 'zlib-devel'
 
       def raw_out
-        super.merge(deploy_environment: { 'RAILS_ENV' => globals[:environment] })
+        super.merge(deploy_environment: { 'RAILS_ENV' => deploy_env })
       end
 
       def configure
@@ -32,14 +32,14 @@ module Drivers
         return unless db.applicable_for_configuration?
 
         database = db.out
-        deploy_env = globals[:environment]
+        deploy_environment = deploy_env
 
         context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do
           source 'database.yml.erb'
           mode '0660'
           owner node['deployer']['user'] || 'root'
           group www_group
-          variables(database: database, environment: deploy_env)
+          variables(database: database, environment: deploy_environment)
         end
       end
 

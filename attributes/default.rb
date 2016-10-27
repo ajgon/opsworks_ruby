@@ -1,18 +1,5 @@
 # frozen_string_literal: true
 
-# deploy
-default['defaults']['deploy']['symlinks'] = {
-  'system' => 'public/system',
-  'assets' => 'public/assets',
-  'cache' => 'tmp/cache',
-  'pids' => 'tmp/pids',
-  'log' => 'log'
-}
-default['defaults']['deploy']['create_dirs_before_symlink'] =
-  %w(tmp public config ../../shared/cache ../../shared/assets)
-default['defaults']['deploy']['purge_before_symlink'] = %w(log tmp/cache tmp/pids public/system public/assets)
-default['defaults']['deploy']['rollback_on_error'] = true
-
 # ruby
 
 default['build-essential']['compile_time'] = true
@@ -24,6 +11,17 @@ default['nginx']['source']['modules'] = %w(
 
 # global
 default['defaults']['global']['environment'] = 'production'
+default['defaults']['global']['symlinks'] = {
+  'system' => 'public/system',
+  'assets' => 'public/assets',
+  'cache' => 'tmp/cache',
+  'pids' => 'tmp/pids',
+  'log' => 'log'
+}
+default['defaults']['global']['create_dirs_before_symlink'] =
+  %w(tmp public config ../../shared/cache ../../shared/assets)
+default['defaults']['global']['purge_before_symlink'] = %w(log tmp/cache tmp/pids public/system public/assets)
+default['defaults']['global']['rollback_on_error'] = true
 
 # database
 ## common

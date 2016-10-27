@@ -59,7 +59,7 @@ module Drivers
 
       # rubocop:disable Metrics/AbcSize
       def add_appserver_config
-        opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: globals[:environment],
+        opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: deploy_env,
                  webserver: Drivers::Webserver::Factory.build(context, app).adapter,
                  appserver_config: appserver_config }
 
@@ -74,8 +74,8 @@ module Drivers
       # rubocop:enable Metrics/AbcSize
 
       def add_appserver_service_script
-        opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], deploy_env: globals[:environment],
-                 name: adapter, command: appserver_command, environment: environment }
+        opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], name: adapter, environment: environment,
+                 command: appserver_command, deploy_env: deploy_env }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'scripts', "#{opts[:name]}.service")) do
           owner node['deployer']['user']

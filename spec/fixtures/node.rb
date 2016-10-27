@@ -12,7 +12,10 @@ def node(override = {})
     deploy: {
       dummy_project: {
         global: {
-          environment: 'staging'
+          environment: 'staging',
+          create_dirs_before_symlink: %(../shared/test),
+          purge_before_symlink: %w(public/test),
+          symlinks: { 'test' => 'public/test' }
         },
         # database: {
         #   adapter: 'postgresql',
@@ -57,14 +60,11 @@ def node(override = {})
           adapter: 'sidekiq',
           require: 'lorem_ipsum.rb',
           queues: 'test_queue'
-        },
-        create_dirs_before_symlink: %(../shared/test),
-        purge_before_symlink: %w(public/test),
-        symlinks: { 'test' => 'public/test' }
+        }
       }
     },
     defaults: {
-      deploy: {
+      global: {
         symlinks: {
           system: 'public/system',
           assets: 'public/assets',

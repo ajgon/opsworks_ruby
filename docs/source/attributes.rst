@@ -40,16 +40,46 @@ Application attributes
 global
 ~~~~~~
 
-| Global parameters apply to the whole application, and can be used by
-  any section
-| (framework, appserver etc.).
+Global parameters apply to the whole application, and can be used by any section
+(framework, appserver etc.).
 
 -  ``app['global']['environment']``
 
+  -  **Type:** string
   -  **Default:** ``production``
-  -  Sets the “deploy environment” for all the app-related (for example
-     ``RAILS_ENV``
+  -  Sets the “deploy environment” for all the app-related (for example ``RAILS_ENV``
      in Rails) actions in the project (server, worker, etc.)
+
+- ``app['global']['symlinks']``
+
+  -  **Type:** key-value
+  -  **Default:** ``{ "system": "public/system", "assets": "public/assets", "cache": "tmp/cache", "pids": "tmp/pids", "log": "log" }``
+  -  **Important Notice:** Any values for this parameter will be *merged* to the defaults
+  -  List of symlinks created to the ``shared`` directory. The format is ``{"shared_path": "release_path"}``.
+     For example ``{"system", "public/system"}`` means: Link ``/src/www/app_name/current/public/system`` to
+     ``/src/www/app_name/shared/system``.
+
+- ``app['global']['create_dirs_before_symlink']``
+
+  -  **Type:** array
+  -  **Default:** ``["tmp", "public", "config", "../../shared/cache", "../../shared/assets"]``
+  -  **Important Notice:** Any values for this parameter will be *appended* to the defaults
+  -  List of directories to be created before symlinking. Paths are relative to ``release_path``.
+     For example ``tmp`` becomes ``/srv/www/app_name/current/tmp``.
+
+- ``app['global']['purge_before_symlink']``
+
+  -  **Type:** array
+  -  **Default:** ``["log", "tmp/cache", "tmp/pids", "public/system", "public/assets"]``
+  -  **Important Notice:** Any values for this parameter will be *appended* to the defaults
+  -  List of directories to be wiped out before symlinking. Paths are relative to ``release_path``.
+     For example ``tmp`` becomes ``/srv/www/app_name/current/tmp``.
+
+- ``app['global']['rollback_on_error']``
+
+  -  **Type:** boolean
+  -  **Default:** ``true``
+  -  When set to true, any failed deploy will be removed from ``releases`` directory.
 
 database
 ~~~~~~~~

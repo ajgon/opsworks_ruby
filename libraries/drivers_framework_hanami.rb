@@ -15,7 +15,8 @@ module Drivers
                             '/usr/local/bin/bundle exec hanami db migrate'
 
         super.merge(
-          deploy_environment: { 'HANAMI_ENV' => globals[:environment], 'DATABASE_URL' => database_url },
+          deploy_environment:
+            { 'HANAMI_ENV' => deploy_env, 'DATABASE_URL' => database_url },
           assets_precompilation_command: assets_command,
           migration_command: migration_command
         )
@@ -36,7 +37,7 @@ module Drivers
         deploy_to = deploy_dir(app)
         env = environment
 
-        context.template File.join(deploy_to, 'shared', 'config', ".env.#{globals[:environment]}") do
+        context.template File.join(deploy_to, 'shared', 'config', ".env.#{deploy_env}") do
           owner node['deployer']['user']
           group www_group
           source 'dot_env.erb'
@@ -46,7 +47,7 @@ module Drivers
 
       def link_env
         deploy_to = deploy_dir(app)
-        env_name = globals[:environment]
+        env_name = deploy_env
 
         context.link File.join(deploy_to, 'current', ".env.#{env_name}") do
           to File.join(deploy_to, 'shared', 'config', ".env.#{env_name}")

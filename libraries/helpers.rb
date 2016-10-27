@@ -14,10 +14,23 @@ def rdses
   search(:aws_opsworks_rds_db_instance)
 end
 
-def globals
-  {
-    environment: 'production'
-  }.merge((node['deploy'][app['shortname']].try(:[], 'global') || node['defaults']['global'] || {}).symbolize_keys)
+def globals(index, application)
+  globals = (node['deploy'][application].try(:[], 'global') || {}).symbolize_keys
+  return globals[index.to_sym] unless globals[index.to_sym].nil?
+
+  old_item = old_globals(index, application)
+  return old_item unless old_item.nil?
+  node['defaults']['global'][index.to_s]
+end
+
+def old_globals(index, application)
+  return unless node['deploy'][application][index.to_s]
+  message =
+    "DEPRECATION WARNING: node['deploy']['#{application}']['#{index}'] is deprecated and will be removed. " \
+    "Please use node['deploy']['#{application}']['global']['#{index}'] instead."
+  Chef::Log.warn(message)
+  STDERR.puts(message)
+  node['deploy'][application][index.to_s]
 end
 
 def fire_hook(name, options)

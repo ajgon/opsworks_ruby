@@ -10,7 +10,7 @@ module Drivers
 
       def raw_out
         super.merge(
-          deploy_environment: { 'RACK_ENV' => globals[:environment], 'DATABASE_URL' => database_url },
+          deploy_environment: { 'RACK_ENV' => deploy_env, 'DATABASE_URL' => database_url },
           assets_precompile: node['deploy'][app['shortname']]['framework']['assets_precompile']
         )
       end

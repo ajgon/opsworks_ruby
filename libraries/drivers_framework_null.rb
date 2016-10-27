@@ -7,7 +7,7 @@ module Drivers
       output filter: [:deploy_environment]
 
       def raw_out
-        super.merge(deploy_environment: { 'RACK_ENV' => globals[:environment] })
+        super.merge(deploy_environment: { 'RACK_ENV' => deploy_env })
       end
     end
   end

@@ -24,6 +24,45 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to include_recipe('opsworks_ruby::configure')
   end
 
+  context 'DEPRECATION' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['keep_releases'] = 10
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+    let(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['keep_releases'] = 10
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+    let(:logs) { [] }
+
+    before do
+      allow(Chef::Log).to receive(:warn) do |message|
+        logs.push message
+      end
+    end
+
+    after do
+      expect(logs).to include(
+        'DEPRECATION WARNING: node[\'deploy\'][\'dummy_project\'][\'keep_releases\'] is deprecated ' \
+        'and will be removed. Please use node[\'deploy\'][\'dummy_project\'][\'global\'][\'keep_releases\'] instead.'
+      )
+    end
+
+    it 'debian: Shows warning' do
+      chef_run
+    end
+
+    it 'rhel: Shows warning' do
+      chef_run_rhel
+    end
+  end
+
   context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
     it 'creates git wrapper script' do
       expect(chef_run).to create_template('/tmp/ssh-git-wrapper.sh')

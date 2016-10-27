@@ -5,7 +5,7 @@ prepare_recipe
 include_recipe 'opsworks_ruby::configure'
 
 # rubocop:disable Metrics/BlockLength
-every_enabled_application do |application, app_data|
+every_enabled_application do |application, _app_data|
   databases = []
   every_enabled_rds(self, application) do |rds|
     databases.push(Drivers::Db::Factory.build(self, application, rds: rds))
@@ -26,23 +26,27 @@ every_enabled_application do |application, app_data|
     group www_group
     environment application['environment'].merge(framework.out[:deploy_environment] || {})
 
-    if app_data[:rollback_on_error].nil?
-      rollback_on_error node['defaults']['deploy']['rollback_on_error']
+    if globals(:rollback_on_error, application['shortname']).nil?
+      rollback_on_error node['defaults']['global']['rollback_on_error']
     else
-      rollback_on_error app_data[:rollback_on_error]
+      rollback_on_error globals(:rollback_on_error, application['shortname'])
     end
 
-    keep_releases app_data[:keep_releases]
+    keep_releases globals(:keep_releases, application['shortname'])
     create_dirs_before_symlink(
       (
-        node['defaults']['deploy']['create_dirs_before_symlink'] + Array.wrap(app_data[:create_dirs_before_symlink])
+        node['defaults']['global']['create_dirs_before_symlink'] +
+        Array.wrap(globals(:create_dirs_before_symlink, application['shortname']))
       ).uniq
     )
     purge_before_symlink(
-      (node['defaults']['deploy']['purge_before_symlink'] + Array.wrap(app_data[:purge_before_symlink])).uniq
+      (
+        node['defaults']['global']['purge_before_symlink'] +
+        Array.wrap(globals(:purge_before_symlink, application['shortname']))
+      ).uniq
     )
-    symlink_before_migrate app_data[:symlink_before_migrate]
-    symlinks(node['defaults']['deploy']['symlinks'].merge(app_data[:symlinks] || {}))
+    symlink_before_migrate globals(:symlink_before_migrate, application['shortname'])
+    symlinks(node['defaults']['global']['symlinks'].merge(globals(:symlinks, application['shortname']) || {}))
 
     scm.out.each do |scm_key, scm_value|
       send(scm_key, scm_value) if respond_to?(scm_key)

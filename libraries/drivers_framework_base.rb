@@ -78,7 +78,7 @@ module Drivers
 
       def database_url
         deploy_to = deploy_dir(app)
-        database_url = "sqlite://#{deploy_to}/shared/db/#{app['shortname']}_#{globals[:environment]}.sqlite"
+        database_url = "sqlite://#{deploy_to}/shared/db/#{app['shortname']}_#{deploy_env}.sqlite"
 
         Array.wrap(options[:databases]).each do |db|
           next unless db.applicable_for_configuration?

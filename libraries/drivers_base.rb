@@ -74,6 +74,10 @@ module Drivers
       self.class.adapter
     end
 
+    def deploy_env
+      globals(:environment, app['shortname'])
+    end
+
     def validate_app_engine
       return validate_node_engine if app_engine.blank?
       validate_engine(:app)
