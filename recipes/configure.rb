@@ -6,7 +6,7 @@
 
 prepare_recipe
 
-every_enabled_application do |application, _app_data|
+every_enabled_application do |application|
   create_deploy_dir(application, File.join('shared'))
   create_deploy_dir(application, File.join('shared', 'config'))
   create_deploy_dir(application, File.join('shared', 'log'))

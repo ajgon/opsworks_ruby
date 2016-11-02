@@ -6,7 +6,7 @@
 
 prepare_recipe
 
-every_enabled_application do |application, _app_data|
+every_enabled_application do |application|
   databases = []
   every_enabled_rds(self, application) do |rds|
     databases.push(Drivers::Db::Factory.build(self, application, rds: rds))
