@@ -1,3 +1,24 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/ajgon/opsworks_ruby/compare/v1.1.2...v1.2.0) (2016-11-02)
+
+
+### Bug Fixes
+
+* Moved global deploy parameters to `app['global']` section ([b4f8d6b](https://github.com/ajgon/opsworks_ruby/commit/b4f8d6b))
+
+
+### BREAKING CHANGES
+
+* `app['create_dirs_before_symlink']`,
+`app['purge_before_symlink']`, `app['rollback_on_error']` and
+`app['symlinks']` are now `app['global']['create_dirs_before_symlink']`,
+`app['global']['purge_before_symlink']`,
+`app['global']['rollback_on_error']` and `app['global']['symlink']`. The
+old format still works, but it shows DEPRECATION warning. It will be
+removed in one of the next major releases.
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/ajgon/opsworks_ruby/compare/v1.1.1...v1.1.2) (2016-10-27)
 
