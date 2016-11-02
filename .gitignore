@@ -2,6 +2,7 @@ _site
 .sass-cache
 .jekyll-metadata
 .asset-cache
+.kitchen
 node_modules
 Berksfile.lock
 coverage

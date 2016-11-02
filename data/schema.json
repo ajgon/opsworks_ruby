@@ -4,6 +4,26 @@
       "type":"string",
       "default":"production",
       "description":"Sets the \"deploy environment\" for all the app-related (for example RAILS_ENV in Rails) actions in the project (server, worker, etc.)"
+    },
+    "symlinks":{
+      "type":"json",
+      "default":{},
+      "description":"List of symlinks created to the shared directory. The format is {\"shared_path\": \"release_path\"}. Any values for this parameter will be merged to the defaults."
+    },
+    "create_dirs_before_symlink":{
+      "type":"json",
+      "default": [],
+      "description":"List of directories to be created before symlinking. Paths are relative to release_path. Any values for this parameter will be appended to the defaults."
+    },
+    "purge_before_symlink":{
+      "type":"json",
+      "default":[],
+      "description":"List of directories to be wiped out before symlinking. Paths are relative to release_path. Any values for this parameter will be appended to the defaults."
+    },
+    "rollback_on_error":{
+      "type":"boolean",
+      "default":true,
+      "description":"When set to true, any failed deploy will be removed from releases directory."
     }
   },
   "database":{
@@ -509,6 +529,7 @@
     },
     "config":{
       "type":"json",
+      "default":{},
       "depends":[
         "sidekiq"
       ],
