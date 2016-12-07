@@ -12,6 +12,10 @@ module Drivers
         add_worker_monit
       end
 
+      def before_deploy
+        quiet_sidekiq
+      end
+
       def after_deploy
         restart_monit
       end
@@ -30,6 +34,15 @@ module Drivers
             source 'sidekiq.conf.yml.erb'
             variables config: config
           end
+        end
+      end
+
+      def quiet_sidekiq
+        deploy_to = deploy_dir(app)
+
+        (1..process_count).each do |process_number|
+          pid_file = "#{deploy_to}/shared/pids/sidekiq_#{process_number}.pid"
+          execute "/bin/su - #{node['deployer']['user']} -c 'kill -s USR1 `cat #{pid_file}`'"
         end
       end
 
