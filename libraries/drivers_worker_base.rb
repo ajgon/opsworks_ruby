@@ -45,6 +45,14 @@ module Drivers
         end
       end
 
+      def unmonitor_monit
+        (1..process_count).each do |process_number|
+          context.execute "monit unmonitor #{adapter}_#{app['shortname']}-#{process_number}" do
+            retries 3
+          end
+        end
+      end
+
       def process_count
         [out[:process_count].to_i, 1].max
       end
