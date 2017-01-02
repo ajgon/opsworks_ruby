@@ -8,7 +8,6 @@ module Drivers
 
       def configure
       end
-      alias deploy_before_restart configure
       alias after_deploy configure
       alias after_undeploy configure
     end
