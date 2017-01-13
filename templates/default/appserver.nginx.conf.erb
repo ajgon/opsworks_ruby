@@ -6,6 +6,7 @@ server {
   listen 80;
   server_name <%= @application[:domains].join(" ") %> <%= node['hostname'] %>;
   access_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>.access.log;
+  error_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>.error.log <%= @out[:log_level] %>;
 
   root <%= File.join(@deploy_dir, 'current', 'public') %>;
 
@@ -64,6 +65,7 @@ server {
   listen   443;
   server_name <%= @application[:domains].join(" ") %> <%= node['hostname'] %>;
   access_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
+  error_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>-ssl.error.log <%= @out[:log_level] %>;
 
   ssl on;
   ssl_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.crt;
