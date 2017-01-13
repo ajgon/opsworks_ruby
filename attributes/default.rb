@@ -70,11 +70,11 @@ default['defaults']['webserver']['ssl_for_legacy_browsers'] = false
 default['defaults']['webserver']['extra_config'] = ''
 default['defaults']['webserver']['extra_config_ssl'] = ''
 default['defaults']['webserver']['keepalive_timeout'] = '15'
+default['defaults']['webserver']['log_level'] = 'info'
 
 ## apache2
 
 default['defaults']['webserver']['limit_request_body'] = '1048576'
-default['defaults']['webserver']['log_level'] = 'info'
 default['defaults']['webserver']['proxy_timeout'] = '60'
 
 ## nginx

@@ -16,6 +16,7 @@ describe Drivers::Webserver::Nginx do
       client_body_timeout: '30',
       dhparams: '--- DH PARAMS ---',
       keepalive_timeout: '65',
+      log_level: 'debug',
       extra_config: 'extra_config {}',
       extra_config_ssl: 'extra_config_ssl {}'
     )
@@ -31,6 +32,7 @@ describe Drivers::Webserver::Nginx do
       client_max_body_size: '125m',
       client_body_timeout: '30',
       dhparams: '--- DH PARAMS ---',
+      log_level: 'debug',
       extra_config: 'extra_config {}',
       extra_config_ssl: 'extra_config {}'
     )

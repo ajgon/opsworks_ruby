@@ -49,7 +49,8 @@ def node(override = {})
           client_max_body_size: '125m',
           limit_request_body: '131072000',
           dhparams: '--- DH PARAMS ---',
-          extra_config: 'extra_config {}'
+          extra_config: 'extra_config {}',
+          log_level: 'debug'
         },
         framework: {
           adapter: 'rails',
