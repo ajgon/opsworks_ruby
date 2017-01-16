@@ -27,38 +27,27 @@ module Drivers
     end
 
     # Dummy methods for children to redefine
-    def setup
-    end
+    def setup; end
 
-    def configure
-    end
+    def configure; end
 
-    def before_deploy
-    end
+    def before_deploy; end
 
-    def deploy_before_migrate
-    end
+    def deploy_before_migrate; end
 
-    def deploy_before_symlink
-    end
+    def deploy_before_symlink; end
 
-    def deploy_before_restart
-    end
+    def deploy_before_restart; end
 
-    def deploy_after_restart
-    end
+    def deploy_after_restart; end
 
-    def after_deploy
-    end
+    def after_deploy; end
 
-    def before_undeploy
-    end
+    def before_undeploy; end
 
-    def after_undeploy
-    end
+    def after_undeploy; end
 
-    def shutdown
-    end
+    def shutdown; end
 
     protected
 

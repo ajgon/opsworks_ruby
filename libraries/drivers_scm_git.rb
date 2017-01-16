@@ -53,10 +53,11 @@ module Drivers
       end
 
       def remove_dot_git
+        return unless out[:remove_scm_files]
         context.directory File.join(deploy_dir(app), 'current', '.git') do
           recursive true
           action :delete
-        end if out[:remove_scm_files]
+        end
       end
     end
   end

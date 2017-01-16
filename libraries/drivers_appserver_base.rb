@@ -33,8 +33,7 @@ module Drivers
         ).symbolize_keys
       end
 
-      def validate_app_engine
-      end
+      def validate_app_engine; end
 
       protected
 

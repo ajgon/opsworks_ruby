@@ -67,8 +67,19 @@ describe 'opsworks_ruby::setup' do
       end
 
       it 'installs ruby 2.3' do
+        chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.3' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+        end.converge(described_recipe)
+
         expect(chef_run).to install_package('ruby2.3')
         expect(chef_run).to install_package('ruby2.3-dev')
+      end
+
+      it 'installs ruby 2.4' do
+        expect(chef_run).to install_package('ruby2.4')
+        expect(chef_run).to install_package('ruby2.4-dev')
       end
     end
 
@@ -110,9 +121,21 @@ describe 'opsworks_ruby::setup' do
       end
 
       it 'installs ruby 2.3' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.3' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+        end.converge(described_recipe)
+
         expect(chef_run_rhel).to install_package('ruby23')
         expect(chef_run_rhel).to install_package('ruby23-devel')
         expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.3')
+      end
+
+      it 'installs ruby 2.4' do
+        expect(chef_run_rhel).to install_package('ruby24')
+        expect(chef_run_rhel).to install_package('ruby24-devel')
+        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.4')
       end
     end
   end

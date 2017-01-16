@@ -1,9 +1,8 @@
 # frozen_string_literal: true
-# rubocop:disable Metrics/BlockLength
 require 'spec_helper'
 
 describe 'opsworks_ruby::setup' do
-  describe package('ruby2.3') do
+  describe package('ruby2.4') do
     it { should be_installed }
   end
 
@@ -108,4 +107,3 @@ describe 'opsworks_ruby::deploy' do
     end
   end
 end
-# rubocop:enable Metrics/BlockLength

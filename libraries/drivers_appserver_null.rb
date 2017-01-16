@@ -6,8 +6,7 @@ module Drivers
       allowed_engines :null
       output filter: []
 
-      def configure
-      end
+      def configure; end
       alias after_deploy configure
       alias after_undeploy configure
     end

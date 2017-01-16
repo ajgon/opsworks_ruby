@@ -8,6 +8,9 @@ Style/Documentation:
 Metrics/AbcSize:
   Max: 25
 
+Metrics/BlockLength:
+  Enabled: false
+
 AllCops:
   TargetRubyVersion: 2.3
   DisplayCopNames: true
