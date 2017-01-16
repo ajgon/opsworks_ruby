@@ -1,3 +1,20 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/ajgon/opsworks_ruby/compare/v1.2.1...v1.3.0) (2017-01-16)
+
+
+### Features
+
+* **appserver:** Allowed deploy_before_restart on null appserver ([b0375a6](https://github.com/ajgon/opsworks_ruby/commit/b0375a6))
+* **database:** Added aurora as allowed engine for mysql2 adapter ([a2789f0](https://github.com/ajgon/opsworks_ruby/commit/a2789f0))
+* **ruby:** Added support for ruby 2.4 ([a89451f](https://github.com/ajgon/opsworks_ruby/commit/a89451f))
+
+
+### BREAKING CHANGES
+
+* ruby: Ruby 2.4 is now a default Ruby interpreter
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/ajgon/opsworks_ruby/compare/v1.2.0...v1.2.1) (2016-11-27)
 

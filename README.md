@@ -28,6 +28,7 @@ Author: [Igor Rzegocki](https://www.rzegocki.pl/) ([@ajgon](https://github.com/a
 * Phong Si ([@phongsi](https://github.com/phongsi))
 * Nathan Flood ([@npflood](https://github.com/npflood))
 * Marcos Beirigo ([@marcosbeirigo](https://github.com/marcosbeirigo))
+* Kevin Pheasey ([@kpheasey](https://github.com/kpheasey))
 
 ## License
 
