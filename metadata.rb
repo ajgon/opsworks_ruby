@@ -9,7 +9,7 @@ version '1.3.0'
 
 depends 'deployer'
 depends 'ruby-ng'
-depends 'nginx', '~> 2.7'
+depends 'chef_nginx', '~> 5.0.7'
 
 supports 'amazon', '>= 2015.03'
 supports 'ubuntu', '>= 12.04'
