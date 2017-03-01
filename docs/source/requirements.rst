@@ -6,7 +6,7 @@ Cookbooks
 
 -  `deployer`_
 -  `ruby-ng`_
--  `nginx (~> 2.7)`_
+-  `chef_nginx`_
 
 Platform
 --------

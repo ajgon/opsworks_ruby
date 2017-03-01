@@ -413,7 +413,7 @@ nginx
 
   -  **Supported values:** ``default`` or ``source``
   -  **Default:** ``default``
-  -  The way the `nginx`_ cookbooks handles ``nginx`` installation.
+  -  The way the `chef_nginx`_ cookbook handles ``nginx`` installation.
      Check out `the corresponding docs`_ for more details. Never use
      ``node['nginx']['install_method']``, as it will be always overwritten
      by this attribute.
@@ -458,7 +458,7 @@ nginx
 
   -  **Default**: ``10``
 
-| Since this driver is basically a wrapper for `nginx cookbook`_,
+| Since this driver is basically a wrapper for `chef_nginx cookbook`_,
 | you can also configure `node['nginx'] attributes`_
 | as well (notice that ``node['deploy'][<application_shortname>]`` logic
 | doesn't apply here.)
@@ -522,7 +522,7 @@ resque
 .. _app['webserver']['log_level']: https://httpd.apache.org/docs/2.4/mod/core.html#loglevel
 .. |app['webserver']['proxy_timeout']| replace:: ``app['webserver']['proxy_timeout']``
 .. _app['webserver']['proxy_timeout']: https://httpd.apache.org/docs/current/mod/mod_proxy.html#proxytimeout
-.. _nginx: https://supermarket.chef.io/cookbooks/nginx
+.. _chef_nginx: https://supermarket.chef.io/cookbooks/chef_nginx
 .. _the corresponding docs: https://github.com/miketheman/nginx/tree/2.7.x#recipes
 .. |app['webserver']['client_body_timeout']| replace:: ``app['webserver']['client_body_timeout']``
 .. _app['webserver']['client_body_timeout']: http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_timeout
@@ -536,7 +536,7 @@ resque
 .. _app['webserver']['proxy_send_timeout']: http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_send_timeout
 .. |app['webserver']['send_timeout']| replace:: ``app['webserver']['send_timeout']``
 .. _app['webserver']['send_timeout']: http://nginx.org/en/docs/http/ngx_http_core_module.html#send_timeout
-.. _nginx cookbook: https://github.com/miketheman/nginx/tree/2.7.x
+.. _chef_nginx cookbook: https://github.com/chef-cookbooks/chef_nginx
 .. |node['nginx'] attributes| replace:: ``node['nginx']`` attributes
 .. _node['nginx'] attributes: https://github.com/miketheman/nginx/tree/2.7.x#attributes
 .. |sidekiq.yml config file| replace:: ``sidekiq.yml`` config file
