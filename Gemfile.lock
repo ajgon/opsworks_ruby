@@ -265,6 +265,7 @@ GEM
     ruby_parser (3.8.4)
       sexp_processor (~> 4.1)
     rufus-lru (1.1.0)
+    rvm (1.11.3.9)
     safe_yaml (1.0.4)
     sawyer (0.8.1)
       addressable (>= 2.3.5, < 2.6)
@@ -345,6 +346,7 @@ DEPENDENCIES
   overcommit
   rspec
   rubocop
+  rvm (>= 1.11.3.6)
   test-kitchen
   travis
 

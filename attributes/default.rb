@@ -3,7 +3,7 @@
 # ruby
 
 default['build-essential']['compile_time'] = true
-default['ruby-ng']['ruby_version'] = node['ruby'].try(:[], 'version') || '2.4'
+default['rvm']['default_ruby'] = node['ruby'].try(:[], 'version') || '2.4.0'
 default['nginx']['source']['modules'] = %w(
   nginx::http_ssl_module nginx::http_realip_module nginx::http_gzip_static_module nginx::headers_more_module
   nginx::http_stub_status_module

@@ -8,14 +8,8 @@ prepare_recipe
 
 # Ruby and bundler
 include_recipe 'deployer'
-if node['platform_family'] == 'debian'
-  include_recipe 'ruby-ng::dev'
-else
-  ruby_pkg_version = node['ruby-ng']['ruby_version'].split('.')[0..1]
-  package "ruby#{ruby_pkg_version.join('')}"
-  package "ruby#{ruby_pkg_version.join('')}-devel"
-  execute "/usr/sbin/alternatives --set ruby /usr/bin/ruby#{ruby_pkg_version.join('.')}"
-end
+include_recipe 'rvm::default'
+include_recipe 'rvm::system'
 
 apt_repository 'apache2' do
   uri 'http://ppa.launchpad.net/ondrej/apache2/ubuntu'
@@ -26,14 +20,17 @@ apt_repository 'apache2' do
   only_if { node['platform'] == 'ubuntu' }
 end
 
-gem_package 'bundler'
+link '/usr/local/bin/ruby' do
+  to "/usr/local/rvm/wrappers/ruby-#{node['rvm']['default_ruby']}@global/ruby"
+end
+
 if node['platform_family'] == 'debian'
   link '/usr/local/bin/bundle' do
-    to '/usr/bin/bundle'
+    to "/usr/local/rvm/wrappers/ruby-#{node['rvm']['default_ruby']}@global/bundle"
   end
 else
   link '/usr/local/bin/bundle' do
-    to '/usr/local/bin/bundler'
+    to "/usr/local/rvm/wrappers/ruby-#{node['rvm']['default_ruby']}@global/bundler"
   end
 end
 

@@ -2,8 +2,8 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::setup' do
-  describe package('ruby2.4') do
-    it { should be_installed }
+  describe command('ruby -v') do
+    its(:stdout) { should match(/2\.4\.0/) }
   end
 
   describe package('libsqlite3-dev') do

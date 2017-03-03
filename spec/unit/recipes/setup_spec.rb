@@ -25,6 +25,12 @@ describe 'opsworks_ruby::setup' do
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
     stub_node { |n| n.merge(node) }
     stub_command('which nginx').and_return(false)
+    stub_command(
+      "bash -c \"source /etc/profile && type rvm | cat | head -1 | grep -q '^rvm is a function$'\""
+    ).and_return(true)
+    stub_command(
+      "bash -c \"source /etc/profile.d/rvm.sh && type rvm | cat | head -1 | grep -q '^rvm is a function$'\""
+    ).and_return(true)
   end
 
   it 'includes recipes' do
@@ -33,122 +39,165 @@ describe 'opsworks_ruby::setup' do
 
   context 'Rubies' do
     context 'Debian' do
-      it 'installs ruby 2.0' do
+      it 'installs ruby 2.0.0' do
         chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.0' }
+          solo_node.set['ruby'] = { 'version' => '2.0.0' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run).to install_package('ruby2.0')
-        expect(chef_run).to install_package('ruby2.0-dev')
+        expect(chef_run).to include_recipe('rvm::default')
+        expect(chef_run).to include_recipe('rvm::system')
+        expect(chef_run).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.0.0@global/ruby'
+        )
+        expect(chef_run).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.0.0@global/bundle'
+        )
       end
 
-      it 'installs ruby 2.1' do
+      it 'installs ruby 2.1.10' do
         chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.1' }
+          solo_node.set['ruby'] = { 'version' => '2.1.10' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run).to install_package('ruby2.1')
-        expect(chef_run).to install_package('ruby2.1-dev')
+        expect(chef_run).to include_recipe('rvm::default')
+        expect(chef_run).to include_recipe('rvm::system')
+        expect(chef_run).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.1.10@global/ruby'
+        )
+        expect(chef_run).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.1.10@global/bundle'
+        )
       end
 
-      it 'installs ruby 2.2' do
+      it 'installs ruby 2.2.6' do
         chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.2' }
+          solo_node.set['ruby'] = { 'version' => '2.2.6' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run).to install_package('ruby2.2')
-        expect(chef_run).to install_package('ruby2.2-dev')
+        expect(chef_run).to include_recipe('rvm::default')
+        expect(chef_run).to include_recipe('rvm::system')
+        expect(chef_run).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.2.6@global/ruby'
+        )
+        expect(chef_run).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.2.6@global/bundle'
+        )
       end
 
-      it 'installs ruby 2.3' do
+      it 'installs ruby 2.3.3' do
         chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.3' }
+          solo_node.set['ruby'] = { 'version' => '2.3.3' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run).to install_package('ruby2.3')
-        expect(chef_run).to install_package('ruby2.3-dev')
+        expect(chef_run).to include_recipe('rvm::default')
+        expect(chef_run).to include_recipe('rvm::system')
+        expect(chef_run).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.3.3@global/ruby'
+        )
+        expect(chef_run).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.3.3@global/bundle'
+        )
       end
 
-      it 'installs ruby 2.4' do
-        expect(chef_run).to install_package('ruby2.4')
-        expect(chef_run).to install_package('ruby2.4-dev')
+      it 'installs ruby 2.4.0' do
+        expect(chef_run).to include_recipe('rvm::default')
+        expect(chef_run).to include_recipe('rvm::system')
+        expect(chef_run).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.4.0@global/ruby'
+        )
+        expect(chef_run).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.4.0@global/bundle'
+        )
       end
     end
 
     context 'rhel' do
-      it 'installs ruby 2.0' do
+      it 'installs ruby 2.0.0' do
         chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.0' }
+          solo_node.set['ruby'] = { 'version' => '2.0.0' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run_rhel).to install_package('ruby20')
-        expect(chef_run_rhel).to install_package('ruby20-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.0')
+        expect(chef_run_rhel).to include_recipe('rvm::default')
+        expect(chef_run_rhel).to include_recipe('rvm::system')
+        expect(chef_run_rhel).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.0.0@global/ruby'
+        )
+        expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.0.0@global/bundler'
+        )
       end
 
-      it 'installs ruby 2.1' do
+      it 'installs ruby 2.1.10' do
         chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.1' }
+          solo_node.set['ruby'] = { 'version' => '2.1.10' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run_rhel).to install_package('ruby21')
-        expect(chef_run_rhel).to install_package('ruby21-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.1')
+        expect(chef_run_rhel).to include_recipe('rvm::default')
+        expect(chef_run_rhel).to include_recipe('rvm::system')
+        expect(chef_run_rhel).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.1.10@global/ruby'
+        )
+        expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.1.10@global/bundler'
+        )
       end
 
-      it 'installs ruby 2.2' do
+      it 'installs ruby 2.2.6' do
         chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.2' }
+          solo_node.set['ruby'] = { 'version' => '2.2.6' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run_rhel).to install_package('ruby22')
-        expect(chef_run_rhel).to install_package('ruby22-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.2')
+        expect(chef_run_rhel).to include_recipe('rvm::default')
+        expect(chef_run_rhel).to include_recipe('rvm::system')
+        expect(chef_run_rhel).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.2.6@global/ruby'
+        )
+        expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.2.6@global/bundler'
+        )
       end
 
-      it 'installs ruby 2.3' do
+      it 'installs ruby 2.3.3' do
         chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.3' }
+          solo_node.set['ruby'] = { 'version' => '2.3.3' }
           solo_node.set['lsb'] = node['lsb']
           solo_node.set['deploy'] = node['deploy']
         end.converge(described_recipe)
 
-        expect(chef_run_rhel).to install_package('ruby23')
-        expect(chef_run_rhel).to install_package('ruby23-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.3')
+        expect(chef_run_rhel).to include_recipe('rvm::default')
+        expect(chef_run_rhel).to include_recipe('rvm::system')
+        expect(chef_run_rhel).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.3.3@global/ruby'
+        )
+        expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.3.3@global/bundler'
+        )
       end
 
-      it 'installs ruby 2.4' do
-        expect(chef_run_rhel).to install_package('ruby24')
-        expect(chef_run_rhel).to install_package('ruby24-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.4')
+      it 'installs ruby 2.4.0' do
+        expect(chef_run_rhel).to include_recipe('rvm::default')
+        expect(chef_run_rhel).to include_recipe('rvm::system')
+        expect(chef_run_rhel).to create_link('/usr/local/bin/ruby').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.4.0@global/ruby'
+        )
+        expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(
+          to: '/usr/local/rvm/wrappers/ruby-2.4.0@global/bundler'
+        )
       end
-    end
-  end
-
-  context 'Gems' do
-    it 'debian bundler' do
-      expect(chef_run).to install_gem_package(:bundler)
-      expect(chef_run).to create_link('/usr/local/bin/bundle').with(to: '/usr/bin/bundle')
-    end
-
-    it 'rhel bundler' do
-      expect(chef_run_rhel).to install_gem_package(:bundler)
-      expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(to: '/usr/local/bin/bundler')
     end
   end
 
