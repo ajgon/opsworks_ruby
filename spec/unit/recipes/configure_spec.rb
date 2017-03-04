@@ -113,6 +113,9 @@ describe 'opsworks_ruby::configure' do
     it 'creates nginx unicorn proxy handler config' do
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('error_log /var/log/nginx/dummy-project.example.com-ssl.error.log debug;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('upstream unicorn_dummy-project.example.com {')
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
@@ -411,6 +414,9 @@ describe 'opsworks_ruby::configure' do
         .with_content('<Proxy balancer://puma_dummy_project_example_com>')
       expect(chef_run)
         .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('LogLevel debug')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('LimitRequestBody 131072000')
       expect(chef_run)
         .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
@@ -695,6 +701,9 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'creates nginx thin proxy handler config' do
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('error_log /var/log/nginx/dummy-project.example.com-ssl.error.log debug;')
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('upstream thin_dummy-project.example.com {')
