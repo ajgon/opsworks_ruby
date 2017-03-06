@@ -213,6 +213,7 @@ describe 'opsworks_ruby::configure' do
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
+            '-i 0 ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-1\'" with timeout 90 seconds'
@@ -220,9 +221,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop  program = "/bin/su - deploy -c ' \
-            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid`\'' \
-            '" with timeout 90 seconds'
+            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiqctl stop ' \
+            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -236,6 +237,7 @@ describe 'opsworks_ruby::configure' do
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
+            '-i 1 ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-2\'" with timeout 90 seconds'
@@ -243,9 +245,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop  program = "/bin/su - deploy -c ' \
-            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid`\'' \
-            '" with timeout 90 seconds'
+            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiqctl stop ' \
+            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -269,6 +271,7 @@ describe 'opsworks_ruby::configure' do
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
+            '-i 0 ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-1\'" with timeout 90 seconds'
@@ -276,9 +279,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop  program = "/bin/su - deploy -c ' \
-            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid`\'' \
-            '" with timeout 90 seconds'
+            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiqctl stop ' \
+            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -292,6 +295,7 @@ describe 'opsworks_ruby::configure' do
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
+            '-i 1 ' \
             '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-2\'" with timeout 90 seconds'
@@ -299,9 +303,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop  program = "/bin/su - deploy -c ' \
-            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid`\'' \
-            '" with timeout 90 seconds'
+            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiqctl stop ' \
+            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
