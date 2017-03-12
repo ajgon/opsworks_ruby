@@ -12,7 +12,7 @@
 1. `conventional-changelog -p angular -i CHANGELOG.md -s`
 1. Commit all the things with `chore: Version bump`
 1. Tag version
-1. Push
+1. Push: `git push origin master --tags`
 1. `knife cookbook site share opsworks_ruby Applications`
 
 ## Solving problems with knife
