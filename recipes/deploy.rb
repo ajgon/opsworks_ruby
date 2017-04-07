@@ -96,6 +96,8 @@ every_enabled_application do |application|
 
       run_callback_from_file(File.join(release_path, 'deploy', 'after_restart.rb'))
     end
+
+    timeout node['deploy']['timeout']
   end
 
   fire_hook(:after_deploy, items: databases + [scm, framework, appserver, worker, webserver])
