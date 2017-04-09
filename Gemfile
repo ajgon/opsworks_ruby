@@ -19,5 +19,6 @@ group :chef do
   gem 'kitchen-docker'
   gem 'kitchen-vagrant'
   gem 'rspec'
+  gem 'rvm', '>= 1.11.3.6'
   gem 'test-kitchen'
 end

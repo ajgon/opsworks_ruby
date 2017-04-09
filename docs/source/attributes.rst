@@ -34,11 +34,11 @@ convention).
      of an application, not included in this list - it will be skipped, as this list
      takes precedence over anything else.
 
--  ``node['ruby-ng']['ruby_version']``
+-  ``node['rvm']['default_ruby']``
 
   -  **Type:** string
-  -  **Default:** ``2.4``
-  -  Sets the Ruby version used through the system. See `ruby-ng cookbook documentation`_
+  -  **Default:** ``2.4.0``
+  -  Sets the Ruby version used through the system. See `rvm cookbook documentation`_
      for more details
 
 
@@ -495,7 +495,7 @@ resque
   -  **Default:** ``*``
   -  Array of queues which should be processed by resque
 
-.. _ruby-ng cookbook documentation: https://supermarket.chef.io/cookbooks/ruby-ng
+.. _rvm cookbook documentation: https://supermarket.chef.io/cookbooks/rvm
 .. _figaro: https://github.com/laserlemon/figaro
 .. _dotenv: https://github.com/bkeepers/dotenv
 .. |app['appserver']['backlog']| replace:: ``app['appserver']['backlog']``

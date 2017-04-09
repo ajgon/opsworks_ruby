@@ -5,7 +5,7 @@ Cookbooks
 ---------
 
 -  `deployer`_
--  `ruby-ng`_
+-  `rvm (~> 0.9)`_
 -  `chef_nginx`_
 
 Platform
@@ -22,5 +22,5 @@ This cookbook was tested on the following OpsWorks platforms:
 In addition, all recent Debian family distrubutions are assumed to work.
 
 .. _deployer: https://supermarket.chef.io/cookbooks/deployer
-.. _ruby-ng: https://supermarket.chef.io/cookbooks/ruby-ng
+.. _rvm: https://supermarket.chef.io/cookbooks/rvm
 .. _nginx (~> 2.7): https://supermarket.chef.io/cookbooks/nginx
