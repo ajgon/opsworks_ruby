@@ -9,6 +9,9 @@ module Drivers
         :envs_in_console
       ]
       packages debian: 'zlib1g-dev', rhel: 'zlib-devel'
+      log_paths lambda { |context|
+        File.join(context.send(:deploy_dir, context.app), 'shared', 'log', "#{context.send(:deploy_env)}.log")
+      }
 
       def raw_out
         super.merge(deploy_environment: { 'RAILS_ENV' => deploy_env })
@@ -20,6 +23,7 @@ module Drivers
         rdses.each do |rds|
           database_yml(Drivers::Db::Factory.build(context, app, rds: rds))
         end
+        super
       end
 
       def deploy_after_restart

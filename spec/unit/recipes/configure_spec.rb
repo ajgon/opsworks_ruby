@@ -64,6 +64,16 @@ describe 'opsworks_ruby::configure' do
         )
     end
 
+    it 'creates logrotate file for rails' do
+      expect(chef_run)
+        .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-rails-staging")
+    end
+
+    it 'creates logrotate file for nginx' do
+      expect(chef_run)
+        .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-nginx-staging")
+    end
+
     it 'creates proper unicorn.conf file' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/unicorn.conf")
@@ -330,6 +340,11 @@ describe 'opsworks_ruby::configure' do
 
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
+    end
+
+    it 'creates logrotate file for apache2' do
+      expect(chef_run)
+        .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-apache2-staging")
     end
 
     it 'creates proper .env.*' do
@@ -895,13 +910,27 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  it 'empty node[\'deploy\']' do
-    chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-      solo_node.set['lsb'] = node['lsb']
-    end.converge(described_recipe)
+  context 'empty node[\'deploy\']' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['lsb'] = node['lsb']
+      end.converge(described_recipe)
+    end
 
-    expect do
-      chef_run
-    end.not_to raise_error
+    it 'not raises error' do
+      expect do
+        chef_run
+      end.not_to raise_error
+    end
+
+    it 'creates logrotate file for rails' do
+      expect(chef_run)
+        .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-rails-production")
+    end
+
+    it 'creates logrotate file for rails' do
+      expect(chef_run)
+        .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-nginx-production")
+    end
   end
 end

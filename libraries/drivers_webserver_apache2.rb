@@ -13,6 +13,11 @@ module Drivers
                action: :restart, resource: { debian: 'service[apache2]', rhel: 'service[httpd]' }, timer: :delayed
       notifies :undeploy,
                action: :restart, resource: { debian: 'service[apache2]', rhel: 'service[httpd]' }, timer: :delayed
+      log_paths lambda { |context|
+        %w[access.log error.log].map do |log_type|
+          File.join(context.raw_out[:log_dir], "#{context.app[:domains].first}.#{log_type}")
+        end
+      }
 
       def raw_out
         output = node['defaults']['webserver'].merge(
@@ -40,6 +45,7 @@ module Drivers
         remove_defaults
         add_appserver_config
         enable_appserver_config
+        super
       end
 
       def before_deploy

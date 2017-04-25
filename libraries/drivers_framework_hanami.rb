@@ -24,6 +24,7 @@ module Drivers
 
       def configure
         build_env
+        super
       end
 
       def deploy_before_restart

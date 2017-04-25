@@ -2,9 +2,14 @@
 module Drivers
   module Webserver
     class Base < Drivers::Base
+      include Drivers::Dsl::Logrotate
       include Drivers::Dsl::Notifies
       include Drivers::Dsl::Output
       include Drivers::Dsl::Packages
+
+      def configure
+        configure_logrotate
+      end
 
       def out
         handle_output(raw_out)

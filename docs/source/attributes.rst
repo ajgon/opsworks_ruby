@@ -89,6 +89,12 @@ Global parameters apply to the whole application, and can be used by any section
   -  **Default:** ``true``
   -  When set to true, any failed deploy will be removed from ``releases`` directory.
 
+- ``app['global']['logrotate_rotate']``
+
+  -  **Type:** integer
+  -  **Default:** ``30``
+  -  **Important Notice:** The parameter is in days
+
 database
 ~~~~~~~~
 

@@ -11,6 +11,11 @@ module Drivers
       ]
       notifies :deploy, action: :restart, resource: 'service[nginx]', timer: :delayed
       notifies :undeploy, action: :restart, resource: 'service[nginx]', timer: :delayed
+      log_paths lambda { |context|
+        %w[access.log error.log].map do |log_type|
+          File.join(context.raw_out[:log_dir], "#{context.app[:domains].first}.#{log_type}")
+        end
+      }
 
       def raw_out
         output = node['defaults']['webserver'].merge(node['nginx']).merge(
@@ -36,6 +41,7 @@ module Drivers
 
         add_appserver_config
         enable_appserver_config
+        super
       end
 
       def before_deploy

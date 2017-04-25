@@ -29,6 +29,21 @@ end
 
 describe 'opsworks_ruby::configure' do
   context 'webserver' do
+    describe file('/etc/logrotate.d/dummy_project-apache2-production') do
+      its(:content) do
+        should include '"/var/log/apache2/dummy-project.example.com.access.log" ' \
+                       '"/var/log/apache2/dummy-project.example.com.error.log" {'
+      end
+      its(:content) { should include '  daily' }
+      its(:content) { should include '  rotate 30' }
+      its(:content) { should include '  missingok' }
+      its(:content) { should include '  compress' }
+      its(:content) { should include '  delaycompress' }
+      its(:content) { should include '  notifempty' }
+      its(:content) { should include '  copytruncate' }
+      its(:content) { should include '  sharedscripts' }
+    end
+
     describe file('/etc/apache2/ssl/dummy-project.example.com.key') do
       its(:content) { should include '-----BEGIN RSA PRIVATE KEY-----' }
     end

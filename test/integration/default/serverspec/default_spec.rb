@@ -29,6 +29,21 @@ end
 
 describe 'opsworks_ruby::configure' do
   context 'webserver' do
+    describe file('/etc/logrotate.d/dummy_project-nginx-production') do
+      its(:content) do
+        should include '"/var/log/nginx/dummy-project.example.com.access.log" ' \
+                       '"/var/log/nginx/dummy-project.example.com.error.log" {'
+      end
+      its(:content) { should include '  daily' }
+      its(:content) { should include '  rotate 30' }
+      its(:content) { should include '  missingok' }
+      its(:content) { should include '  compress' }
+      its(:content) { should include '  delaycompress' }
+      its(:content) { should include '  notifempty' }
+      its(:content) { should include '  copytruncate' }
+      its(:content) { should include '  sharedscripts' }
+    end
+
     describe file('/etc/nginx/ssl/dummy-project.example.com.key') do
       its(:content) { should include '-----BEGIN RSA PRIVATE KEY-----' }
     end
@@ -68,6 +83,18 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'framework' do
+    describe file('/etc/logrotate.d/dummy_project-rails-production') do
+      its(:content) { should include '"/srv/www/dummy_project/shared/log/production.log" {' }
+      its(:content) { should include '  daily' }
+      its(:content) { should include '  rotate 30' }
+      its(:content) { should include '  missingok' }
+      its(:content) { should include '  compress' }
+      its(:content) { should include '  delaycompress' }
+      its(:content) { should include '  notifempty' }
+      its(:content) { should include '  copytruncate' }
+      its(:content) { should include '  sharedscripts' }
+    end
+
     describe file('/srv/www/dummy_project/current/config/database.yml') do
       its(:content) { should include 'adapter: sqlite3' }
     end

@@ -220,6 +220,9 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to create_template('/srv/www/a1/shared/scripts/puma.service')
     expect(chef_run).to create_template('/etc/nginx/sites-available/a1.conf')
     expect(chef_run).to create_link('/etc/nginx/sites-enabled/a1.conf')
+    expect(chef_run).to enable_logrotate_app('a1-nginx-production')
+    expect(chef_run).to enable_logrotate_app('a1-rails-production')
+
     expect(service).to do_nothing
     expect(chef_run).to deploy_deploy('a1')
     expect(chef_run).not_to deploy_deploy('a2')
