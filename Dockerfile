@@ -19,12 +19,12 @@ RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
 RUN locale-gen
 ENV LC_ALL en_US.UTF-8
 
-ENV APP_HOME /app
-RUN mkdir "$APP_HOME"
-
 RUN curl -o /tmp/chefdk.deb https://packages.chef.io/files/stable/chefdk/1.3.43/debian/8/chefdk_1.3.43-1_amd64.deb && \
     dpkg -i /tmp/chefdk.deb && \
     rm -rf /tmp/chefdk.deb
+
+ENV APP_HOME /cookbooks/opsworks_ruby
+RUN mkdir -p "$APP_HOME"
 
 RUN gem install bundler
 RUN pip install yamllint>=1
@@ -35,6 +35,12 @@ COPY Gemfile* $APP_HOME/
 COPY Berksfile* $APP_HOME/
 COPY metadata.rb $APP_HOME/
 COPY README.md $APP_HOME/
+
+COPY .chef.login $APP_HOME/
+RUN mkdir -p /root/.chef
+RUN printf "client_key \"/cookbooks/opsworks_ruby/client.pem\"\n" >> /root/.chef/knife.rb
+RUN printf "node_name \"$(cat /cookbooks/opsworks_ruby/.chef.login)\"\n" >> /root/.chef/knife.rb
+RUN printf "cookbook_path \"/cookbooks\"\n" >> /root/.chef/knife.rb
 
 RUN npm install
 RUN bundle install -j 4

@@ -5,4 +5,4 @@ services:
   cookbook:
     build: .
     volumes:
-      - ".:/app"
+      - ".:/cookbooks/opsworks_ruby"

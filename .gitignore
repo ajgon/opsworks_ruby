@@ -21,3 +21,5 @@ _site
 docs/build/*
 !docs/build/.keep
 vendor
+client.pem
+.chef.login
