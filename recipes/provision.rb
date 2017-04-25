@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Used for tests, don't touch!
 
 file '/etc/monit/conf.d/00_httpd.monitrc' do

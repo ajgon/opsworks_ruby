@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'unit/examples/db_validate_adapter_and_engine'
 require 'unit/examples/db_parameters_and_connection'

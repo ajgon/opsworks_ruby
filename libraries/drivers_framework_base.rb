@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Drivers
   module Framework
     class Base < Drivers::Base

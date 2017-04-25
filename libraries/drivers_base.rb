@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Drivers
   class Base
     attr_reader :app, :options, :configuration_data_source

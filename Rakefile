@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'bundler/setup'
 
 desc 'Run Test Kitchen integration tests'
@@ -22,4 +23,4 @@ namespace :integration do
   end
 end
 
-task default: %w(integration:vagrant)
+task default: %w[integration:vagrant]

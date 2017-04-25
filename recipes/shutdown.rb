@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Cookbook Name:: opsworks_ruby
 # Recipe:: shutdown

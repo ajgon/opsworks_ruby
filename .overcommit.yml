@@ -4,6 +4,12 @@ PreCommit:
     on_warn: fail    # Treat all warnings as failures
     exclude:
       - test/integration/repos/**/*
+  AuthorEmail:
+    enabled: true
+    required: false
+  AuthorName:
+    enabled: true
+    required: false
   BrokenSymlinks:
     enabled: true
   BundleAudit:

@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 module Drivers
   module Worker
     class Resque < Drivers::Worker::Base
       adapter :resque
       allowed_engines :resque
-      output filter: [:process_count, :syslog, :workers, :queues]
+      output filter: %i[process_count syslog workers queues]
       packages :monit, debian: 'redis-server', rhel: 'redis'
 
       def configure

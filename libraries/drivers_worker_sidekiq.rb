@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 module Drivers
   module Worker
     class Sidekiq < Drivers::Worker::Base
       adapter :sidekiq
       allowed_engines :sidekiq
-      output filter: [:config, :process_count, :require, :syslog]
+      output filter: %i[config process_count require syslog]
       packages 'monit', debian: 'redis-server', rhel: 'redis'
 
       def configure

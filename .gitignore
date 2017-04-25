@@ -20,3 +20,4 @@ node_modules/
 _site
 docs/build/*
 !docs/build/.keep
+vendor

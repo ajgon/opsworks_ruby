@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/MethodLength
 def aws_opsworks_app(override = {})
   item = {

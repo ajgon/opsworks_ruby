@@ -1,10 +1,11 @@
 # frozen_string_literal: true
+
 module Drivers
   module Worker
     class DelayedJob < Drivers::Worker::Base
       adapter :delayed_job
       allowed_engines :delayed_job
-      output filter: [:process_count, :syslog, :queues]
+      output filter: %i[process_count syslog queues]
       packages :monit
 
       def after_deploy

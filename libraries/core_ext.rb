@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Object
   def try(*a, &b)
     try!(*a, &b) if a.empty? || respond_to?(a.first)

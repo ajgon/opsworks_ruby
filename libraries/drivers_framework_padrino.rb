@@ -1,11 +1,12 @@
 # frozen_string_literal: true
+
 module Drivers
   module Framework
     class Padrino < Drivers::Framework::Base
       adapter :padrino
       allowed_engines :padrino
-      output filter: [
-        :migrate, :migration_command, :deploy_environment, :assets_precompile, :assets_precompilation_command
+      output filter: %i[
+        migrate migration_command deploy_environment assets_precompile assets_precompilation_command
       ]
 
       def raw_out

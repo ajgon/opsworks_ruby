@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
   context "#{rdbms}: validate adapter and engine" do
     it 'adapter = missing, engine = missing' do

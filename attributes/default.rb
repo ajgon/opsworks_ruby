@@ -4,10 +4,10 @@
 
 default['build-essential']['compile_time'] = true
 default['ruby-ng']['ruby_version'] = node['ruby'].try(:[], 'version') || '2.4'
-default['nginx']['source']['modules'] = %w(
+default['nginx']['source']['modules'] = %w[
   nginx::http_ssl_module nginx::http_realip_module nginx::http_gzip_static_module nginx::headers_more_module
   nginx::http_stub_status_module
-)
+]
 
 default['deploy']['timeout'] = 600
 
@@ -21,8 +21,8 @@ default['defaults']['global']['symlinks'] = {
   'log' => 'log'
 }
 default['defaults']['global']['create_dirs_before_symlink'] =
-  %w(tmp public config ../../shared/cache ../../shared/assets)
-default['defaults']['global']['purge_before_symlink'] = %w(log tmp/cache tmp/pids public/system public/assets)
+  %w[tmp public config ../../shared/cache ../../shared/assets]
+default['defaults']['global']['purge_before_symlink'] = %w[log tmp/cache tmp/pids public/system public/assets]
 default['defaults']['global']['rollback_on_error'] = true
 default['defaults']['global']['logrotate_rotate'] = 30
 

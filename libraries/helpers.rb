@@ -100,5 +100,5 @@ end
 
 def apps_not_included
   return [] if node['applications'].blank?
-  node['deploy'].keys.select { |app_name| !node['applications'].include?(app_name) }
+  node['deploy'].keys.reject { |app_name| node['applications'].include?(app_name) }
 end

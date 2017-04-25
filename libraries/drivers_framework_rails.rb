@@ -1,12 +1,13 @@
 # frozen_string_literal: true
+
 module Drivers
   module Framework
     class Rails < Drivers::Framework::Base
       adapter :rails
       allowed_engines :rails
-      output filter: [
-        :migrate, :migration_command, :deploy_environment, :assets_precompile, :assets_precompilation_command,
-        :envs_in_console
+      output filter: %i[
+        migrate migration_command deploy_environment assets_precompile assets_precompilation_command
+        envs_in_console
       ]
       packages debian: 'zlib1g-dev', rhel: 'zlib-devel'
       log_paths lambda { |context|

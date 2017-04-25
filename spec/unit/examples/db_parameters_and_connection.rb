@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.shared_examples 'db parameters and connection' do |rdbms, options = {}|
   it 'receives and exposes app, node and database bag' do
     driver = described_class.new(

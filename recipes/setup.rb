@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 #
 # Cookbook Name:: opsworks_ruby
 # Recipe:: setup
@@ -20,13 +21,16 @@ end
 apt_repository 'apache2' do
   uri 'http://ppa.launchpad.net/ondrej/apache2/ubuntu'
   distribution node['lsb']['codename']
-  components %w(main)
+  components %w[main]
   keyserver 'keyserver.ubuntu.com'
   key 'E5267A6C'
   only_if { node['platform'] == 'ubuntu' }
 end
 
-gem_package 'bundler'
+gem_package 'bundler' do
+  action :install
+end
+
 if node['platform_family'] == 'debian'
   link '/usr/local/bin/bundle' do
     to '/usr/bin/bundle'

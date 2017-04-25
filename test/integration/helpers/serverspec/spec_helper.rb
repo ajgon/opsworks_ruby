@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'serverspec'
 
 if (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM).nil?

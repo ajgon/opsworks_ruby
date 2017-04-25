@@ -9,7 +9,8 @@
 1. Bump version in `package.json`
 1. Bump version in `metadata.rb`
 1. Bump version in `docs/source/config.py`
-1. `conventional-changelog -p angular -i CHANGELOG.md -s`
+1. `docker-compose build`
+1. `docker-compose run cookbook sh -c "conventional-changelog -s -p angular -i CHANGELOG.md"`
 1. Commit all the things with `chore: Version bump`
 1. Tag version
 1. Push: `git push origin master --tags`
