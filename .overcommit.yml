@@ -5,6 +5,12 @@ PreCommit:
     exclude:
       - "_assets/js/lib/*"
       - "_assets/css/lib/*"
+  AuthorEmail:
+    enabled: true
+    required: false
+  AuthorName:
+    enabled: true
+    required: false
   BrokenSymlinks:
     enabled: true
   BundleAudit:
@@ -36,6 +42,8 @@ PreCommit:
   ScssLint:
     enabled: true
   TrailingWhitespace:
+    enabled: true
+  YamlLint:
     enabled: true
   YamlSyntax:
     enabled: true

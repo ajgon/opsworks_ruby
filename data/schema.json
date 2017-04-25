@@ -24,6 +24,11 @@
       "type":"boolean",
       "default":true,
       "description":"When set to true, any failed deploy will be removed from releases directory."
+    },
+    "logrotate_rotate":{
+      "type":"integer",
+      "default":30,
+      "description":"The parameter is in days."
     }
   },
   "database":{
