@@ -105,7 +105,7 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'worker' do
-    describe file('/srv/www/dummy_project/shared/config/sidekiq_1.yml') do
+    describe file('/srv/www/dummy_project/shared/config/sidekiq_c1_p1.yml') do
       its(:content) { should include ':concurency: 5' }
       its(:content) { should include ':verbose: true' }
       its(:content) { should include ':queues:' }
@@ -113,7 +113,7 @@ describe 'opsworks_ruby::configure' do
       its(:content) { should include '- mailers' }
     end
 
-    describe file('/srv/www/dummy_project/shared/config/sidekiq_2.yml') do
+    describe file('/srv/www/dummy_project/shared/config/sidekiq_c1_p2.yml') do
       its(:content) { should include ':concurency: 5' }
       its(:content) { should include ':verbose: true' }
       its(:content) { should include ':queues:' }
@@ -123,16 +123,18 @@ describe 'opsworks_ruby::configure' do
 
     describe file('/etc/monit/conf.d/sidekiq_dummy_project.monitrc') do
       its(:content) { should include 'group sidekiq_dummy_project_group' }
-      its(:content) { should include 'check process sidekiq_dummy_project-1' }
+      its(:content) { should include 'check process sidekiq_dummy_project-c1-p1' }
       its(:content) do
-        should include 'RAILS_ENV="staging" bundle exec sidekiq -C /srv/www/dummy_project/shared/config/sidekiq_1.yml'
+        should include 'RAILS_ENV="staging" ' \
+                       'bundle exec sidekiq -C /srv/www/dummy_project/shared/config/sidekiq_c1_p1.yml'
       end
-      its(:content) { should include 'logger -t sidekiq-dummy_project-1' }
-      its(:content) { should include 'check process sidekiq_dummy_project-2' }
+      its(:content) { should include 'logger -t sidekiq-dummy_project-c1-p1' }
+      its(:content) { should include 'check process sidekiq_dummy_project-c1-p2' }
       its(:content) do
-        should include 'RAILS_ENV="staging" bundle exec sidekiq -C /srv/www/dummy_project/shared/config/sidekiq_2.yml'
+        should include 'RAILS_ENV="staging" ' \
+                       'bundle exec sidekiq -C /srv/www/dummy_project/shared/config/sidekiq_c1_p2.yml'
       end
-      its(:content) { should include 'logger -t sidekiq-dummy_project-2' }
+      its(:content) { should include 'logger -t sidekiq-dummy_project-c1-p2' }
     end
   end
 end

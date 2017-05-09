@@ -105,8 +105,8 @@ describe 'opsworks_ruby::deploy' do
     end
 
     it 'restarts sidekiqs via monit' do
-      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-1")
-      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-2")
+      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-c1-p1")
+      expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-c1-p2")
     end
   end
 

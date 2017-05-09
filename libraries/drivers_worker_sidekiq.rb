@@ -31,44 +31,72 @@ module Drivers
 
       private
 
+      # rubocop:disable Metrics/MethodLength
       def add_sidekiq_config
         deploy_to = deploy_dir(app)
-        config = configuration
 
-        (1..process_count).each do |process_number|
-          context.template File.join(deploy_to, File.join('shared', 'config', "sidekiq_#{process_number}.yml")) do
-            owner node['deployer']['user']
-            group www_group
-            source 'sidekiq.conf.yml.erb'
-            variables config: config
+        configuration.each.with_index do |config, config_number|
+          (1..process_count).each do |process_number|
+            context.template File.join(
+              deploy_to, File.join('shared', 'config', "sidekiq_c#{config_number + 1}_p#{process_number}.yml")
+            ) do
+              owner node['deployer']['user']
+              group www_group
+              source 'sidekiq.conf.yml.erb'
+              variables config: config
+            end
+          end
+        end
+      end
+      # rubocop:enable Metrics/MethodLength
+
+      def quiet_sidekiq
+        configuration.each.with_index do |_config, config_number|
+          (1..process_count).each do |process_number|
+            pid_file = pid_file(process_number, config_number)
+            Chef::Log.info("Quiet Sidekiq process if exists: #{pid_file}")
+            next unless File.file?(pid_file) && pid_exists?(File.open(pid_file).read)
+            context.execute "/bin/su - #{node['deployer']['user']} -c 'kill -s USR1 `cat #{pid_file}`'"
           end
         end
       end
 
-      def quiet_sidekiq
-        (1..process_count).each do |process_number|
-          pid_file = pid_file(process_number)
-          Chef::Log.info("Quiet Sidekiq process if exists: #{pid_file}")
-          next unless File.file?(pid_file) && pid_exists?(File.open(pid_file).read)
-          context.execute "/bin/su - #{node['deployer']['user']} -c 'kill -s USR1 `cat #{pid_file}`'"
-        end
-      end
-
       def stop_sidekiq
-        (1..process_count).each do |process_number|
-          pid_file = pid_file(process_number)
-          timeout = (out[:config]['timeout'] || 8).to_i
+        configuration.each.with_index do |_config, config_number|
+          (1..process_count).each do |process_number|
+            pid_file = pid_file(process_number, config_number)
+            tout = (out[:config]['timeout'] || 8).to_i
 
-          context.execute(
-            "/bin/su - #{node['deployer']['user']} -c 'cd #{File.join(deploy_dir(app), 'current')} && " \
-            "#{environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')} " \
-            "bundle exec sidekiqctl stop #{pid_file} #{timeout}'"
-          )
+            context.execute(
+              "/bin/su - #{node['deployer']['user']} -c 'cd #{File.join(deploy_dir(app), 'current')} && " \
+              "#{environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')} bundle exec sidekiqctl stop #{pid_file} #{tout}'"
+            )
+          end
         end
       end
 
-      def pid_file(process_number)
-        "#{deploy_dir(app)}/shared/pids/sidekiq_#{app['shortname']}-#{process_number}.pid"
+      def restart_monit
+        configuration.each.with_index do |_config, config_number|
+          (1..process_count).each do |process_number|
+            context.execute "monit restart #{adapter}_#{app['shortname']}-c#{config_number + 1}-p#{process_number}" do
+              retries 3
+            end
+          end
+        end
+      end
+
+      def unmonitor_monit
+        configuration.each.with_index do |_config, config_number|
+          (1..process_count).each do |process_number|
+            context.execute "monit unmonitor #{adapter}_#{app['shortname']}-c#{config_number + 1}-p#{process_number}" do
+              retries 3
+            end
+          end
+        end
+      end
+
+      def pid_file(process_number, config_number)
+        "#{deploy_dir(app)}/shared/pids/sidekiq_#{app['shortname']}-c#{config_number + 1}-p#{process_number}.pid"
       end
 
       def pid_exists?(pid)
@@ -79,7 +107,7 @@ module Drivers
       end
 
       def configuration
-        JSON.parse(out[:config].to_json, symbolize_names: true)
+        Array.wrap(JSON.parse(out[:config].to_json, symbolize_names: true))
       end
     end
   end

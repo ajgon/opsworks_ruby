@@ -27,8 +27,8 @@ describe 'opsworks_ruby::shutdown' do
 
   context 'safely shutdown sidekiq' do
     it 'unmonitors sidekiq processes' do
-      expect(chef_run).to run_execute('monit unmonitor sidekiq_dummy_project-1')
-      expect(chef_run).to run_execute('monit unmonitor sidekiq_dummy_project-2')
+      expect(chef_run).to run_execute('monit unmonitor sidekiq_dummy_project-c1-p1')
+      expect(chef_run).to run_execute('monit unmonitor sidekiq_dummy_project-c1-p2')
     end
 
     it 'shutsdown sidekiq processes' do
@@ -36,14 +36,14 @@ describe 'opsworks_ruby::shutdown' do
         run_execute(
           '/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiqctl stop ' \
-          '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid 8\''
+          '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-c1-p1.pid 8\''
         )
       )
       expect(chef_run).to(
         run_execute(
           '/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RAILS_ENV="staging" bundle exec sidekiqctl stop ' \
-          '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid 8\''
+          '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-c1-p2.pid 8\''
         )
       )
     end

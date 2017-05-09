@@ -477,9 +477,9 @@ sidekiq
 
 -  ``app['worker']['config']``
 
-  -  Configuration parameters which will be directly passed to the worker.
-     For example, for ``sidekiq`` they will be serialized to
-     `sidekiq.yml config file`_.
+  -  Configuration parameters which will be directly passed to the worker. Accepts array
+     of sidekiq configs - if provided, multiple workers will be configured with given parameters
+     for each element of an array.
 
 delayed\_job
 ^^^^^^^^^^^^
