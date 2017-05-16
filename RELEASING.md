@@ -18,6 +18,7 @@
 1. Tag version
 1. Push: `git push origin master --tags`
 1. `docker-compose run cookbook knife cookbook site share opsworks_ruby Applications`
+1. Draft new release on GitHub
 
 ## Solving problems with knife
 
