@@ -12,13 +12,14 @@ provisioner:
 #   name: inspec
 
 platforms:
-  - name: ubuntu-14.04
+  - name: ubuntu-16.04
 
 suites:
   - name: default
     data_bags_path: "test/integration/data_bags/default"
     run_list:
       - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::provision]
       - recipe[opsworks_ruby::deploy]
     # no attributes at all, to prove that cookbook can work "out of the box"
     attributes:
@@ -116,6 +117,7 @@ suites:
     data_bags_path: "test/integration/data_bags/nullified"
     run_list:
       - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::provision]
       - recipe[opsworks_ruby::deploy]
     attributes:
       deploy:

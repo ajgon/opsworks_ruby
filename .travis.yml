@@ -16,11 +16,11 @@ addons:
 
 env:
   matrix:
-    - INSTANCE=default-ubuntu-1404
-    - INSTANCE=all-options-ubuntu-1404
-    - INSTANCE=unicorn-apache-hanami-resque-ubuntu-1404
-    - INSTANCE=thin-nginx-padrino-delayed-job-ubuntu-1404
-    - INSTANCE=nullified-ubuntu-1404
+    - INSTANCE=default-ubuntu-1604
+    - INSTANCE=all-options-ubuntu-1604
+    - INSTANCE=unicorn-apache-hanami-resque-ubuntu-1604
+    - INSTANCE=thin-nginx-padrino-delayed-job-ubuntu-1604
+    - INSTANCE=nullified-ubuntu-1604
 
 before_install:
   - gem install bundler

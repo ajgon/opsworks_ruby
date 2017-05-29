@@ -42,7 +42,7 @@ module Drivers
           context.execute "monit restart #{adapter}_#{app['shortname']}-#{process_number}" do
             retries 3
           end
-        end
+        end unless ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
       end
 
       def unmonitor_monit
