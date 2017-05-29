@@ -38,6 +38,7 @@ suites:
             reaping_frequency: 10
           framework:
             envs_in_console: true
+            assets_precompile: false
           appserver:
             application_yml: true
             dot_env: true

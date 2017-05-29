@@ -182,13 +182,13 @@ describe 'opsworks_ruby::deploy' do
 
   context 'framework' do
     describe command('ls -1 /srv/www/dummy_project/current/public/assets/application-*.css*') do
-      its(:stdout) { should match(/application-[0-9a-f]{64}.css/) }
-      its(:stdout) { should match(/application-[0-9a-f]{64}.css.gz/) }
+      its(:stdout) { should_not match(/application-[0-9a-f]{64}.css/) }
+      its(:stdout) { should_not match(/application-[0-9a-f]{64}.css.gz/) }
     end
 
     describe command('ls -1 /srv/www/dummy_project/current/public/test/application-*.css*') do
-      its(:stdout) { should match(/application-[0-9a-f]{64}.css/) }
-      its(:stdout) { should match(/application-[0-9a-f]{64}.css.gz/) }
+      its(:stdout) { should_not match(/application-[0-9a-f]{64}.css/) }
+      its(:stdout) { should_not match(/application-[0-9a-f]{64}.css.gz/) }
     end
 
     describe file('/srv/www/dummy_project/current/config/application.rb') do
