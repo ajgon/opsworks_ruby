@@ -14,8 +14,8 @@ depends 'chef_nginx'
 depends 'logrotate'
 depends 'ruby-ng'
 
-supports 'amazon', '>= 2015.03'
-supports 'ubuntu', '>= 12.04'
+supports 'amazon', '>= 2017.03'
+supports 'ubuntu', '>= 16.04'
 
 source_url 'https://github.com/ajgon/opsworks_ruby'
 issues_url 'https://github.com/ajgon/opsworks_ruby/issues'
