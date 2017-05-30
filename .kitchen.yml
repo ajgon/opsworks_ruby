@@ -19,7 +19,6 @@ suites:
     data_bags_path: "test/integration/data_bags/default"
     run_list:
       - recipe[opsworks_ruby::setup]
-      - recipe[opsworks_ruby::provision]
       - recipe[opsworks_ruby::deploy]
     # no attributes at all, to prove that cookbook can work "out of the box"
     attributes:
@@ -27,7 +26,6 @@ suites:
     data_bags_path: "test/integration/data_bags/default"
     run_list:
       - recipe[opsworks_ruby::setup]
-      - recipe[opsworks_ruby::provision]
       - recipe[opsworks_ruby::deploy]
     attributes:
       deploy:
@@ -67,7 +65,6 @@ suites:
     data_bags_path: "test/integration/data_bags/unicorn_apache_hanami_resque"
     run_list:
       - recipe[opsworks_ruby::setup]
-      - recipe[opsworks_ruby::provision]
       - recipe[opsworks_ruby::deploy]
     attributes:
       deploy:
@@ -98,7 +95,6 @@ suites:
     data_bags_path: "test/integration/data_bags/thin_nginx_padrino_delayed_job"
     run_list:
       - recipe[opsworks_ruby::setup]
-      - recipe[opsworks_ruby::provision]
       - recipe[opsworks_ruby::deploy]
     attributes:
       deploy:
@@ -118,7 +114,6 @@ suites:
     data_bags_path: "test/integration/data_bags/nullified"
     run_list:
       - recipe[opsworks_ruby::setup]
-      - recipe[opsworks_ruby::provision]
       - recipe[opsworks_ruby::deploy]
     attributes:
       deploy:
