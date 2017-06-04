@@ -92,6 +92,7 @@ default['nginx']['log_dir'] = '/var/log/nginx'
 default['nginx']['proxy_read_timeout'] = '60'
 default['nginx']['proxy_send_timeout'] = '60'
 default['nginx']['send_timeout'] = '10'
+default['nginx']['enable_upgrade_method'] = false
 
 # framework
 ## common

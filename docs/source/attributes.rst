@@ -464,6 +464,12 @@ nginx
 
   -  **Default**: ``10``
 
+-  |app['webserver']['enable_upgrade_method']|_
+
+  -  **Supported values:** ``true``, ``false``
+  -  **Default**: ``false``
+  -  When set to true, enable Websocket's upgrade method such as Rails actionCable.
+
 | Since this driver is basically a wrapper for `chef_nginx cookbook`_,
 | you can also configure `node['nginx'] attributes`_
 | as well (notice that ``node['deploy'][<application_shortname>]`` logic

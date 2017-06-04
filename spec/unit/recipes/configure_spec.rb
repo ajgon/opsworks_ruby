@@ -161,6 +161,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config_ssl {}')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('upgrade')
       expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
     end
 
@@ -198,6 +201,18 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/nginx/ssl/#{aws_opsworks_app['domains'].first}.dhparams.pem")
         .with_content('--- DH PARAMS ---')
+    end
+
+    it 'enables upgrade method in nginx config' do
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['enable_upgrade_method'] = true
+        solo_node.set['deploy'] = deploy
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+      expect(chef_run).to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        'proxy_set_header Upgrade $http_upgrade;'
+      )
     end
 
     it 'creates sidekiq.conf.yml' do
