@@ -283,11 +283,11 @@
           }
         }
       }
-      this.output = {};
+      this.output = { deploy: {} };
       if ( !$appName.val() ) {
         $appName.val( "application_short_name" );
       }
-      this.output[ $appName.val() ] = output;
+      this.output[ 'deploy' ][ $appName.val() ] = output;
       $( "#builder-output" ).data( "auto-update", true );
       this.flask.update( JSON.stringify( this.output, null, 2 ) );
       FormBuilder.refresh();
@@ -298,6 +298,9 @@
       JSONBuilder.restoreDefaults();
       try {
         input = JSON.parse( json );
+        if (input[ 'deploy' ]) {
+          input = input[ 'deploy' ];
+        }
         appName = Object.keys( input )[ 0 ];
         input = input[ appName ];
         $( "#application_name" ).val( appName );
