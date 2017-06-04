@@ -54,6 +54,13 @@ Solution:
 % sudo chown -R $USER /var/chef
 ```
 
+### ERROR: Authentication failed due to an invalid public/private key pair
+
+```shell
+docker run -it --rm --privileged --pid=host opsworksruby_cookbook \
+       nsenter -t 1 -m -u -n -i date -u $(date -u +%m%d%H%M%Y)
+```
+
 ### ERROR: Error uploading cookbook opsworks_ruby to the Opscode Cookbook Site
 
 ```shell
