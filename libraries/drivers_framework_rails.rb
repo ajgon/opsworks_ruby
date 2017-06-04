@@ -11,7 +11,7 @@ module Drivers
       ]
       packages debian: 'zlib1g-dev', rhel: 'zlib-devel'
       log_paths lambda { |context|
-        File.join(context.send(:deploy_dir, context.app), 'shared', 'log', "#{context.send(:deploy_env)}.log")
+        File.join(context.send(:deploy_dir, context.app), 'shared', 'log', '*.log')
       }
 
       def raw_out

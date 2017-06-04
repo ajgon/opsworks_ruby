@@ -85,7 +85,7 @@ describe 'opsworks_ruby::configure' do
 
   context 'framework' do
     describe file('/etc/logrotate.d/dummy_project-rails-production') do
-      its(:content) { should include '"/srv/www/dummy_project/shared/log/production.log" {' }
+      its(:content) { should include '"/srv/www/dummy_project/shared/log/*.log" {' }
       its(:content) { should include '  daily' }
       its(:content) { should include '  rotate 30' }
       its(:content) { should include '  missingok' }
