@@ -59,6 +59,8 @@ describe 'opsworks_ruby::configure' do
     describe file('/srv/www/dummy_project/shared/scripts/thin.service') do
       its(:content) { should include 'ENV[\'ENV_VAR1\'] = "test"' }
       its(:content) { should include 'ENV[\'RACK_ENV\'] = "production"' }
+      its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
+      its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
       its(:content) { should include 'PID_PATH="/srv/www/dummy_project/shared/pids/thin.pid"' }
       its(:content) { should include 'def thin_running?' }
     end
@@ -70,15 +72,15 @@ describe 'opsworks_ruby::configure' do
       its(:content) { should include 'check process delayed_job_dummy_project-1' }
       its(:content) do
         should include 'RACK_ENV="production" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3" ' \
-                       'bin/delayed_job start --pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 ' \
-                       '--queues=default,mailers'
+                       'HOME="/home/deploy" USER="deploy" bin/delayed_job start ' \
+                       '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 --queues=default,mailers'
       end
       its(:content) { should include 'logger -t delayed_job-dummy_project-1' }
       its(:content) { should include 'check process delayed_job_dummy_project-2' }
       its(:content) do
         should include 'RACK_ENV="production" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3" ' \
-                       'bin/delayed_job start --pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 ' \
-                       '--queues=default,mailers'
+                       'HOME="/home/deploy" USER="deploy" bin/delayed_job start ' \
+                       '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 --queues=default,mailers'
       end
       its(:content) { should include 'logger -t delayed_job-dummy_project-2' }
     end

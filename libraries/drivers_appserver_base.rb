@@ -129,6 +129,7 @@ module Drivers
       def environment
         framework = Drivers::Framework::Factory.build(context, app, options)
         app['environment'].merge(framework.out[:deploy_environment] || {})
+                          .merge('HOME' => node['deployer']['home'], 'USER' => node['deployer']['user'])
       end
     end
   end

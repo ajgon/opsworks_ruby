@@ -87,6 +87,8 @@ describe 'opsworks_ruby::configure' do
     describe file('/srv/www/dummy_project/shared/scripts/unicorn.service') do
       its(:content) { should include 'ENV[\'ENV_VAR1\'] = "test"' }
       its(:content) { should include 'ENV[\'HANAMI_ENV\'] = "production"' }
+      its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
+      its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
       its(:content) { should include 'PID_PATH="/srv/www/dummy_project/shared/pids/unicorn.pid"' }
       its(:content) { should include 'def unicorn_running?' }
     end
@@ -107,14 +109,16 @@ describe 'opsworks_ruby::configure' do
       its(:content) { should include 'check process resque_dummy_project-1' }
       its(:content) do
         should include 'HANAMI_ENV="production" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3"' \
-                       ' QUEUE=default,mailers VERBOSE=1 PIDFILE=/srv/www/dummy_project/shared/pids/' \
+                       ' HOME="/home/deploy" USER="deploy" QUEUE=default,mailers VERBOSE=1 ' \
+                       'PIDFILE=/srv/www/dummy_project/shared/pids/' \
                        'resque_dummy_project-1.pid COUNT=3 bundle exec rake environment resque:work'
       end
       its(:content) { should include 'logger -t resque-dummy_project-1' }
       its(:content) { should include 'check process resque_dummy_project-2' }
       its(:content) do
         should include 'HANAMI_ENV="production" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3"' \
-                       ' QUEUE=default,mailers VERBOSE=1 PIDFILE=/srv/www/dummy_project/shared/pids/' \
+                       ' HOME="/home/deploy" USER="deploy" QUEUE=default,mailers VERBOSE=1 ' \
+                       'PIDFILE=/srv/www/dummy_project/shared/pids/' \
                        'resque_dummy_project-2.pid COUNT=3 bundle exec rake environment resque:work'
       end
       its(:content) { should include 'logger -t resque-dummy_project-2' }
