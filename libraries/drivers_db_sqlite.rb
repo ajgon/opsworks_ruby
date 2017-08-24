@@ -12,6 +12,10 @@ module Drivers
         output[:database] ||= 'db/data.sqlite3'
         handle_output(output)
       end
+
+      def url(deploy_dir)
+        "sqlite://#{deploy_dir}/shared/#{out[:database]}"
+      end
     end
   end
 end

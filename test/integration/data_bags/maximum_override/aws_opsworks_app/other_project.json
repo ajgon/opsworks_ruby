@@ -1,0 +1,34 @@
+{
+  "app_id": "3aef37c1-7e2b-4255-bbf1-03e06f07701a",
+  "app_source": {
+    "password": "3aa161d358a167204502",
+    "revision": "master",
+    "type": "git",
+    "url": "https://github.com/RapidRiverSoftware/dumber-app",
+    "user": "dummy"
+  },
+  "attributes": {
+    "auto_bundle_on_deploy": true,
+    "aws_flow_ruby_settings": {},
+    "document_root": "",
+    "rails_env": null
+  },
+  "data_sources": [],
+  "domains": [
+    "other-project.example.com",
+    "other_project"
+  ],
+  "enable_ssl": true,
+  "environment": {
+    "ENV_VAR1": "test"
+  },
+  "name": "Dummy app",
+  "shortname": "other_project",
+  "ssl_configuration": {
+    "certificate": "-----BEGIN CERTIFICATE-----\nMIICkzCCAfwCCQCs8PFrlPxmzTANBgkqhkiG9w0BAQUFADCBjTELMAkGA1UEBhMC\nVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExGDAWBgNVBAcTD1NpbGxpY29uIFZhbGxl\neTEWMBQGA1UEChQNb3Bzd29ya3NfcnVieTEWMBQGA1UEAxQNKi5leGFtcGxlLmNv\nbTEfMB0GCSqGSIb3DQEJARYQaWdvckByemVnb2NraS5wbDAeFw0xNjEwMjUxMzU4\nNDVaFw0xNzEwMjUxMzU4NDVaMIGNMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2Fs\naWZvcm5pYTEYMBYGA1UEBxMPU2lsbGljb24gVmFsbGV5MRYwFAYDVQQKFA1vcHN3\nb3Jrc19ydWJ5MRYwFAYDVQQDFA0qLmV4YW1wbGUuY29tMR8wHQYJKoZIhvcNAQkB\nFhBpZ29yQHJ6ZWdvY2tpLnBsMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDF\nkSHFW+Vaffu/IHps5m5H/U+zeuIUuc/STWTzo82b+8Lv47n3jYB8Rx98Ti8lcPLW\nAIfRSo0pKry9vMYUNbzq+5bEoyfJWWnFgKlHwL5Znl2104Go9sjGHOcnggTFxoH+\n3GbBlM122h2aaxNDn3BLpvlCbfWRkyuZBJRYJ8BDAwIDAQABMA0GCSqGSIb3DQEB\nBQUAA4GBAJvYjvy/bK+8bFKt/EelhSWM/+/YWxQeH6WyKVkKCFu8SAcudtIUN0+b\nmgtpX8hLR7OfJ1QGHbj50USBvMcZcXPseSA9tl3uVsFeIHpVIJDzwcXd2UIklqa0\nTWWRQeP80euInTpyMZ3nygG48O00WGDV081UMS0mLUxAKVeLdUJA\n-----END CERTIFICATE-----\n",
+    "private_key": "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQDFkSHFW+Vaffu/IHps5m5H/U+zeuIUuc/STWTzo82b+8Lv47n3\njYB8Rx98Ti8lcPLWAIfRSo0pKry9vMYUNbzq+5bEoyfJWWnFgKlHwL5Znl2104Go\n9sjGHOcnggTFxoH+3GbBlM122h2aaxNDn3BLpvlCbfWRkyuZBJRYJ8BDAwIDAQAB\nAoGAC5gWyUQ5U3QtP+wiAx4KvsLI2JmPhvPYlFjiYcHtIQhHSlis4zA0qBZsbJkR\n/zp/pbtmPQwI+K9/YAsh/LGionUEfNyM4m3tuvLY860AqTlD4fCFANvLEXX4ryGq\n4Jjy8Vsq8+Yf9+Ej2VaKBR2TJJxczdgeDii2t74f+Y44DeECQQD+aBRGl18yfk5Y\nkrSWA1vnG7Nnd1eh0WXN1wUVq1/wgt8P2Ejuwyf2KrKgYoUOBfSL+p9mwsO6cR4X\ns9YJTRKJAkEAxs3qM7YoM2xFuohcuMCzTb+7kpV5nahZc0NyipFtCUfKU0JAqgr5\nN5HTQ756s3pvoifkVNE0b14xpnj1Qmt2KwJBALWlCH0SjXUW+8eAEBJgGZlcjO7e\nJiKyyRZ8ZPQA5cJrHutISWK40uqPt/SOA2Rs2hur+W48t9WB+LOBwtvnPMkCQFyX\n84j6QmcQ+rkSYf0640hHENoI/IfNrTveIi8f5KT55uY4aV3JlqGnLbrTsNp/IBdq\ndRJ8DewA9ycOF01EN9kCQEJVMn/cgbTT4hNyte2ycyHxTSh1h5ImipV8khcopanV\naSxsp8mM4JwGSzWtfF9+EMVymZ2OsH7oSYfawzKjSGg=\n-----END RSA PRIVATE KEY-----\n"
+  },
+  "type": "other",
+  "deploy": true,
+  "id": "other_project"
+}
