@@ -952,6 +952,35 @@ describe 'opsworks_ruby::configure' do
           JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
     end
+
+    context '"null" database adapter' do
+      let(:supplied_node) do
+        node(deploy: {
+               dummy_project: {
+                 database: {
+                   adapter: 'null'
+                 },
+                 global: { environment: 'production' },
+                 framework: { adapter: 'rails' }
+               }
+             })
+      end
+
+      before do
+        stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(data_sources: [])])
+        stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
+      end
+
+      it 'does not create a database.yml file' do
+        db_config = Drivers::Db::Null.new(chef_run, aws_opsworks_app(data_sources: [])).out
+        expect(db_config[:adapter]).to eq 'null'
+        expect(db_config[:username]).not_to be
+        expect(db_config[:password]).not_to be
+        expect(db_config[:host]).not_to be
+        expect(db_config[:database]).not_to be
+        expect(chef_run).not_to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml")
+      end
+    end
   end
 
   context 'empty node[\'deploy\']' do

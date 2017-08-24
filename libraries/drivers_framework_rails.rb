@@ -34,7 +34,7 @@ module Drivers
       private
 
       def database_yml(db)
-        return unless db.applicable_for_configuration?
+        return unless db.applicable_for_configuration? && db.can_migrate?
 
         database = db.out
         deploy_environment = deploy_env
