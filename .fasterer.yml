@@ -1,0 +1,9 @@
+---
+# Fasterer mistakenly flags the warning that
+# "Hash#keys.each is slower than Hash#each_key" on the Chef
+# node object (which is not a Hash). Because Fasterer only
+# has two ways to disable its analyzer (ignore a file entirely
+# or ignore a speedup entirely), we pick the lesser of two
+# evils and disable the keys_each_vs_each_key test :-/
+speedups:
+ keys_each_vs_each_key: false
