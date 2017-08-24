@@ -228,4 +228,56 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to deploy_deploy('a1')
     expect(chef_run).not_to deploy_deploy('a2')
   end
+
+  describe 'per-application deploy_dir' do
+    before do
+      stub_search(:aws_opsworks_app, '*:*').and_return([
+                                                         aws_opsworks_app.merge(shortname: 'a1', deploy: true)
+                                                       ])
+    end
+
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['lsb'] = node['lsb']
+        solo_node.set['deploy'] = { 'a1' => {} }
+        if deploy_dir
+          solo_node.set['deploy']['a1']['global']['deploy_dir'] = deploy_dir
+        end
+      end.converge(described_recipe)
+    end
+
+    context 'when deploy_dir is not specified' do
+      let(:deploy_dir) { nil }
+
+      it 'deploys a1 using the default deploy directory of /srv/www' do
+        expect(chef_run).to create_directory('/srv/www/a1/shared')
+        expect(chef_run).to create_directory('/srv/www/a1/shared/config')
+        expect(chef_run).to create_directory('/srv/www/a1/shared/log')
+        expect(chef_run).to create_directory('/srv/www/a1/shared/pids')
+        expect(chef_run).to create_directory('/srv/www/a1/shared/scripts')
+        expect(chef_run).to create_directory('/srv/www/a1/shared/sockets')
+        expect(chef_run).to create_directory('/srv/www/a1/shared/vendor/bundle')
+        expect(chef_run).to create_template('/srv/www/a1/shared/config/database.yml')
+        expect(chef_run).to create_template('/srv/www/a1/shared/config/puma.rb')
+        expect(chef_run).to create_template('/srv/www/a1/shared/scripts/puma.service')
+      end
+    end
+
+    context 'when a deploy_dir is specified' do
+      let(:deploy_dir) { '/some/other/path/to/a1' }
+
+      it 'deploys a1 using the provided deploy directory instead' do
+        expect(chef_run).to create_directory('/some/other/path/to/a1/shared')
+        expect(chef_run).to create_directory('/some/other/path/to/a1/shared/config')
+        expect(chef_run).to create_directory('/some/other/path/to/a1/shared/log')
+        expect(chef_run).to create_directory('/some/other/path/to/a1/shared/pids')
+        expect(chef_run).to create_directory('/some/other/path/to/a1/shared/scripts')
+        expect(chef_run).to create_directory('/some/other/path/to/a1/shared/sockets')
+        expect(chef_run).to create_directory('/some/other/path/to/a1/shared/vendor/bundle')
+        expect(chef_run).to create_template('/some/other/path/to/a1/shared/config/database.yml')
+        expect(chef_run).to create_template('/some/other/path/to/a1/shared/config/puma.rb')
+        expect(chef_run).to create_template('/some/other/path/to/a1/shared/scripts/puma.service')
+      end
+    end
+  end
 end
