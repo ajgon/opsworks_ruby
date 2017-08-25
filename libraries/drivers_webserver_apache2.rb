@@ -8,7 +8,7 @@ module Drivers
       packages debian: 'apache2', rhel: %w[httpd24 mod24_ssl]
       output filter: %i[
         dhparams keepalive_timeout limit_request_body log_dir log_level proxy_timeout
-        ssl_for_legacy_browsers extra_config extra_config_ssl
+        ssl_for_legacy_browsers extra_config extra_config_ssl port ssl_port
       ]
       notifies :deploy,
                action: :restart, resource: { debian: 'service[apache2]', rhel: 'service[httpd]' }, timer: :delayed

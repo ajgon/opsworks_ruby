@@ -1,6 +1,10 @@
 <% upstream = "#{@name}_#{@application[:domains].first}".gsub(/[^a-zA-Z0-9]+/, '_') %>
 
-<VirtualHost *:80>
+<% unless @out[:port] == 80 %>
+Listen <%= @out[:port] %>
+<% end -%>
+
+<VirtualHost *:<%= @out[:port] %>>
   ServerName <%= node['hostname'] %>
   ServerAlias <%= @application[:domains].join(" ") %>
 
@@ -55,8 +59,12 @@
 </VirtualHost>
 
 <% if @application[:enable_ssl] %>
+<% unless @out[:ssl_port] == 443 %>
+Listen <%= @out[:ssl_port] %>
+<% end -%>
+
 SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
-<VirtualHost *:443>
+<VirtualHost *:<%= @out[:ssl_port] %>>
   ServerName <%= node['hostname'] %>
   ServerAlias <%= @application[:domains].join(" ") %>
 
