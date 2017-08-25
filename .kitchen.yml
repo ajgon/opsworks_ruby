@@ -150,7 +150,10 @@ suites:
       deploy:
         other_project:
           appserver:
-            adapter: 'unicorn'
+            adapter: 'passenger'
+            mount_point: '/some/mount/point'
+            max_pool_size: 3
+            min_instances: 2
           database:
             adapter: 'null'
           framework:

@@ -8,6 +8,10 @@ module Drivers
       include Drivers::Dsl::Output
       include Drivers::Dsl::Packages
 
+      def self.passenger_supported?
+        false
+      end
+
       def configure
         configure_logrotate
       end
@@ -16,7 +20,14 @@ module Drivers
         handle_output(raw_out)
       end
 
-      def validate_app_engine; end
+      def passenger?
+        Drivers::Appserver::Factory.build(context, app).adapter == 'passenger'
+      end
+
+      def validate_app_engine
+        return unless passenger? && !self.class.passenger_supported?
+        raise(ArgumentError, "passenger appserver not supported on #{adapter} webserver")
+      end
 
       protected
 
@@ -71,10 +82,11 @@ module Drivers
       end
 
       def add_appserver_config
+        a = Drivers::Appserver::Factory.build(context, app)
         opts = { application: app, deploy_dir: deploy_dir(app), out: out, conf_dir: conf_dir, adapter: adapter,
-                 name: Drivers::Appserver::Factory.build(context, app).adapter }
+                 name: a.adapter, deploy_env: deploy_env, appserver_config: a.webserver_config_params }
         return unless Drivers::Appserver::Base.adapters.include?(opts[:name])
-        generate_appserver_config(opts, site_config_template, site_config_template_cookbook)
+        generate_appserver_config(opts, site_config_template(opts[:name]), site_config_template_cookbook)
       end
 
       def generate_appserver_config(opts, source_template, source_cookbook)
@@ -97,10 +109,14 @@ module Drivers
         end
       end
 
-      def site_config_template
+      def site_config_template(appserver_adapter)
         (node['deploy'][app['shortname']][driver_type] || {})['site_config_template'] ||
           node['defaults'][driver_type]['site_config_template'] ||
-          "appserver.#{adapter}.conf.erb"
+          appserver_site_config_template(appserver_adapter)
+      end
+
+      def appserver_site_config_template(_appserver_adapter)
+        "appserver.#{adapter}.conf.erb"
       end
 
       def site_config_template_cookbook

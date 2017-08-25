@@ -66,9 +66,14 @@ describe 'opsworks_ruby::configure' do
     end
 
     describe file('/etc/apache2/sites-available/other_project.conf') do
-      its(:content) { should include '<Proxy balancer://unicorn_other_project_example_com>' }
       its(:content) { should include 'SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH' }
       its(:content) { should include 'DocumentRoot /srv/www/other_project/current/public' }
+      its(:content) { should_not include ' Proxy ' }
+      its(:content) { should include '<Location /some/mount/point>' }
+      its(:content) { should include 'PassengerAppEnv production' }
+      its(:content) { should include 'PassengerBaseURI /some/mount/point' }
+      its(:content) { should include 'PassengerMaxPoolSize 3' }
+      its(:content) { should include 'PassengerMinInstances 2' }
       its(:content) { should include 'Listen 8080' }
       its(:content) { should include '<VirtualHost *:8080>' }
       its(:content) { should include 'Listen 8443' }
@@ -78,17 +83,11 @@ describe 'opsworks_ruby::configure' do
 
   context 'appserver' do
     describe file('/srv/www/other_project/shared/config/unicorn.conf') do
-      its(:content) { should include ':backlog => 1024' }
-      its(:content) { should include ':tries => 5' }
-      its(:content) { should include 'listen "127.0.0.1:3000"' }
+      it { should_not exist }
     end
 
     describe file('/srv/www/other_project/shared/scripts/unicorn.service') do
-      its(:content) { should include 'ENV[\'ENV_VAR1\'] = "test"' }
-      its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
-      its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
-      its(:content) { should include 'PID_PATH="/srv/www/other_project/shared/pids/unicorn.pid"' }
-      its(:content) { should include 'def unicorn_running?' }
+      it { should_not exist }
     end
   end
 

@@ -9,16 +9,22 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::setup' do
-  let(:chef_run) do
+  let(:chef_runner) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['deploy'] = node['deploy']
       solo_node.set['lsb'] = node['lsb']
-    end.converge(described_recipe)
+    end
   end
-  let(:chef_run_rhel) do
+  let(:chef_run) do
+    chef_runner.converge(described_recipe)
+  end
+  let(:chef_runner_rhel) do
     ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
       solo_node.set['deploy'] = node['deploy']
-    end.converge(described_recipe)
+    end
+  end
+  let(:chef_run_rhel) do
+    chef_runner_rhel.converge(described_recipe)
   end
 
   before do
@@ -160,8 +166,26 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'apt_repository' do
-    it 'debian' do
-      expect(chef_run).to add_apt_repository('apache2')
+    context 'debian' do
+      it 'installs the PPA apt repository for Apache2' do
+        expect(chef_run).to add_apt_repository('apache2')
+      end
+
+      context 'when use_apache2_ppa is set to false' do
+        before do
+          chef_runner.node.set['defaults']['webserver']['use_apache2_ppa'] = false
+        end
+
+        it 'does not installl the PPA apt repository for Apache2' do
+          expect(chef_run).not_to add_apt_repository('apache2')
+        end
+      end
+    end
+
+    context 'rhel' do
+      it 'does not install the PPA apt repository for Apache2' do
+        expect(chef_run_rhel).not_to add_apt_repository('apache2')
+      end
     end
   end
 
@@ -194,22 +218,22 @@ describe 'opsworks_ruby::setup' do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
     end
 
-    let(:chef_run) do
+    let(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
-      end.converge(described_recipe)
+      end
     end
 
-    let(:chef_run_rhel) do
+    let(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
-      end.converge(described_recipe)
+      end
     end
 
     context 'debian' do
@@ -218,6 +242,7 @@ describe 'opsworks_ruby::setup' do
         expect(chef_run).to install_package('apache2')
         expect(chef_run).to install_package('redis-server')
         expect(chef_run).to install_package('monit')
+        expect(chef_run).not_to install_package('libapache2-mod-passenger')
       end
 
       it 'defines service which starts apache2' do
@@ -250,6 +275,33 @@ describe 'opsworks_ruby::setup' do
           .to run_execute('echo "IncludeOptional sites-enabled/*.conf" >> /etc/httpd/conf/httpd.conf')
       end
     end
+
+    context 'passenger' do
+      context 'debian' do
+        before do
+          chef_runner.node.set['deploy']['dummy_project']['appserver']['adapter'] = 'passenger'
+          chef_runner.node.set['defaults']['appserver']['passenger_version'] = '1.2.3'
+        end
+
+        it 'activates the passenger APT repo' do
+          expect(chef_run).to add_apt_repository('passenger')
+        end
+
+        it 'installs the libapache2-mod-passenger package' do
+          expect(chef_run).to install_package('libapache2-mod-passenger').with_version('1.2.3')
+        end
+      end
+
+      context 'rhel' do
+        before do
+          chef_runner_rhel.node.set['deploy']['dummy_project']['appserver']['adapter'] = 'passenger'
+        end
+
+        it 'raises an exception' do
+          expect { chef_run_rhel }.to raise_error(ArgumentError, 'passenger appserver only supported on Debian/Ubuntu')
+        end
+      end
+    end
   end
 
   context 'Sqlite + delayed_job' do
@@ -258,16 +310,16 @@ describe 'opsworks_ruby::setup' do
     temp_node['dummy_project']['database']['adapter'] = 'sqlite'
     temp_node['dummy_project']['worker']['adapter'] = 'delayed_job'
 
-    let(:chef_run) do
+    let(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['deploy'] = temp_node
         solo_node.set['lsb'] = node['lsb']
-      end.converge(described_recipe)
+      end
     end
-    let(:chef_run_rhel) do
+    let(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
         solo_node.set['deploy'] = temp_node
-      end.converge(described_recipe)
+      end
     end
 
     before do

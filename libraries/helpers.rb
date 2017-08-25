@@ -115,3 +115,13 @@ def apps_not_included
   return [] if node['applications'].blank?
   node['deploy'].keys.reject { |app_name| node['applications'].include?(app_name) }
 end
+
+def enable_mod_passenger_repo(context)
+  context.apt_repository 'passenger' do
+    uri 'https://oss-binaries.phusionpassenger.com/apt/passenger'
+    distribution node['lsb']['codename']
+    components %w[main]
+    keyserver 'keyserver.ubuntu.com'
+    key '561F9B9CAC40B2F7'
+  end
+end

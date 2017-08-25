@@ -20,6 +20,10 @@ module Drivers
         end
       }
 
+      def self.passenger_supported?
+        true
+      end
+
       def raw_out
         output = super.merge(
           log_dir: node['deploy'][app['shortname']][driver_type]['log_dir'] || "/var/log/#{service_name}"
@@ -31,6 +35,7 @@ module Drivers
       def setup
         handle_packages
         enable_modules(%w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl])
+        install_mod_passenger
         add_sites_available_enabled
         define_service(:start)
       end
@@ -94,6 +99,26 @@ module Drivers
           user 'root'
           group 'root'
         end
+      end
+
+      def install_mod_passenger
+        return unless passenger?
+        unless node['platform_family'] == 'debian'
+          raise(ArgumentError, 'passenger appserver only supported on Debian/Ubuntu')
+        end
+        mod_passenger_packages
+      end
+
+      def mod_passenger_packages
+        enable_mod_passenger_repo(context)
+        ver = node['defaults']['appserver']['passenger_version']
+        context.package 'libapache2-mod-passenger' do
+          version ver unless ver.nil?
+        end
+      end
+
+      def appserver_site_config_template(appserver_adapter)
+        "appserver.#{adapter}.#{appserver_adapter == 'passenger' ? 'passenger' : 'upstream'}.conf.erb"
       end
     end
   end

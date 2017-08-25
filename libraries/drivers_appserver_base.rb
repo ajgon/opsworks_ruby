@@ -30,6 +30,10 @@ module Drivers
 
       def validate_app_engine; end
 
+      def webserver_config_params
+        {}
+      end
+
       protected
 
       def appserver_command
