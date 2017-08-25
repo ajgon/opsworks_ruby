@@ -37,7 +37,7 @@ apt_repository 'apache2' do
   components %w[main]
   keyserver 'keyserver.ubuntu.com'
   key 'E5267A6C'
-  only_if { node['platform'] == 'ubuntu' }
+  only_if { node['defaults']['webserver']['use_apache2_ppa'] }
 end
 
 gem_package 'bundler' do
