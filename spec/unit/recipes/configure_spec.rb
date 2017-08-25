@@ -130,6 +130,12 @@ describe 'opsworks_ruby::configure' do
     it 'creates nginx unicorn proxy handler config' do
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('listen 80;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('listen 443;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('error_log /var/log/nginx/dummy-project.example.com-ssl.error.log debug;')
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
@@ -228,6 +234,35 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/sidekiq_2.yml")
         .with_content("---\n:concurrency: 5\n:verbose: false\n:queues:\n- default")
+    end
+
+    it 'allows overriding of ports' do
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['port'] = 8080
+        deploy[aws_opsworks_app['shortname']]['webserver']['ssl_port'] = 8443
+        solo_node.set['deploy'] = deploy
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+      expect(chef_run).to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        'listen 8080;'
+      )
+      expect(chef_run).to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        'listen 8443;'
+      )
+    end
+
+    it 'allows choosing a different template, from a different cookbook' do
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['site_config_template'] = 'appserver.test.conf.erb'
+        deploy[aws_opsworks_app['shortname']]['webserver']['site_config_template_cookbook'] = 'some_cookbook'
+        solo_node.set['deploy'] = deploy
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+      expect(chef_run).to create_template("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_source('appserver.test.conf.erb')
+        .with_cookbook('some_cookbook')
     end
 
     context 'rhel' do
@@ -486,6 +521,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .not_to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('extra_config_ssl {}')
+      expect(chef_run)
+        .not_to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content(/^Listen/)
       expect(chef_run).to create_link("/etc/apache2/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
     end
 
@@ -521,6 +559,29 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/apache2/ssl/#{aws_opsworks_app['domains'].first}.dhparams.pem")
         .with_content('--- DH PARAMS ---')
+    end
+
+    it 'allows overriding of ports' do
+      chefrun = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['adapter'] = 'apache2'
+        deploy[aws_opsworks_app['shortname']]['webserver']['port'] = 8080
+        deploy[aws_opsworks_app['shortname']]['webserver']['ssl_port'] = 8443
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+
+      expect(chefrun).to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        '<VirtualHost *:8080>'
+      )
+      expect(chefrun).to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        'Listen 8080'
+      )
+      expect(chefrun).to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        '<VirtualHost *:8443>'
+      )
+      expect(chefrun).to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        'Listen 8443'
+      )
     end
 
     it 'cleans default sites' do

@@ -141,5 +141,7 @@ suites:
             adapter: 'unicorn'
           webserver:
             adapter: 'apache2'
+            port: 8080
+            ssl_port: 8443
       'ruby-ng':
         ruby_version: '2.3'
