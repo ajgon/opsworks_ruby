@@ -9,16 +9,22 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::configure' do
-  let(:chef_run) do
+  let(:chef_runner) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['deploy'] = node['deploy']
       solo_node.set['nginx'] = node['nginx']
-    end.converge(described_recipe)
+    end
   end
-  let(:chef_run_rhel) do
+  let(:chef_run) do
+    chef_runner.converge(described_recipe)
+  end
+  let(:chef_runner_rhel) do
     ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
       solo_node.set['deploy'] = node['deploy']
-    end.converge(described_recipe)
+    end
+  end
+  let(:chef_run_rhel) do
+    chef_runner_rhel.converge(described_recipe)
   end
   before do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
@@ -73,6 +79,55 @@ describe 'opsworks_ruby::configure' do
     it 'creates logrotate file for nginx' do
       expect(chef_run)
         .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-nginx-staging")
+    end
+
+    context 'when the logrotate settings are overridden by attributes' do
+      let(:logrotate_paths) { %w[/some/path/to/a.log] }
+      let(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['defaults']['global']['logrotate_rotate']         = 45
+          solo_node.set['defaults']['global']['logrotate_cookbook']       = 'some_cookbook'
+          solo_node.set['defaults']['global']['logrotate_template_name']  = 'some_template.erb'
+          solo_node.set['defaults']['global']['logrotate_template_owner'] = 'me'
+          solo_node.set['defaults']['global']['logrotate_template_group'] = 'a_group'
+          solo_node.set['defaults']['global']['logrotate_template_mode']  = '0700'
+          solo_node.set['defaults']['global']['logrotate_options']        = %w[a b c d]
+
+          app_name = aws_opsworks_app['shortname']
+          solo_node.set['deploy'][app_name]['global']['logrotate_name']           = 'myapp'
+          solo_node.set['deploy'][app_name]['global']['logrotate_cookbook']       = 'other_cookbook'
+          solo_node.set['deploy'][app_name]['global']['logrotate_log_paths']      = logrotate_paths
+          solo_node.set['deploy'][app_name]['global']['logrotate_frequency']      = 'weekly'
+          solo_node.set['deploy'][app_name]['global']['logrotate_rotate']         = 15
+          solo_node.set['deploy'][app_name]['global']['logrotate_template_owner'] = 'you'
+          solo_node.set['deploy'][app_name]['global']['logrotate_template_mode']  = '0750'
+          solo_node.set['deploy'][app_name]['global']['logrotate_options']        = %w[g h i j]
+
+          solo_node.set['nginx'] = node['nginx']
+        end
+      end
+
+      it 'configures logrotate for the app using the provided settings' do
+        expect(chef_run)
+          .to enable_logrotate_app('myapp')
+          .with_path(logrotate_paths)
+          .with_rotate(15)
+          .with_cookbook('other_cookbook')
+          .with_template_name('some_template.erb')
+          .with_template_owner('you')
+          .with_template_group('a_group')
+          .with_template_mode('0750')
+          .with_frequency('weekly')
+          .with_options(%w[g h i j])
+      end
+
+      context 'when the set of logrotate paths empty' do
+        let(:logrotate_paths) { [] }
+
+        it 'does not create any logrotate file' do
+          expect(chef_run).not_to enable_logrotate_app('myapp')
+        end
+      end
     end
 
     it 'creates proper unicorn.conf file' do
