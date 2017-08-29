@@ -95,6 +95,14 @@ Global parameters apply to the whole application, and can be used by any section
   -  **Default:** ``30``
   -  **Important Notice:** The parameter is in days
 
+- ``app['global']['logrotate_script_params']``
+
+  -  **Type:** key-value
+  -  **Default:** ``{}``
+  -  **Important Notice:** Any values for this parameter will be *merged* to the defaults
+  -  List of passable options can be found in the `logrotate man page`_.
+     For example ``{"postrotate": "echo 'hi'"}``
+
 database
 ~~~~~~~~
 
@@ -508,6 +516,7 @@ resque
   -  Array of queues which should be processed by resque
 
 .. _ruby-ng cookbook documentation: https://supermarket.chef.io/cookbooks/ruby-ng
+.. _logrotate man page: https://linux.die.net/man/8/logrotate
 .. _figaro: https://github.com/laserlemon/figaro
 .. _dotenv: https://github.com/bkeepers/dotenv
 .. |app['appserver']['backlog']| replace:: ``app['appserver']['backlog']``
