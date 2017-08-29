@@ -65,10 +65,16 @@ default['defaults']['appserver']['tcp_nodelay'] = true
 default['defaults']['appserver']['tcp_nopush'] = false
 default['defaults']['appserver']['tries'] = 5
 
+## passenger
+default['defaults']['appserver']['passenger_version'] = '1:5.1.8-1~trusty1'
+default['defaults']['appserver']['mount_point'] = '/'
+
 # webserver
 ## common
 
 default['defaults']['webserver']['adapter'] = 'nginx'
+default['defaults']['webserver']['port'] = 80
+default['defaults']['webserver']['ssl_port'] = 443
 default['defaults']['webserver']['ssl_for_legacy_browsers'] = false
 default['defaults']['webserver']['extra_config'] = ''
 default['defaults']['webserver']['extra_config_ssl'] = ''
@@ -79,6 +85,7 @@ default['defaults']['webserver']['log_level'] = 'info'
 
 default['defaults']['webserver']['limit_request_body'] = '1048576'
 default['defaults']['webserver']['proxy_timeout'] = '60'
+default['defaults']['webserver']['use_apache2_ppa'] = (node['platform'] == 'ubuntu')
 
 ## nginx
 

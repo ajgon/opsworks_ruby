@@ -8,7 +8,7 @@ module Drivers
       output filter: %i[
         build_type client_body_timeout client_header_timeout client_max_body_size dhparams keepalive_timeout
         log_dir log_level proxy_read_timeout proxy_send_timeout send_timeout ssl_for_legacy_browsers
-        extra_config extra_config_ssl enable_upgrade_method
+        extra_config extra_config_ssl enable_upgrade_method port ssl_port
       ]
       notifies :deploy, action: :restart, resource: 'service[nginx]', timer: :delayed
       notifies :undeploy, action: :restart, resource: 'service[nginx]', timer: :delayed

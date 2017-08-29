@@ -3,7 +3,7 @@ upstream <%= @name %>_<%= @application[:domains].first %> {
 }
 
 server {
-  listen 80;
+  listen <%= @out[:port] %>;
   server_name <%= @application[:domains].join(" ") %> <%= node['hostname'] %>;
   access_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>.access.log;
   error_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>.error.log <%= @out[:log_level] %>;
@@ -68,7 +68,7 @@ server {
 
 <% if @application[:enable_ssl] %>
 server {
-  listen   443;
+  listen <%= @out[:ssl_port] %>;
   server_name <%= @application[:domains].join(" ") %> <%= node['hostname'] %>;
   access_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>-ssl.access.log;
   error_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>-ssl.error.log <%= @out[:log_level] %>;

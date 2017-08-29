@@ -8,7 +8,7 @@ module Drivers
       packages debian: 'apache2', rhel: %w[httpd24 mod24_ssl]
       output filter: %i[
         dhparams keepalive_timeout limit_request_body log_dir log_level proxy_timeout
-        ssl_for_legacy_browsers extra_config extra_config_ssl
+        ssl_for_legacy_browsers extra_config extra_config_ssl port ssl_port
       ]
       notifies :deploy,
                action: :restart, resource: { debian: 'service[apache2]', rhel: 'service[httpd]' }, timer: :delayed
@@ -32,6 +32,7 @@ module Drivers
       def setup
         handle_packages
         enable_modules(%w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl])
+        install_mod_passenger
         add_sites_available_enabled
         define_service(:start)
       end
@@ -95,6 +96,29 @@ module Drivers
           user 'root'
           group 'root'
         end
+      end
+
+      def passenger?
+        Drivers::Appserver::Factory.build(context, app).adapter == 'passenger'
+      end
+
+      def install_mod_passenger
+        return unless passenger?
+        unless node['platform_family'] == 'debian'
+          raise(ArgumentError, 'passenger appserver only supported on Debian/Ubuntu')
+        end
+        mod_passenger_packages
+      end
+
+      def mod_passenger_packages
+        enable_mod_passenger_repo(context)
+        context.package 'libapache2-mod-passenger' do
+          version node['defaults']['appserver']['passenger_version']
+        end
+      end
+
+      def appserver_site_config_template(appserver_adapter)
+        "appserver.#{adapter}.#{appserver_adapter == 'passenger' ? 'passenger' : 'upstream'}.conf.erb"
       end
     end
   end

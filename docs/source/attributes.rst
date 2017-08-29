@@ -365,9 +365,9 @@ webserver
 
   -  **Default:** ``nginx``
   -  **Supported values:** ``apache2``, ``nginx``, ``null``
-  -  Webserver in front of the instance. It runs on port 80,
-     and receives all requests from Load Balancer/Internet.
-     ``null`` means no webserver enabled.
+  -  Webserver in front of the instance. It runs on port 80 by default
+     (see ``app['webserver']['port']``), and receives all requests from the
+     Load Balancer/Internet. ``null`` means no webserver enabled.
 
 -  ``app['webserver']['dhparams']``
 
@@ -390,19 +390,54 @@ webserver
      Android < 2.2) wouldn’t work with this configuration very well. If your
      application needs a support for those browsers, set this parameter to ``true``.
 
+-  ``app['webserver']['port']``
+
+  -  **Default** ``80``
+  -  The port on which the webserver should listen for HTTP requests.
+
+-  ``app['webserver']['ssl_port']``
+
+  -  **Default** ``443``
+  -  The port on which the webserver should listen for HTTPs requests, if
+     SSL requests are enabled. Note that SSL itself is controlled by the
+     ``app['enable_ssl']`` setting in Opsworks.
+
+-  ``app['webserver']['site_config_template']``
+
+  -  **Default** ``appserver.apache2.conf.erb`` or ``appserver.nginx.conf.erb``
+  -  The name of the cookbook template that should be used to generate per-app
+     configuration stanzas (known as a "site" in apache and nginx configuration
+     parlance). Useful in situations where inserting an ``extra_config`` text
+     section doesn't provide enough flexibility to customize your per-app
+     webserver configuration stanza to your liking.
+  -  Note that when you use a custom site configuration template, you can
+     also choose to define ``extra_config`` as any data structure (e.g., Hash
+     or even nested Hash) to be interpreted by your custom template. This
+     provides somewhat unlimited flexibility to configure the webserver app
+     configuration however you see fit.
+
+-  ``app['webserver']['site_config_template_cookbook']``
+
+  -  **Default** ``opsworks_ruby``
+  -  The name of the cookbook in which the site configuration template can be
+     found. If you override ``app['webserver']['site_config_template']`` to
+     use a site configuration template from your own cookbook, you'll need to
+     override this setting as well to ensure that the opsworks_ruby cookbook
+     looks for the specified template in your cookbook.
+
 apache
 ^^^^^^
 
 -  ``app['webserver']['extra_config']``
 
   -  Raw Apache2 configuration, which will be inserted into ``<Virtualhost *:80>``
-     section of the application.
+     (or other port, if specified) section of the application.
 
 -  ``app['webserver']['extra_config_ssl']``
 
   -  Raw Apache2 configuration, which will be inserted into ``<Virtualhost *:443>``
-     section of the application. If set to ``true``, the ``extra_config``
-     will be copied.
+     (or other port, if specified for SSL) section of the application. If set to
+     ``true``, the ``extra_config`` will be copied.
 
 -  |app['webserver']['limit_request_body']|_
 
