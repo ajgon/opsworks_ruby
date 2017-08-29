@@ -70,6 +70,56 @@ describe 'opsworks_ruby::configure' do
         .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-rails-staging")
     end
 
+    context 'with logrotate script options' do
+      let(:supplied_node) do
+        node(deploy: {
+               dummy_project: {
+                 global: {
+                   environment: 'staging',
+                   logrotate_script_params: {
+                     postrotate: 'test'
+                   }
+                 }
+               }
+             })
+      end
+      let(:chef_run_logrotate) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['deploy'] = supplied_node['deploy']
+        end.converge(described_recipe)
+      end
+      it 'creates a logrotate with params' do
+        expect(chef_run_logrotate)
+          .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-rails-staging").with(
+            postrotate: 'test'
+          )
+      end
+    end
+
+    context 'invalid logrotate params' do
+      let(:supplied_node) do
+        node(deploy: {
+               dummy_project: {
+                 global: {
+                   environment: 'staging',
+                   logrotate_script_params: {
+                     invalid: 'invalid'
+                   }
+                 }
+               }
+             })
+      end
+      let(:chef_run_logrotate) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['deploy'] = supplied_node['deploy']
+        end.converge(described_recipe)
+      end
+      it 'raises no method error' do
+        expect { chef_run_logrotate }
+          .to raise_error(NoMethodError)
+      end
+    end
+
     it 'creates logrotate file for nginx' do
       expect(chef_run)
         .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-nginx-staging")
