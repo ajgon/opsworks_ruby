@@ -58,6 +58,15 @@ Global parameters apply to the whole application, and can be used by any section
   -  Sets the “deploy environment” for all the app-related (for example ``RAILS_ENV``
      in Rails) actions in the project (server, worker, etc.)
 
+-  ``app['global']['deploy_dir']``
+
+  -  **Type:** string
+  -  **Default:** ``/srv/www/app_name``
+  -  Determines where the application will be deployed.
+  -  Note that if you override this setting, you'll typically want to include the short_name
+     in the setting. In other words, this setting doesn't override the ``/srv/www`` base
+     directory defafult; it overrides the application-specific ``/srv/www/app_name`` default.
+
 - ``app['global']['symlinks']``
 
   -  **Type:** key-value

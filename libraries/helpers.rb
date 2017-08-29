@@ -61,7 +61,7 @@ def create_deploy_dir(application, subdir = '/')
 end
 
 def deploy_dir(application)
-  File.join('/', 'srv', 'www', application['shortname'])
+  globals('deploy_dir', application['shortname']) || ::File.join('/', 'srv', 'www', application['shortname'])
 end
 
 def every_enabled_application
