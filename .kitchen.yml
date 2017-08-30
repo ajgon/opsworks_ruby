@@ -130,17 +130,50 @@ suites:
       - recipe[opsworks_ruby::setup]
       - recipe[opsworks_ruby::deploy]
     attributes:
+      defaults:
+        global:
+          logrotate_template_owner: 'deploy'
+          logrotate_template_group: 'root'
+          logrotate_rotate: 75
+        framework:
+          logrotate_options:
+            - missingok
+            - notifempty
+            - copytruncate
+            - sharedscripts
+          logrotate_template_group: 'www-data'
+        webserver:
+          logrotate_options:
+            - missingok
+            - notifempty
+            - copytruncate
       deploy:
         other_project:
+          appserver:
+            adapter: 'unicorn'
           database:
             adapter: 'null'
           framework:
             adapter: 'rails'
             assets_precompilation_command: '/bin/true'
-          appserver:
-            adapter: 'unicorn'
+            logrotate_name: 'dumber-app-logrotate'
+            logrotate_frequency: 'weekly'
+            logrotate_template_mode: '0750'
+          global:
+            logrotate_name: 'this-will-be-ignored'
+            logrotate_frequency: 'monthly'
+            logrotate_log_paths:
+              - /this/will/be/ignored1.log
           webserver:
             adapter: 'apache2'
+            logrotate_log_paths:
+              - /tmp/log1.log
+              - /tmp/log2.log
+            logrotate_options:
+              - missingok
+              - notifempty
+            logrotate_rotate: 15
+            logrotate_template_owner: 'root'
             port: 8080
             ssl_port: 8443
       'ruby-ng':

@@ -103,6 +103,34 @@ Global parameters apply to the whole application, and can be used by any section
   -  **Type:** integer
   -  **Default:** ``30``
   -  **Important Notice:** The parameter is in days
+  -  How many days of logfiles are kept.
+  -  See Logrotate Attributes for more information on logrotate attribute precedence.
+
+- ``app['global']['logrotate_frequency']``
+
+  -  **Type:** string
+  -  **Default:** ``daily``
+  -  **Supported values:** ``daily``, ``weekly``, ``monthly``, ``size X``
+  -  How often logrotate runs for the given log(s), either time-based or
+     when the log(s) reach a certain size.
+  -  See Logrotate Attributes for more information on logrotate attribute precedence.
+
+- ``app['global']['logrotate_options']``
+
+  -  **Type:** Array
+  -  **Default:** ``%w[missingok compress delaycompress notifempty copytruncate sharedscripts]``
+  -  All of the unqualified options (i.e., without arguments) that should be enabled
+     for the specified logrotate configuration.
+  -  See Logrotate Attributes for more information on logrotate attribute precedence.
+
+- ``app['global']['logrotate_X']``
+
+  -  **Type:** Varies
+  -  Any attribute value Y for ``logrotate_X`` will cause the [logrotate_app](https://github.com/stevendanna/logrotate/blob/master/resources/app.rb)
+     resource _X_ to be called with argument Y. For example setting ``logrotate_cookbook`` to ``'my_cookbook'``
+     will result in the ``logrotate_app`` resource being invoked with the resource value ``cookbook 'my_cookbook'``.
+  -  See Logrotate Attributes for more information on logrotate attribute precedence.
+
 
 database
 ~~~~~~~~
@@ -222,6 +250,26 @@ framework
 -  ``app['framework']['assets_precompilation_command']``
 
   -  A command which will be invoked to precompile assets.
+
+-  ``app['framework']['logrotate_name']``
+
+  -  **Type:** string
+  -  **Default:** Depends on adapter-specific behaviors
+  -  The name of the logrotate_app resource, and generated configuration file,
+     for the specified app framework logrotate configuration.
+  -  Unlike other logrotate attributes, this attribute can only be set or overridden
+     at a the app framework level; there are no app-wide or global settings beyond
+     those provided by the framework library
+
+- ``app['framework']['logrotate_log_paths']``
+
+  -  **Type:** Array
+  -  **Default:** Depends on adapter-specific behaviors
+  -  Which log file(s) should be backed up via logrotate. If this parameter evaluates
+     to an empty array, no logs will be backed up for the specified app framework.
+  -  Unlike other logrotate attributes, this attribute can only be set or overridden
+     at a the app framework level; there are no app-wide or global settings beyond
+     those provided by the framework library.
 
 padrino
 ^^^^^^^
@@ -427,6 +475,26 @@ webserver
      override this setting as well to ensure that the opsworks_ruby cookbook
      looks for the specified template in your cookbook.
 
+-  ``app['webserver']['logrotate_name']``
+
+  -  **Type:** string
+  -  **Default:** Depends on adapter-specific behaviors
+  -  The name of the logrotate_app resource, and generated configuration file,
+     for the specified app webserver logrotate configuration.
+  -  Unlike other logrotate attributes, this attribute can only be set or overridden
+     at a the app webserver level; there are no app-wide or global settings beyond
+     those provided by the webserver library
+
+- ``app['webserver']['logrotate_log_paths']``
+
+  -  **Type:** Array
+  -  **Default:** Depends on adapter-specific behaviors
+  -  Which log file(s) should be backed up via logrotate. If this parameter evaluates
+     to an empty array, no logs will be backed up for the specified app webserver.
+  -  Unlike other logrotate attributes, this attribute can only be set or overridden
+     at a the app webserver level; there are no app-wide or global settings beyond
+     those provided by the webserver library
+
 apache
 ^^^^^^
 
@@ -600,3 +668,19 @@ resque
 .. |sidekiq.yml config file| replace:: ``sidekiq.yml`` config file
 .. _sidekiq.yml config file: https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file
 
+Logrotate Attributes
+----------------------
+
+Logrotate behaviors occur across multiple drivers, for example webserver and
+framework. For this reason, the evaluation order for attribute-driven behaviors
+is a bit more complex for logrotate than for other options that are either
+entirely global (for example, ``global.environment``) or entirely isolated to a
+single type of driver (``webserver.keepalive_timeout``).
+
+The evaluation rules for logrotate setting _X_ are as follows, from highest
+priority to lowest priority:
+
+- ``app[driver_type]['logrotate_X']``
+- ``app['global']['logrotate_X']``
+- ``node['defaults'][driver_type]['logrotate_X']``
+- ``node['defaults']['global']['logrotate_X']``
