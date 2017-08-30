@@ -25,6 +25,7 @@ default['defaults']['global']['create_dirs_before_symlink'] =
 default['defaults']['global']['purge_before_symlink'] = %w[log tmp/cache tmp/pids public/system public/assets]
 default['defaults']['global']['rollback_on_error'] = true
 default['defaults']['global']['logrotate_rotate'] = 30
+default['defaults']['global']['logrotate_script_params'] = {}
 
 # database
 ## common

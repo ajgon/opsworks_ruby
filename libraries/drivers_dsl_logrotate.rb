@@ -19,18 +19,22 @@ module Drivers
           (self.class.superclass.respond_to?(:log_paths) && self.class.superclass.log_paths)
       end
 
+      # rubocop:disable Metrics/MethodLength
       def configure_logrotate
         return if (log_paths || []).empty?
         lr_path = logrotate_log_paths
         lr_rotate = logrotate_rotate
+        lr_script_options = logrotate_script_params
 
         context.logrotate_app "#{app['shortname']}-#{adapter}-#{deploy_env}" do
           path lr_path
           frequency 'daily'
           rotate lr_rotate
+          lr_script_options.each_pair { |script_type, cmds| send(script_type, cmds) }
           options %w[missingok compress delaycompress notifempty copytruncate sharedscripts]
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       def logrotate_log_paths
         log_paths.map do |log_path|
@@ -42,6 +46,10 @@ module Drivers
 
       def logrotate_rotate
         globals(:logrotate_rotate, app['shortname'])
+      end
+
+      def logrotate_script_params
+        globals(:logrotate_script_params, app['shortname'])
       end
     end
   end
