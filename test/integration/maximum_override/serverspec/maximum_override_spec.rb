@@ -69,6 +69,10 @@ describe 'opsworks_ruby::configure' do
       its(:content) { should include '<Proxy balancer://unicorn_other_project_example_com>' }
       its(:content) { should include 'SSLCipherSuite EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH' }
       its(:content) { should include 'DocumentRoot /srv/www/other_project/current/public' }
+      its(:content) { should include 'Listen 8080' }
+      its(:content) { should include '<VirtualHost *:8080>' }
+      its(:content) { should include 'Listen 8443' }
+      its(:content) { should include '<VirtualHost *:8443>' }
     end
   end
 

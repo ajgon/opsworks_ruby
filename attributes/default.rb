@@ -69,6 +69,8 @@ default['defaults']['appserver']['tries'] = 5
 ## common
 
 default['defaults']['webserver']['adapter'] = 'nginx'
+default['defaults']['webserver']['port'] = 80
+default['defaults']['webserver']['ssl_port'] = 443
 default['defaults']['webserver']['ssl_for_legacy_browsers'] = false
 default['defaults']['webserver']['extra_config'] = ''
 default['defaults']['webserver']['extra_config_ssl'] = ''
