@@ -31,12 +31,6 @@ module Drivers
         handle_output(raw_out)
       end
 
-      def raw_out
-        node['defaults']['framework'].merge(
-          node['deploy'][app['shortname']]['framework'] || {}
-        ).symbolize_keys
-      end
-
       def validate_app_engine; end
 
       def migrate?

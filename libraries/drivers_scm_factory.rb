@@ -11,8 +11,9 @@ module Drivers
 
       def self.detect_engine(app, node, _options)
         Drivers::Scm::Base.descendants.detect do |scm_driver|
+          t = scm_driver.driver_type
           scm_driver.allowed_engines.include?(
-            app['app_source'].try(:[], 'type') || node['deploy'][app['shortname']]['scm'].try(:[], 'type')
+            app['app_source'].try(:[], 'type') || node['deploy'][app['shortname']][t].try(:[], 'type')
           )
         end
       end

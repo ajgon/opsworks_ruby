@@ -27,6 +27,14 @@ module Drivers
       options[:include_null] ? adapters : adapters - ['null']
     end
 
+    def self.driver_type
+      name.to_s.split('::')[1].downcase
+    end
+
+    def driver_type
+      self.class.driver_type
+    end
+
     # Dummy methods for children to redefine
     def setup; end
 

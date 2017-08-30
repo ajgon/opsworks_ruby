@@ -10,9 +10,9 @@ module Drivers
       ]
 
       def raw_out
-        assets_command = node['deploy'][app['shortname']]['framework']['assets_precompilation_command'] ||
+        assets_command = node['deploy'][app['shortname']][driver_type]['assets_precompilation_command'] ||
                          '/usr/local/bin/bundle exec hanami assets precompile'
-        migration_command = node['deploy'][app['shortname']]['framework']['migration_command'] ||
+        migration_command = node['deploy'][app['shortname']][driver_type]['migration_command'] ||
                             '/usr/local/bin/bundle exec hanami db migrate'
 
         super.merge(

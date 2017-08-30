@@ -3,16 +3,20 @@
 require 'spec_helper'
 
 describe Drivers::Webserver::Nginx do
-  it 'receives and exposes app and node' do
-    driver = described_class.new(dummy_context(node), aws_opsworks_app)
+  let(:driver) { described_class.new(dummy_context(node), aws_opsworks_app) }
 
+  it 'receives and exposes app and node' do
     expect(driver.app).to eq aws_opsworks_app
     expect(driver.send(:node)).to eq node
     expect(driver.options).to eq({})
   end
 
+  it 'has the correct driver_type' do
+    expect(driver.driver_type).to eq('webserver')
+  end
+
   it 'returns proper out data' do
-    expect(described_class.new(dummy_context(node), aws_opsworks_app).out).to eq(
+    expect(driver.out).to eq(
       client_max_body_size: '125m',
       client_body_timeout: '30',
       dhparams: '--- DH PARAMS ---',

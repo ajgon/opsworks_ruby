@@ -16,12 +16,6 @@ module Drivers
         handle_output(raw_out)
       end
 
-      def raw_out
-        node['defaults']['webserver'].merge(
-          node['deploy'][app['shortname']]['webserver'] || {}
-        ).symbolize_keys
-      end
-
       def validate_app_engine; end
 
       protected
@@ -104,14 +98,14 @@ module Drivers
       end
 
       def site_config_template
-        (node['deploy'][app['shortname']]['webserver'] || {})['site_config_template'] ||
-          node['defaults']['webserver']['site_config_template'] ||
+        (node['deploy'][app['shortname']][driver_type] || {})['site_config_template'] ||
+          node['defaults'][driver_type]['site_config_template'] ||
           "appserver.#{adapter}.conf.erb"
       end
 
       def site_config_template_cookbook
-        (node['deploy'][app['shortname']]['webserver'] || {})['site_config_template_cookbook'] ||
-          node['defaults']['webserver']['site_config_template_cookbook'] ||
+        (node['deploy'][app['shortname']][driver_type] || {})['site_config_template_cookbook'] ||
+          node['defaults'][driver_type]['site_config_template_cookbook'] ||
           context.cookbook_name
       end
     end

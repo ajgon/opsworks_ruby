@@ -9,6 +9,10 @@ module Drivers
 
       defaults encoding: 'utf8', host: 'localhost', reconnect: true
 
+      def self.driver_type
+        'database'
+      end
+
       def setup
         handle_packages
       end
@@ -29,7 +33,7 @@ module Drivers
       # rubocop:enable Metrics/AbcSize
 
       def out_defaults
-        base = JSON.parse((node['deploy'][app['shortname']]['database'] || {}).to_json, symbolize_names: true)
+        base = JSON.parse((node['deploy'][app['shortname']][driver_type] || {}).to_json, symbolize_names: true)
         defaults.merge(base).merge(adapter: adapter)
       end
 
@@ -53,8 +57,8 @@ module Drivers
       end
 
       def node_engine
-        node['deploy'][app['shortname']]['database'].try(:[], 'adapter') ||
-          node['defaults'].try(:[], 'database').try(:[], 'adapter')
+        node['deploy'][app['shortname']][driver_type].try(:[], 'adapter') ||
+          node['defaults'].try(:[], driver_type).try(:[], 'adapter')
       end
     end
   end

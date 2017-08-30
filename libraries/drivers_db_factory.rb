@@ -13,8 +13,8 @@ module Drivers
         Drivers::Db::Base.descendants.detect do |db_driver|
           db_driver.allowed_engines.include?(
             options.try(:[], :rds).try(:[], 'engine') ||
-            node.try(:[], 'deploy').try(:[], app['shortname']).try(:[], 'database').try(:[], 'adapter') ||
-            node.try(:[], 'defaults').try(:[], 'database').try(:[], 'adapter')
+            node.try(:[], 'deploy').try(:[], app['shortname']).try(:[], db_driver.driver_type).try(:[], 'adapter') ||
+            node.try(:[], 'defaults').try(:[], db_driver.driver_type).try(:[], 'adapter')
           )
         end
       end
