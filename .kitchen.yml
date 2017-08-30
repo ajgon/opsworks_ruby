@@ -124,3 +124,22 @@ suites:
             adapter: 'null'
           webserver:
             adapter: 'null'
+  - name: maximum_override
+    data_bags_path: "test/integration/data_bags/maximum_override"
+    run_list:
+      - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::deploy]
+    attributes:
+      deploy:
+        other_project:
+          database:
+            adapter: 'null'
+          framework:
+            adapter: 'rails'
+            assets_precompilation_command: '/bin/true'
+          appserver:
+            adapter: 'unicorn'
+          webserver:
+            adapter: 'apache2'
+      'ruby-ng':
+        ruby_version: '2.3'

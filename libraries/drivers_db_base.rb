@@ -38,6 +38,14 @@ module Drivers
           app['data_sources'].first['arn'] == options[:rds]['rds_db_instance_arn']
       end
 
+      def can_migrate?
+        true
+      end
+
+      def url(_deploy_dir)
+        "#{out[:adapter]}://#{out[:username]}:#{out[:password]}@#{out[:host]}/#{out[:database]}"
+      end
+
       protected
 
       def app_engine

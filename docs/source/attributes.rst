@@ -117,9 +117,11 @@ database
 
 -  ``app['database']['adapter']``
 
-  -  **Supported values:** ``mariadb``, ``mysql``, ``postgresql``, ``sqlite3``
+  -  **Supported values:** ``mariadb``, ``mysql``, ``postgresql``, ``sqlite3``, ``null``
   -  **Default:** ``sqlite3``
-  -  ActiveRecord adapter which will be used for database connection.
+  -  ActiveRecord adapter which will be used for database connection. ``null`` means
+     that no database will be configured, and is currently only tested with the ``rails``
+     framework.
 
 -  ``app['database']['username']``
 
