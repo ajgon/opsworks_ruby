@@ -19,6 +19,14 @@ describe 'opsworks_ruby::setup' do
     it { should be_installed }
   end
 
+  describe package('libxml2-dev') do
+    it { should be_installed }
+  end
+
+  describe package('tzdata') do
+    it { should be_installed }
+  end
+
   describe package('zlib1g-dev') do
     it { should be_installed }
   end

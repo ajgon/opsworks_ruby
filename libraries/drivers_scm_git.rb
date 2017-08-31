@@ -25,9 +25,9 @@ module Drivers
       end
 
       def raw_out
-        super.merge(
-          ssh_key: app['app_source'].try(:[], 'ssh_key') || node['deploy'][app['shortname']]['scm'].try(:[], 'ssh_key')
-        )
+        ssh_key = app['app_source'].try(:[], 'ssh_key') ||
+                  node['deploy'][app['shortname']][driver_type].try(:[], 'ssh_key')
+        super.merge(ssh_key: ssh_key)
       end
 
       private

@@ -21,10 +21,9 @@ module Drivers
       }
 
       def raw_out
-        output = node['defaults']['webserver'].merge(
-          node['deploy'][app['shortname']]['webserver'] || {}
-        ).symbolize_keys
-        output[:log_dir] = node['deploy'][app['shortname']]['webserver']['log_dir'] || "/var/log/#{service_name}"
+        output = super.merge(
+          log_dir: node['deploy'][app['shortname']][driver_type]['log_dir'] || "/var/log/#{service_name}"
+        )
         output[:extra_config_ssl] = output[:extra_config] if output[:extra_config_ssl] == true
         output
       end

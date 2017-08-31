@@ -27,9 +27,10 @@ module Drivers
       end
 
       def out_defaults
-        base = node['defaults']['scm'].to_h.symbolize_keys
-        base = base.merge(JSON.parse((node['deploy'][app['shortname']]['scm'] || {}).to_json, symbolize_names: true))
-        defaults.merge(base).merge(scm_provider: adapter.constantize)
+        base = node['defaults'][driver_type].merge(
+          node['deploy'][app['shortname']][driver_type] || {}
+        ).symbolize_keys.merge(scm_provider: adapter.constantize)
+        defaults.merge(base)
       end
 
       protected
@@ -39,7 +40,7 @@ module Drivers
       end
 
       def node_engine
-        node['deploy'][app['shortname']]['scm'].try(:[], 'adapter')
+        node['deploy'][app['shortname']][driver_type].try(:[], 'adapter')
       end
     end
   end

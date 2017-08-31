@@ -22,6 +22,12 @@ module Drivers
         end
         out
       end
+
+      def raw_out
+        node['defaults'][driver_type].merge(
+          node['deploy'][app['shortname']][driver_type] || {}
+        ).symbolize_keys
+      end
     end
   end
 end

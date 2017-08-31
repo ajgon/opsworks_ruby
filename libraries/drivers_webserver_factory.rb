@@ -12,8 +12,8 @@ module Drivers
       def self.detect_engine(app, node, _options)
         Drivers::Webserver::Base.descendants.detect do |webserver_driver|
           webserver_driver.allowed_engines.include?(
-            node['deploy'][app['shortname']]['webserver'].try(:[], 'adapter') ||
-            node['defaults']['webserver']['adapter']
+            node['deploy'][app['shortname']][webserver_driver.driver_type].try(:[], 'adapter') ||
+            node['defaults'][webserver_driver.driver_type]['adapter']
           )
         end
       end

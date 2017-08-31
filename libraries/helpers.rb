@@ -15,12 +15,25 @@ def rdses
 end
 
 def globals(index, application)
-  globals = (node['deploy'][application].try(:[], 'global') || {}).symbolize_keys
-  return globals[index.to_sym] unless globals[index.to_sym].nil?
+  ag = evaluate_attribute(index, application, :app_global)
+  return ag unless ag.nil?
 
   old_item = old_globals(index, application)
   return old_item unless old_item.nil?
-  node['defaults']['global'][index.to_s]
+  evaluate_attribute(index, application, :default_global)
+end
+
+def evaluate_attribute(index, application, level)
+  case level
+  when :app_driver
+    node['deploy'].try(:[], application).try(:[], driver_type).try(:[], index.to_s)
+  when :app_global
+    node['deploy'].try(:[], application).try(:[], 'global').try(:[], index.to_s)
+  when :default_driver
+    node['defaults'].try(:[], driver_type).try(:[], index.to_s)
+  when :default_global
+    node['defaults'].try(:[], 'global').try(:[], index.to_s)
+  end
 end
 
 def old_globals(index, application)

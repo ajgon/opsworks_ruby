@@ -3,16 +3,20 @@
 require 'spec_helper'
 
 describe Drivers::Framework::Rails do
-  it 'receives and exposes app and node' do
-    driver = described_class.new(dummy_context(node), aws_opsworks_app)
+  let(:driver) { described_class.new(dummy_context(node), aws_opsworks_app) }
 
+  it 'receives and exposes app and node' do
     expect(driver.app).to eq aws_opsworks_app
     expect(driver.send(:node)).to eq node
     expect(driver.options).to eq({})
   end
 
+  it 'has the correct driver_type' do
+    expect(driver.driver_type).to eq('framework')
+  end
+
   it 'returns proper out data' do
-    expect(described_class.new(dummy_context(node), aws_opsworks_app).out).to eq(
+    expect(driver.out).to eq(
       assets_precompile: true,
       assets_precompilation_command: 'bundle exec rake assets:precompile',
       envs_in_console: true,

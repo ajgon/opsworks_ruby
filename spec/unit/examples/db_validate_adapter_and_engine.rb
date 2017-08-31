@@ -87,14 +87,20 @@ RSpec.shared_examples 'db validate adapter and engine' do |rdbms|
                          "Incorrect :app engine, expected #{described_class.allowed_engines.inspect}, got 'wrong'."
     end
 
-    it 'adapter = correct, engine = correct' do
-      expect do
-        described_class.new(
-          dummy_context(node(deploy: { dummy_project: { database: { adapter: rdbms } } })),
-          aws_opsworks_app,
-          rds: aws_opsworks_rds_db_instance(engine: rdbms)
-        ).out
-      end.not_to raise_error
+    context 'adapter = correct, engine = correct' do
+      let(:dc) do
+        dummy_context(node(deploy: { dummy_project: { database: { adapter: rdbms } } }))
+      end
+      let(:rds) { aws_opsworks_rds_db_instance(engine: rdbms) }
+      let(:driver) { described_class.new(dc, aws_opsworks_app, rds: rds) }
+
+      it 'works' do
+        expect { driver.out }.not_to raise_error
+      end
+
+      it 'has the correct driver_type' do
+        expect(driver.driver_type).to eq('database')
+      end
     end
   end
 end

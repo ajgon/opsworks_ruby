@@ -28,12 +28,6 @@ module Drivers
         handle_output(raw_out)
       end
 
-      def raw_out
-        node['defaults']['appserver'].merge(
-          node['deploy'][app['shortname']]['appserver'] || {}
-        ).symbolize_keys
-      end
-
       def validate_app_engine; end
 
       protected

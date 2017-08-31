@@ -12,8 +12,8 @@ module Drivers
       def self.detect_engine(app, node, _options)
         Drivers::Worker::Base.descendants.detect do |worker_driver|
           worker_driver.allowed_engines.include?(
-            node['deploy'][app['shortname']]['worker'].try(:[], 'adapter') ||
-            node['defaults']['worker']['adapter']
+            node['deploy'][app['shortname']][worker_driver.driver_type].try(:[], 'adapter') ||
+            node['defaults'][worker_driver.driver_type]['adapter']
           )
         end
       end

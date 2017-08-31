@@ -31,18 +31,18 @@ end
 describe 'opsworks_ruby::configure' do
   context 'webserver' do
     describe file('/etc/logrotate.d/other_project-apache2-production') do
-      its(:content) do
-        should include '"/var/log/apache2/other-project.example.com.access.log" ' \
-                       '"/var/log/apache2/other-project.example.com.error.log" {'
-      end
-      its(:content) { should include '  daily' }
-      its(:content) { should include '  rotate 30' }
+      its(:owner) { should eq('root') }
+      its(:group) { should eq('root') }
+      its(:mode) { should eq('644') }
+      its(:content) { should include '"/tmp/log1.log" "/tmp/log2.log"' }
+      its(:content) { should include '  monthly' }
+      its(:content) { should include '  rotate 15' }
       its(:content) { should include '  missingok' }
-      its(:content) { should include '  compress' }
-      its(:content) { should include '  delaycompress' }
+      its(:content) { should_not include '  compress' }
+      its(:content) { should_not include '  delaycompress' }
       its(:content) { should include '  notifempty' }
-      its(:content) { should include '  copytruncate' }
-      its(:content) { should include '  sharedscripts' }
+      its(:content) { should_not include '  copytruncate' }
+      its(:content) { should_not include '  sharedscripts' }
     end
 
     describe file('/etc/apache2/ssl/other-project.example.com.key') do
@@ -94,12 +94,19 @@ describe 'opsworks_ruby::configure' do
 
   context 'framework' do
     describe file('/etc/logrotate.d/other_project-rails-production') do
+      it { should_not exist }
+    end
+
+    describe file('/etc/logrotate.d/dumber-app-logrotate') do
+      its(:owner) { should eq('deploy') }
+      its(:group) { should eq('www-data') }
+      its(:mode) { should eq('750') }
       its(:content) { should include '"/srv/www/other_project/shared/log/*.log" {' }
-      its(:content) { should include '  daily' }
-      its(:content) { should include '  rotate 30' }
+      its(:content) { should include '  weekly' }
+      its(:content) { should include '  rotate 75' }
       its(:content) { should include '  missingok' }
-      its(:content) { should include '  compress' }
-      its(:content) { should include '  delaycompress' }
+      its(:content) { should_not include '  compress' }
+      its(:content) { should_not include '  delaycompress' }
       its(:content) { should include '  notifempty' }
       its(:content) { should include '  copytruncate' }
       its(:content) { should include '  sharedscripts' }
