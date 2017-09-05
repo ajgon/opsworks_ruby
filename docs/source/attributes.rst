@@ -305,12 +305,12 @@ appserver
 ~~~~~~~~~
 
 | Configuration parameters for the ruby application server. Currently ``Puma``,
-| ``Thin`` and ``Unicorn`` are supported.
+| ``Thin``, ``Unicorn``, and ``Passenger``  are supported.
 
 -  ``app['appserver']['adapter']``
 
   -  **Default:** ``puma``
-  -  **Supported values:** ``puma``, ``thin``, ``unicorn``, ``null``
+  -  **Supported values:** ``puma``, ``thin``, ``unicorn``, ``passenger``, ``null``
   -  Server on the application side, which will receive requests from
      webserver in front. ``null`` means no appserver enabled.
 
@@ -344,6 +344,14 @@ appserver
   -  **Default:** ``4``
   -  Sets the current number of worker processes. Each worker process will
      serve exactly one client at a time.
+
+-  ``app['appserver']['passenger_version']``
+
+  -  **Default:** None
+  -  Which Debian APT package version should be installed from the PPA
+     repo provided by Passenger. Currently this defaults to the latest
+     version provided by the Passenger APT PPA. Set this to a non-nil
+     value to lock your Passenger installation at a specific version.
 
 unicorn
 ^^^^^^^
@@ -404,6 +412,29 @@ thin
 -  ``app['appserver']['worker_processes']``
 
   -  **Default:** ``4``
+
+passenger
+^^^^
+
+-  ``app['appserver']['max_pool_size']``
+
+  -  **Type:** Integer
+  -  **Default:** Passenger-provided default (based on server capacity)
+  -  Sets the ``PassengerMaxPoolSize`` parameter
+
+-  ``app['appserver']['min_instances']``
+
+  -  **Type:** Integer
+  -  **Default:** Passenger-provided default (based on server capacity)
+  -  Sets the ``PassengerMinInstances`` parameter
+
+-  ``app['appserver']['mount_point']``
+
+  -  **Default:** ``/``
+  - Which URL path should be handled by Passenger. This option allows
+    you to configure your application to handle only a subset of requests
+    made to your web server. Useful for certain hybrid static/dynamic
+    web sites.
 
 webserver
 ~~~~~~~~~

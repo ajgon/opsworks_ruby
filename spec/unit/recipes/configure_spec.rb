@@ -800,6 +800,77 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
+  context 'Postgres + Passenger + Apache2' do
+    let(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['appserver']['adapter'] = 'passenger'
+        deploy['dummy_project']['appserver']['max_pool_size'] = 10
+        deploy['dummy_project']['appserver']['min_instances'] = 5
+        deploy['dummy_project']['appserver']['mount_point'] = '/some/mount/point'
+        deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+        deploy['dummy_project']['global']['environment'] = 'production'
+        solo_node.set['deploy'] = deploy
+      end
+    end
+    let(:chef_run) { chef_runner.converge(described_recipe) }
+
+    it 'creates apache2 passenger config' do
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content("DocumentRoot /srv/www/#{aws_opsworks_app['shortname']}/current/public")
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('<Location /some/mount/point>')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('PassengerAppEnv production')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('PassengerBaseURI /some/mount/point')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('PassengerMaxPoolSize 10')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('PassengerMinInstances 5')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content("PassengerAppRoot /srv/www/#{aws_opsworks_app['shortname']}/current")
+      expect(chef_run)
+        .not_to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content(' Proxy ')
+      expect(chef_run).to create_link("/etc/apache2/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
+    end
+
+    it 'creates logrotate file for apache2' do
+      expect(chef_run)
+        .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-apache2-production")
+    end
+
+    it 'creates logrotate file for rails' do
+      expect(chef_run)
+        .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-rails-production")
+    end
+
+    context 'when default ports are overridden' do
+      before do
+        chef_runner.node.set['deploy'][aws_opsworks_app['shortname']]['webserver']['port'] = 8080
+        chef_runner.node.set['deploy'][aws_opsworks_app['shortname']]['webserver']['ssl_port'] = 8443
+      end
+
+      it 'listens on the specified ports rather than the default ports' do
+        f = "/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf"
+        expect(chef_run).to render_file(f).with_content('<VirtualHost *:8080>')
+        expect(chef_run).to render_file(f).with_content('Listen 8080')
+        expect(chef_run).to render_file(f).with_content('<VirtualHost *:8443>')
+        expect(chef_run).to render_file(f).with_content('Listen 8443')
+      end
+    end
+  end
+
   context 'Sqlite3 + Thin + padrino + delayed_job' do
     let(:dummy_node) do
       node(
