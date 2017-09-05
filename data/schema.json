@@ -3,7 +3,11 @@
     "environment":{
       "type":"string",
       "default":"production",
-      "description":"Sets the \"deploy environment\" for all the app-related (for example RAILS_ENV in Rails) actions in the project (server, worker, etc.)"
+      "description":"Sets the \"deploy environment\" for all the app-related (for example RAILS_ENV in Rails) actions in the project (server, worker, etc.)."
+    },
+    "deploy_dir":{
+      "type":"string",
+      "description":"Determines where the application will be deployed. Note that if you override this setting, you'll typically want to include the short_name in the setting. In other words, this setting doesn't override the `/srv/www` base directory defafult; it overrides the application-specific `/srv/www/app_name` default."
     },
     "symlinks":{
       "type":"json",
@@ -12,7 +16,7 @@
     },
     "create_dirs_before_symlink":{
       "type":"json",
-      "default": [],
+      "default":[],
       "description":"List of directories to be created before symlinking. Paths are relative to release_path. Any values for this parameter will be appended to the defaults."
     },
     "purge_before_symlink":{
@@ -28,7 +32,17 @@
     "logrotate_rotate":{
       "type":"integer",
       "default":30,
-      "description":"The parameter is in days."
+      "description":"How many days of logfiles are kept. The parameter is in days."
+    },
+    "logrotate_frequency":{
+      "type":"string",
+      "default":"daily",
+      "description":"How often logrotate runs for the given log(s), either time-based or when the log(s) reach a certain size."
+    },
+    "logrotate_options":{
+      "type":"json",
+      "default":["missingok", "compress", "delaycompress", "notifempty", "copytruncate", "sharedscripts"],
+      "description":"All of the unqualified options (i.e., without arguments) that should be enabled for the specified logrotate configuration."
     }
   },
   "database":{
@@ -38,10 +52,11 @@
         "mariadb",
         "mysql",
         "postgresql",
-        "sqlite3"
+        "sqlite3",
+        "null"
       ],
       "default":"sqlite3",
-      "description":"ActiveRecord adapter which will be used for database connection."
+      "description":"ActiveRecord adapter which will be used for database connection. `null` means that no database will be configured, and is currently only tested with the `rails` framework."
     },
     "username":{
       "type":"string",
@@ -171,6 +186,25 @@
       ],
       "description":"A command which will be invoked to precompile assets."
     },
+    "logrotate_name":{
+      "type":"string",
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"The name of the logrotate_app resource, and generated configuration file, for the specified app framework logrotate configuration. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app framework level; there are no app-wide or global settings beyond those provided by the framework library."
+    },
+    "logrotate_log_paths":{
+      "type":"json",
+      "default":[],
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"Which log file(s) should be backed up via logrotate. If this parameter evaluates to an empty array, no logs will be backed up for the specified app framework. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app framework level; there are no app-wide or global settings beyond those provided by the framework library."
+    },
     "envs_in_console":{
       "type":"boolean",
       "default":false,
@@ -185,17 +219,19 @@
       "type":"string",
       "values":[
         "null",
+        "passenger",
         "puma",
         "thin",
         "unicorn"
       ],
       "default":"puma",
-      "description":"Server on the application side, which will receive requests from webserver in front. null means no appserver enabled."
+      "description":"Server on the application side, which will receive requests from webserver in front. null means no appserver enabled. Note: Passenger is available for apache2 webserver and on Debian-based systems only! This configurator doesn't check that, so please keep that in mind and select proper webserver and OS."
     },
     "application_yml":{
       "type":"boolean",
       "default":false,
       "depends":[
+        "passenger",
         "puma",
         "thin",
         "unicorn"
@@ -207,6 +243,7 @@
       "type":"boolean",
       "default":false,
       "depends":[
+        "passenger",
         "puma",
         "thin",
         "unicorn"
@@ -322,6 +359,37 @@
         "thin"
       ],
       "description":"Maximum persistent connections."
+    },
+    "passenger_version":{
+      "type":"string",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Which Debian APT package version should be installed from the PPA repo provided by Passenger. Currently this defaults to the latest repo provided by Passenger. Currently this defaults to the latest value to lock your Passenger installation at a specific version."
+    },
+    "max_pool_size":{
+      "type":"integer",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PassengerMaxPoolSize` parameter.",
+      "url":"https://www.phusionpassenger.com/library/config/apache/reference/#passengermaxpoolsize"
+    },
+    "min_instances":{
+      "type":"integer",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PassengerMinInstances` parameter.",
+      "url":"https://www.phusionpassenger.com/library/config/apache/reference/#passengermininstances"
+    },
+    "mount_point":{
+      "type":"string",
+      "default":"/",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Which URL path should be handled by Passenger. This option allows you to configure your application to handle only a subset of requests made to your web server. Useful for certain hybrid static/dynamic web sites."
     }
   },
   "webserver":{
@@ -333,7 +401,7 @@
         "nginx"
       ],
       "default":"nginx",
-      "description":"Webserver in front of the instance. It runs on port 80, and receives all requests from Load Balancer/Internet. null means no webserver enabled."
+      "description":"Webserver in front of the instance. It runs on port 80 by default, and receives all requests from the Load Balancer/Internet. null means no webserver enabled."
     },
     "dhparams":{
       "type":"text",
@@ -353,6 +421,58 @@
       ],
       "description":"By default webserver is configured to follow strict SSL security standards. However, old browsers (like IE < 9 or Android < 2.2) wouldn't work with this configuration very well. If your application needs a support for those browsers, set this parameter to true.",
       "url":"https://cipherli.st/"
+    },
+    "port":{
+      "type":"integer",
+      "default":80,
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The port on which the webserver should listen for HTTP requests."
+    },
+    "ssl_port":{
+      "type":"integer",
+      "default":443,
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The port on which the webserver should listen for HTTPs requests, if SSL requests are enabled. Note that SSL itself is controlled by the `app['enable_ssl']` setting in Opsworks."
+    },
+    "site_config_template":{
+      "type":"text",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The name of the cookbook template that should be used to generate per-app configuration stanzas (known as a \"site\" in apache and nginx configuration parlance). Useful in situations where inserting an `extra_config` text section doesn't provide enough flexibility to customize your per-app webserver configuration stanza to your liking. Note that when you use a custom site configuration template, you can also choose to define `extra_config` as any data structure (e.g., Hash or even nested Hash) to be interpreted by your custom template. This provides somewhat unlimited flexibility to configure the webserver appconfiguration however you see fit."
+    },
+    "site_config_template_cookbook":{
+      "type":"string",
+      "default":"opsworks_ruby",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The name of the cookbook in which the site configuration template can be found. If you override `app['webserver']['site_config_template']` to use a site configuration template from your own cookbook, you'll need to use a site configuration template from your own cookbook, you'll need to looks for the specified template in your cookbook."
+    },
+    "logrotate_name":{
+      "type":"string",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The name of the logrotate_app resource, and generated configuration file, for the specified app webserver logrotate configuration. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app webserver level; there are no app-wide or global settings beyond those provided by the webserver library."
+    },
+    "logrotate_log_paths":{
+      "type":"json",
+      "default":[],
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"Which log file(s) should be backed up via logrotate. If this parameter evaluates to an empty array, no logs will be backed up for the specified app webserver. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app webserver level; there are no app-wide or global settings beyond those provided by the webserver library."
     },
     "extra_config":{
       "type":"text",

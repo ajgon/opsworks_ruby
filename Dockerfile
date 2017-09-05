@@ -8,7 +8,7 @@ RUN apt-get update && \
 RUN echo 'deb https://deb.nodesource.com/node_6.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
     curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
     apt-get update && \
-    apt-get install --yes --target-release=stable --no-install-recommends python-pip python-yaml locales nodejs=6.* build-essential \
+    apt-get install --yes --target-release=jessie --no-install-recommends python-pip python-yaml locales nodejs=6.* build-essential \
             advancecomp optipng pngquant jhead jpegoptim gifsicle && \
     apt-get install --yes --target-release=testing --no-install-recommends git python-sphinx && \
     apt-get clean && \
@@ -34,3 +34,4 @@ COPY Gemfile* $APP_HOME/
 RUN npm install
 RUN bundle install -j 4
 
+CMD jekyll s -H 0.0.0.0
