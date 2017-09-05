@@ -8,7 +8,7 @@ RUN apt-get update && \
 RUN echo 'deb https://deb.nodesource.com/node_6.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
     curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
     apt-get update && \
-    apt-get install --yes --target-release=stable --no-install-recommends python-pip python-yaml locales nodejs=6.* build-essential && \
+    apt-get install --yes --target-release=jessie --no-install-recommends python-pip python-yaml locales nodejs=6.* build-essential && \
     apt-get install --yes --target-release=testing --no-install-recommends git python-sphinx && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

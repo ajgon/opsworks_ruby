@@ -1,3 +1,26 @@
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/ajgon/opsworks_ruby/compare/v1.6.0...v1.7.0) (2017-09-05)
+
+
+### Bug Fixes
+
+* **appserver:** passing USER and HOME environment variables to appserver process ([43210bc](https://github.com/ajgon/opsworks_ruby/commit/43210bc)), closes [#85](https://github.com/ajgon/opsworks_ruby/issues/85)
+* **db:** safer migration/setup command ([19bf034](https://github.com/ajgon/opsworks_ruby/commit/19bf034)), closes [#58](https://github.com/ajgon/opsworks_ruby/issues/58)
+* **overcommit:** disable fasterer warning that was causing commits to fail ([7752706](https://github.com/ajgon/opsworks_ruby/commit/7752706))
+* missing databag caused maximum_override integration failure ([1be29e1](https://github.com/ajgon/opsworks_ruby/commit/1be29e1))
+
+
+### Features
+
+* **appserver+webserver:** add apache2 + passenger support ([43c61f9](https://github.com/ajgon/opsworks_ruby/commit/43c61f9))
+* **database:** support null database driver ([29e1040](https://github.com/ajgon/opsworks_ruby/commit/29e1040)), closes [#98](https://github.com/ajgon/opsworks_ruby/issues/98)
+* **global:** support per-application deploy directory ([28cb797](https://github.com/ajgon/opsworks_ruby/commit/28cb797)), closes [#95](https://github.com/ajgon/opsworks_ruby/issues/95)
+* **logrotate:** support arbitrary logrotate customization ([fa95ab0](https://github.com/ajgon/opsworks_ruby/commit/fa95ab0)), closes [#107](https://github.com/ajgon/opsworks_ruby/issues/107)
+* **webserver:** allow extensible webserver site customization ([4efd130](https://github.com/ajgon/opsworks_ruby/commit/4efd130)), closes [#100](https://github.com/ajgon/opsworks_ruby/issues/100)
+* **webserver:** server_tokens off on Nginx ([#91](https://github.com/ajgon/opsworks_ruby/issues/91)) ([5568f6c](https://github.com/ajgon/opsworks_ruby/commit/5568f6c))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/ajgon/opsworks_ruby/compare/v1.5.0...v1.6.0) (2017-06-03)
 
