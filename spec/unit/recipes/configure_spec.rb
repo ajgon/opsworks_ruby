@@ -660,7 +660,9 @@ describe 'opsworks_ruby::configure' do
     end
 
     it 'cleans default sites' do
-      expect(chef_run).to run_execute('find /etc/apache2/sites-enabled -maxdepth 1 -mindepth 1 -exec rm -rf {} \;')
+      %w[default default.conf 000-default 000-default.conf default-ssl default-ssl.conf].each do |file|
+        expect(chef_run).to delete_file("/etc/apache2/sites-enabled/#{file}")
+      end
     end
 
     it 'creates resque.monitrc conf' do
@@ -795,7 +797,9 @@ describe 'opsworks_ruby::configure' do
       end
 
       it 'cleans default sites' do
-        expect(chef_run_rhel).to run_execute('find /etc/httpd/sites-enabled -maxdepth 1 -mindepth 1 -exec rm -rf {} \;')
+        %w[default default.conf 000-default 000-default.conf default-ssl default-ssl.conf].each do |file|
+          expect(chef_run_rhel).to delete_file("/etc/httpd/sites-enabled/#{file}")
+        end
       end
     end
   end

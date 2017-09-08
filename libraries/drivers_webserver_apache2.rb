@@ -70,11 +70,10 @@ module Drivers
 
       def remove_defaults
         conf_path = conf_dir
-
-        context.execute 'Remove default sites' do
-          command "find #{conf_path}/sites-enabled -maxdepth 1 -mindepth 1 -exec rm -rf {} \\;"
-          user 'root'
-          group 'root'
+        (node['defaults']['webserver']['remove_default_sites'] || []).each do |file|
+          context.file "#{conf_path}/sites-enabled/#{file}" do
+            action :delete
+          end
         end
       end
 

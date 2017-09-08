@@ -179,5 +179,17 @@ suites:
             logrotate_template_owner: 'root'
             port: 8080
             ssl_port: 8443
+        yet_another_project:
+          appserver:
+            adapter: 'unicorn'
+          database:
+            adapter: 'null'
+          framework:
+            adapter: 'rails'
+            assets_precompilation_command: '/bin/true'
+            logrotate_name: 'dumberer-app-logrotate'
+          webserver:
+            adapter: 'apache2'
+            port: 8081
       'ruby-ng':
         ruby_version: '2.3'
