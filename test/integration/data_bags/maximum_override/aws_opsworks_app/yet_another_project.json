@@ -1,0 +1,34 @@
+{
+  "app_id": "4bf048d2-7e2b-4255-bbf1-03e06f07701a",
+  "app_source": {
+    "password": "3aa161d358a167204502",
+    "revision": "master",
+    "type": "git",
+    "url": "https://github.com/RapidRiverSoftware/dumber-app",
+    "user": "dummy"
+  },
+  "attributes": {
+    "auto_bundle_on_deploy": true,
+    "aws_flow_ruby_settings": {},
+    "document_root": "",
+    "rails_env": null
+  },
+  "data_sources": [],
+  "domains": [
+    "yet-another-project.example.com",
+    "yet_another_project"
+  ],
+  "enable_ssl": false,
+  "environment": {
+    "ENV_VAR1": "test"
+  },
+  "name": "Another Dummy app",
+  "shortname": "yet_another_project",
+  "ssl_configuration": {
+    "certificate": "",
+    "private_key": ""
+  },
+  "type": "other",
+  "deploy": true,
+  "id": "yet_another_project"
+}

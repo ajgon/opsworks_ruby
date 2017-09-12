@@ -83,6 +83,9 @@ default['defaults']['webserver']['extra_config'] = ''
 default['defaults']['webserver']['extra_config_ssl'] = ''
 default['defaults']['webserver']['keepalive_timeout'] = '15'
 default['defaults']['webserver']['log_level'] = 'info'
+default['defaults']['webserver']['remove_default_sites'] = %w[
+  default default.conf 000-default 000-default.conf default-ssl default-ssl.conf
+]
 
 ## apache2
 
