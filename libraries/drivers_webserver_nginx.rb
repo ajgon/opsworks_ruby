@@ -10,8 +10,8 @@ module Drivers
         log_dir log_level proxy_read_timeout proxy_send_timeout send_timeout ssl_for_legacy_browsers
         extra_config extra_config_ssl enable_upgrade_method port ssl_port
       ]
-      notifies :deploy, action: :restart, resource: 'service[nginx]', timer: :delayed
-      notifies :undeploy, action: :restart, resource: 'service[nginx]', timer: :delayed
+      notifies :deploy, action: :reload, resource: 'service[nginx]', timer: :delayed
+      notifies :undeploy, action: :reload, resource: 'service[nginx]', timer: :delayed
       log_paths lambda { |context|
         %w[access.log error.log].map do |log_type|
           File.join(context.raw_out[:log_dir], "#{context.app[:domains].first}.#{log_type}")
@@ -34,6 +34,7 @@ module Drivers
       end
 
       def configure
+        define_service
         add_ssl_directory
         add_ssl_item(:private_key)
         add_ssl_item(:certificate)

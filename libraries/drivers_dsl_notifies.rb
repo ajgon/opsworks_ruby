@@ -31,6 +31,18 @@ module Drivers
         parsed_notifier
       end
       # rubocop:enable Metrics/LineLength
+
+      def notifying_resource(what, name, action = :restart, timing = :delayed, &block)
+        r = context.send(what, name, &block)
+        r.notifies(action, "service[#{service_name}]", timing)
+        r
+      end
+
+      %i[execute file link package template].each do |what|
+        define_method "notifying_#{what}" do |name, action = :restart, timing = :delayed, &block|
+          notifying_resource(what, name, action, timing, &block)
+        end
+      end
     end
   end
 end
