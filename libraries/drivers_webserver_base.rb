@@ -51,7 +51,7 @@ module Drivers
         return if key_data.blank?
         extensions = { private_key: 'key', certificate: 'crt', chain: 'ca' }
 
-        context.template "#{conf_dir}/ssl/#{app[:domains].first}.#{extensions[name]}" do
+        notifying_template "#{conf_dir}/ssl/#{app[:domains].first}.#{extensions[name]}" do
           owner 'root'
           group 'root'
           mode name == :private_key ? '0600' : '0644'
@@ -72,7 +72,7 @@ module Drivers
         dhparams = out[:dhparams]
         return if dhparams.blank?
 
-        context.template "#{conf_dir}/ssl/#{app[:domains].first}.dhparams.pem" do
+        notifying_template "#{conf_dir}/ssl/#{app[:domains].first}.dhparams.pem" do
           owner 'root'
           group 'root'
           mode '0600'
@@ -90,7 +90,7 @@ module Drivers
       end
 
       def generate_appserver_config(opts, source_template, source_cookbook)
-        context.template "#{opts[:conf_dir]}/sites-available/#{app['shortname']}.conf" do
+        notifying_template "#{opts[:conf_dir]}/sites-available/#{app['shortname']}.conf" do
           owner 'root'
           group 'root'
           mode '0644'
@@ -104,7 +104,7 @@ module Drivers
         application = app
         conf_path = conf_dir
 
-        context.link "#{conf_path}/sites-enabled/#{application['shortname']}.conf" do
+        notifying_link "#{conf_path}/sites-enabled/#{application['shortname']}.conf" do
           to "#{conf_path}/sites-available/#{application['shortname']}.conf"
         end
       end

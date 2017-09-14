@@ -30,7 +30,7 @@ describe 'opsworks_ruby::undeploy' do
       expect(chef_run).to run_execute('stop unicorn')
       expect(chef_run).to run_execute('start unicorn')
 
-      expect(undeploy).to notify('service[nginx]').to(:restart).delayed
+      expect(undeploy).to notify('service[nginx]').to(:reload).delayed
       expect(service).to do_nothing
     end
 
@@ -63,7 +63,7 @@ describe 'opsworks_ruby::undeploy' do
     it 'performs a rollback on debian' do
       undeploy_debian = chef_run.deploy(aws_opsworks_app['shortname'])
 
-      expect(undeploy_debian).to notify('service[apache2]').to(:restart).delayed
+      expect(undeploy_debian).to notify('service[apache2]').to(:reload).delayed
       expect(chef_run).to run_execute('stop puma')
       expect(chef_run).to run_execute('start puma')
     end
@@ -71,7 +71,7 @@ describe 'opsworks_ruby::undeploy' do
     it 'performs a rollback on rhel' do
       undeploy_rhel = chef_run_rhel.deploy(aws_opsworks_app['shortname'])
 
-      expect(undeploy_rhel).to notify('service[httpd]').to(:restart).delayed
+      expect(undeploy_rhel).to notify('service[httpd]').to(:reload).delayed
       expect(chef_run_rhel).to run_execute('stop puma')
       expect(chef_run_rhel).to run_execute('start puma')
     end

@@ -214,8 +214,15 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Mysql + apache2 + resque' do
+    ALL_APACHE2_MODULES = %w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl].freeze
+    let(:modules_already_enabled) { false }
+
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
+      ALL_APACHE2_MODULES.each do |mod|
+        stub_command("a2enmod #{mod}").and_return(true)
+        stub_command("a2query -m #{mod}").and_return(modules_already_enabled)
+      end
     end
 
     let(:chef_runner) do
@@ -249,9 +256,20 @@ describe 'opsworks_ruby::setup' do
         expect(chef_run).to start_service('apache2')
       end
 
-      it 'enables necessary modules for apache2' do
-        expect(chef_run)
-          .to run_execute('a2enmod expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl')
+      ALL_APACHE2_MODULES.each do |mod|
+        it "enables Apache2 module #{mod}" do
+          expect(chef_run).to run_execute("a2enmod #{mod}")
+        end
+      end
+
+      context 'when the modules are already enabled' do
+        let(:modules_already_enabled) { true }
+
+        ALL_APACHE2_MODULES.each do |mod|
+          it "does not enable Apache2 module #{mod} again unnecessarily" do
+            expect(chef_run).not_to run_execute("a2enmod #{mod}")
+          end
+        end
       end
     end
 
