@@ -38,10 +38,24 @@ module Drivers
         r
       end
 
-      %i[execute file link package template].each do |what|
-        define_method "notifying_#{what}" do |name, action = :restart, timing = :delayed, &block|
-          notifying_resource(what, name, action, timing, &block)
-        end
+      def notifying_execute(name, action = :restart, timing = :delayed, &block)
+        notifying_resource(:execute, name, action, timing, &block)
+      end
+
+      def notifying_file(name, action = :restart, timing = :delayed, &block)
+        notifying_resource(:file, name, action, timing, &block)
+      end
+
+      def notifying_link(name, action = :restart, timing = :delayed, &block)
+        notifying_resource(:link, name, action, timing, &block)
+      end
+
+      def notifying_package(name, action = :restart, timing = :delayed, &block)
+        notifying_resource(:package, name, action, timing, &block)
+      end
+
+      def notifying_template(name, action = :restart, timing = :delayed, &block)
+        notifying_resource(:template, name, action, timing, &block)
       end
     end
   end
