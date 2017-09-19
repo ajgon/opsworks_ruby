@@ -2,6 +2,10 @@
 Listen <%= @out[:port] %>
 <% end -%>
 
+ServerTokens Prod
+ServerSignature Off
+Header always unset "X-Powered-By"
+
 <VirtualHost *:<%= @out[:port] %>>
   ServerName <%= node['hostname'] %>
   ServerAlias <%= @application[:domains].join(" ") %>
