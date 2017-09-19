@@ -10,6 +10,7 @@ server {
 
   root <%= File.join(@deploy_dir, 'current', 'public') %>;
 
+  proxy_hide_header X-Powered-By;
   server_tokens off;
 
   client_max_body_size <%= @out[:client_max_body_size] || '1m' %>;
@@ -105,6 +106,7 @@ server {
 
   root <%= File.join(@deploy_dir, 'current', 'public') %>;
 
+  proxy_hide_header X-Powered-By;
   server_tokens off;
 
   client_max_body_size <%= @out[:client_max_body_size] || '1m' %>;
