@@ -1,3 +1,19 @@
+<a name="1.7.1"></a>
+## [1.7.1](https://github.com/ajgon/opsworks_ruby/compare/v1.7.0...v1.7.1) (2017-09-22)
+
+
+### Bug Fixes
+
+* **webserver:** do not unnecessarily restart webserver ([db15b26](https://github.com/ajgon/opsworks_ruby/commit/db15b26)), closes [#114](https://github.com/ajgon/opsworks_ruby/issues/114)
+* **webserver:** Only remove default enabled sites ([ef085a0](https://github.com/ajgon/opsworks_ruby/commit/ef085a0)), closes [#111](https://github.com/ajgon/opsworks_ruby/issues/111)
+
+
+### Features
+
+* **webserver:** remove version info on Apache/Nginx ([6aba9f3](https://github.com/ajgon/opsworks_ruby/commit/6aba9f3))
+
+
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/ajgon/opsworks_ruby/compare/v1.6.0...v1.7.0) (2017-09-05)
 
