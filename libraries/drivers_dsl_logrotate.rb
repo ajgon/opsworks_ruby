@@ -38,10 +38,6 @@ module Drivers
         end
       end
 
-      def logrotate_directory
-        context.node['defaults']['global']['logrotate_directory']
-      end
-
       def logrotate_name
         evaluate_attribute('logrotate_name', app['shortname'], :app_driver) ||
           [app['shortname'], adapter, deploy_env].compact.join('-')
