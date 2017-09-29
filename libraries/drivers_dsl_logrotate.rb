@@ -38,10 +38,6 @@ module Drivers
         end
       end
 
-      def logrotate_directory
-        context.node['defaults']['global']['logrotate_directory']
-      end
-
       def logrotate_name
         evaluate_attribute('logrotate_name', app['shortname'], :app_driver) ||
           [app['shortname'], adapter, deploy_env].compact.join('-')
@@ -63,7 +59,7 @@ module Drivers
           (context.node['deploy'][app['shortname']].try(:[], 'global').try(:keys) || []) +
           (context.node['defaults'][driver_type].keys || []) +
           (context.node['defaults']['global'].keys || [])
-        all_keys.uniq.map { |k| Regexp.last_match(1) if k =~ /^logrotate_(.+)/ }.compact - %w[name log_paths directory]
+        all_keys.uniq.map { |k| Regexp.last_match(1) if k =~ /^logrotate_(.+)/ }.compact - %w[name log_paths]
       end
       # rubocop:enable Metrics/AbcSize
 
