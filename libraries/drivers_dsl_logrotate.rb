@@ -28,6 +28,18 @@ module Drivers
           path   lr_path
           lr_props.each { |k, v| send(k.to_sym, v) unless v.nil? }
         end
+        remove_default_conf
+      end
+
+      def remove_default_conf
+        context.logrotate_app adapter do
+          enable false # option that will soon be deprecated
+          action :disable # new option but not working as of this version
+        end
+      end
+
+      def logrotate_directory
+        context.node['defaults']['global']['logrotate_directory']
       end
 
       def logrotate_name
@@ -51,7 +63,7 @@ module Drivers
           (context.node['deploy'][app['shortname']].try(:[], 'global').try(:keys) || []) +
           (context.node['defaults'][driver_type].keys || []) +
           (context.node['defaults']['global'].keys || [])
-        all_keys.uniq.map { |k| Regexp.last_match(1) if k =~ /^logrotate_(.+)/ }.compact - %w[name log_paths]
+        all_keys.uniq.map { |k| Regexp.last_match(1) if k =~ /^logrotate_(.+)/ }.compact - %w[name log_paths directory]
       end
       # rubocop:enable Metrics/AbcSize
 

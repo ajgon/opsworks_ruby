@@ -81,6 +81,10 @@ describe 'opsworks_ruby::configure' do
         .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-nginx-staging")
     end
 
+    it 'deletes default logrotate file for nginx' do
+      expect(chef_run).to disable_logrotate_app('nginx')
+    end
+
     context 'when the logrotate settings are overridden by attributes at various levels of precedence' do
       let(:logrotate_paths) { %w[/some/path/to/a.log] }
       let(:chef_runner) do
@@ -482,6 +486,10 @@ describe 'opsworks_ruby::configure' do
         .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-apache2-staging")
     end
 
+    it 'deletes default logrotate file for apache2' do
+      expect(chef_run).to disable_logrotate_app('apache2')
+    end
+
     it 'creates proper .env.*' do
       db_config =
         Drivers::Db::Mysql.new(chef_run, aws_opsworks_app, rds: aws_opsworks_rds_db_instance(engine: 'mysql')).out
@@ -869,6 +877,10 @@ describe 'opsworks_ruby::configure' do
     it 'creates logrotate file for rails' do
       expect(chef_run)
         .to enable_logrotate_app("#{aws_opsworks_app['shortname']}-rails-production")
+    end
+
+    it 'deletes default logrotate file for apache2' do
+      expect(chef_run).to disable_logrotate_app('apache2')
     end
 
     context 'when default ports are overridden' do
