@@ -59,7 +59,7 @@ module Drivers
           (context.node['deploy'][app['shortname']].try(:[], 'global').try(:keys) || []) +
           (context.node['defaults'][driver_type].keys || []) +
           (context.node['defaults']['global'].keys || [])
-        all_keys.uniq.map { |k| Regexp.last_match(1) if k =~ /^logrotate_(.+)/ }.compact - %w[name log_paths directory]
+        all_keys.uniq.map { |k| Regexp.last_match(1) if k =~ /^logrotate_(.+)/ }.compact - %w[name log_paths]
       end
       # rubocop:enable Metrics/AbcSize
 
