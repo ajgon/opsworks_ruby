@@ -65,7 +65,7 @@ module Drivers
       end
 
       def pid_file(process_number)
-        "#{deploy_dir(app)}/shared/pids/sidekiq_#{app['shortname']}-#{process_number}.pid"
+        "/run/lock/#{app['shortname']}/sidekiq_#{app['shortname']}-#{process_number}.pid"
       end
 
       def pid_exists?(pid)

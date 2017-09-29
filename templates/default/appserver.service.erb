@@ -9,7 +9,7 @@ ENV['<%= key.to_s %>'] = "<%= value.to_s %>"
 
 ROOT_PATH="<%= @deploy_dir %>"
 APP_NAME="<%= @app_shortname %>"
-PID_PATH="<%= @deploy_dir %>/shared/pids/<%= @name %>.pid"
+PID_PATH="/run/lock/<%= @app_shortname %>/<%= @name %>.pid"
 DEPLOY_ENV="<%= @deploy_env %>"
 
 def run_and_print_command(command)

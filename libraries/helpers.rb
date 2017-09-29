@@ -62,15 +62,18 @@ def www_group
 end
 
 def create_deploy_dir(application, subdir = '/')
-  dir = File.join(deploy_dir(application), subdir)
-  directory dir do
+  create_dir File.join(deploy_dir(application), subdir)
+end
+
+def create_dir(path)
+  directory path do
     mode '0755'
     recursive true
     owner node['deployer']['user'] || 'root'
     group www_group
-    not_if { File.directory?(dir) }
+    not_if { File.directory?(path) }
   end
-  dir
+  path
 end
 
 def deploy_dir(application)

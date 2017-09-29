@@ -1,6 +1,6 @@
 ---
 user: "<%= node['deployer']['user'] %>"
-pid: "<%= @deploy_dir %>/shared/pids/thin.pid"
+pid: "/run/lock/<%= @app_shortname %>/thin.pid"
 timeout: <%= @out[:timeout] %>
 wait: <%= @out[:timeout] %>
 log: "<%= @deploy_dir %>/shared/log/thin.log"

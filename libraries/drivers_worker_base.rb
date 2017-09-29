@@ -20,7 +20,7 @@ module Drivers
 
       def add_worker_monit
         opts = { application: app['shortname'], out: out, deploy_to: deploy_dir(app), environment: environment,
-                 adapter: adapter }
+                 adapter: adapter, app_shortname: app['shortname'] }
 
         context.template File.join(node['monit']['basedir'], "#{opts[:adapter]}_#{opts[:application]}.monitrc") do
           mode '0640'

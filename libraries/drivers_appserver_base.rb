@@ -59,7 +59,7 @@ module Drivers
       def add_appserver_config
         opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: deploy_env,
                  webserver: Drivers::Webserver::Factory.build(context, app).adapter,
-                 appserver_config: appserver_config }
+                 appserver_config: appserver_config, app_shortname: app['shortname'] }
 
         context.template File.join(opts[:deploy_dir], File.join('shared', 'config', opts[:appserver_config])) do
           owner node['deployer']['user']

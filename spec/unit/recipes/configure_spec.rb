@@ -44,10 +44,6 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run).to create_directory("/srv/www/#{aws_opsworks_app['shortname']}/shared/log")
     end
 
-    it 'creates shared/pids' do
-      expect(chef_run).to create_directory("/srv/www/#{aws_opsworks_app['shortname']}/shared/pids")
-    end
-
     it 'creates shared/scripts' do
       expect(chef_run).to create_directory("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts")
     end
@@ -58,6 +54,15 @@ describe 'opsworks_ruby::configure' do
 
     it 'creates shared/vendor/bundle' do
       expect(chef_run).to create_directory("/srv/www/#{aws_opsworks_app['shortname']}/shared/vendor/bundle")
+    end
+
+    it 'creates /run/lock/dummy_project' do
+      expect(chef_run).to create_directory("/run/lock/#{aws_opsworks_app['shortname']}")
+    end
+
+    it 'links shared/pids to /run/lock/dummy_project' do
+      expect(chef_run).to create_link("/srv/www/#{aws_opsworks_app['shortname']}/shared/pids")
+        .with(to: "/run/lock/#{aws_opsworks_app['shortname']}")
     end
   end
 
@@ -355,7 +360,7 @@ describe 'opsworks_ruby::configure' do
           .with_content('check process sidekiq_dummy_project-1')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid')
+          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-1.pid')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
@@ -363,7 +368,7 @@ describe 'opsworks_ruby::configure' do
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
             '-i 0 ' \
-            '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid ' \
+            '-P /run/lock/dummy_project/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-1\'" with timeout 90 seconds'
           )
@@ -372,14 +377,14 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
+            '/run/lock/dummy_project/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('check process sidekiq_dummy_project-2')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid')
+          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-2.pid')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
@@ -387,7 +392,7 @@ describe 'opsworks_ruby::configure' do
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
             '-i 1 ' \
-            '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid ' \
+            '-P /run/lock/dummy_project/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-2\'" with timeout 90 seconds'
           )
@@ -396,7 +401,7 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
+            '/run/lock/dummy_project/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -413,7 +418,7 @@ describe 'opsworks_ruby::configure' do
           .with_content('check process sidekiq_dummy_project-1')
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid')
+          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-1.pid')
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
@@ -421,7 +426,7 @@ describe 'opsworks_ruby::configure' do
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
             '-i 0 ' \
-            '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid ' \
+            '-P /run/lock/dummy_project/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-1\'" with timeout 90 seconds'
           )
@@ -430,14 +435,14 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
+            '/run/lock/dummy_project/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('check process sidekiq_dummy_project-2')
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid')
+          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-2.pid')
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
@@ -445,7 +450,7 @@ describe 'opsworks_ruby::configure' do
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
             '-i 1 ' \
-            '-P /srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid ' \
+            '-P /run/lock/dummy_project/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-2\'" with timeout 90 seconds'
           )
@@ -454,7 +459,7 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/srv/www/dummy_project/shared/pids/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
+            '/run/lock/dummy_project/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -683,14 +688,14 @@ describe 'opsworks_ruby::configure' do
         .with_content('check process resque_dummy_project-1')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
-        .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid')
+        .with_content('with pidfile /run/lock/dummy_project/resque_dummy_project-1.pid')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
           'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
-          'QUEUE=test_queue VERBOSE=1 PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid COUNT=2 ' \
+          'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-1.pid COUNT=2 ' \
           'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" ' \
           'with timeout 90 seconds'
         )
@@ -698,7 +703,7 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'stop  program = "/bin/su - deploy -c ' \
-          '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid`\'' \
+          '\'kill -s TERM `cat /run/lock/dummy_project/resque_dummy_project-1.pid`\'' \
           '" with timeout 90 seconds'
         )
       expect(chef_run)
@@ -706,14 +711,14 @@ describe 'opsworks_ruby::configure' do
         .with_content('check process resque_dummy_project-2')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
-        .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid')
+        .with_content('with pidfile /run/lock/dummy_project/resque_dummy_project-2.pid')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
           'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
-          'QUEUE=test_queue VERBOSE=1 PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid COUNT=2 ' \
+          'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-2.pid COUNT=2 ' \
           'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" ' \
           'with timeout 90 seconds'
         )
@@ -721,7 +726,7 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'stop  program = "/bin/su - deploy -c ' \
-          '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid`\'' \
+          '\'kill -s TERM `cat /run/lock/dummy_project/resque_dummy_project-2.pid`\'' \
           '" with timeout 90 seconds'
         )
       expect(chef_run)
@@ -750,14 +755,14 @@ describe 'opsworks_ruby::configure' do
           .with_content('check process resque_dummy_project-1')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid')
+          .with_content('with pidfile /run/lock/dummy_project/resque_dummy_project-1.pid')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
             'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
-            'QUEUE=test_queue VERBOSE=1 PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid ' \
+            'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-1.pid ' \
             'COUNT=2 bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" ' \
             'with timeout 90 seconds'
           )
@@ -765,7 +770,7 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'stop  program = "/bin/su - deploy -c ' \
-            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-1.pid`\'' \
+            '\'kill -s TERM `cat /run/lock/dummy_project/resque_dummy_project-1.pid`\'' \
             '" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
@@ -773,14 +778,14 @@ describe 'opsworks_ruby::configure' do
           .with_content('check process resque_dummy_project-2')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid')
+          .with_content('with pidfile /run/lock/dummy_project/resque_dummy_project-2.pid')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
             'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
-            'QUEUE=test_queue VERBOSE=1 PIDFILE=/srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid ' \
+            'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-2.pid ' \
             'COUNT=2 bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" ' \
             'with timeout 90 seconds'
           )
@@ -788,7 +793,7 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'stop  program = "/bin/su - deploy -c ' \
-            '\'kill -s TERM `cat /srv/www/dummy_project/shared/pids/resque_dummy_project-2.pid`\'' \
+            '\'kill -s TERM `cat /run/lock/dummy_project/resque_dummy_project-2.pid`\'' \
             '" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
@@ -1040,14 +1045,14 @@ describe 'opsworks_ruby::configure' do
         .with_content('check process delayed_job_dummy_project-1')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
-        .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.0.pid')
+        .with_content('with pidfile /run/lock/dummy_project/delayed_job.0.pid')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
           'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job start ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 --queues=test_queue' \
+          '--pid-dir=/run/lock/dummy_project/ -i 0 --queues=test_queue' \
           ' 2>&1 | logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
         )
       expect(chef_run)
@@ -1056,7 +1061,7 @@ describe 'opsworks_ruby::configure' do
           'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
           'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job stop ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" ' \
+          '--pid-dir=/run/lock/dummy_project/ -i 0\'" ' \
           'with timeout 90 seconds'
         )
       expect(chef_run)
@@ -1064,14 +1069,14 @@ describe 'opsworks_ruby::configure' do
         .with_content('check process delayed_job_dummy_project-2')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
-        .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.1.pid')
+        .with_content('with pidfile /run/lock/dummy_project/delayed_job.1.pid')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
           'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job start ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 --queues=test_queue' \
+          '--pid-dir=/run/lock/dummy_project/ -i 1 --queues=test_queue' \
           ' 2>&1 | logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
         )
       expect(chef_run)
@@ -1080,7 +1085,7 @@ describe 'opsworks_ruby::configure' do
           'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
           'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job stop ' \
-          '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" ' \
+          '--pid-dir=/run/lock/dummy_project/ -i 1\'" ' \
           'with timeout 90 seconds'
         )
       expect(chef_run)
@@ -1097,14 +1102,14 @@ describe 'opsworks_ruby::configure' do
           .with_content('check process delayed_job_dummy_project-1')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.0.pid')
+          .with_content('with pidfile /run/lock/dummy_project/delayed_job.0.pid')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
             'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job start ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0 ' \
+            '--pid-dir=/run/lock/dummy_project/ -i 0 ' \
             '--queues=test_queue 2>&1 | logger -t delayed_job-dummy_project-1\'" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
@@ -1113,7 +1118,7 @@ describe 'opsworks_ruby::configure' do
             'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
             'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job stop ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 0\'" ' \
+            '--pid-dir=/run/lock/dummy_project/ -i 0\'" ' \
             'with timeout 90 seconds'
           )
         expect(chef_run_rhel)
@@ -1121,14 +1126,14 @@ describe 'opsworks_ruby::configure' do
           .with_content('check process delayed_job_dummy_project-2')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /srv/www/dummy_project/shared/pids/delayed_job.1.pid')
+          .with_content('with pidfile /run/lock/dummy_project/delayed_job.1.pid')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
             'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job start ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1 ' \
+            '--pid-dir=/run/lock/dummy_project/ -i 1 ' \
             '--queues=test_queue 2>&1 | logger -t delayed_job-dummy_project-2\'" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
@@ -1137,7 +1142,7 @@ describe 'opsworks_ruby::configure' do
             'stop  program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
             'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/delayed_job stop ' \
-            '--pid-dir=/srv/www/dummy_project/shared/pids/ -i 1\'" ' \
+            '--pid-dir=/run/lock/dummy_project/ -i 1\'" ' \
             'with timeout 90 seconds'
           )
         expect(chef_run_rhel)
