@@ -13,7 +13,7 @@ module Drivers
       end
       alias after_undeploy after_deploy
 
-      def raw_out
+      def settings
         super.merge(queues: node['deploy'][app['shortname']][driver_type]['queues'] || '')
       end
 

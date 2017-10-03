@@ -18,7 +18,7 @@ module Drivers
         end
       }
 
-      def raw_out
+      def settings
         output = node['defaults']['webserver'].merge(node['nginx']).merge(
           node['deploy'][app['shortname']]['webserver'] || {}
         ).symbolize_keys

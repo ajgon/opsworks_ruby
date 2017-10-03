@@ -27,10 +27,6 @@ module Drivers
         assets_precompile if out[:assets_precompile]
       end
 
-      def out
-        handle_output(raw_out)
-      end
-
       def validate_app_engine; end
 
       def migrate?

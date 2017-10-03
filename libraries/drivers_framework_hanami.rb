@@ -9,7 +9,7 @@ module Drivers
         migrate migration_command deploy_environment assets_precompile assets_precompilation_command
       ]
 
-      def raw_out
+      def settings
         assets_command = node['deploy'][app['shortname']][driver_type]['assets_precompilation_command'] ||
                          '/usr/local/bin/bundle exec hanami assets precompile'
         migration_command = node['deploy'][app['shortname']][driver_type]['migration_command'] ||

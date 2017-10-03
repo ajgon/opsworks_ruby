@@ -142,6 +142,8 @@ suites:
             - copytruncate
             - sharedscripts
           logrotate_template_group: 'www-data'
+        scm:
+          generated_ssh_wrapper: '/var/tmp/my-generated-ssh-wrapper.sh'
         webserver:
           logrotate_options:
             - missingok

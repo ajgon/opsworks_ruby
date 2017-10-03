@@ -7,7 +7,7 @@ module Drivers
       allowed_engines :null
       output filter: [:deploy_environment]
 
-      def raw_out
+      def settings
         super.merge(deploy_environment: { 'RACK_ENV' => deploy_env })
       end
     end
