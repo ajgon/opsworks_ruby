@@ -7,7 +7,9 @@ module Drivers
       allowed_engines :git
       packages :git
       output filter: %i[scm_provider repository revision enable_submodules ssh_wrapper remove_scm_files]
-      defaults enable_submodules: true, ssh_wrapper: '/tmp/ssh-git-wrapper.sh'
+      defaults enable_submodules: true,
+               ssh_wrapper: proc { |_driver, settings| settings[:generated_ssh_wrapper] },
+               generated_ssh_wrapper: '/tmp/ssh-git-wrapper.sh'
 
       def before_deploy
         add_git_wrapper_script
@@ -24,7 +26,7 @@ module Drivers
         end
       end
 
-      def raw_out
+      def settings
         ssh_key = app['app_source'].try(:[], 'ssh_key') ||
                   node['deploy'][app['shortname']][driver_type].try(:[], 'ssh_key')
         super.merge(ssh_key: ssh_key)
@@ -33,7 +35,8 @@ module Drivers
       private
 
       def add_git_wrapper_script
-        context.template File.join('/', 'tmp', 'ssh-git-wrapper.sh') do
+        return unless raw_out[:ssh_wrapper] == raw_out[:generated_ssh_wrapper]
+        context.template raw_out[:generated_ssh_wrapper] do
           source 'ssh-git-wrapper.sh.erb'
           mode '0770'
           owner node['deployer']['user'] || 'root'

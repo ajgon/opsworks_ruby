@@ -16,10 +16,6 @@ module Drivers
         configure_logrotate
       end
 
-      def out
-        handle_output(raw_out)
-      end
-
       def passenger?
         Drivers::Appserver::Factory.build(context, app).adapter == 'passenger'
       end

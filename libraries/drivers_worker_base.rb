@@ -10,10 +10,6 @@ module Drivers
         handle_packages
       end
 
-      def out
-        handle_output(raw_out)
-      end
-
       def validate_app_engine; end
 
       protected

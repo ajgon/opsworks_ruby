@@ -14,7 +14,7 @@ module Drivers
         File.join(context.send(:deploy_dir, context.app), 'shared', 'log', '*.log')
       }
 
-      def raw_out
+      def settings
         super.merge(deploy_environment: { 'RAILS_ENV' => deploy_env })
       end
 

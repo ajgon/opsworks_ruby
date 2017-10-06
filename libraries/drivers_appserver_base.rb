@@ -24,10 +24,6 @@ module Drivers
       end
       alias after_undeploy after_deploy
 
-      def out
-        handle_output(raw_out)
-      end
-
       def validate_app_engine; end
 
       def webserver_config_params

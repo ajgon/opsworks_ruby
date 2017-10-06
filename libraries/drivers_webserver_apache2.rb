@@ -24,7 +24,7 @@ module Drivers
         true
       end
 
-      def raw_out
+      def settings
         output = super.merge(
           log_dir: node['deploy'][app['shortname']][driver_type]['log_dir'] || "/var/log/#{service_name}"
         )

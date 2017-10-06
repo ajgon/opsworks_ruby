@@ -9,7 +9,7 @@ module Drivers
         migrate migration_command deploy_environment assets_precompile assets_precompilation_command
       ]
 
-      def raw_out
+      def settings
         super.merge(
           deploy_environment: { 'RACK_ENV' => deploy_env, 'DATABASE_URL' => database_url },
           assets_precompile: node['deploy'][app['shortname']][driver_type]['assets_precompile']
