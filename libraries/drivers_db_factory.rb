@@ -14,7 +14,8 @@ module Drivers
           db_driver.allowed_engines.include?(
             options.try(:[], :rds).try(:[], 'engine') ||
             node.try(:[], 'deploy').try(:[], app['shortname']).try(:[], db_driver.driver_type).try(:[], 'adapter') ||
-            node.try(:[], 'defaults').try(:[], db_driver.driver_type).try(:[], 'adapter')
+            node.try(:[], 'defaults').try(:[], db_driver.driver_type).try(:[], 'adapter') ||
+            'sqlite'
           )
         end
       end

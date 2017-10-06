@@ -89,7 +89,7 @@ def every_enabled_application
 end
 
 def every_enabled_rds(context, application)
-  data = rdses.presence || [Drivers::Db::Factory.build(context, application)]
+  data = [rdses.presence, Drivers::Db::Factory.build(context, application)].flatten.compact
   data.each do |rds|
     yield rds
   end
