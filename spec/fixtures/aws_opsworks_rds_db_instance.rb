@@ -9,6 +9,7 @@ def aws_opsworks_rds_db_instance(override = {})
     db_password: '03c1bc98cdd5eb2f9c75',
     region: 'us-west-2',
     address: 'dummy-project.c298jfowejf.us-west-2.rds.amazon.com',
+    port: 3265,
     engine: 'postgres',
     missing_on_rds: false,
     id: 'arn_aws_rds_us-west-2_850906259207_db_dummy-project'

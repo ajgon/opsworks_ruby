@@ -25,6 +25,7 @@ RSpec.shared_examples 'db parameters and connection' do |rdbms, options = {}|
         username: 'dbuser',
         password: '03c1bc98cdd5eb2f9c75',
         host: 'dummy-project.c298jfowejf.us-west-2.rds.amazon.com',
+        port: 3265,
         database: 'dummydb'
       )
     end

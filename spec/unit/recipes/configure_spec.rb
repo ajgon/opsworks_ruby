@@ -513,7 +513,7 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/.env.staging")
         .with_content(
           "DATABASE_URL=\"mysql2://dbuser:#{db_config[:password]}@" \
-          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb"'
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb"'
         )
     end
 
@@ -552,7 +552,7 @@ describe 'opsworks_ruby::configure' do
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
         .with_content(
           'ENV[\'DATABASE_URL\'] = "mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb"'
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb"'
         )
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
@@ -694,7 +694,7 @@ describe 'opsworks_ruby::configure' do
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" ' \
           'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-1.pid COUNT=2 ' \
           'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" ' \
           'with timeout 90 seconds'
@@ -717,7 +717,7 @@ describe 'opsworks_ruby::configure' do
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" ' \
           'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-2.pid COUNT=2 ' \
           'bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" ' \
           'with timeout 90 seconds'
@@ -761,7 +761,7 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
+            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" ' \
             'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-1.pid ' \
             'COUNT=2 bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-1\'" ' \
             'with timeout 90 seconds'
@@ -784,7 +784,7 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com/dummydb" HOME="/home/deploy" USER="deploy" ' \
+            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" ' \
             'QUEUE=test_queue VERBOSE=1 PIDFILE=/run/lock/dummy_project/resque_dummy_project-2.pid ' \
             'COUNT=2 bundle exec rake environment resque:work 2>&1 | logger -t resque-dummy_project-2\'" ' \
             'with timeout 90 seconds'
