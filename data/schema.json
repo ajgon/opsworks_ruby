@@ -127,6 +127,14 @@
       ],
       "description":"A wrapper script, which will be used by git when fetching repository via SSH. Essentially, a value of GIT_SSH environment variable. This cookbook provides one of those scripts for you, so you shouldn't alter this variable unless you know what you're doing."
     },
+    "generated_ssh_wrapper":{
+      "type":"string",
+      "default":"/tmp/ssh-git-wrapper.sh",
+      "depends":[
+        "git"
+      ],
+      "description":"If the cookbook generates an SSH wrapper for you, this is where it will generate it. For users whose /tmp partitions are mounted ``noexec`` (a good security practice to prevent code injection exploits), this attribute allows you to override that location to a partition where execution of the generated shell script is allowed."
+    },
     "enable_submodules":{
       "type":"boolean",
       "default":true,
