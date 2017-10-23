@@ -1,3 +1,21 @@
+<a name="1.8.0"></a>
+# [1.8.0](https://github.com/ajgon/opsworks_ruby/compare/v1.7.1...v1.8.0) (2017-10-23)
+
+
+### Bug Fixes
+
+* moved all pid-related files from shared/pids to /run/lock ([bc9daf0](https://github.com/ajgon/opsworks_ruby/commit/bc9daf0)), closes [#92](https://github.com/ajgon/opsworks_ruby/issues/92)
+* **db:** Respect database port provided by RDS ([#124](https://github.com/ajgon/opsworks_ruby/issues/124)) ([7aeb78e](https://github.com/ajgon/opsworks_ruby/commit/7aeb78e)), closes [#123](https://github.com/ajgon/opsworks_ruby/issues/123)
+* **logrotate:** remove duplicate log entry in config file generated from webserver service install ([eabf207](https://github.com/ajgon/opsworks_ruby/commit/eabf207))
+* **worker:** quiet_sidekiq now uses sidekiqctl instead of kill -USR1 which is deprectaed ([1e9e32b](https://github.com/ajgon/opsworks_ruby/commit/1e9e32b)), closes [#93](https://github.com/ajgon/opsworks_ruby/issues/93)
+
+
+### Features
+
+* **scm:** Support configurable location of git_ssh_wrapper ([#121](https://github.com/ajgon/opsworks_ruby/issues/121)) ([de153bf](https://github.com/ajgon/opsworks_ruby/commit/de153bf)), closes [#120](https://github.com/ajgon/opsworks_ruby/issues/120)
+
+
+
 <a name="1.7.1"></a>
 ## [1.7.1](https://github.com/ajgon/opsworks_ruby/compare/v1.7.0...v1.7.1) (2017-09-22)
 
