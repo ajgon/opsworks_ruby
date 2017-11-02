@@ -15,8 +15,11 @@ every_enabled_application do |application|
   create_deploy_dir(application, File.join('shared', 'sockets'))
   create_deploy_dir(application, File.join('shared', 'vendor/bundle'))
   create_dir("/run/lock/#{application['shortname']}")
-  link File.join(deploy_dir(application), 'shared', 'pids') do
+
+  pids_link_path = File.join(deploy_dir(application), 'shared', 'pids')
+  link pids_link_path do
     to "/run/lock/#{application['shortname']}"
+    not_if { ::File.exist?(pids_link_path) }
   end
 
   databases = []
