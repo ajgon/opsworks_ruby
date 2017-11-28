@@ -168,7 +168,7 @@ describe 'opsworks_ruby::deploy' do
 
   context 'appserver' do
     describe command('pgrep -f puma | tr \'\n\' \' \'') do
-      its(:stdout) { should match(/(?:[0-9]+ ){4}/) }
+      its(:stdout) { should match(/(?:[0-9]+ ){2,4}/) }
     end
 
     describe file('/srv/www/dummy_project/shared/config/application.yml') do

@@ -46,13 +46,22 @@ def start_<%= @name %>
 end
 
 def stop_<%= @name %>
-  if <%= @name %>_running?
-    if run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
-      `rm #{PID_PATH}`
-    end
-  else
+  unless <%= @name %>_running?
     puts "You can't stop <%= @name %>, because it's not running"
+    return
   end
+
+  retries = 10
+
+  loop do
+    break if !<%= @name %>_running? || retries <= 0
+
+    run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
+    sleep 1
+    retries -= 1
+  end
+
+  `rm #{PID_PATH}` if run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
 end
 
 def restart_<%= @name %>
