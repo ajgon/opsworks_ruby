@@ -81,7 +81,7 @@ def deploy_dir(application)
 end
 
 def every_enabled_application
-  node['deploy'].keys.each do |deploy_app_shortname|
+  node['deploy'].each_key do |deploy_app_shortname|
     application = applications.detect { |app| app['shortname'] == deploy_app_shortname }
     next unless application && application['deploy']
     yield application

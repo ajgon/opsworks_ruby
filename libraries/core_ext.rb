@@ -51,7 +51,7 @@ class Hash
     each_with_object({}) do |(key, value), options|
       options[(begin
                  key.to_sym
-               rescue
+               rescue StandardError
                  key
                end) || key] = value
     end

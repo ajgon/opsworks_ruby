@@ -30,11 +30,6 @@ RUN gem install bundler
 RUN pip install yamllint>=1
 
 WORKDIR $APP_HOME
-COPY package.json $APP_HOME/
-COPY Gemfile* $APP_HOME/
-COPY Berksfile* $APP_HOME/
-COPY metadata.rb $APP_HOME/
-COPY README.md $APP_HOME/
 
 COPY .chef.login $APP_HOME/
 RUN mkdir -p /root/.chef
@@ -42,7 +37,14 @@ RUN printf "client_key \"/cookbooks/opsworks_ruby/client.pem\"\n" >> /root/.chef
 RUN printf "node_name \"$(cat /cookbooks/opsworks_ruby/.chef.login)\"\n" >> /root/.chef/knife.rb
 RUN printf "cookbook_path \"/cookbooks\"\n" >> /root/.chef/knife.rb
 
+COPY package.json $APP_HOME/
 RUN npm install
+
+COPY Gemfile* $APP_HOME/
 RUN bundle install -j 4
+
+COPY Berksfile* $APP_HOME/
+COPY metadata.rb $APP_HOME/
+COPY README.md $APP_HOME/
 RUN chef exec berks
 

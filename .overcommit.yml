@@ -26,6 +26,7 @@ PreCommit:
       - RELEASING.md
   Foodcritic:
     enabled: true
+    flags: ['-t', '~FC101']
   HardTabs:
     enabled: true
     exclude:

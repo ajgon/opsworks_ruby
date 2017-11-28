@@ -12,7 +12,7 @@ module Drivers
       end
 
       def appserver_command
-        'thin -C #{ROOT_PATH}/shared/config/thin.yml'
+        'thin -C #\{ROOT_PATH\}/shared/config/thin.yml'
       end
     end
   end
