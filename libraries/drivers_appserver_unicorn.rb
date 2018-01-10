@@ -14,7 +14,7 @@ module Drivers
       end
 
       def appserver_command
-        'unicorn_rails --env #\{DEPLOY_ENV\} --daemonize -c #\{ROOT_PATH\}/shared/config/unicorn.conf'
+        'unicorn_rails --env #{DEPLOY_ENV} --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf'
       end
     end
   end
