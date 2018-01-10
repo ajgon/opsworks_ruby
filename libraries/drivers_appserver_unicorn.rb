@@ -14,7 +14,9 @@ module Drivers
       end
 
       def appserver_command
-        'unicorn_rails --env #\{DEPLOY_ENV\} --daemonize -c #\{ROOT_PATH\}/shared/config/unicorn.conf'
+        # rubocop:disable Lint/InterpolationCheck
+        'unicorn_rails --env #{DEPLOY_ENV} --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf'
+        # rubocop:enable Lint/InterpolationCheck
       end
     end
   end
