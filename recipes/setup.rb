@@ -7,6 +7,13 @@
 
 prepare_recipe
 
+# Install additional packages set in configuration
+if node['additional_packages'] && node['additional_packages'].is_a?(Array)
+  node['additional_packages'].each do |package|
+    apt_package(package)
+  end
+end
+
 # Monit and cleanup
 if node['platform_family'] == 'debian'
   execute 'mkdir -p /etc/monit/conf.d'
