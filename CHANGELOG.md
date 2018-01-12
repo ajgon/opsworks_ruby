@@ -1,5 +1,5 @@
 <a name="1.8.0-watchtower"></a>
-# [1.8.0-watchtower](https://github.com/ajgon/opsworks_ruby/compare/v1.8.0...v1.8.0-watchtower)
+# [1.8.0-watchtower](https://github.com/WatchTowerBenefits/opsworks_ruby/compare/v1.8.0...v1.8.0-watchtower)
 
 ### Bug Fixes
 * `libraries/drivers_appswerver_puma.rb`: app_server method updated to not escape template since it was preventing the start of Puma
