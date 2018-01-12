@@ -1,48 +1,29 @@
+# WatchTower Benefits opsworks_ruby Cookbook
+This is a fork of the [opsworks_ruby](https://github.com/ajgon/opsworks_ruby) cookbook, forked at version 1.8.0.
+This cookbook is being used to provision our AWS OpsWorks servers.
+
+## Changes from opsworks_ruby cookbook
+
+### Support installing additional packages via OpsWorks custom JSON
+In order to install additinal packages, simply add an array of packages to your custom JSON as `node['additional_packages']`
+```json
+{
+  "additional_packages": ["libcurl3", "libcurl3-gnutls", "libcurl4-openssl-dev", "zlib1g-dev", "liblzma-dev"] 
+}
+``` 
+
+### Support for using rbenv instead of ruby-ng
+In order to install rbenv, with the Ruby version of your choice, add `node['rbenv']['ruby_version']` to you OpsWorks custom JSON
+```json
+{
+  "rbenv": {
+    "ruby_version": "2.3.6"
+  }
+}
+``` 
+Currently, rbenv support is implemented with Rails as the framework, and Puma as the app server.
+Due to this, if we end up using this recipe for another Ruby framework or we want to switch app servers, we will need to add in support for rbenv in those library files.
+We are currently using nginx as the web server, but no changes were made there, so switching web servers should be straightforward.
+
 # opsworks_ruby Cookbook
-
-[![Chef cookbook](https://img.shields.io/cookbook/v/opsworks_ruby.svg)](https://supermarket.chef.io/cookbooks/opsworks_ruby)
-[![Build Status](https://travis-ci.org/ajgon/opsworks_ruby.svg?branch=master)](https://travis-ci.org/ajgon/opsworks_ruby)
-[![Coverage Status](https://coveralls.io/repos/github/ajgon/opsworks_ruby/badge.svg?branch=master)](https://coveralls.io/github/ajgon/opsworks_ruby?branch=master)
-[![Documentation Status](https://readthedocs.org/projects/opsworks-ruby/badge/?version=latest)](http://opsworks-ruby.readthedocs.io/en/latest/?badge=latest)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![license](https://img.shields.io/github/license/ajgon/opsworks_ruby.svg?maxAge=2592000)](https://opsworks-ruby.mit-license.org/)
-
-A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon OpsWorks.
-
-## Quick Start
-
-Refer to [Getting Started](http://opsworks-ruby.readthedocs.io/en/latest/getting_started.html)
-guide in [documentation](http://opsworks-ruby.readthedocs.io/en/latest/index.html).
-
-## Development
-
-You can either install eveyrthing locally using [rvm](https://rvm.io/) and [pip](https://pypi.python.org/pypi/pip)
-or use the Docker container which includes all necessary dependencies inside it.
-
-### Build documentation
-
-```
-docker-compose run cookbook bash -c "cd docs && make html"
-```
-
-## Contributing
-
-Please see [CONTRIBUTING](https://github.com/ajgon/opsworks_ruby/blob/master/CONTRIBUTING.md)
-for details.
-
-## Author and Contributors
-
-Author: [Igor Rzegocki](https://www.rzegocki.pl/) ([@ajgon](https://github.com/ajgon))
-
-### Contributors
-
-* Nick Marden ([@nickmarden](https://github.com/nickmarden))
-* Phong Si ([@phongsi](https://github.com/phongsi))
-* Kevin Pheasey ([@kpheasey](https://github.com/kpheasey))
-* Nathan Flood ([@npflood](https://github.com/npflood))
-* Teruo Adachi ([@interu](https://github.com/interu))
-* Marcos Beirigo ([@marcosbeirigo](https://github.com/marcosbeirigo))
-
-## License
-
-License: [MIT](http://opsworks-ruby.mit-license.org/)
+To view the original `opsworks_ruby` cookbook's README at the time we forked this repo, visit [https://github.com/ajgon/opsworks_ruby/blob/v1.8.0/README.md](https://github.com/ajgon/opsworks_ruby/blob/v1.8.0/README.md)
