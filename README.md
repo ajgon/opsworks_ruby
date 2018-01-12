@@ -1,6 +1,37 @@
 # WatchTower Benefits opsworks_ruby Cookbook
-This is a fork of the [opsworks_ruby](https://github.com/ajgon/opsworks_ruby) cookbook, forked at version 1.8.0.
-This cookbook is being used to provision our AWS OpsWorks servers.
+**WatchTower Benefits Chef 12 cookbook for AWS OpsWorks**
+
+This cookbook is to be used in conjunction with AWS OpsWorks.
+It is forked from the `opsworks_ruby` cookbook (forked at version [1.8.0](https://github.com/ajgon/opsworks_ruby/tree/v1.8.0)), which provides some default recipes for the AWS OpsWorks lifecycle events (setup, configure, deploy, undeploy, shutdown), as well as configuring the setup of the server.
+
+### Cookbook Location
+https://s3-us-west-2.amazonaws.com/watchtower-utilities/cookbooks.tar.gz
+
+## AWS OpsWorks Layer Custom JSON Example
+Setting custom JSON on the AWS OpsWorks layer, allows us to keep this cookbook flexible in terms of setup.
+An example configuration for our `core_api` servers looks like:
+```json
+{
+  "rbenv": {
+    "ruby_version": "2.3.6"
+  },
+  "additional_packages": ["libcurl3", "libcurl3-gnutls", "libcurl4-openssl-dev", "zlib1g-dev", "liblzma-dev"],
+  "deploy": {
+    "core_api": {
+      "framework": {
+        "assets_precompile": false
+      },
+      "appserver": {
+        "application_yml": true
+      },
+      "webserver": {
+        "_extra_config_comment": "Redirect HTTP Requests to HTTPS, unless it is the /health_check endpoint. (extraneous spacing preserves nginx conf file formatting)",
+        "extra_config": "set $redirect_to_https 0;\n  if ($http_x_forwarded_proto != 'https') { set $redirect_to_https 1; }\n  if ($request_uri = '/health_check') { set $redirect_to_https 0; }\n  if ($redirect_to_https = 1) { return 301 https://$host$request_uri; }"
+      }
+    }
+  }
+}
+```
 
 ## Changes from opsworks_ruby cookbook
 
@@ -25,5 +56,21 @@ Currently, rbenv support is implemented with Rails as the framework, and Puma as
 Due to this, if we end up using this recipe for another Ruby framework or we want to switch app servers, we will need to add in support for rbenv in those library files.
 We are currently using nginx as the web server, but no changes were made there, so switching web servers should be straightforward.
 
-# opsworks_ruby Cookbook
+## Recipes
+This cookbook provides five main recipes, which should be attached to corresponding OpsWorks actions.
+
+- `opsworks_ruby::setup` - attach to **Setup**
+- `opsworks_ruby::configure` - attach to **Configure**
+- `opsworks_ruby::deploy` - attach to **Deploy**
+- `opsworks_ruby::undeploy` - attach to **Undeploy**
+- `opsworks_ruby::shutdown` - attach to **Shutdown**
+
+## Updating the Cookbook
+In order to update the cookbook, follow the steps below:
+1. Update the cookbook as necessary
+2. Run `berks install` to install all packages
+3. Run `berks package cookbooks.tar.gz`
+4. Upload `cookbooks.tar.gz` to the `watchtower-utilities` S3 bucket at https://s3-us-west-2.amazonaws.com/watchtower-utilities/cookbooks.tar.gz.
+
+## Original opsworks_ruby Cookbook
 To view the original `opsworks_ruby` cookbook's README at the time we forked this repo, visit [https://github.com/ajgon/opsworks_ruby/blob/v1.8.0/README.md](https://github.com/ajgon/opsworks_ruby/blob/v1.8.0/README.md)
