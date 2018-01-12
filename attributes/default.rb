@@ -116,12 +116,26 @@ default['defaults']['framework']['adapter'] = 'rails'
 
 default['defaults']['framework']['migrate'] = true
 default['defaults']['framework']['migration_command'] =
-  'case $(/usr/local/bin/bundle exec rake db:version 2>&1) in ' \
-  '*"ActiveRecord::NoDatabaseError"*) /usr/local/bin/bundle exec rake db:setup;; ' \
-  '*) /usr/local/bin/bundle exec rake db:migrate;; ' \
-  'esac'
+  if node['rbenv']
+    'case $(bundle exec rake db:version 2>&1) in ' \
+    '*"ActiveRecord::NoDatabaseError"*) bundle exec rake db:setup;; ' \
+    '*) bundle exec rake db:migrate;; ' \
+    'esac'
+  else
+    'case $(/usr/local/bin/bundle exec rake db:version 2>&1) in ' \
+    '*"ActiveRecord::NoDatabaseError"*) /usr/local/bin/bundle exec rake db:setup;; ' \
+    '*) /usr/local/bin/bundle exec rake db:migrate;; ' \
+    'esac'
+  end
 default['defaults']['framework']['assets_precompile'] = true
-default['defaults']['framework']['assets_precompilation_command'] = '/usr/local/bin/bundle exec rake assets:precompile'
+default['defaults']['framework']['assets_precompilation_command'] =
+  if node['rbenv']
+    'bundle exec rake assets:precompile'
+  else
+    '/usr/local/bin/bundle exec rake assets:precompile'
+  end
+
+
 default['defaults']['framework']['envs_in_console'] = false
 
 # worker

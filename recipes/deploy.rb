@@ -1,5 +1,64 @@
 # frozen_string_literal: true
 
+# Check for rbenv in node object
+# If it is set, we migrate using an rbenv aware script
+# If not, we proceed as normal
+Chef::Provider::Deploy.class_eval do
+  def migrate
+    run_symlinks_before_migrate
+
+    if new_resource.migrate
+      enforce_ownership
+
+      environment = new_resource.environment
+      env_info = environment && environment.map do |key_and_val|
+        "#{key_and_val.first}='#{key_and_val.last}'"
+      end.join(" ")
+
+      converge_by("execute migration command #{new_resource.migration_command}") do
+
+        Chef::Log.info "#{new_resource} migrating #{new_resource.user} with environment #{env_info}"
+
+        # Check for rbenv in node object
+        # If it is set, we migrate using an rbenv aware script
+        # If not, we proceed as normal
+        if node['rbenv']
+          # Install / initialize an rbenv user with the ruby_version supplied
+          # Since the rbenv environment won't persist to library methods, and there are issues with pulling it out into it's own helper, we currently redefine this in multiple places
+          # Would be nice to DRY this up if possible
+
+          # Install Ruby via rbenv
+          ruby_version = node['rbenv']['ruby_version']
+          deploy_user = node['deployer']['user'] || root
+
+          # Install rbenv for deploy user
+          rbenv_user_install(deploy_user)
+
+          # Install a specified ruby_version for deploy user
+          rbenv_ruby(ruby_version) do
+            user(deploy_user)
+          end
+
+          # Globally set ruby_version for deploy user
+          rbenv_global(ruby_version) do
+            user(deploy_user)
+          end
+
+          rbenv_script "migration command" do
+            code new_resource.migration_command
+            user node['deployer']['user'] || 'root'
+            group www_group
+            environment environment
+            cwd release_path
+          end
+        else
+          shell_out!(new_resource.migration_command, run_options(:cwd => release_path, :log_level => :info))
+        end
+      end
+    end
+  end
+end
+
 prepare_recipe
 
 include_recipe 'opsworks_ruby::configure'
