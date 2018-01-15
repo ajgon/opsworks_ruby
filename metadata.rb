@@ -13,6 +13,7 @@ depends 'deployer'
 depends 'chef_nginx'
 depends 'logrotate'
 depends 'ruby-ng'
+depends 'ruby_rbenv'
 
 supports 'amazon', '>= 2017.03'
 supports 'ubuntu', '>= 16.04'

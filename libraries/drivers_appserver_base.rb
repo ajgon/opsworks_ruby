@@ -46,8 +46,40 @@ module Drivers
         deploy_to = deploy_dir(app)
         service_script = File.join(deploy_to, File.join('shared', 'scripts', "#{adapter}.service"))
 
-        context.execute "#{action} #{adapter}" do
-          command "#{service_script} #{action}"
+        # Check for rbenv in node object
+        # If it is set, we run the manual action as an rbenv aware script
+        # If not, we proceed as normal
+        if node['rbenv']
+          # Install / initialize an rbenv user with the ruby_version supplied
+          # Since the rbenv environment won't persist to library methods, and there are issues with pulling it out into it's own helper, we currently redefine this in multiple places
+          # Would be nice to DRY this up if possible
+
+          # Install Ruby via rbenv
+          ruby_version = node['rbenv']['ruby_version']
+          deploy_user = node['deployer']['user'] || root
+
+          # Install rbenv for deploy user
+          context.rbenv_user_install(deploy_user)
+
+          # Install a specified ruby_version for deploy user
+          context.rbenv_ruby(ruby_version) do
+            user(deploy_user)
+          end
+
+          # Globally set ruby_version for deploy user
+          context.rbenv_global(ruby_version) do
+            user(deploy_user)
+          end
+
+          context.rbenv_script "#{action} #{adapter}" do
+            code "#{service_script} #{action}"
+            user deploy_user
+            group www_group
+          end
+        else
+          context.execute "#{action} #{adapter}" do
+            command "#{service_script} #{action}"
+          end
         end
       end
 

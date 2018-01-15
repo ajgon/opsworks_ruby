@@ -12,7 +12,7 @@ module Drivers
       end
 
       def appserver_command
-        'puma -C #\{ROOT_PATH\}/shared/config/puma.rb'
+        'puma -C #{ROOT_PATH}/shared/config/puma.rb'
       end
     end
   end

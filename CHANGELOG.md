@@ -1,3 +1,27 @@
+<a name="1.8.0-watchtower"></a>
+# [1.8.0-watchtower](https://github.com/WatchTowerBenefits/opsworks_ruby/compare/v1.8.0...v1.8.0-watchtower)
+
+### Bug Fixes
+* `libraries/drivers_appswerver_puma.rb`: app_server method updated to not escape template since it was preventing the start of Puma
+  * NOTE: This fixes the starting of Puma with rbenv. Have not tried this fix with ruby-ng.
+
+### Features
+* Adding in support to specify `additional_packages` in the OpsWorks custom JSON field, and then install those additional packages during setup
+* Added support for rbenv! Specify `['rbenv']['ruby_version]` in the OpsWorks custom JSON field in order to install rbenv with a specific Ruby version
+  * rbenv support has been added to allow ruby-ng to still be applied in place of rbenv, but has not been tested with the updates
+  * Currently, rbenv support has only been applied to the recipes, and the following libraries and templates:
+    * `libraries/helpers.rb`: Modifies the `perform_bundle_install` command in order to use rbenv when set
+    * `libraries/drivers_appserver_base.rb`: Confirmed working for Puma, not tested with other appservers 
+    * `libraries/drivers_frameworks_base.rb`: Setup to use rbenv for asset compilation when set (have not tested since we are only using this for an API project so far)
+    * `templates/appserver.service.erb`: Updated the start command to modify the bundle path if rbenv is set. This is confirmed to be working for Puma, not tested with other app servers
+
+### Notes
+Some of the code applied in this version seems like it could be DRYed up, specifically the code that reinitializes rbenv each place it is being used.
+This proves slightly difficult since the code for `ruby_rbenv` is available in recipes, but doesn't seem fully supported through the libraries.
+Another spot the code could be improved is at the top of the deploy recipe. We're patching the migrate command to be rbenv aware, and still let the migrate hooks fire.
+Ideally we could pull this out into it's own file, but then we run into the same issue with `ruby_rbenv` availability within that file.
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/ajgon/opsworks_ruby/compare/v1.7.1...v1.8.0) (2017-10-23)
 

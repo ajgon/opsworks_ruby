@@ -98,12 +98,45 @@ end
 def perform_bundle_install(shared_path, envs = {})
   bundle_path = "#{shared_path}/vendor/bundle"
 
-  execute 'bundle_install' do
-    command "/usr/local/bin/bundle install --deployment --without development test --path #{bundle_path}"
-    user node['deployer']['user'] || 'root'
-    group www_group
-    environment envs
-    cwd release_path
+  # Check for rbenv in node object
+  # If it is set, run bundle install using an rbenv aware script
+  # If not, we proceed as normal
+  if node['rbenv']
+    # Install / initialize an rbenv user with the ruby_version supplied
+    # Since the rbenv environment won't persist to library methods, and there are issues with pulling it out into it's own helper, we currently redefine this in multiple places
+    # Would be nice to DRY this up if possible
+
+    ruby_version = node['rbenv']['ruby_version']
+    deploy_user = node['deployer']['user'] || root
+
+    # Install rbenv for deploy user
+    rbenv_user_install(deploy_user)
+
+    # Install a specified ruby_version for deploy user
+    rbenv_ruby(ruby_version) do
+      user(deploy_user)
+    end
+
+    # Globally set ruby_version for deploy user
+    rbenv_global(ruby_version) do
+      user(deploy_user)
+    end
+
+    rbenv_script 'bundle install' do
+      code "bundle install --deployment --without development test --path #{bundle_path}"
+      user deploy_user
+      group www_group
+      environment envs
+      cwd release_path
+    end
+  else
+    execute 'bundle_install' do
+      command "/usr/local/bin/bundle install --deployment --without development test --path #{bundle_path}"
+      user node['deployer']['user'] || 'root'
+      group www_group
+      environment envs
+      cwd release_path
+    end
   end
 end
 

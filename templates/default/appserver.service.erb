@@ -42,7 +42,16 @@ def different_gemfile?
 end
 
 def start_<%= @name %>
-  run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec <%= @command %>"
+  <%
+  # Check for rbenv in node object
+  # If it is set, we want to run bundle exec, without using the absolute path to the bundle exec
+  # If not, we proceed as normal
+  %>
+  <% if node['rbenv'] %>
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && bundle exec <%= @command %>"
+  <% else %>
+    run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec <%= @command %>"
+  <% end %>
 end
 
 def stop_<%= @name %>

@@ -7,6 +7,13 @@
 
 prepare_recipe
 
+# Install additional packages set in configuration
+if node['additional_packages'] && node['additional_packages'].is_a?(Array)
+  node['additional_packages'].each do |package|
+    apt_package(package)
+  end
+end
+
 # Monit and cleanup
 if node['platform_family'] == 'debian'
   execute 'mkdir -p /etc/monit/conf.d'
@@ -22,35 +29,63 @@ end
 
 # Ruby and bundler
 include_recipe 'deployer'
-if node['platform_family'] == 'debian'
-  include_recipe 'ruby-ng::dev'
-else
-  ruby_pkg_version = node['ruby-ng']['ruby_version'].split('.')[0..1]
-  package "ruby#{ruby_pkg_version.join('')}"
-  package "ruby#{ruby_pkg_version.join('')}-devel"
-  execute "/usr/sbin/alternatives --set ruby /usr/bin/ruby#{ruby_pkg_version.join('.')}"
-end
 
-apt_repository 'apache2' do
-  uri 'http://ppa.launchpad.net/ondrej/apache2/ubuntu'
-  distribution node['lsb']['codename']
-  components %w[main]
-  keyserver 'keyserver.ubuntu.com'
-  key 'E5267A6C'
-  only_if { node['defaults']['webserver']['use_apache2_ppa'] }
-end
+# Install Ruby, either via rbenv or ng-ruby
+if node['rbenv']
+  # Install Ruby via rbenv
+  ruby_version = node['rbenv']['ruby_version']
+  deploy_user = node['deployer']['user'] || root
 
-gem_package 'bundler' do
-  action :install
-end
+  # Install rbenv for deploy user
+  rbenv_user_install(deploy_user)
 
-if node['platform_family'] == 'debian'
-  link '/usr/local/bin/bundle' do
-    to '/usr/bin/bundle'
+  # Install a specified ruby_version for deploy user
+  rbenv_ruby(ruby_version) do
+    user(deploy_user)
+  end
+
+  # Globally set ruby_version for deploy user
+  rbenv_global(ruby_version) do
+    user(deploy_user)
+  end
+
+  # rbenv aware bundler install
+  rbenv_gem 'bundler' do
+    user deploy_user
+    rbenv_version ruby_version
   end
 else
-  link '/usr/local/bin/bundle' do
-    to '/usr/local/bin/bundler'
+  # Install Ruby via ng-ruby
+  if node['platform_family'] == 'debian'
+    include_recipe 'ruby-ng::dev'
+  else
+    ruby_pkg_version = node['ruby-ng']['ruby_version'].split('.')[0..1]
+    package "ruby#{ruby_pkg_version.join('')}"
+    package "ruby#{ruby_pkg_version.join('')}-devel"
+    execute "/usr/sbin/alternatives --set ruby /usr/bin/ruby#{ruby_pkg_version.join('.')}"
+  end
+
+  apt_repository 'apache2' do
+    uri 'http://ppa.launchpad.net/ondrej/apache2/ubuntu'
+    distribution node['lsb']['codename']
+    components %w[main]
+    keyserver 'keyserver.ubuntu.com'
+    key 'E5267A6C'
+    only_if { node['defaults']['webserver']['use_apache2_ppa'] }
+  end
+
+  gem_package 'bundler' do
+    action :install
+  end
+
+  if node['platform_family'] == 'debian'
+    link '/usr/local/bin/bundle' do
+      to '/usr/bin/bundle'
+    end
+  else
+    link '/usr/local/bin/bundle' do
+      to '/usr/local/bin/bundler'
+    end
   end
 end
 
