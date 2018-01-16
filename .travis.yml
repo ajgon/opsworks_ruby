@@ -3,6 +3,9 @@ sudo: required
 services:
   - docker
 
+# Use caching feature
+cache: bundler
+
 rvm:
   - 2.0.0  # default AWS version
   - 2.4.2  # last AWS version
