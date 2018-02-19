@@ -1,3 +1,11 @@
+<a name="1.8.1-watchtower"></a>
+# [1.8.1-watchtower](https://github.com/WatchTowerBenefits/opsworks_ruby/compare/v1.8.0-watchtower...v1.8.1-watchtower)
+
+### Features
+* Updating Nginx config template
+  * Adding `/health_check` location that does not force HTTPS, but turns on the proxy_ignore_client_abort flag to prevent the AWS ELB from prematurely closing connections
+  * Adding in code for the `/` location to force HTTPS. This was previously done through the Custom JSON for `['deploy']['webserver']['extra_config']`
+
 <a name="1.8.0-watchtower"></a>
 # [1.8.0-watchtower](https://github.com/WatchTowerBenefits/opsworks_ruby/compare/v1.8.0...v1.8.0-watchtower)
 

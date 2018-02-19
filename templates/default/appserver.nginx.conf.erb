@@ -19,7 +19,19 @@ server {
   keepalive_timeout <%= @out[:keepalive_timeout] || '15' %>;
   send_timeout <%= @out[:send_timeout] || '10' %>;
 
+  location /health_check {
+    # Prevent ELB health check from closing connections
+    proxy_ignore_client_abort on;
+
+    try_files $uri/index.html $uri/index.htm @puma;
+  }
+
   location / {
+    # If the request does not come through as https, redirect to https
+    if ($http_x_forwarded_proto != 'https') {
+      return 301 https://$host$request_uri;
+    }
+
     try_files $uri/index.html $uri/index.htm @<%= @name %>;
   }
 
