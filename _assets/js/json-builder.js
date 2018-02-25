@@ -161,7 +161,7 @@
       node.find( "input, select" ).change( function( e ) {
         self.onTextChange.call( this, e );
       } );
-      if ( field === "adapter" ) {
+      if ( field === "adapter" || field === 'scm_provider' ) {
         node.find( "select" ).change( function() {
           self.showDependants( group );
         } );
@@ -190,7 +190,7 @@
       for ( field in this.schema[ group ] ) {
         if ( this.schema[ group ].hasOwnProperty( field ) && this.schema[ group ][ field ].depends ) {
           $( "[name=\"" + group + "." + field + "\"]" ).closest( ".form-group" )
-            .toggle( this.schema[ group ][ field ].depends.indexOf( data.adapter ) !== -1 );
+            .toggle( this.schema[ group ][ field ].depends.indexOf( data.adapter || data.scm_provider ) !== -1 );
         }
       }
     },
