@@ -195,7 +195,7 @@ describe 'opsworks_ruby::configure' do
         .with_content('DEPLOY_ENV="staging"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('unicorn_rails --env #\{DEPLOY_ENV\} --daemonize -c #\{ROOT_PATH\}/shared/config/unicorn.conf')
+        .with_content('unicorn_rails --env #{DEPLOY_ENV} --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf')
     end
 
     it 'defines unicorn service' do
@@ -565,7 +565,7 @@ describe 'opsworks_ruby::configure' do
         .with_content('DEPLOY_ENV="staging"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content('puma -C #\{ROOT_PATH\}/shared/config/puma.rb')
+        .with_content('puma -C #{ROOT_PATH}/shared/config/puma.rb')
     end
 
     it 'defines puma service' do
@@ -979,7 +979,7 @@ describe 'opsworks_ruby::configure' do
         .with_content('DEPLOY_ENV="staging"')
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content('thin -C #\{ROOT_PATH\}/shared/config/thin.yml')
+        .with_content('thin -C #{ROOT_PATH}/shared/config/thin.yml')
     end
 
     it 'defines thin service' do
