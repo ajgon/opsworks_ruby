@@ -4,7 +4,9 @@ services:
   - docker
 
 # Use caching feature
-cache: bundler
+cache:
+  directories:
+    - vendor/bundle
 
 rvm:
   - 2.0.0  # default AWS version
