@@ -441,7 +441,7 @@ thin
   -  **Default:** ``4``
 
 passenger
-^^^^
+^^^^^^^^^
 
 -  ``app['appserver']['max_pool_size']``
 
@@ -636,7 +636,7 @@ nginx
 
   -  **Default**: ``10``
 
--  |app['webserver']['enable_upgrade_method']|_
+-  ``app['webserver']['enable_upgrade_method']``
 
   -  **Supported values:** ``true``, ``false``
   -  **Default**: ``false``
