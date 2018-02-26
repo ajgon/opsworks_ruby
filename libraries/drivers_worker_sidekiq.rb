@@ -9,7 +9,7 @@ module Drivers
       packages 'monit', debian: 'redis-server', rhel: 'redis'
 
       def configure
-        add_sidekiq_config
+        #add_sidekiq_config
         add_worker_monit
       end
 

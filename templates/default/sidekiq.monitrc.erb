@@ -1,6 +1,6 @@
 <% ([@out[:process_count].to_i || 1].max).times do |n| %>
     <% identifier = "#{@application}-#{n+1}" %>
-    <% conf_file = "#{@deploy_to}/shared/config/sidekiq_#{n+1}.yml" %>
+    <% conf_file = "#{@deploy_to}/current/config/sidekiq.yml" %>
     <% pid_file = "/run/lock/#{@app_shortname}/sidekiq_#{identifier}.pid" %>
     <% syslog = !!@out[:syslog] ? "2>&1 | logger -t sidekiq-#{identifier}" : '' %>
     <% to_require = @out[:require].present? ? " -r #{File.join(@deploy_to, 'current', @out[:require])}" : '' %>
