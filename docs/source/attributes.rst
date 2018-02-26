@@ -37,7 +37,7 @@ convention).
 -  ``node['ruby-ng']['ruby_version']``
 
   -  **Type:** string
-  -  **Default:** ``2.4``
+  -  **Default:** ``2.5``
   -  Sets the Ruby version used through the system. See `ruby-ng cookbook documentation`_
      for more details
 
