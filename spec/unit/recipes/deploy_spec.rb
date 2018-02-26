@@ -261,9 +261,7 @@ describe 'opsworks_ruby::deploy' do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['lsb'] = node['lsb']
         solo_node.set['deploy'] = { 'a1' => {} }
-        if deploy_dir
-          solo_node.set['deploy']['a1']['global']['deploy_dir'] = deploy_dir
-        end
+        solo_node.set['deploy']['a1']['global']['deploy_dir'] = deploy_dir if deploy_dir
       end
     end
 

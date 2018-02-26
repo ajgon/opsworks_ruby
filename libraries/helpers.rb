@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 def applications
-  if Chef::Config[:solo]
-    Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
-  end
+  Chef::Log.warn('This recipe uses search. Chef Solo does not support search.') if Chef::Config[:solo]
   search(:aws_opsworks_app)
 end
 
 def rdses
-  if Chef::Config[:solo]
-    Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
-  end
+  Chef::Log.warn('This recipe uses search. Chef Solo does not support search.') if Chef::Config[:solo]
   search(:aws_opsworks_rds_db_instance)
 end
 
