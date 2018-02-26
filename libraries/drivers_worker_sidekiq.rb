@@ -31,6 +31,7 @@ module Drivers
 
       private
 
+=begin
       def add_sidekiq_config
         deploy_to = deploy_dir(app)
         config = configuration
@@ -44,6 +45,7 @@ module Drivers
           end
         end
       end
+=end
 
       def quiet_sidekiq
         (1..process_count).each do |process_number|
