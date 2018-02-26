@@ -18,6 +18,7 @@ module Drivers
         super.merge(deploy_environment: { 'RAILS_ENV' => deploy_env })
       end
 
+=begin
       def configure
         rdses =
           context.search(:aws_opsworks_rds_db_instance).presence || [Drivers::Db::Factory.build(context, app)]
@@ -65,6 +66,8 @@ module Drivers
       def environment
         app['environment'].merge(out[:deploy_environment])
       end
+=end
+
     end
   end
 end

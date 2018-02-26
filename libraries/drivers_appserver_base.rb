@@ -99,7 +99,7 @@ module Drivers
 
       def setup_dot_env
         return unless raw_out[:dot_env]
-        env_config(source_file: 'dot_env', destination_file: '.env')
+        env_config(source_file: 'dot_env', destination_file: ".env.#{deploy_env}")
       end
 
       # rubocop:disable Metrics/MethodLength
