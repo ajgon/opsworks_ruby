@@ -23,10 +23,6 @@ An example configuration for our `core_api` servers looks like:
       },
       "appserver": {
         "application_yml": true
-      },
-      "webserver": {
-        "_extra_config_comment": "Redirect HTTP Requests to HTTPS, unless it is the /health_check endpoint. (extraneous spacing preserves nginx conf file formatting)",
-        "extra_config": "set $redirect_to_https 0;\n  if ($http_x_forwarded_proto != 'https') { set $redirect_to_https 1; }\n  if ($request_uri = '/health_check') { set $redirect_to_https 0; }\n  if ($redirect_to_https = 1) { return 301 https://$host$request_uri; }"
       }
     }
   }
@@ -55,6 +51,12 @@ In order to install rbenv, with the Ruby version of your choice, add `node['rben
 Currently, rbenv support is implemented with Rails as the framework, and Puma as the app server.
 Due to this, if we end up using this recipe for another Ruby framework or we want to switch app servers, we will need to add in support for rbenv in those library files.
 We are currently using nginx as the web server, but no changes were made there, so switching web servers should be straightforward.
+
+### Nginx Configuration Chanages
+* Added a `/health_check` location for AWS ELB
+  * This location does not force HTTPS so the ELB can hit it via HTTP
+  * This location also turns on the `proxy_ignore_client_abort` flag in order to prevent the ELB from prematurely closing the connection 
+* Update the `/` location to force HTTPS
 
 ## Recipes
 This cookbook provides five main recipes, which should be attached to corresponding OpsWorks actions.
