@@ -88,11 +88,7 @@ describe 'opsworks_ruby::configure' do
 end
 
 describe 'opsworks_ruby::deploy' do
-  context 'scm' do
-    describe file('/tmp/ssh-git-wrapper.sh') do
-      its(:content) { should include 'exec ssh -o UserKnownHostsFile=/dev/null' }
-    end
-
+  context 'source' do
     describe file('/srv/www/dummy_project/current/.git') do
       it { should_not exist }
     end

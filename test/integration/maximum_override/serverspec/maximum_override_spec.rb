@@ -219,7 +219,7 @@ describe 'opsworks_ruby::configure' do
 end
 
 describe 'opsworks_ruby::deploy' do
-  context 'scm' do
+  context 'source' do
     describe file('/tmp/ssh-git-wrapper.sh') do
       it { should_not exist }
     end

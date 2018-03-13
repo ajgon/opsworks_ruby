@@ -24,13 +24,13 @@ DEFAULT_NODE = {
       #   database: 'dummydb',
       #   reaping_frequency: 10
       # },
-      scm: {
+      source: {
         adapter: 'git',
         user: 'dummy',
         password: '3aa161d358a167204502',
         revision: 'master',
         ssh_key: '--- SSH KEY ---',
-        repository: 'git@git.example.com:repo/project.git',
+        url: 'git@git.example.com:repo/project.git',
         enable_submodules: false,
         ssh_wrapper: 'ssh-wrap',
         submodules: false,
@@ -75,7 +75,7 @@ DEFAULT_NODE = {
       create_dirs_before_symlink: %w[tmp public config ../../shared/cache ../../shared/assets],
       purge_before_symlink: %w[log tmp/cache tmp/pids public/system public/assets]
     },
-    scm: {
+    source: {
       remove_scm_files: true
     },
     appserver: {

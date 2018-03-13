@@ -12,7 +12,7 @@ describe 'opsworks_ruby::undeploy' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       deploy = node['deploy']
-      deploy['dummy_project']['scm'].delete('ssh_wrapper')
+      deploy['dummy_project']['source'].delete('ssh_wrapper')
       solo_node.set['deploy'] = deploy
     end.converge(described_recipe)
   end

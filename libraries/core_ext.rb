@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 class Object
-  def try(*a, &b)
-    try!(*a, &b) if a.empty? || respond_to?(a.first)
+  def try(*methods, &block)
+    try!(*methods, &block) if methods.empty? || respond_to?(methods.first)
   end
 
-  def try!(*a, &b)
-    if a.empty? && block_given?
-      if b.arity.zero?
-        instance_eval(&b)
+  def try!(*methods, &block)
+    if methods.empty? && block_given?
+      if block.arity.zero?
+        instance_eval(&block)
       else
         yield self
       end
     else
-      public_send(*a, &b)
+      public_send(*methods, &block)
     end
   end
 

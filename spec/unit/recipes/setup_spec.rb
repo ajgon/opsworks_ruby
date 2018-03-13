@@ -236,11 +236,13 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
-  context 'Mysql + apache2 + resque' do
+  context 'Mysql + S3 + apache2 + resque' do
     ALL_APACHE2_MODULES = %w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl].freeze
     let(:modules_already_enabled) { false }
 
     before do
+      stub_search(:aws_opsworks_app, '*:*')
+        .and_return([aws_opsworks_app(app_source: { type: 's3', url: 'http://example.com' })])
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
       ALL_APACHE2_MODULES.each do |mod|
         stub_command("a2enmod #{mod}").and_return(true)
@@ -253,6 +255,7 @@ describe 'opsworks_ruby::setup' do
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['worker']['adapter'] = 'resque'
+        deploy['dummy_project']['source'] = {}
         solo_node.set['deploy'] = deploy
       end
     end
@@ -262,17 +265,24 @@ describe 'opsworks_ruby::setup' do
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['worker']['adapter'] = 'resque'
+        deploy['dummy_project']['source'] = {}
         solo_node.set['deploy'] = deploy
       end
     end
 
     context 'debian' do
       it 'installs required packages' do
-        expect(chef_run).to install_package('libmysqlclient-dev')
-        expect(chef_run).to install_package('apache2')
-        expect(chef_run).to install_package('redis-server')
-        expect(chef_run).to install_package('monit')
+        expect(chef_run).to install_package('bzip2')
+        expect(chef_run).to install_package('git')
+        expect(chef_run).to install_package('gzip')
         expect(chef_run).not_to install_package('libapache2-mod-passenger')
+        expect(chef_run).to install_package('libmysqlclient-dev')
+        expect(chef_run).to install_package('monit')
+        expect(chef_run).to install_package('p7zip')
+        expect(chef_run).to install_package('redis-server')
+        expect(chef_run).to install_package('tar')
+        expect(chef_run).to install_package('unzip')
+        expect(chef_run).to install_package('xz-utils')
       end
 
       it 'defines service which starts apache2' do
@@ -298,11 +308,17 @@ describe 'opsworks_ruby::setup' do
 
     context 'rhel' do
       it 'installs required packages' do
-        expect(chef_run_rhel).to install_package('mysql-devel')
+        expect(chef_run_rhel).to install_package('bzip2')
+        expect(chef_run_rhel).to install_package('git')
+        expect(chef_run_rhel).to install_package('gzip')
         expect(chef_run_rhel).to install_package('httpd24')
         expect(chef_run_rhel).to install_package('mod24_ssl')
-        expect(chef_run_rhel).to install_package('redis')
         expect(chef_run_rhel).to install_package('monit')
+        expect(chef_run_rhel).to install_package('mysql-devel')
+        expect(chef_run_rhel).to install_package('redis')
+        expect(chef_run_rhel).to install_package('tar')
+        expect(chef_run_rhel).to install_package('unzip')
+        expect(chef_run_rhel).to install_package('xz')
       end
 
       it 'defines service which starts httpd' do

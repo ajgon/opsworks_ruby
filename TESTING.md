@@ -3,7 +3,7 @@
 ## Unit Testing and Linting
 
 ```
-docker-compose run -e SKIP="AuthorName AuthorEmail" cookbook \
+docker-compose run --rm -e SKIP="AuthorName AuthorEmail" cookbook \
 bash -c "overcommit --sign && overcommit -r && rspec"
 ```
 

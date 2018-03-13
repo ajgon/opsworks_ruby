@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Drivers
-  module Scm
+  module Source
     class Base < Drivers::Base
       include Drivers::Dsl::Defaults
       include Drivers::Dsl::Packages
@@ -13,19 +13,20 @@ module Drivers
         handle_packages
       end
 
+      def fetch(_deploy_context)
+        raise NotImplementedError
+      end
+
       def settings
         return default_settings if configuration_data_source == :node_engine
-        app_source = app['app_source']
 
-        default_settings.merge(
-          scm_provider: adapter.constantize, repository: app_source['url'], revision: app_source['revision']
-        )
+        default_settings.merge(app['app_source'].symbolize_keys)
       end
 
       def default_settings
         base = node['defaults'][driver_type].merge(
           node['deploy'][app['shortname']][driver_type] || {}
-        ).symbolize_keys.merge(scm_provider: adapter.constantize)
+        ).symbolize_keys
         defaults.merge(base)
       end
 

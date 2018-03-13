@@ -2,9 +2,14 @@
 
 require 'chefspec'
 require 'chefspec/berkshelf'
+require 'pathname'
 
 def dummy_context(node)
   OpenStruct.new(node: node)
+end
+
+def fixture_path(*path)
+  Pathname.new(File.expand_path('fixtures', __dir__)).join(*path)
 end
 
 # Stolen from https://github.com/rails/rails/pull/30275 and put
@@ -35,10 +40,10 @@ module RubyOpsworksTests
 end
 
 # Require all libraries
-require File.expand_path('../../libraries/all.rb', __FILE__)
+require File.expand_path('../libraries/all.rb', __dir__)
 
 # Require all fixtures
-Dir[File.expand_path('../fixtures/*.rb', __FILE__)].each { |f| require f }
+Dir[File.expand_path('fixtures/*.rb', __dir__)].each { |f| require f }
 
 RSpec.configure do |config|
   config.log_level = :error

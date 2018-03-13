@@ -91,8 +91,8 @@ suites:
             queues:
               - default
               - mailers
-  - name: thin_nginx_padrino_delayed_job
-    data_bags_path: "test/integration/data_bags/thin_nginx_padrino_delayed_job"
+  - name: s3_thin_nginx_padrino_delayed_job
+    data_bags_path: "test/integration/data_bags/s3_thin_nginx_padrino_delayed_job"
     run_list:
       - recipe[opsworks_ruby::setup]
       - recipe[opsworks_ruby::deploy]
@@ -142,7 +142,7 @@ suites:
             - copytruncate
             - sharedscripts
           logrotate_template_group: 'www-data'
-        scm:
+        source:
           generated_ssh_wrapper: '/var/tmp/my-generated-ssh-wrapper.sh'
         webserver:
           logrotate_options:

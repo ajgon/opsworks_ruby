@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Drivers
-  module Scm
-    class Git < Drivers::Scm::Base
+  module Source
+    class Git < Drivers::Source::Base
       adapter Chef::Provider::Git
       allowed_engines :git
       packages :git
-      output filter: %i[scm_provider repository revision enable_submodules ssh_wrapper remove_scm_files]
+      output filter: %i[url revision enable_submodules ssh_wrapper remove_scm_files]
       defaults enable_submodules: true,
                ssh_wrapper: proc { |_driver, settings| settings[:generated_ssh_wrapper] },
                generated_ssh_wrapper: '/tmp/ssh-git-wrapper.sh'
@@ -23,6 +23,15 @@ module Drivers
       def after_deploy
         context.file File.join('/', 'tmp', '.ssh-deploy-key') do
           action :delete
+        end
+      end
+
+      def fetch(deploy_context)
+        deploy_context.scm_provider(adapter.constantize)
+
+        out.each do |scm_key, scm_value|
+          scm_key = :repository if scm_key == :url
+          deploy_context.send(scm_key, scm_value) if deploy_context.respond_to?(scm_key)
         end
       end
 

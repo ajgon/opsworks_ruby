@@ -8,8 +8,9 @@ Supported Technologies
   - `PostgreSQL`_
   - `Sqlite3`_
 
-- SCM
+- Sources
 
+  - `Amazon S3`_
   - `Git`_
 
 - Framework
@@ -43,6 +44,7 @@ Worker
 .. _MySQL: https://www.mysql.com/
 .. _PostgreSQL: https://www.postgresql.org/
 .. _Sqlite3: https://www.sqlite.org/
+.. _Amazon S3: https://aws.amazon.com/s3/
 .. _Git: https://git-scm.com/
 .. _hanami.rb: http://hanamirb.org/
 .. _Padrino: http://padrinorb.com/

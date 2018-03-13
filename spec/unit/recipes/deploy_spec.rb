@@ -12,7 +12,7 @@ describe 'opsworks_ruby::deploy' do
   let(:chef_runner) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       deploy = node['deploy']
-      deploy['dummy_project']['scm'].delete('ssh_wrapper')
+      deploy['dummy_project']['source'].delete('ssh_wrapper')
       solo_node.set['deploy'] = deploy
     end
   end
@@ -114,8 +114,8 @@ describe 'opsworks_ruby::deploy' do
       let(:chef_runner) do
         ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
           deploy = node['deploy']
-          deploy['dummy_project']['scm'].delete('ssh_wrapper')
-          deploy['dummy_project']['scm']['generated_ssh_wrapper'] = '/var/tmp/my-git-ssh-wrapper.sh'
+          deploy['dummy_project']['source'].delete('ssh_wrapper')
+          deploy['dummy_project']['source']['generated_ssh_wrapper'] = '/var/tmp/my-git-ssh-wrapper.sh'
           solo_node.set['deploy'] = deploy
         end
       end
@@ -131,10 +131,16 @@ describe 'opsworks_ruby::deploy' do
     end
   end
 
-  context 'Puma + Apache + resque' do
+  context 'Puma + S3 + Apache + resque' do
     let(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
+        deploy['dummy_project']['source'] = {
+          'adapter' => 's3',
+          'user' => 'AWS_ACCESS_KEY_ID',
+          'password' => 'AWS_SECRET_ACCESS_KEY',
+          'url' => 'https://s3.amazonaws.com/bucket/project.zip'
+        }
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['worker']['adapter'] = 'resque'
@@ -144,11 +150,44 @@ describe 'opsworks_ruby::deploy' do
     let(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
         deploy = node['deploy']
+        deploy['dummy_project']['source'] = {
+          'adapter' => 's3',
+          'user' => 'AWS_ACCESS_KEY_ID',
+          'password' => 'AWS_SECRET_ACCESS_KEY',
+          'url' => 'https://s3.amazonaws.com/bucket/project.zip'
+        }
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end
+    end
+    let(:tmpdir) { '/tmp/opsworks_ruby' }
+
+    before do
+      allow(Dir).to receive(:mktmpdir).and_return(tmpdir)
+      stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(app_source: {})])
+    end
+
+    it 'downloads project file from S3' do
+      expect(chef_run).to create_s3_file(File.join(tmpdir, 'archive', 'project.zip')).with(
+        bucket: 'bucket',
+        remote_path: 'project.zip',
+        aws_access_key_id: 'AWS_ACCESS_KEY_ID',
+        aws_secret_access_key: 'AWS_SECRET_ACCESS_KEY',
+        owner: 'deploy',
+        group: 'www-data',
+        mode: '0600',
+        s3_url: 'https://s3.amazonaws.com/bucket'
+      )
+    end
+
+    it 'creates dummy git repository' do
+      expect(chef_run).to run_execute(
+        "cd #{File.join(tmpdir, 'archive.d')} && git init && " \
+        'git config user.name \'Chef\' && git config user.email \'chef@localhost\' && ' \
+        'git add -A && git commit --author=\'Chef <>\' -m \'dummy repo\' -an'
+      )
     end
 
     it 'performs a deploy on debian' do

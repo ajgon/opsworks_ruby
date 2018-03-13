@@ -8,13 +8,13 @@ every_enabled_application do |application|
     databases.push(Drivers::Db::Factory.build(self, application, rds: rds))
   end
 
-  scm = Drivers::Scm::Factory.build(self, application)
+  source = Drivers::Source::Factory.build(self, application)
   framework = Drivers::Framework::Factory.build(self, application, databases: databases)
   appserver = Drivers::Appserver::Factory.build(self, application)
   worker = Drivers::Worker::Factory.build(self, application, databases: databases)
   webserver = Drivers::Webserver::Factory.build(self, application)
 
-  fire_hook(:before_undeploy, items: databases + [scm, framework, appserver, worker, webserver])
+  fire_hook(:before_undeploy, items: databases + [source, framework, appserver, worker, webserver])
 
   deploy application['shortname'] do
     deploy_to deploy_dir(application)
@@ -32,5 +32,5 @@ every_enabled_application do |application|
     action :rollback
   end
 
-  fire_hook(:after_undeploy, items: databases + [scm, framework, appserver, worker, webserver])
+  fire_hook(:after_undeploy, items: databases + [source, framework, appserver, worker, webserver])
 end

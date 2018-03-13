@@ -33,10 +33,10 @@ module Drivers
 
       private
 
-      def database_yml(db)
-        return unless db.applicable_for_configuration? && db.can_migrate?
+      def database_yml(db_driver)
+        return unless db_driver.applicable_for_configuration? && db_driver.can_migrate?
 
-        database = db.out
+        database = db_driver.out
         deploy_environment = deploy_env
 
         context.template File.join(deploy_dir(app), 'shared', 'config', 'database.yml') do

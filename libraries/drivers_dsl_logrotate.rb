@@ -12,7 +12,6 @@ module Drivers
           end
         end
       end
-      # rubocop:enable Metrics/MethodLength
 
       def log_paths
         self.class.log_paths.presence ||

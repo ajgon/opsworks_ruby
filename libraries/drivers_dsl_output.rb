@@ -21,7 +21,7 @@ module Drivers
       end
 
       def handle_output(unfiltered)
-        if output[:filter] && output[:filter].is_a?(Array)
+        if output[:filter]&.is_a?(Array)
           unfiltered.select { |k, _v| output[:filter].include?(k.to_sym) }
         else
           unfiltered

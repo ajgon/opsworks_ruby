@@ -2,9 +2,9 @@
   "app_id": "3aef37c1-7e2b-4255-bbf1-03e06f07701a",
   "app_source": {
     "password": "3aa161d358a167204502",
-    "revision": "master",
+    "revision": "maximum-override",
     "type": "git",
-    "url": "https://github.com/RapidRiverSoftware/dumber-app",
+    "url": "https://github.com/ajgon/dummy-app",
     "user": "dummy"
   },
   "attributes": {

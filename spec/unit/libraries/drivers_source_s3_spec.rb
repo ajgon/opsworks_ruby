@@ -2,17 +2,27 @@
 
 require 'spec_helper'
 
-describe Drivers::Scm::Git do
-  let(:driver) { described_class.new(dummy_context(node), aws_opsworks_app) }
+describe Drivers::Source::S3 do
+  let(:s3_aws_opsworks_app) do
+    aws_opsworks_app(
+      app_source: {
+        password: 'AWS_SECRET_ACCESS_KEY',
+        type: 's3',
+        url: 'https://s3.amazonaws.com/bucket/file.tar.gz',
+        user: 'AWS_ACCESS_KEY_ID'
+      }
+    )
+  end
+  let(:driver) { described_class.new(dummy_context(node), s3_aws_opsworks_app) }
 
   it 'receives and exposes app and node' do
-    expect(driver.app).to eq aws_opsworks_app
+    expect(driver.app).to eq s3_aws_opsworks_app
     expect(driver.send(:node)).to eq node
     expect(driver.options).to eq({})
   end
 
   it 'has the correct driver_type' do
-    expect(driver.driver_type).to eq('scm')
+    expect(driver.driver_type).to eq('source')
   end
 
   context 'validate adapter and engine' do
@@ -35,14 +45,17 @@ describe Drivers::Scm::Git do
 
     it 'adapter = missing, engine = correct' do
       expect do
-        described_class.new(dummy_context(node(deploy: { dummy_project: {} })), aws_opsworks_app).out
+        described_class.new(dummy_context(node(deploy: { dummy_project: {} })), s3_aws_opsworks_app).out
       end.not_to raise_error
     end
 
     it 'adapter = wrong, engine = missing' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { scm: { adapter: 'svn' } } })), aws_opsworks_app(app_source: nil)
+          dummy_context(
+            node(deploy: { dummy_project: { source: { adapter: 'svn' } } })
+          ),
+          aws_opsworks_app(app_source: nil)
         ).out
       end.to raise_error ArgumentError,
                          "Incorrect :node engine, expected #{described_class.allowed_engines.inspect}, got 'svn'."
@@ -51,7 +64,7 @@ describe Drivers::Scm::Git do
     it 'adapter = wrong, engine = wrong' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { scm: { adapter: 'svn' } } })),
+          dummy_context(node(deploy: { dummy_project: { source: { adapter: 'svn' } } })),
           aws_opsworks_app(app_source: { type: 'svn' })
         ).out
       end.to raise_error ArgumentError,
@@ -61,7 +74,7 @@ describe Drivers::Scm::Git do
     it 'adapter = wrong, engine = correct' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { scm: { adapter: 'svn' } } })), aws_opsworks_app
+          dummy_context(node(deploy: { dummy_project: { source: { adapter: 'svn' } } })), s3_aws_opsworks_app
         ).out
       end.not_to raise_error
     end
@@ -69,7 +82,10 @@ describe Drivers::Scm::Git do
     it 'adapter = correct, engine = missing' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { scm: { adapter: 'git' } } })), aws_opsworks_app(app_source: nil)
+          dummy_context(
+            node(deploy: { dummy_project: { source: { adapter: 's3', url: 'http://example.com' } } })
+          ),
+          aws_opsworks_app(app_source: nil)
         ).out
       end.not_to raise_error
     end
@@ -77,7 +93,7 @@ describe Drivers::Scm::Git do
     it 'adapter = correct, engine = wrong' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { scm: { adapter: 'git' } } })),
+          dummy_context(node(deploy: { dummy_project: { source: { adapter: 's3' } } })),
           aws_opsworks_app(app_source: { type: 'svn' })
         ).out
       end.to raise_error ArgumentError,
@@ -87,7 +103,7 @@ describe Drivers::Scm::Git do
     it 'adapter = correct, engine = correct' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { scm: { type: 'git' } } })), aws_opsworks_app
+          dummy_context(node(deploy: { dummy_project: { source: { type: 's3' } } })), s3_aws_opsworks_app
         ).out
       end.not_to raise_error
     end
@@ -95,25 +111,26 @@ describe Drivers::Scm::Git do
 
   context 'connection data' do
     after(:each) do
-      expect(@item.raw_out[:ssh_key]).to eq '--- SSH KEY ---'
       expect(@item.out).to eq(
-        scm_provider: Chef::Provider::Git,
-        revision: 'master',
-        repository: 'git@git.example.com:repo/project.git',
-        enable_submodules: false,
-        ssh_wrapper: 'ssh-wrap',
-        remove_scm_files: true
+        password: 'AWS_SECRET_ACCESS_KEY',
+        url: 'https://s3.amazonaws.com/bucket/file.tar.gz',
+        user: 'AWS_ACCESS_KEY_ID'
       )
     end
 
     it 'taken from engine' do
-      node_data = node
-      node_data['deploy']['dummy_project']['scm'].delete('ssh_key')
-      @item = described_class.new(dummy_context(node_data), aws_opsworks_app)
+      @item = described_class.new(dummy_context(node), s3_aws_opsworks_app)
     end
 
     it 'taken from adapter' do
-      @item = described_class.new(dummy_context(node), aws_opsworks_app(app_source: nil))
+      node_data = node
+      node_data['deploy']['dummy_project']['source'] = {
+        'adapter' => 's3',
+        'password' => 'AWS_SECRET_ACCESS_KEY',
+        'url' => 'https://s3.amazonaws.com/bucket/file.tar.gz',
+        'user' => 'AWS_ACCESS_KEY_ID'
+      }
+      @item = described_class.new(dummy_context(node_data), aws_opsworks_app(app_source: nil))
     end
   end
 end
