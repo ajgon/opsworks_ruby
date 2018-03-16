@@ -95,6 +95,7 @@
       "type":"string",
       "values":[
         "git",
+        "http",
         "s3"
       ],
       "default":"git",
@@ -153,16 +154,18 @@
     "user":{
       "type":"string",
       "depends":[
+        "http",
         "s3"
       ],
-      "description":"AWS_ACCESS_KEY_ID with read access to the bucket."
+      "description":"If file is hidden behind HTTP BASIC AUTH, this field should contain username."
     },
     "password":{
       "type":"string",
       "depends":[
+        "http",
         "s3"
       ],
-      "description":"AWS_SECRET_ACCESS_KEY for given AWS_ACCESS_KEY_ID."
+      "description":"If file is hidden behind HTTP BASIC AUTH, this field should contain password."
     }
   },
   "framework":{
