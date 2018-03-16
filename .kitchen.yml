@@ -61,8 +61,8 @@ suites:
               queues:
                 - default
                 - mailers
-  - name: unicorn_apache_hanami_resque
-    data_bags_path: "test/integration/data_bags/unicorn_apache_hanami_resque"
+  - name: http_unicorn_apache_hanami_resque
+    data_bags_path: "test/integration/data_bags/http_unicorn_apache_hanami_resque"
     run_list:
       - recipe[opsworks_ruby::setup]
       - recipe[opsworks_ruby::deploy]

@@ -212,10 +212,16 @@ describe 'opsworks_ruby::deploy' do
     end
   end
 
-  context 'Thin + delayed_job' do
+  context 'Thin + http + delayed_job' do
     let(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
+        deploy['dummy_project']['source'] = {
+          'adapter' => 'http',
+          'user' => 'user',
+          'password' => 'password',
+          'url' => 'https://example.com/path/project.zip'
+        }
         deploy['dummy_project']['appserver']['adapter'] = 'thin'
         deploy['dummy_project']['worker']['adapter'] = 'delayed_job'
         solo_node.set['deploy'] = deploy
@@ -224,10 +230,39 @@ describe 'opsworks_ruby::deploy' do
     let(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
         deploy = node['deploy']
+        deploy['dummy_project']['source'] = {
+          'adapter' => 'http',
+          'user' => 'user',
+          'password' => 'password',
+          'url' => 'https://example.com/path/project.zip'
+        }
         deploy['dummy_project']['appserver']['adapter'] = 'thin'
         deploy['dummy_project']['worker']['adapter'] = 'delayed_job'
         solo_node.set['deploy'] = deploy
       end
+    end
+    let(:tmpdir) { '/tmp/opsworks_ruby' }
+
+    before do
+      allow(Dir).to receive(:mktmpdir).and_return(tmpdir)
+      stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(app_source: {})])
+    end
+
+    it 'downloads project file from http' do
+      expect(chef_run).to create_remote_file(File.join(tmpdir, 'archive', 'project.zip')).with(
+        source: 'https://user:password@example.com/path/project.zip',
+        owner: 'deploy',
+        group: 'www-data',
+        mode: '0600'
+      )
+    end
+
+    it 'creates dummy git repository' do
+      expect(chef_run).to run_execute(
+        "cd #{File.join(tmpdir, 'archive.d')} && git init && " \
+        'git config user.name \'Chef\' && git config user.email \'chef@localhost\' && ' \
+        'git add -A && git commit --author=\'Chef <>\' -m \'dummy repo\' -an'
+      )
     end
 
     it 'performs a deploy on debian' do

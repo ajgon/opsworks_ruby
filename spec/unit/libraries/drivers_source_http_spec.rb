@@ -2,21 +2,21 @@
 
 require 'spec_helper'
 
-describe Drivers::Source::S3 do
-  let(:s3_aws_opsworks_app) do
+describe Drivers::Source::Http do
+  let(:http_aws_opsworks_app) do
     aws_opsworks_app(
       app_source: {
-        password: 'AWS_SECRET_ACCESS_KEY',
-        type: 's3',
-        url: 'https://s3.amazonaws.com/bucket/file.tar.gz',
-        user: 'AWS_ACCESS_KEY_ID'
+        password: 'password',
+        type: 'archive',
+        url: 'https://example.com/path/file.tar.gz',
+        user: 'user'
       }
     )
   end
-  let(:driver) { described_class.new(dummy_context(node), s3_aws_opsworks_app) }
+  let(:driver) { described_class.new(dummy_context(node), http_aws_opsworks_app) }
 
   it 'receives and exposes app and node' do
-    expect(driver.app).to eq s3_aws_opsworks_app
+    expect(driver.app).to eq http_aws_opsworks_app
     expect(driver.send(:node)).to eq node
     expect(driver.options).to eq({})
   end
@@ -45,7 +45,7 @@ describe Drivers::Source::S3 do
 
     it 'adapter = missing, engine = correct' do
       expect do
-        described_class.new(dummy_context(node(deploy: { dummy_project: {} })), s3_aws_opsworks_app).out
+        described_class.new(dummy_context(node(deploy: { dummy_project: {} })), http_aws_opsworks_app).out
       end.not_to raise_error
     end
 
@@ -74,7 +74,7 @@ describe Drivers::Source::S3 do
     it 'adapter = wrong, engine = correct' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { source: { adapter: 'svn' } } })), s3_aws_opsworks_app
+          dummy_context(node(deploy: { dummy_project: { source: { adapter: 'svn' } } })), http_aws_opsworks_app
         ).out
       end.not_to raise_error
     end
@@ -83,7 +83,7 @@ describe Drivers::Source::S3 do
       expect do
         described_class.new(
           dummy_context(
-            node(deploy: { dummy_project: { source: { adapter: 's3', url: 'http://example.com' } } })
+            node(deploy: { dummy_project: { source: { adapter: 'http', url: 'http://example.com' } } })
           ),
           aws_opsworks_app(app_source: nil)
         ).out
@@ -93,7 +93,7 @@ describe Drivers::Source::S3 do
     it 'adapter = correct, engine = wrong' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { source: { adapter: 's3' } } })),
+          dummy_context(node(deploy: { dummy_project: { source: { adapter: 'http' } } })),
           aws_opsworks_app(app_source: { type: 'svn' })
         ).out
       end.to raise_error ArgumentError,
@@ -103,7 +103,7 @@ describe Drivers::Source::S3 do
     it 'adapter = correct, engine = correct' do
       expect do
         described_class.new(
-          dummy_context(node(deploy: { dummy_project: { source: { adapter: 's3' } } })), s3_aws_opsworks_app
+          dummy_context(node(deploy: { dummy_project: { source: { adapter: 'http' } } })), http_aws_opsworks_app
         ).out
       end.not_to raise_error
     end
@@ -112,23 +112,23 @@ describe Drivers::Source::S3 do
   context 'connection data' do
     after(:each) do
       expect(@item.out).to eq(
-        password: 'AWS_SECRET_ACCESS_KEY',
-        url: 'https://s3.amazonaws.com/bucket/file.tar.gz',
-        user: 'AWS_ACCESS_KEY_ID'
+        password: 'password',
+        url: 'https://example.com/path/file.tar.gz',
+        user: 'user'
       )
     end
 
     it 'taken from engine' do
-      @item = described_class.new(dummy_context(node), s3_aws_opsworks_app)
+      @item = described_class.new(dummy_context(node), http_aws_opsworks_app)
     end
 
     it 'taken from adapter' do
       node_data = node
       node_data['deploy']['dummy_project']['source'] = {
-        'adapter' => 's3',
-        'password' => 'AWS_SECRET_ACCESS_KEY',
-        'url' => 'https://s3.amazonaws.com/bucket/file.tar.gz',
-        'user' => 'AWS_ACCESS_KEY_ID'
+        'adapter' => 'http',
+        'password' => 'password',
+        'url' => 'https://example.com/path/file.tar.gz',
+        'user' => 'user'
       }
       @item = described_class.new(dummy_context(node_data), aws_opsworks_app(app_source: nil))
     end

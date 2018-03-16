@@ -34,4 +34,22 @@ describe Drivers::Source::Factory do
     source = described_class.build(dummy_context(node_data), aws_opsworks_app(app_source: nil))
     expect(source).to be_instance_of(Drivers::Source::S3)
   end
+
+  it 'returns a Http class from app source' do
+    node_data = node
+    node_data['deploy']['dummy_project']['source'] = {}
+
+    source = described_class.build(
+      dummy_context(node_data), aws_opsworks_app(app_source: { type: 'archive', url: 'http://example.com' })
+    )
+    expect(source).to be_instance_of(Drivers::Source::Http)
+  end
+
+  it 'returns a Http class from node source' do
+    node_data = node
+    node_data['deploy']['dummy_project']['source'] = { 'adapter' => 'http', 'url' => 'http://example.com' }
+
+    source = described_class.build(dummy_context(node_data), aws_opsworks_app(app_source: nil))
+    expect(source).to be_instance_of(Drivers::Source::Http)
+  end
 end

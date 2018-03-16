@@ -89,6 +89,10 @@ end
 
 describe 'opsworks_ruby::deploy' do
   context 'source' do
+    describe file('/tmp/ssh-git-wrapper.sh') do
+      it { should_not exist }
+    end
+
     describe file('/srv/www/dummy_project/current/.git') do
       it { should_not exist }
     end

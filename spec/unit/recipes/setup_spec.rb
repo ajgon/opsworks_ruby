@@ -361,11 +361,12 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
-  context 'Sqlite + delayed_job' do
+  context 'Sqlite + http + delayed_job' do
     temp_node = node['deploy']
     temp_node['dummy_project']['database'] = {}
     temp_node['dummy_project']['database']['adapter'] = 'sqlite'
     temp_node['dummy_project']['worker']['adapter'] = 'delayed_job'
+    temp_node['dummy_project']['source'] = {}
 
     let(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
@@ -380,17 +381,32 @@ describe 'opsworks_ruby::setup' do
     end
 
     before do
+      stub_search(:aws_opsworks_app, '*:*')
+        .and_return([aws_opsworks_app(app_source: { type: 'archive', url: 'http://example.com' })])
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
     end
 
     it 'installs required packages for debian' do
+      expect(chef_run).to install_package('bzip2')
+      expect(chef_run).to install_package('git')
+      expect(chef_run).to install_package('gzip')
+      expect(chef_run).to install_package('p7zip')
+      expect(chef_run).to install_package('tar')
+      expect(chef_run).to install_package('unzip')
+      expect(chef_run).to install_package('xz-utils')
       expect(chef_run).to install_package('libsqlite3-dev')
       expect(chef_run).to install_package('monit')
     end
 
     it 'installs required packages for rhel' do
-      expect(chef_run_rhel).to install_package('sqlite-devel')
+      expect(chef_run_rhel).to install_package('bzip2')
+      expect(chef_run_rhel).to install_package('git')
+      expect(chef_run_rhel).to install_package('gzip')
       expect(chef_run_rhel).to install_package('monit')
+      expect(chef_run_rhel).to install_package('sqlite-devel')
+      expect(chef_run_rhel).to install_package('tar')
+      expect(chef_run_rhel).to install_package('unzip')
+      expect(chef_run_rhel).to install_package('xz')
     end
   end
 

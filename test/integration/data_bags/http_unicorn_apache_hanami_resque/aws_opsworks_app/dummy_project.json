@@ -1,13 +1,10 @@
 {
   "app_id": "3aef37c1-7e2b-4255-bbf1-03e06f07701a",
   "app_source": {
-    "password": "3aa161d358a167204502",
-    "revision": "hanami",
-    "ssh_key_comment": "Don't get cocky, this is a dummy key only for this purpose",
-    "ssh_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAoQkCQh13eet7vpN/IbFuxKlaeHLUmn9ZKGA9ZvJyTc88PkWa\nNRD9t3GzeGVYOfwTELgh1WJ88Qs1vz/zR+Wm4l9sbMusINJCMzTYnPuPRjPGqxkU\n6JEiknRgJGaSYRHS0QX4+VAkaD1rhJA4ETxOC7Eb/egfoTJNo28rey9PTjB6fiAV\nRvwY6xjPMA8aTmzGHS4C+L+FwNXGuCiqqS9H5brGzdGd2d1vD/OQYP3VNe7MLmy0\nXeaIj8HZ0fGGa8Nb07UBDuf2ChJ1kSnEobGyDtwimN8HJrdaoZYgetKtGC4m+dlW\nQN1YaWuKh9HBNc8YAEgNWs38h0qzZWfR9SAHowIDAQABAoIBADSy5QlL6Vh9xq40\nSKt3DF/RaCj4szioKj47WHzDJMLv6bAbSP7Kw6zvyaLBz6CSLI8RIwlYxLiBSaJ/\nxBaoQffc8HeeI4NOK5nkVmrxLA72TLKbb6s4K88vxHLFGmwn0AzVXogAQRnX18K3\nC5IgYQ4UdKuf9hHji2LLs7gJYHOehuKwlsp7xaq3LJFSjoMFyM00o2NWQ009UuUT\nkpkFUxIb0SfPgDPZJsKvBygPw+WN47C6E09n42udQOTq8YWExA2SlQWrzHTv1pwf\nQzxJBIUWX3SM/R7drVxwqd5tfyjgCt2EiHDPBvnU5uJcSB1NQwbf/l3twDbucvSp\nCkxMMjkCgYEAzFVnJkuJNuK7gySwvJerpwuEd7WmsLZ/DlMZXIuskZtxX9KHdbgJ\nPV785Ro1QIv+4tzxmYSVJovaDOGh56AjWdI4r4K8gfcWEG8SIddprPTryLGyRsdK\n2n75DtR+cWYVJachlZBTX9dljEYKxaHMqdsb0JjVRQ+/RDX+lVRkYT0CgYEAycDh\nyT0LZH3hVYo0DbKAYWNEJixKa5mjxKYPUiqkPYZBrR/UwxkoqScZw5P0CqnL5Xeo\nAlmDMg+MH3cG9UsBwph5OEyNBSDjZ9fcgrjyV79qG6G5ORNLvoybxrAi6roFYoO5\nUR2xFtGlWPhwI8XjIQveDQ+Oh1rpyvycHDp62l8CgYEAn4L4EDwddNxRF5KX6dHZ\nLYFfOvhylTcSPsN+Y/GhmNWpDu3R04MEq4UwlUT9V1MyejWS4Y5PxRSd9zpY4vHv\nRtpGaDT+JdMWxWN/2y1HkL5uJnEZxAkmFSXUFdCqmKnhTlCHdjOB8qq62mN/W0Lw\n+5RRxWjZ7JzbaktgX4DPD90CgYAiJkDRhECqaNg8V2FKND2gvmGpqHOMVPwwa/9J\n5Cfath/lwu6Le3WzdAfbX+6941G87I0GoMohLhqEtOv7lw+cNZzHF8YC6Tc0u4f6\npH14ttCqDqzAaXC3tysi7WtrmcMRksRKY6E3AJNhROQOWg+A53ZVdZ2lcZEDJ9Dw\nwkFLNwKBgAiVUf4INOpW+6XcmXnaVbj2iCuIjEgnFa222U5I6XLxYFi8KvxojipU\n/k06kephV723a3AKx9Hj2Dq1LHkmyHVG7WJtP14jv4d6VIScKePYrB07NoQaq/HL\n+PK1ghQJ4ZOk+L4H0qBmLtzRFotSQJlsGuw8qY6M0ieiauiCu+AD\n-----END RSA PRIVATE KEY-----\n",
-    "type": "git",
-    "url": "git@github.com:ajgon/dummy-app.git",
-    "user": "dummy"
+    "password": "",
+    "type": "archive",
+    "url": "https://raw.githubusercontent.com/ajgon/dummy-app/archive/http_unicorn_apache_hanami_resque.zip",
+    "user": ""
   },
   "attributes": {
     "auto_bundle_on_deploy": true,

@@ -198,7 +198,7 @@ source
 
 -  ``app['source']['adapter']``
 
-  -  **Supported values:** ``git``, ``s3``
+  -  **Supported values:** ``git``, ``http``, ``s3``
   -  **Default:** ``git``
   -  Source used by the cookbook to fetch the application codebase.
 
@@ -260,6 +260,21 @@ s3
 -  ``app['source']['password']``
 
   -  ``AWS_SECRET_ACCESS_KEY`` for given ``AWS_ACCESS_KEY_ID``.
+
+http
+^^^^
+
+| This source expects a packed project in one of the following formats:
+| ``bzip2``, ``compress``, ``gzip``, ``tar``, ``xz`` or ``zip``.
+| If you are using ubuntu, ``7zip`` is also supported.
+
+-  ``app['source']['user']``
+
+  -  If file is hidden behind HTTP BASIC AUTH, this field should contain username.
+
+-  ``app['source']['password']``
+
+  -  If file is hidden behind HTTP BASIC AUTH, this field should contain password.
 
 framework
 ~~~~~~~~~
