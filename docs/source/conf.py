@@ -51,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'opsworks_ruby'
-copyright = u'2016, Igor Rzegocki <igor@rzegocki.pl>'
+copyright = u'2016-2018, Igor Rzegocki <igor@rzegocki.pl>'
 author = u'Igor Rzegocki <igor@rzegocki.pl>'
 
 # The version info for the project you're documenting, acts as replacement for
