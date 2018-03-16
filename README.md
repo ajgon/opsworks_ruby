@@ -1,3 +1,7 @@
+## Development server
+
+docker-compose up
+
 ## Deploy
 
 ```

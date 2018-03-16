@@ -90,26 +90,33 @@
       "description":"Database name."
     }
   },
-  "scm":{
-    "scm_provider":{
+  "source":{
+    "adapter":{
       "type":"string",
       "values":[
-        "git"
+        "git",
+        "s3"
       ],
       "default":"git",
-      "description":"SCM used by the cookbook to clone the repo."
+      "description":"Source used by the cookbook to fetch the application codebase."
+    },
+    "url":{
+      "type":"string",
+      "description":"Source code URL (repository URL for SCMs)."
     },
     "remove_scm_files":{
       "type":"boolean",
       "default":true,
+      "depends":[
+        "git"
+      ],
       "description":"If set to true, all SCM leftovers (like .git) will be removed."
-    },
-    "repository":{
-      "type":"string",
-      "description":"Repository URL."
     },
     "revision":{
       "type":"string",
+      "depends":[
+        "git"
+      ],
       "description":"Branch name/SHA1 of commit which should be used as a base of the deployment."
     },
     "ssh_key":{
@@ -142,6 +149,20 @@
         "git"
       ],
       "description":"If set to true, any submodules included in the repository, will also be fetched."
+    },
+    "user":{
+      "type":"string",
+      "depends":[
+        "s3"
+      ],
+      "description":"AWS_ACCESS_KEY_ID with read access to the bucket."
+    },
+    "password":{
+      "type":"string",
+      "depends":[
+        "s3"
+      ],
+      "description":"AWS_SECRET_ACCESS_KEY for given AWS_ACCESS_KEY_ID."
     }
   },
   "framework":{

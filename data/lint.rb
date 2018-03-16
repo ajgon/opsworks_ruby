@@ -51,7 +51,8 @@ begin
     valid = [true, false].include?(item['default']) if item['type'] == 'boolean'
     valid = item['default'].is_a?(Float) if item['type'] == 'float'
     valid = item['default'].is_a?(Integer) if item['type'] == 'integer'
-    valid = item['default'].is_a?(String) if item['type'] == 'string' || item['type'] == 'text' || item['type'] == 'json'
+    valid = item['default'].is_a?(String) if item['type'] == 'string' || item['type'] == 'text'
+    valid = item['default'].is_a?(Array) || item['default'].is_a?(Hash) if item['type'] == 'json'
     item['default'] && !valid
   end
   error('Invalid defaults found', wrong_defaults)
