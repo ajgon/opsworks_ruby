@@ -14,7 +14,7 @@ describe Drivers::Source::Factory do
 
   it 'returns a Git class' do
     source = described_class.build(dummy_context(node), aws_opsworks_app)
-    expect(source).to be_instance_of(Drivers::Source::Git)
+    expect(source).to be_instance_of(Drivers::Source::Scm::Git)
   end
 
   it 'returns a S3 class from app source' do
@@ -24,7 +24,7 @@ describe Drivers::Source::Factory do
     source = described_class.build(
       dummy_context(node_data), aws_opsworks_app(app_source: { type: 's3', url: 'http://example.com' })
     )
-    expect(source).to be_instance_of(Drivers::Source::S3)
+    expect(source).to be_instance_of(Drivers::Source::Remote::S3)
   end
 
   it 'returns a S3 class from node source' do
@@ -32,7 +32,7 @@ describe Drivers::Source::Factory do
     node_data['deploy']['dummy_project']['source'] = { 'adapter' => 's3', 'url' => 'http://example.com' }
 
     source = described_class.build(dummy_context(node_data), aws_opsworks_app(app_source: nil))
-    expect(source).to be_instance_of(Drivers::Source::S3)
+    expect(source).to be_instance_of(Drivers::Source::Remote::S3)
   end
 
   it 'returns a Http class from app source' do
@@ -42,7 +42,7 @@ describe Drivers::Source::Factory do
     source = described_class.build(
       dummy_context(node_data), aws_opsworks_app(app_source: { type: 'archive', url: 'http://example.com' })
     )
-    expect(source).to be_instance_of(Drivers::Source::Http)
+    expect(source).to be_instance_of(Drivers::Source::Remote::Http)
   end
 
   it 'returns a Http class from node source' do
@@ -50,6 +50,6 @@ describe Drivers::Source::Factory do
     node_data['deploy']['dummy_project']['source'] = { 'adapter' => 'http', 'url' => 'http://example.com' }
 
     source = described_class.build(dummy_context(node_data), aws_opsworks_app(app_source: nil))
-    expect(source).to be_instance_of(Drivers::Source::Http)
+    expect(source).to be_instance_of(Drivers::Source::Remote::Http)
   end
 end

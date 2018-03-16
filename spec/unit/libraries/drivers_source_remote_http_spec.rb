@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Drivers::Source::Http do
+describe Drivers::Source::Remote::Http do
   let(:http_aws_opsworks_app) do
     aws_opsworks_app(
       app_source: {
