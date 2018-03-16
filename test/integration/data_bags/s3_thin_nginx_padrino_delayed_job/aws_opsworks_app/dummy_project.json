@@ -4,7 +4,7 @@
     "password": "xhFwHAMEr51z1+eKylU0zLZEzxwgleiaMcFikGW7",
     "ssh_key_comment": "Don't get cocky, this is are dummy AWS credentials only for this purpose",
     "type": "s3",
-    "url": "https://s3.eu-west-2.amazonaws.com/opsworks-ruby-dummy-app/s3_thin_nginx_padrino_delayed_job.tar.gz",
+    "url": "https://s3.eu-west-2.amazonaws.com/opsworks-ruby-dummy-app/test/s3_thin_nginx_padrino_delayed_job.tar.gz",
     "user": "AKIAJLVMILCB53T2UMQA"
   },
   "attributes": {

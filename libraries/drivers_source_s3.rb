@@ -32,11 +32,11 @@ module Drivers
 
       def prepare_archive_directories
         context.directory(archive_file_dir) do
-          mode '0700'
+          mode '0755'
         end
 
         context.directory(dummy_repository_dir) do
-          mode '0700'
+          mode '0755'
         end
       end
 
@@ -46,7 +46,7 @@ module Drivers
         base_url = @base_url
         output = out
 
-        context.s3_file File.join(archive_file_dir, s3_key) do
+        context.s3_file File.join(archive_file_dir, File.basename(s3_key)) do
           bucket s3_bucket
           remote_path s3_key
           aws_access_key_id output[:user]
@@ -62,11 +62,11 @@ module Drivers
       def prepare_dummy_git_repository
         chef_archive_file_dir = archive_file_dir
         chef_dummy_repository_dir = dummy_repository_dir
-        s3_key = @s3_key
+        file_name = File.basename(@s3_key)
 
         context.ruby_block 'extract' do
           block do
-            OpsworksRuby::Archive.new(File.join(chef_archive_file_dir, s3_key)).uncompress(chef_dummy_repository_dir)
+            OpsworksRuby::Archive.new(File.join(chef_archive_file_dir, file_name)).uncompress(chef_dummy_repository_dir)
           end
         end
 
