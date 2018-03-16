@@ -6,7 +6,7 @@ Cookbooks
 
 -  `deployer`_
 -  `ruby-ng`_
--  `chef_nginx`_
+-  `nginx`_
 
 Platform
 --------
@@ -20,4 +20,4 @@ In addition, all recent Debian family distrubutions are assumed to work.
 
 .. _deployer: https://supermarket.chef.io/cookbooks/deployer
 .. _ruby-ng: https://supermarket.chef.io/cookbooks/ruby-ng
-.. _chef_nginx: https://github.com/chef-cookbooks/chef_nginx
+.. _nginx: https://github.com/chef-cookbooks/nginx

@@ -10,7 +10,7 @@ version '1.8.0'
 chef_version '~> 12.0' if respond_to?(:chef_version)
 
 depends 'deployer'
-depends 'chef_nginx'
+depends 'nginx'
 depends 'logrotate'
 depends 'ruby-ng'
 depends 's3_file'
