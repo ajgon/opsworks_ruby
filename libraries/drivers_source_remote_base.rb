@@ -22,7 +22,7 @@ module Drivers
         end
 
         def deploy_before_restart
-          remove_dot_git
+          remove_obsolete_directories
         end
 
         def prepare_archive_directories
@@ -54,8 +54,13 @@ module Drivers
           context.execute dummy_git_command
         end
 
-        def remove_dot_git
+        def remove_obsolete_directories
           context.directory File.join(deploy_dir(app), 'current', '.git') do
+            recursive true
+            action :delete
+          end
+
+          context.directory tmpdir do
             recursive true
             action :delete
           end
