@@ -1,3 +1,33 @@
+<a name="1.9.0"></a>
+# [1.9.0](https://github.com/ajgon/opsworks_ruby/compare/v1.8.0...v1.9.0) (2018-03-17)
+
+
+### Bug Fixes
+
+* **appserver:** Wait up to 10 sec for graceful shutdown ([def1c21](https://github.com/ajgon/opsworks_ruby/commit/def1c21)), closes [#127](https://github.com/ajgon/opsworks_ruby/issues/127)
+* **configure:** Don't create pids symlink if it already exists ([4671ac9](https://github.com/ajgon/opsworks_ruby/commit/4671ac9)), closes [#126](https://github.com/ajgon/opsworks_ruby/issues/126)
+* **appserver:** failed to start appserver. ([#146](https://github.com/ajgon/opsworks_ruby/issues/146)) ([4505890](https://github.com/ajgon/opsworks_ruby/commit/4505890))
+* **source:** remove temporary directories after deploy ([b92417f](https://github.com/ajgon/opsworks_ruby/commit/b92417f))
+* **source:** Subdirectories on S3 are now properly handled ([9373173](https://github.com/ajgon/opsworks_ruby/commit/9373173))
+* **webserver:** Switched `chef_nginx` back to `nginx` cookbook ([683f840](https://github.com/ajgon/opsworks_ruby/commit/683f840)), closes [#148](https://github.com/ajgon/opsworks_ruby/issues/148)
+
+
+### Features
+
+* **ruby:** Added support for ruby 2.5 ([2fd887a](https://github.com/ajgon/opsworks_ruby/commit/2fd887a))
+* **source:** Added support for HTTP ([34829f2](https://github.com/ajgon/opsworks_ruby/commit/34829f2))
+* **source:** Added support for S3 ([019c0ad](https://github.com/ajgon/opsworks_ruby/commit/019c0ad)), closes [#133](https://github.com/ajgon/opsworks_ruby/issues/133)
+
+
+### BREAKING CHANGES
+
+* **source:** `app['scm']` has been renamed to `app['source']`. This
+only affects the Custom JSON files, so if you were using this block
+there, you should change it. If you were using OpsWorks git configurator
+(which is probably 99.99% true), this change wouldn't affect you.
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/ajgon/opsworks_ruby/compare/v1.7.1...v1.8.0) (2017-10-23)
 
