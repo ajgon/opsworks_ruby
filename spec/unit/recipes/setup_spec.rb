@@ -182,6 +182,19 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
+  context 'debian preparations' do
+    it 'javascript-common' do
+      expect(chef_run).to purge_apt_package('javascript-common')
+    end
+
+    it 'monit' do
+      expect(chef_run).to run_execute('mkdir -p /etc/monit/conf.d')
+      expect(chef_run).to create_file('/etc/monit/conf.d/00_httpd.monitrc').with(
+        content: "set httpd port 2812 and\n    use address localhost\n    allow localhost"
+      )
+    end
+  end
+
   context 'epel' do
     it 'rhel' do
       expect(chef_run_rhel).to run_execute('yum-config-manager --enable epel')
@@ -220,6 +233,8 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run).to install_package('libpq-dev')
       expect(chef_run).to install_package('redis-server')
       expect(chef_run).to install_package('monit')
+      expect(chef_run).to install_package('tzdata')
+      expect(chef_run).to install_package('libxml2-dev')
     end
 
     it 'installs required packages for rhel' do
@@ -229,6 +244,8 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run_rhel).to install_package('postgresql94-devel')
       expect(chef_run_rhel).to install_package('redis')
       expect(chef_run_rhel).to install_package('monit')
+      expect(chef_run_rhel).to install_package('tzdata')
+      expect(chef_run_rhel).to install_package('libxml2-devel')
     end
 
     it 'defines service which starts nginx' do
@@ -272,6 +289,7 @@ describe 'opsworks_ruby::setup' do
 
     context 'debian' do
       it 'installs required packages' do
+        expect(chef_run).to install_package('apache2')
         expect(chef_run).to install_package('bzip2')
         expect(chef_run).to install_package('git')
         expect(chef_run).to install_package('gzip')

@@ -104,6 +104,7 @@ describe 'opsworks_ruby::deploy' do
         'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets public/test]
       )
 
+      expect(chef_run).to disable_logrotate_app('rails')
       expect(chef_run).to run_execute('stop unicorn')
       expect(chef_run).to run_execute('start unicorn')
       expect(deploy).to notify('service[nginx]').to(:reload).delayed
@@ -182,6 +183,13 @@ describe 'opsworks_ruby::deploy' do
       )
     end
 
+    it 'creates temporary archive directories' do
+      expect(chef_run).to run_ruby_block('extract')
+      expect(chef_run).to create_directory(tmpdir)
+      expect(chef_run).to create_directory(File.join(tmpdir, 'archive'))
+      expect(chef_run).to create_directory(File.join(tmpdir, 'archive.d'))
+    end
+
     it 'creates dummy git repository' do
       expect(chef_run).to run_execute(
         "cd #{File.join(tmpdir, 'archive.d')} && git init && " \
@@ -257,6 +265,12 @@ describe 'opsworks_ruby::deploy' do
       )
     end
 
+    it 'creates temporary archive directories' do
+      expect(chef_run).to create_directory(tmpdir)
+      expect(chef_run).to create_directory(File.join(tmpdir, 'archive'))
+      expect(chef_run).to create_directory(File.join(tmpdir, 'archive.d'))
+    end
+
     it 'creates dummy git repository' do
       expect(chef_run).to run_execute(
         "cd #{File.join(tmpdir, 'archive.d')} && git init && " \
@@ -304,10 +318,10 @@ describe 'opsworks_ruby::deploy' do
     end.converge(described_recipe)
     service = chef_run.service('puma_a1')
 
+    expect(chef_run).to create_directory('/run/lock/a1')
     expect(chef_run).to create_directory('/srv/www/a1/shared')
     expect(chef_run).to create_directory('/srv/www/a1/shared/config')
     expect(chef_run).to create_directory('/srv/www/a1/shared/log')
-    expect(chef_run).to create_directory('/run/lock/a1')
     expect(chef_run).to create_directory('/srv/www/a1/shared/scripts')
     expect(chef_run).to create_directory('/srv/www/a1/shared/sockets')
     expect(chef_run).to create_directory('/srv/www/a1/shared/vendor/bundle')
@@ -315,6 +329,7 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to create_template('/srv/www/a1/shared/config/puma.rb')
     expect(chef_run).to create_template('/srv/www/a1/shared/scripts/puma.service')
     expect(chef_run).to create_template('/etc/nginx/sites-available/a1.conf')
+    expect(chef_run).to create_link('/srv/www/a1/shared/pids')
     expect(chef_run).to create_link('/etc/nginx/sites-enabled/a1.conf')
     expect(chef_run).to enable_logrotate_app('a1-nginx-production')
     expect(chef_run).to enable_logrotate_app('a1-rails-production')
@@ -367,6 +382,7 @@ describe 'opsworks_ruby::deploy' do
         expect(chef_run).to create_directory('/some/other/path/to/a1/shared/sockets')
         expect(chef_run).to create_directory('/some/other/path/to/a1/shared/vendor/bundle')
         expect(chef_run).to create_directory('/run/lock/a1')
+        expect(chef_run).to create_link('/some/other/path/to/a1/shared/pids')
         expect(chef_run).to create_template('/some/other/path/to/a1/shared/config/database.yml')
         expect(chef_run).to create_template('/some/other/path/to/a1/shared/config/puma.rb')
         expect(chef_run).to create_template('/some/other/path/to/a1/shared/scripts/puma.service')
