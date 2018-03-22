@@ -241,7 +241,7 @@ describe 'opsworks_ruby::setup' do
       expect(chef_run_rhel).to install_package('nginx')
       expect(chef_run_rhel).to install_package('zlib-devel')
       expect(chef_run_rhel).to install_package('git')
-      expect(chef_run_rhel).to install_package('postgresql94-devel')
+      expect(chef_run_rhel).to install_package('postgresql96-devel')
       expect(chef_run_rhel).to install_package('redis')
       expect(chef_run_rhel).to install_package('monit')
       expect(chef_run_rhel).to install_package('tzdata')
