@@ -63,6 +63,12 @@ default['defaults']['appserver']['thread_max'] = 16
 default['defaults']['appserver']['restart_signal'] = 'USR2'
 # for rolling restart use USR1
 # default['defaults']['appserver']['restart_signal'] = 'USR1'
+default['defaults']['appserver']['on_restart'] = nil
+default['defaults']['appserver']['before_fork'] = nil
+default['defaults']['appserver']['on_worker_boot'] = nil
+default['defaults']['appserver']['on_worker_shutdown'] = nil
+default['defaults']['appserver']['on_worker_fork'] = nil
+default['defaults']['appserver']['after_worker_fork'] = nil
 
 ## thin
 
