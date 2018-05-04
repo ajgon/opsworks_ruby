@@ -83,7 +83,7 @@ workers <%= @out[:worker_processes] %>
 #   puts "Starting workers..."
 # end
 before_fork do
-  <%= @out[:before_fork] %>
+  <%= @out[:before_fork] || 'puts "Starting workers..."'%>
 end
 
 # Code to run in a worker before it starts serving requests.
@@ -94,7 +94,7 @@ end
 #   puts 'On worker boot...'
 # end
 on_worker_boot do
-  <%= @out[:on_worker_boot] %>
+  <%= @out[:on_worker_boot] || 'puts "On worker boot..."' %>
 end
 
 # Code to run in a worker right before it exits.
@@ -105,7 +105,7 @@ end
 #   puts 'On worker shutdown...'
 # end
 on_worker_shutdown do
-  <%= @out[:on_worker_shutdown] %>
+  <%= @out[:on_worker_shutdown] || 'puts "On worker shutdown..."' %>
 end
 
 # Code to run in the master right before a worker is started. The worker's
@@ -116,8 +116,8 @@ end
 # on_worker_fork do
 #   puts 'Before worker fork...'
 # end
-on_worker_fork do
-  <%= @out[:on_worker_fork] %>
+on_worker_fork do |worker_id|
+  <%= @out[:on_worker_fork] || 'puts "Before worker #{worker_id} fork..."' %>
 end
 
 # Code to run in the master after a worker has been started. The worker's
@@ -128,8 +128,8 @@ end
 # after_worker_fork do
 #   puts 'After worker fork...'
 # end
-after_worker_fork do
-  <%= @out[:after_worker_fork] %>
+after_worker_fork do |worker_id|
+  <%= @out[:after_worker_fork] || 'puts "After worker #{worker_id} fork..."' %>
 end
 
 # Change the default timeout of worker startup
