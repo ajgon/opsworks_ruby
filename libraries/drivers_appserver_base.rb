@@ -19,8 +19,9 @@ module Drivers
       end
 
       def after_deploy
-        manual_action(:stop)
-        manual_action(:start)
+        action = node['deploy'][app['shortname']]['appserver']['after_deploy'] ||
+                 node['defaults']['appserver']['after_deploy']
+        manual_action(action)
       end
       alias after_undeploy after_deploy
 
@@ -48,6 +49,7 @@ module Drivers
 
         context.execute "#{action} #{adapter}" do
           command "#{service_script} #{action}"
+          live_stream true
         end
       end
 

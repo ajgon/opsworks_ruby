@@ -22,7 +22,7 @@ def run_and_ignore_exitcode_and_print_command(command)
   system(command)
 end
 
-def <%= @name %>_running?
+def running?
   if File.exists?(PID_PATH) && (pid = File.read(PID_PATH).chomp) && system("ps aux | grep #{pid} | grep -v grep > /dev/null")
     pid
   else
@@ -41,20 +41,22 @@ def different_gemfile?
   false
 end
 
-def start_<%= @name %>
+def start
+  puts "Starting <%= @name.capitalize %> #{APP_NAME}"
   run_and_ignore_exitcode_and_print_command "cd #{ROOT_PATH}/current && /usr/local/bin/bundle exec <%= @command %>"
 end
 
-def stop_<%= @name %>
-  unless <%= @name %>_running?
+def stop
+  unless running?
     puts "You can't stop <%= @name %>, because it's not running"
     return
   end
 
+  puts "Stopping <%= @name.capitalize %> #{APP_NAME}"
   retries = 10
 
   loop do
-    break if !<%= @name %>_running? || retries <= 0
+    break if !running? || retries <= 0
 
     run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
     sleep 1
@@ -64,32 +66,35 @@ def stop_<%= @name %>
   `rm #{PID_PATH}` if run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
 end
 
-def restart_<%= @name %>
-  if <%= @name %>_running?
+def stop_start
+  stop
+  start
+end
+
+def restart
+  if running?
+    puts "Restarting <%= @name.capitalize %> #{APP_NAME}"
     run_and_ignore_exitcode_and_print_command "kill -USR2 `cat #{PID_PATH}`"
   else
-    start_<%= @name %>
+    start
   end
 end
 
 def clean_restart
   if different_gemfile?
     puts "Found a previous version with a different Gemfile: Doing a stop & start"
-    stop_<%= @name %> if <%= @name %>_running?
-    start_<%= @name %>
+    stop_start
   else
-    puts "No previous version with a different Gemfile found. Assuming a quick restart without re-loading gems is save"
-    restart_<%= @name %>
+    puts "No previous version with a different Gemfile found. Assuming a quick restart without re-loading gems is safe"
+    restart
   end
 end
 
-def status_<%= @name %>
-  if pid = <%= @name %>_running?
-    puts "<%= @name.capitalize %> <%= @app_shortname %> running with PID #{pid}"
-    return true
+def status
+  if pid = running?
+    puts "<%= @name.capitalize %> #{APP_NAME} running with PID #{pid}"
   else
-    puts "<%= @name.capitalize %> <%= @app_shortname %> not running"
-    return false
+    puts "<%= @name.capitalize %> #{APP_NAME} not running"
   end
 end
 
@@ -98,19 +103,20 @@ puts "Set <%= @name.capitalize %> process UID to #{uid}"
 
 case ARGV[0]
 when "start"
-  puts "Starting <%= @name.capitalize %> #{APP_NAME}"
-  start_<%= @name %>
+  start
 when "stop"
-  puts "Stopping <%= @name.capitalize %> #{APP_NAME}"
-  stop_<%= @name %>
+  stop
 when "status"
-  status_<%= @name %>
+  status
 when "restart"
-  restart_<%= @name %>
+  restart
 when "clean-restart"
   clean_restart
+when "stop-start"
+  puts "Stopping <%= @name.capitalize %> #{APP_NAME}"
+  stop_start
 else
-  puts "Usage: {start|stop|status|restart|clean-restart}"
+  puts "Usage: {start|stop|status|restart|clean-restart|stop-start}"
   exit 1
 end
 
