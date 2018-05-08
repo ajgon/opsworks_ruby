@@ -160,7 +160,6 @@ describe 'opsworks_ruby::configure' do
         its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
         its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
         its(:content) { should include 'PID_PATH="/run/lock/yet_another_project/unicorn.pid"' }
-        its(:content) { should include 'def unicorn_running?' }
       end
     end
   end

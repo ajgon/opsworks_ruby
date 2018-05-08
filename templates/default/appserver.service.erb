@@ -113,7 +113,6 @@ when "restart"
 when "clean-restart"
   clean_restart
 when "stop-start"
-  puts "Stopping <%= @name.capitalize %> #{APP_NAME}"
   stop_start
 else
   puts "Usage: {start|stop|status|restart|clean-restart|stop-start}"
