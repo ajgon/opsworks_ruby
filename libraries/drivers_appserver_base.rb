@@ -19,7 +19,7 @@ module Drivers
       end
 
       def after_deploy
-        action = node['deploy'][app['shortname']]['appserver']['after_deploy'] ||
+        action = node['deploy'][app['shortname']].try(:[], 'appserver').try(:[], 'after_deploy') ||
                  node['defaults']['appserver']['after_deploy']
         manual_action(action)
       end
