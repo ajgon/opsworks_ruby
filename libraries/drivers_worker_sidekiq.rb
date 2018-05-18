@@ -80,44 +80,11 @@ module Drivers
       end
 
       def execute_sidekiqctl(*params)
-        if node['rbenv']
-          # Install / initialize an rbenv user with the ruby_version supplied
-          # Since the rbenv environment won't persist to library methods, and there are issues with pulling it out into it's own helper, we currently redefine this in multiple places
-          # Would be nice to DRY this up if possible
-
-          # Install Ruby via rbenv
-          ruby_version = node['rbenv']['ruby_version']
-          deploy_user = node['deployer']['user'] || root
-
-          # Install rbenv for deploy user
-          context.rbenv_user_install(deploy_user)
-
-          # Install a specified ruby_version for deploy user
-          context.rbenv_ruby(ruby_version) do
-            user(deploy_user)
-          end
-
-          # Globally set ruby_version for deploy user
-          context.rbenv_global(ruby_version) do
-            user(deploy_user)
-          end
-
-          context.rbenv_script do
-            code "sudo su - #{node['deployer']['user']} -c 'cd #{File.join(deploy_dir(app), 'current')} && " \
-                 "#{environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')} " \
-                 "bundle exec sidekiqctl #{params.map { |param| param.to_s.strip }.join(' ')}'"
-            user deploy_user
-            cwd File.join(deploy_to, 'current')
-            group www_group
-            environment env
-          end
-        else
-          context.execute(
-            "/bin/su - #{node['deployer']['user']} -c 'cd #{File.join(deploy_dir(app), 'current')} && " \
+        context.execute(
+          "/bin/su - #{node['deployer']['user']} -c 'cd #{File.join(deploy_dir(app), 'current')} && " \
               "#{environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')} " \
               "bundle exec sidekiqctl #{params.map { |param| param.to_s.strip }.join(' ')}'"
-          )
-        end
+        )
       end
     end
   end
