@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-# ruby
+# deployer
+default['deployer']['user'] = 'deploy'
+default['deployer']['group'] = 'deploy'
+default['deployer']['home'] = "/home/#{default['deployer']['user']}"
 
+# ruby
 default['build-essential']['compile_time'] = true
 default['ruby-ng']['ruby_version'] = node['ruby'].try(:[], 'version') || '2.5'
 default['nginx']['source']['modules'] = %w[

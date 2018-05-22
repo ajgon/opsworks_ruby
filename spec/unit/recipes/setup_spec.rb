@@ -34,8 +34,26 @@ describe 'opsworks_ruby::setup' do
     stub_command('which nginx').and_return(false)
   end
 
-  it 'includes recipes' do
-    expect(chef_run).to include_recipe('deployer')
+  context 'Deployer' do
+    it 'debian user' do
+      expect(chef_run).to create_group('deploy').with(gid: 5000)
+      expect(chef_run).to create_user('deploy').with(
+        comment: 'The deployment user',
+        uid: 5000,
+        gid: 5000,
+        home: '/home/deploy'
+      )
+    end
+
+    it 'rhel user' do
+      expect(chef_run).to create_group('deploy').with(gid: 5000)
+      expect(chef_run).to create_user('deploy').with(
+        comment: 'The deployment user',
+        uid: 5000,
+        gid: 5000,
+        home: '/home/deploy'
+      )
+    end
   end
 
   context 'Rubies' do

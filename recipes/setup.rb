@@ -7,6 +7,27 @@
 
 prepare_recipe
 
+# Create deployer user
+group node['deployer']['group'] do
+  gid 5000
+end
+
+user node['deployer']['user'] do
+  comment 'The deployment user'
+  uid 5000
+  gid 5000
+  shell '/bin/bash'
+  home node['deployer']['home']
+end
+
+sudo node['deployer']['user'] do
+  user      node['deployer']['user']
+  group     node['deployer']['group']
+  commands  %w[ALL]
+  host      'ALL'
+  nopasswd  true
+end
+
 # Monit and cleanup
 if node['platform_family'] == 'debian'
   execute 'mkdir -p /etc/monit/conf.d'
@@ -21,7 +42,6 @@ if node['platform_family'] == 'debian'
 end
 
 # Ruby and bundler
-include_recipe 'deployer'
 if node['platform_family'] == 'debian'
   include_recipe 'ruby-ng::dev'
 else

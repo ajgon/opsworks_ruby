@@ -26,7 +26,7 @@ PreCommit:
       - RELEASING.md
   Foodcritic:
     enabled: true
-    flags: ['-t', '~FC101']
+    flags: ['-t', '~chef13', '-t', '~chef14', '-t', '~chef15', '-t', '~chef16']
   HardTabs:
     enabled: true
     exclude:
