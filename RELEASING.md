@@ -14,12 +14,12 @@
 1. Put your chef private key associated with `opsworks_ruby` cookbook as `client.pem`
    file into project directory
 1. `docker-compose build`
-1. `docker-compose run cookbook sh -c "conventional-changelog -s -p angular -i CHANGELOG.md"`
+1. `docker-compose run --rm cookbook conventional-changelog -s -p angular -i CHANGELOG.md`
 1. Commit all the things with `chore: Version bump`
 1. Add new configuration options to `gh-pages-source` if necessary
 1. Tag version
 1. Push: `git push origin master --tags`
-1. `docker-compose run cookbook knife cookbook site share opsworks_ruby Applications`
+1. `docker-compose run --rm cookbook knife cookbook site share opsworks_ruby Applications`
 1. Draft new release on GitHub
 
 ## Solving problems with knife

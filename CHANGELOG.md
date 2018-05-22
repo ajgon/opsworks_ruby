@@ -1,3 +1,14 @@
+<a name="1.9.1"></a>
+## [1.9.1](https://github.com/ajgon/opsworks_ruby/compare/v1.9.0...v1.9.1) (2018-05-22)
+
+
+### Bug Fixes
+
+* **chef:** Downgraded apt cookbook below version 7 ([8ea8eee](https://github.com/ajgon/opsworks_ruby/commit/8ea8eee)), closes [#151](https://github.com/ajgon/opsworks_ruby/issues/151)
+* **chef:** Removed broken `deployer` cookbook ([51a4942](https://github.com/ajgon/opsworks_ruby/commit/51a4942)), closes [#155](https://github.com/ajgon/opsworks_ruby/issues/155)
+
+
+
 <a name="1.9.0"></a>
 # [1.9.0](https://github.com/ajgon/opsworks_ruby/compare/v1.8.0...v1.9.0) (2018-03-17)
 
