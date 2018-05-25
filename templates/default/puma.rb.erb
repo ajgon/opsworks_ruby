@@ -68,3 +68,5 @@ workers <%= @out[:worker_processes] %>
 # The default is 60
 worker_timeout <%= @out[:timeout] %>
 
+# Allow puma to be restarted by `rails restart` command.
+plugin :tmp_restart

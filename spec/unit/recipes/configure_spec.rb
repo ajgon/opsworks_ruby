@@ -535,6 +535,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
         .with_content('worker_timeout 60')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
+        .with_content('plugin :tmp_restart')
     end
 
     it 'creates proper puma.service file' do
