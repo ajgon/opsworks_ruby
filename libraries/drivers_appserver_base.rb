@@ -13,7 +13,7 @@ module Drivers
         add_appserver_service_context
       end
 
-      def deploy_before_restart
+      def before_deploy
         setup_application_yml
         setup_dot_env
       end
@@ -96,31 +96,28 @@ module Drivers
 
       def setup_application_yml
         return unless raw_out[:application_yml]
+        node.default['deploy'][app['shortname']]['global']['symlinks']['config/application.yml'] =
+          'config/application.yml'
         env_config(source_file: 'config/application.yml', destination_file: 'config/application.yml')
       end
 
       def setup_dot_env
         return unless raw_out[:dot_env]
-        env_config(source_file: 'dot_env', destination_file: '.env')
+        node.default['deploy'][app['shortname']]['global']['symlinks']['dot_env'] = '.env'
+        env_config(source_file: 'dot_env', destination_file: 'dot_env')
       end
 
-      # rubocop:disable Metrics/MethodLength
       def env_config(options = { source_file: nil, destination_file: nil })
         deploy_to = deploy_dir(app)
         env = environment
 
-        context.template File.join(deploy_to, 'shared', options[:source_file]) do
+        context.template File.join(deploy_to, 'shared', options[:destination_file]) do
           owner node['deployer']['user']
           group www_group
           source "#{File.basename(options[:source_file])}.erb"
           variables environment: env
         end
-
-        context.link File.join(deploy_to, 'current', options[:destination_file]) do
-          to File.join(deploy_to, 'shared', options[:source_file])
-        end
       end
-      # rubocop:enable Metrics/MethodLength
 
       def environment
         framework = Drivers::Framework::Factory.build(context, app, options)
