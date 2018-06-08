@@ -103,7 +103,6 @@ describe 'opsworks_ruby::configure' do
       its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
       its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
       its(:content) { should include 'PID_PATH="/run/lock/dummy_project/puma.pid"' }
-      its(:content) { should include 'def puma_running?' }
     end
   end
 

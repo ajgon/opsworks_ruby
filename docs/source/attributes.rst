@@ -411,6 +411,21 @@ appserver
      version provided by the Passenger APT PPA. Set this to a non-nil
      value to lock your Passenger installation at a specific version.
 
+- ``app['appserver']['after_deploy']``
+
+  - **Default:** ``stop-start``
+  - **Supported values:** ``stop-start``, ``restart``, ``clean-restart``
+  - Tell the appserver how to restart following a deployment.  A ``stop-start``
+    will instruct the appserver to stop and then start immediately.  This is
+    can cause requests from the webserver to be dropped since it closes the socket.
+    A ``restart`` sends a signal to the appserver instructing it to restart while
+    maintaining the open socket.  Requests will hang while the app boots, but
+    will not be lost. A ``clean-restart`` will perform a ``stop-start`` if the
+    Gemfile has changed or a ``restart`` otherwise.  The behavior of each of
+    these approaches varies between appservers.  See their documentation for more
+    details.
+
+
 unicorn
 ^^^^^^^
 
@@ -451,6 +466,30 @@ puma
 -  |app['appserver']['thread_min']|_
 
   -  **Default:** ``0``
+
+-  |app['appserver']['on_restart']|_
+
+  - Code to run before doing a restart. This code should close log files, database connections, etc.
+
+-  |app['appserver']['before_fork']|_
+
+  - Code to run immediately before the master starts workers.
+
+-  |app['appserver']['on_worker_boot']|_
+
+  - Code to run in a worker before it starts serving requests. This is called everytime a worker is to be started.
+
+-  |app['appserver']['on_worker_shutdown']|_
+
+  - Code to run in a worker right before it exits. This is called everytime a worker is to about to shutdown.
+
+-  |app['appserver']['on_worker_fork']|_
+
+  - Code to run in the master right before a worker is started. The worker's index is passed as an argument. This is called everytime a worker is to be started.
+
+-  |app['appserver']['after_worker_fork']|_
+
+  - Code to run in the master after a worker has been started. The worker's index is passed as an argument. This is called everytime a worker is to be started.
 
 thin
 ^^^^
@@ -729,6 +768,18 @@ resque
 .. _app['appserver']['thread_max']: https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62
 .. |app['appserver']['thread_min']| replace:: ``app['appserver']['thread_min']``
 .. _app['appserver']['thread_min']: https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62
+.. |app['appserver']['on_restart']| replace:: ``app['appserver']['on_restart']``
+.. _app['appserver']['on_restart']: https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L90
+.. |app['appserver']['before_fork']| replace:: ``app['appserver']['before_fork']``
+.. _app['appserver']['before_fork']: https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L116
+.. |app['appserver']['on_worker_boot']| replace:: ``app['appserver']['on_worker_boot']``
+.. _app['appserver']['on_worker_boot']: https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L124
+.. |app['appserver']['on_worker_shutdown']| replace:: ``app['appserver']['on_worker_shutdown']``
+.. _app['appserver']['on_worker_shutdown']: https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L132
+.. |app['appserver']['on_worker_fork']| replace:: ``app['appserver']['on_worker_fork']``
+.. _app['appserver']['on_worker_fork']: https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L141
+.. |app['appserver']['after_worker_fork']| replace:: ``app['appserver']['after_worker_fork']``
+.. _app['appserver']['after_worker_fork']: https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L150
 .. _Read more here.: https://weakdh.org/sysadmin.html
 .. _covered in this article: https://cipherli.st/
 .. |app['webserver']['limit_request_body']| replace:: ``app['webserver']['limit_request_body']``

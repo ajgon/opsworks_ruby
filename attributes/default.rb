@@ -54,12 +54,19 @@ default['defaults']['appserver']['dot_env'] = false
 default['defaults']['appserver']['preload_app'] = true
 default['defaults']['appserver']['timeout'] = 60
 default['defaults']['appserver']['worker_processes'] = 4
+default['defaults']['appserver']['after_deploy'] = 'stop-start' # (restart|clean-restart)
 
 ## puma
 
 default['defaults']['appserver']['log_requests'] = false
 default['defaults']['appserver']['thread_min'] = 0
 default['defaults']['appserver']['thread_max'] = 16
+default['defaults']['appserver']['on_restart'] = nil
+default['defaults']['appserver']['before_fork'] = nil
+default['defaults']['appserver']['on_worker_boot'] = nil
+default['defaults']['appserver']['on_worker_shutdown'] = nil
+default['defaults']['appserver']['on_worker_fork'] = nil
+default['defaults']['appserver']['after_worker_fork'] = nil
 
 ## thin
 

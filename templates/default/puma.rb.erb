@@ -59,12 +59,79 @@ bind "tcp://127.0.0.1:3000"
 <% else %>
 bind "unix://<%= @deploy_dir %>/shared/sockets/puma.sock"
 <% end %>
+
+# Code to run before doing a restart. This code should
+# close log files, database connections, etc.
+#
+# This can be called multiple times to add code each time.
+#
+# on_restart do
+#   puts 'On restart...'
+# end
+on_restart do
+  <%= @out[:on_restart] %>
+end
+
 # === Cluster mode ===
 # How many worker processes to run.
 # The default is "0".
 workers <%= @out[:worker_processes] %>
 
+# Code to run immediately before the master starts workers.
+#
+# before_fork do
+#   puts "Starting workers..."
+# end
+before_fork do
+  <%= @out[:before_fork] || 'puts "Starting workers..."'%>
+end
+
+# Code to run in a worker before it starts serving requests.
+#
+# This is called everytime a worker is to be started.
+#
+# on_worker_boot do
+#   puts 'On worker boot...'
+# end
+on_worker_boot do
+  <%= @out[:on_worker_boot] || 'puts "On worker boot..."' %>
+end
+
+# Code to run in a worker right before it exits.
+#
+# This is called everytime a worker is to about to shutdown.
+#
+# on_worker_shutdown do
+#   puts 'On worker shutdown...'
+# end
+on_worker_shutdown do
+  <%= @out[:on_worker_shutdown] || 'puts "On worker shutdown..."' %>
+end
+
+# Code to run in the master right before a worker is started. The worker's
+# index is passed as an argument.
+#
+# This is called everytime a worker is to be started.
+#
+# on_worker_fork do
+#   puts 'Before worker fork...'
+# end
+on_worker_fork do |worker_id|
+  <%= @out[:on_worker_fork] || 'puts "Before worker #{worker_id} fork..."' %>
+end
+
+# Code to run in the master after a worker has been started. The worker's
+# index is passed as an argument.
+#
+# This is called everytime a worker is to be started.
+#
+# after_worker_fork do
+#   puts 'After worker fork...'
+# end
+after_worker_fork do |worker_id|
+  <%= @out[:after_worker_fork] || 'puts "After worker #{worker_id} fork..."' %>
+end
+
 # Change the default timeout of worker startup
 # The default is 60
 worker_timeout <%= @out[:timeout] %>
-
