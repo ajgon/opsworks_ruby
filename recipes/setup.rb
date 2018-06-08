@@ -18,6 +18,7 @@ user node['deployer']['user'] do
   gid 5000
   shell '/bin/bash'
   home node['deployer']['home']
+  manage_home true
 end
 
 sudo node['deployer']['user'] do
