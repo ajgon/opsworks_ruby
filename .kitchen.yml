@@ -193,5 +193,4 @@ suites:
           webserver:
             adapter: 'apache2'
             port: 8081
-      'ruby-ng':
-        ruby_version: '2.3'
+      'ruby-version': '2.3'

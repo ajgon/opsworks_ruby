@@ -34,12 +34,17 @@ convention).
      of an application, not included in this list - it will be skipped, as this list
      takes precedence over anything else.
 
--  ``node['ruby-ng']['ruby_version']``
+-  ``node['ruby-version']``
 
   -  **Type:** string
   -  **Default:** ``2.5``
-  -  Sets the Ruby version used through the system. See `ruby-ng cookbook documentation`_
-     for more details
+  -  Sets the Ruby version used through the system. For debian-based distributions,
+     a ``ruby-ng`` cookbook is used (check `ruby-ng cookbook documentation`_).
+     For Amazon Linux, packages provided by distribution (i.e. ``ruby23``,
+     ``ruby23-devel`` etc.).
+     **Important** please note, that some versions may be available on one system,
+     and not on the other (for example ``ruby-ng`` gets freshest versions of ruby
+     way earlier than Amazon Linux).
 
 Cross-application attributes
 ----------------------------
