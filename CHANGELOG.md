@@ -1,3 +1,29 @@
+<a name="1.10.0"></a>
+# [1.10.0](https://github.com/ajgon/opsworks_ruby/compare/v1.9.1...v1.10.0) (2018-06-10)
+
+
+### Bug Fixes
+
+* **appserver:** moved env files creation to `before_symlink` phase ([2ed059d](https://github.com/ajgon/opsworks_ruby/commit/2ed059d)), closes [#157](https://github.com/ajgon/opsworks_ruby/issues/157)
+* **setup:** Fixed `deployer` user setup ([9af3651](https://github.com/ajgon/opsworks_ruby/commit/9af3651)), closes [#159](https://github.com/ajgon/opsworks_ruby/issues/159)
+
+
+### Features
+
+* **appserver:** add additional puma configuration options ([f994e2f](https://github.com/ajgon/opsworks_ruby/commit/f994e2f))
+* **ruby:** introduced new `ruby-version` JSON parameter. ([99798ce](https://github.com/ajgon/opsworks_ruby/commit/99798ce)), closes [#156](https://github.com/ajgon/opsworks_ruby/issues/156)
+
+
+### BREAKING CHANGES
+
+* **ruby:** If you were using `ruby-ng.ruby_version` JSON
+configuration parameter in your stack/layer configuration, please change
+it to `ruby-version`. Since `ruby-version` is set by default to the
+freshest version of ruby available, you may end up with unexpected
+upgrade of ruby on your system.
+
+
+
 <a name="1.9.1"></a>
 ## [1.9.1](https://github.com/ajgon/opsworks_ruby/compare/v1.9.0...v1.9.1) (2018-05-22)
 
