@@ -3,7 +3,9 @@ _site
 .jekyll-metadata
 .asset-cache
 .kitchen
+.chef.login
 node_modules
 Berksfile.lock
 coverage
 docs
+client.pem

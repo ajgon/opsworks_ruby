@@ -5,6 +5,11 @@
       "default":"production",
       "description":"Sets the \"deploy environment\" for all the app-related (for example RAILS_ENV in Rails) actions in the project (server, worker, etc.)."
     },
+    "ruby-version":{
+      "type":"string",
+      "default":"2.5",
+      "description":"Sets the Ruby version used through the system. For debian-based distributions, a `ruby-ng` cookbook is used. For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.)."
+    },
     "deploy_dir":{
       "type":"string",
       "description":"Determines where the application will be deployed. Note that if you override this setting, you'll typically want to include the short_name in the setting. In other words, this setting doesn't override the `/srv/www` base directory defafult; it overrides the application-specific `/srv/www/app_name` default."
@@ -368,13 +373,55 @@
       ],
       "description":"Maximum number of threads to use to answer requests."
     },
-    "threads_min":{
+    "thread_min":{
       "type":"integer",
       "default":0,
       "depends":[
         "puma"
       ],
       "description":"Minimum number of threads to use to answer requests."
+    },
+    "on_restart":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run before doing a restart. This code should close log files, database connections, etc."
+    },
+    "before_fork":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run immediately before the master starts workers."
+    },
+    "on_worker_boot":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in a worker before it starts serving requests. This is called everytime a worker is to be started."
+    },
+    "on_worker_shutdown":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in a worker right before it exits. This is called everytime a worker is to about to shutdown."
+    },
+    "on_worker_fork":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in the master right before a worker is started. The worker's index is passed as an argument. This is called everytime a worker is to be started."
+    },
+    "after_worker_fork":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in the master after a worker has been started. The worker's index is passed as an argument. This is called everytime a worker is to be started."
     },
     "max_connections":{
       "type":"integer",
@@ -398,6 +445,16 @@
         "passenger"
       ],
       "description":"Which Debian APT package version should be installed from the PPA repo provided by Passenger. Currently this defaults to the latest repo provided by Passenger. Currently this defaults to the latest value to lock your Passenger installation at a specific version."
+    },
+    "after_deploy":{
+      "type":"string",
+      "values":[
+        "stop-start",
+        "restart",
+        "clean-restart"
+      ],
+      "default":"stop-start",
+      "description":"Tell the appserver how to restart following a deployment. A `stop-start` will instruct the appserver to stop and then start immediately. This is can cause requests from the webserver to be dropped since it closes the socket. A `restart` sends a signal to the appserver instructing it to restart while maintaining the open socket. Requests will hang while the app boots, but will not be lost. A `clean-restart` will perform a `stop-start` if the Gemfile has changed or a `restart` otherwise. The behavior of each of these approaches varies between appservers. See their documentation for more details."
     },
     "max_pool_size":{
       "type":"integer",
