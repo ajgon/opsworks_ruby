@@ -40,6 +40,7 @@ PreCommit:
     enabled: true
     exclude:
       - CHANGELOG.md
+      - .github/ISSUE_TEMPLATE.md
   MergeConflicts:
     enabled: true
   RuboCop:
