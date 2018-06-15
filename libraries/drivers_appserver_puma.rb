@@ -7,7 +7,7 @@ module Drivers
       allowed_engines :puma
       output filter: %i[log_requests preload_app thread_max thread_min timeout
                         on_restart worker_processes before_fork on_worker_boot on_worker_shutdown
-                        on_worker_fork after_worker_fork after_deploy]
+                        on_worker_fork after_worker_fork after_deploy port]
 
       def appserver_config
         'puma.rb'

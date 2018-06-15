@@ -56,6 +56,8 @@ threads <%= @out[:thread_min] %>, <%= @out[:thread_max] %>
 # bind 'ssl://127.0.0.1:9292?key=path_to_key&cert=path_to_cert'
 <% if @webserver == 'apache2' %>
 bind "tcp://127.0.0.1:3000"
+<% elsif @out[:port] %>
+bind "tcp://0.0.0.0:<%= @out[:port] %>"
 <% else %>
 bind "unix://<%= @deploy_dir %>/shared/sockets/puma.sock"
 <% end %>
