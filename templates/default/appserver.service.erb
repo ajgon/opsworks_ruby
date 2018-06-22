@@ -55,15 +55,17 @@ def stop
   puts "Stopping <%= @name.capitalize %> #{APP_NAME}"
   retries = 10
 
+  pid = `cat #{PID_PATH}`
+
   loop do
     break if !running? || retries <= 0
 
-    run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
+    run_and_ignore_exitcode_and_print_command "kill -QUIT #{pid}"
     sleep 1
     retries -= 1
   end
 
-  `rm #{PID_PATH}` if run_and_ignore_exitcode_and_print_command "kill -QUIT `cat #{PID_PATH}`"
+  `rm #{PID_PATH}` if run_and_ignore_exitcode_and_print_command "kill -QUIT #{pid}"
 end
 
 def stop_start
