@@ -827,10 +827,17 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
-  context 'Postgres + Passenger + Apache2' do
+  context 'Postgres (postgis) + Passenger + Apache2' do
     let(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
+        deploy['dummy_project']['database'] = {
+          'adapter' => 'postgis',
+          'username' => 'dbuser',
+          'password' => '03c1bc98cdd5eb2f9c75',
+          'host' => 'dummy-project.c298jfowejf.us-west-2.rds.amazon.com',
+          'port' => 3265
+        }
         deploy['dummy_project']['appserver']['adapter'] = 'passenger'
         deploy['dummy_project']['appserver']['max_pool_size'] = 10
         deploy['dummy_project']['appserver']['min_instances'] = 5
@@ -841,6 +848,19 @@ describe 'opsworks_ruby::configure' do
       end
     end
     let(:chef_run) { chef_runner.converge(described_recipe) }
+
+    before do
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
+    end
+
+    it 'creates proper database.yml template' do
+      db_config = Drivers::Db::Postgis.new(chef_run, aws_opsworks_app).out
+      expect(db_config[:adapter]).to eq 'postgis'
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
+          JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+        )
+    end
 
     it 'creates apache2 passenger config' do
       expect(chef_run)
