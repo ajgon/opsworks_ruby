@@ -90,7 +90,9 @@ describe 'opsworks_ruby::deploy' do
         scm_provider: Chef::Provider::Git,
         enable_submodules: false,
         rollback_on_error: true,
-        environment: aws_opsworks_app['environment'].merge('RAILS_ENV' => 'staging'),
+        environment: aws_opsworks_app['environment'].merge(
+          'RAILS_ENV' => 'staging', 'GIT_SSH' => '/tmp/ssh-git-wrapper.sh'
+        ),
         ssh_wrapper: '/tmp/ssh-git-wrapper.sh',
         symlinks: {
           'system' => 'public/system',

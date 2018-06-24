@@ -15,7 +15,9 @@ every_enabled_application do |application|
   appserver = Drivers::Appserver::Factory.build(self, application)
   worker = Drivers::Worker::Factory.build(self, application, databases: databases)
   webserver = Drivers::Webserver::Factory.build(self, application)
-  bundle_env = source.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => source.out[:ssh_wrapper] } : {}
+  env_vars = application['environment'].merge(framework.out[:deploy_environment] || {}).merge(
+    source.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => source.out[:ssh_wrapper] } : {}
+  )
 
   fire_hook(:before_deploy, items: databases + [source, framework, appserver, worker, webserver])
 
@@ -23,7 +25,7 @@ every_enabled_application do |application|
     deploy_to deploy_dir(application)
     user node['deployer']['user'] || 'root'
     group www_group
-    environment application['environment'].merge(framework.out[:deploy_environment] || {})
+    environment env_vars
 
     if globals(:rollback_on_error, application['shortname']).nil?
       rollback_on_error node['defaults']['global']['rollback_on_error']
@@ -60,7 +62,7 @@ every_enabled_application do |application|
     migration_command(framework.out[:migration_command]) if framework.out[:migration_command]
     migrate framework.migrate?
     before_migrate do
-      perform_bundle_install(shared_path, bundle_env)
+      perform_bundle_install(shared_path, env_vars)
 
       fire_hook(
         :deploy_before_migrate, context: self, items: databases + [source, framework, appserver, worker, webserver]
@@ -70,7 +72,7 @@ every_enabled_application do |application|
     end
 
     before_symlink do
-      perform_bundle_install(shared_path, bundle_env) unless framework.migrate?
+      perform_bundle_install(shared_path, env_vars) unless framework.migrate?
 
       fire_hook(
         :deploy_before_symlink, context: self, items: databases + [source, framework, appserver, worker, webserver]
