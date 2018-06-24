@@ -1,3 +1,20 @@
+<a name="1.10.1"></a>
+## [1.10.1](https://github.com/ajgon/opsworks_ruby/compare/v1.10.0...v1.10.1) (2018-06-24)
+
+
+### Bug Fixes
+
+* do not read pidfile at each stop retry (prevent from early pidfile deletion) ([c5f0fe4](https://github.com/ajgon/opsworks_ruby/commit/c5f0fe4)), closes [#163](https://github.com/ajgon/opsworks_ruby/issues/163)
+* **framework:** added environment variables context to bundle install ([fe01d45](https://github.com/ajgon/opsworks_ruby/commit/fe01d45)), closes [#167](https://github.com/ajgon/opsworks_ruby/issues/167)
+
+
+### Features
+
+* **appserver:** support rails restart command on puma. ([bb04fb4](https://github.com/ajgon/opsworks_ruby/commit/bb04fb4))
+* **db:** added postgis driver ([6b3c058](https://github.com/ajgon/opsworks_ruby/commit/6b3c058)), closes [#165](https://github.com/ajgon/opsworks_ruby/issues/165)
+
+
+
 <a name="1.10.0"></a>
 # [1.10.0](https://github.com/ajgon/opsworks_ruby/compare/v1.9.1...v1.10.0) (2018-06-10)
 
