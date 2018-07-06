@@ -69,6 +69,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   DocumentRoot <%= File.join(@deploy_dir, 'current', 'public') %>
 
   <Directory <%= File.join(@deploy_dir, 'current') %>>
+    Require all granted
     Options FollowSymLinks
     AllowOverride None
     Order allow,deny
