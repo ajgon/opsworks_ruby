@@ -1,3 +1,27 @@
+<a name="1.11.0"></a>
+# [1.11.0](https://github.com/ajgon/opsworks_ruby/compare/v1.10.1...v1.11.0) (2018-07-17)
+
+
+### Bug Fixes
+
+* add Apache 2.4's "Require all granted" to apache2+passenger config file ([#171](https://github.com/ajgon/opsworks_ruby/issues/171)) ([f4e5871](https://github.com/ajgon/opsworks_ruby/commit/f4e5871))
+* **webserver:** add `X-Content-Type-Options: nosniff` to assets served by rails for extra security ([07d3336](https://github.com/ajgon/opsworks_ruby/commit/07d3336))
+
+
+### Features
+
+* **webserver:** hardened security headers, disabled tls1.0 and tls1.1 for non-legacy SSL config ([8351d58](https://github.com/ajgon/opsworks_ruby/commit/8351d58))
+
+
+### BREAKING CHANGES
+
+* **webserver:** If you are using SSL in your project, TLSv1.0 and
+TLSv1.1 has been disabled for all responses - only TLSv1.2 is served. If
+you still need older ciphers, consider using
+`app['webserver']['ssl_for_legacy_browsers']` configuration option.
+
+
+
 <a name="1.10.1"></a>
 ## [1.10.1](https://github.com/ajgon/opsworks_ruby/compare/v1.10.0...v1.10.1) (2018-06-24)
 
