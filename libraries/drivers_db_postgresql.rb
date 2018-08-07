@@ -4,7 +4,7 @@ module Drivers
   module Db
     class Postgresql < Base
       adapter :postgresql
-      allowed_engines :postgres, :postgresql
+      allowed_engines :postgres, :postgresql, :'aurora-postresql'
       packages debian: 'libpq-dev', rhel: 'postgresql96-devel'
     end
   end
