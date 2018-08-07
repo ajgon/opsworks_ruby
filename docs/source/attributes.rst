@@ -168,7 +168,8 @@ database
 
 -  ``app['database']['adapter']``
 
-  -  **Supported values:** ``mariadb``, ``mysql``, ``postgis``, ``postgresql``, ``sqlite3``, ``null``
+  -  **Supported values:** ``aurora``, ``aurora-postgresql``, ``mariadb``, ``mysql``, ``postgis``, ``postgresql``,
+     ``sqlite3``, ``null``
   -  **Default:** ``sqlite3``
   -  ActiveRecord adapter which will be used for database connection. ``null`` means
      that no database will be configured, and is currently only tested with the ``rails``
