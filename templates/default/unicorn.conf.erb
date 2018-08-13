@@ -5,6 +5,8 @@ user "<%= node['deployer']['user'] %>"
 working_directory "<%= @deploy_dir %>/current"
 <% if @webserver == 'apache2' %>
 listen "127.0.0.1:3000",
+<% elsif @out[:port] %>
+listen "127.0.0.1:<%= @out[:port] %>",
 <% else %>
 listen "<%= @deploy_dir %>/shared/sockets/unicorn.sock",
 <% end %>
