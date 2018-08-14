@@ -11,7 +11,10 @@ servers: <%= @out[:worker_processes] %>
 threaded: true
 no-epoll: true
 daemonize: true
-<% if @webserver == 'apache2' %>
+<% if @out[:port] %>
+address: "0.0.0.0"
+port: <%= @out[:port] %>
+<% elsif @webserver == 'apache2' %>
 address: "127.0.0.1"
 port: 3000
 <% else %>

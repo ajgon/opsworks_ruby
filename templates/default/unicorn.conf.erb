@@ -3,7 +3,9 @@ worker_processes <%= @out[:worker_processes] %>
 user "<%= node['deployer']['user'] %>"
 
 working_directory "<%= @deploy_dir %>/current"
-<% if @webserver == 'apache2' %>
+<% if @out[:port] %>
+listen "0.0.0.0:<%= @out[:port] %>",
+<% elsif @webserver == 'apache2' %>
 listen "127.0.0.1:3000",
 <% else %>
 listen "<%= @deploy_dir %>/shared/sockets/unicorn.sock",

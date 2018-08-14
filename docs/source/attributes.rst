@@ -431,6 +431,13 @@ appserver
     these approaches varies between appservers.  See their documentation for more
     details.
 
+- ``app['appserver']['port']``
+
+  - **Default:** None
+  - Bind the appserver to a port on 0.0.0.0.  This is
+    useful for serving the application directly from the appserver without a web
+    server middleware or separating the web server into its own container or server.
+
 
 unicorn
 ^^^^^^^

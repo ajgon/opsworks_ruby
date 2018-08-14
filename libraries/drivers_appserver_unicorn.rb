@@ -7,6 +7,7 @@ module Drivers
       allowed_engines :unicorn
       output filter: %i[
         backlog delay preload_app tcp_nodelay tcp_nopush tries timeout worker_processes
+        port
       ]
 
       def appserver_config
