@@ -263,6 +263,8 @@
     build: function( data ) {
       var key, pair, output, $appName = $( "#application_name" );
       output = {};
+      this.output = { deploy: {} };
+
       for ( key in data ) {
         if ( data.hasOwnProperty( key ) ) {
           pair = key.split( "." );
@@ -274,16 +276,20 @@
               !( $.isPlainObject( data[ key ] ) && $.isEmptyObject( data[ key ] ) )
             )
           ) {
-            output[ pair[ 0 ] ] = output[ pair[ 0 ] ] || {};
-            if ( pair[ 1 ] ) {
-              output[ pair[ 0 ] ][ pair[ 1 ] ] = data[ key ];
+            if( pair[ 0 ] == 'server' ) {
+              this.output[ pair[ 1 ] ] = data[ key ];
             } else {
-              output[ pair[ 0 ] ] = data[ key ];
+              output[ pair[ 0 ] ] = output[ pair[ 0 ] ] || {};
+              if ( pair[ 1 ] ) {
+                output[ pair[ 0 ] ][ pair[ 1 ] ] = data[ key ];
+              } else {
+                output[ pair[ 0 ] ] = data[ key ];
+              }
             }
           }
         }
       }
-      this.output = { deploy: {} };
+
       if ( !$appName.val() ) {
         $appName.val( "application_short_name" );
       }

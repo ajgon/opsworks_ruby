@@ -1,14 +1,16 @@
 {
+  "server":{
+    "ruby-version":{
+      "type":"string",
+      "default":"2.5",
+      "description":"Sets the Ruby version used through the system. For debian-based distributions, a `ruby-ng` cookbook is used. For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.)."
+    }
+  },
   "global":{
     "environment":{
       "type":"string",
       "default":"production",
       "description":"Sets the \"deploy environment\" for all the app-related (for example RAILS_ENV in Rails) actions in the project (server, worker, etc.)."
-    },
-    "ruby-version":{
-      "type":"string",
-      "default":"2.5",
-      "description":"Sets the Ruby version used through the system. For debian-based distributions, a `ruby-ng` cookbook is used. For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.)."
     },
     "deploy_dir":{
       "type":"string",
