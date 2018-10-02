@@ -22,6 +22,7 @@ module Drivers
 
       def validate_app_engine
         return unless passenger? && !self.class.passenger_supported?
+
         raise(ArgumentError, "passenger appserver not supported on #{adapter} webserver")
       end
 
@@ -45,6 +46,7 @@ module Drivers
       def add_ssl_item(name)
         key_data = app[:ssl_configuration].try(:[], name)
         return if key_data.blank?
+
         extensions = { private_key: 'key', certificate: 'crt', chain: 'ca' }
 
         notifying_template "#{conf_dir}/ssl/#{app[:domains].first}.#{extensions[name]}" do
@@ -82,6 +84,7 @@ module Drivers
         opts = { application: app, deploy_dir: deploy_dir(app), out: out, conf_dir: conf_dir, adapter: adapter,
                  name: a.adapter, deploy_env: deploy_env, appserver_config: a.webserver_config_params }
         return unless Drivers::Appserver::Base.adapters.include?(opts[:name])
+
         generate_appserver_config(opts, site_config_template(opts[:name]), site_config_template_cookbook)
       end
 

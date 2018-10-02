@@ -10,6 +10,17 @@ Header always unset "X-Powered-By"
   ServerName <%= node['hostname'] %>
   ServerAlias <%= @application[:domains].join(" ") %>
 
+<% if @application[:enable_ssl] && @out[:force_ssl] %>
+<% if @out[:ssl_port].to_i == 443 %>
+  RewriteEngine On
+  RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]
+<% else %>
+  RewriteEngine On
+  RewriteRule ^/?(.*) https://%{SERVER_NAME}:<%= @out[:ssl_port] %>/$1 [R=301,L]
+<% end %>
+
+<% else %>
+  # http support
   DocumentRoot <%= File.join(@deploy_dir, 'current', 'public') %>
 
   <Directory <%= File.join(@deploy_dir, 'current') %>>
@@ -52,13 +63,14 @@ Header always unset "X-Powered-By"
   </Location>
 
   RewriteEngine on
+<% end %>
 
   <%= @out[:extra_config] %>
 
 </VirtualHost>
 
 <% if @application[:enable_ssl] %>
-<% unless @out[:ssl_port] == 443 %>
+<% unless @out[:ssl_port].to_i == 443 %>
 Listen <%= @out[:ssl_port] %>
 <% end -%>
 

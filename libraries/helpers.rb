@@ -16,6 +16,7 @@ def globals(index, application)
 
   old_item = old_globals(index, application)
   return old_item unless old_item.nil?
+
   evaluate_attribute(index, application, :default_global)
 end
 
@@ -34,6 +35,7 @@ end
 
 def old_globals(index, application)
   return unless node['deploy'][application][index.to_s]
+
   message =
     "DEPRECATION WARNING: node['deploy']['#{application}']['#{index}'] is deprecated and will be removed. " \
     "Please use node['deploy']['#{application}']['global']['#{index}'] instead."
@@ -80,6 +82,7 @@ def every_enabled_application
   node['deploy'].each_key do |deploy_app_shortname|
     application = applications.detect { |app| app['shortname'] == deploy_app_shortname }
     next unless application && application['deploy']
+
     yield application
   end
 end
@@ -112,6 +115,7 @@ end
 
 def apps_not_included
   return [] if node['applications'].blank?
+
   node['deploy'].keys.reject { |app_name| node['applications'].include?(app_name) }
 end
 

@@ -21,6 +21,7 @@ module Drivers
       def configure_logrotate
         lr_path = logrotate_log_paths || []
         return unless lr_path.any?
+
         lr_props = logrotate_properties
 
         context.logrotate_app logrotate_name do
@@ -47,6 +48,7 @@ module Drivers
         lp.map do |log_path|
           next log_path.call(self) if log_path.is_a?(Proc)
           next log_path if log_path.start_with?('/')
+
           File.join(deploy_dir(app), log_path)
         end.flatten.uniq
       end

@@ -50,9 +50,11 @@ module Drivers
 
       def setup_rails_console
         return unless out[:envs_in_console]
+
         application_rb_path = File.join(deploy_dir(app), 'current', 'config', 'application.rb')
 
         return unless File.exist?(application_rb_path)
+
         env_code = "if(defined?(Rails::Console))\n  " +
                    environment.map { |key, value| "ENV['#{key}'] = #{value.inspect}" }.join("\n  ") +
                    "\nend\n"

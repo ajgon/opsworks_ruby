@@ -6,6 +6,7 @@ module Drivers
       def self.build(context, app, options = {})
         engine = detect_engine(app, context.node, options)
         raise StandardError, 'There is no supported Webserver driver for given configuration.' if engine.blank?
+
         engine.new(context, app, options)
       end
 

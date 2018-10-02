@@ -19,6 +19,15 @@ server {
   keepalive_timeout <%= @out[:keepalive_timeout] || '15' %>;
   send_timeout <%= @out[:send_timeout] || '10' %>;
 
+<% if @application[:enable_ssl] && @out[:force_ssl] %>
+# Force all http requests to https
+<% if @out[:ssl_port].to_i == 443 %>
+  return 301 https://$host$request_uri;
+<% else %>
+  return 301 https://$host:<%= @out[:ssl_port] %>$request_uri;
+<% end %>
+<% else %>
+  # http support
   location / {
     try_files $uri/index.html $uri/index.htm @<%= @name %>;
   }
@@ -51,7 +60,8 @@ server {
       proxy_pass http://<%= @name %>_<%= @application[:domains].first %>;
       break;
     }
-  }
+}
+<% end %>
 
   location /nginx_status {
     stub_status on;

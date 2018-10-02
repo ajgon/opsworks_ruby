@@ -37,6 +37,7 @@ module Drivers
 
         def add_git_wrapper_script
           return unless raw_out[:ssh_wrapper] == raw_out[:generated_ssh_wrapper]
+
           context.template raw_out[:generated_ssh_wrapper] do
             source 'ssh-git-wrapper.sh.erb'
             mode '0770'
@@ -59,6 +60,7 @@ module Drivers
 
         def remove_dot_git
           return unless out[:remove_scm_files]
+
           context.directory File.join(deploy_dir(app), 'current', '.git') do
             recursive true
             action :delete

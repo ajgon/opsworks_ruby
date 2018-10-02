@@ -8,7 +8,7 @@ module Drivers
       packages debian: 'apache2', rhel: %w[httpd24 mod24_ssl]
       output filter: %i[
         dhparams keepalive_timeout limit_request_body log_dir log_level proxy_timeout
-        ssl_for_legacy_browsers extra_config extra_config_ssl port ssl_port
+        ssl_for_legacy_browsers extra_config extra_config_ssl port ssl_port force_ssl
       ]
       notifies :deploy,
                action: :reload, resource: { debian: 'service[apache2]', rhel: 'service[httpd]' }, timer: :delayed
@@ -93,6 +93,7 @@ module Drivers
 
       def enable_modules(modules = [])
         return unless node['platform_family'] == 'debian'
+
         modules.each { |mod| enable_module(mod) }
       end
 
@@ -107,6 +108,7 @@ module Drivers
         unless node['platform_family'] == 'debian'
           raise(ArgumentError, 'passenger appserver only supported on Debian/Ubuntu')
         end
+
         mod_passenger_packages
       end
 

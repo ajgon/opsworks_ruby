@@ -268,6 +268,21 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
     end
 
+    it 'creates proper redirects for force ssl' do
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['force_ssl'] = true
+        solo_node.set['deploy'] = deploy
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('return 301 https://$host$request_uri;')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('# http support')
+    end
+
     it 'enables ssl rules for legacy browsers in nginx config' do
       chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
@@ -623,6 +638,23 @@ describe 'opsworks_ruby::configure' do
         .not_to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content(/^Listen/)
       expect(chef_run).to create_link("/etc/apache2/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
+    end
+
+    it 'creates proper redirects for force ssl' do
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy[aws_opsworks_app['shortname']]['webserver']['adapter'] = 'apache2'
+        deploy[aws_opsworks_app['shortname']]['webserver']['force_ssl'] = true
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+      # rubocop:disable Style/FormatStringToken
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R=301,L]')
+      # rubocop:enable Style/FormatStringToken
+      expect(chef_run)
+        .not_to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('# http support')
     end
 
     it 'enables ssl rules for legacy browsers in apache2 config' do
