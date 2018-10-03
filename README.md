@@ -2,6 +2,12 @@
 
 docker-compose up
 
+## Lint schema.json
+
+```
+docker-compose run --rm cookbook_web ruby /app/data/lint.rb
+```
+
 ## Deploy
 
 ```
