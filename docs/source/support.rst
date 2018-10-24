@@ -39,6 +39,7 @@ Worker
   - `delayed_job`_
   - `resque`_
   - `sidekiq`_
+  - `shoryuken`_
 
 .. _MariaDB: https://mariadb.org/
 .. _MySQL: https://www.mysql.com/
@@ -57,3 +58,4 @@ Worker
 .. _delayed_job: https://github.com/collectiveidea/delayed_job
 .. _resque: https://github.com/resque/resque
 .. _sidekiq: http://sidekiq.org/
+.. _shoryuken: https://github.com/phstc/shoryuken

@@ -61,6 +61,21 @@ suites:
               queues:
                 - default
                 - mailers
+  - name: default_with_shoryuken
+    data_bags_path: "test/integration/data_bags/default_with_shoryuken"
+    run_list:
+      - recipe[opsworks_ruby::setup]
+      - recipe[opsworks_ruby::deploy]
+    attributes:
+      deploy:
+        dummy_project:
+          worker:
+            adapter: "shoryuken"
+            process_count: 1
+            require_rails: true
+            config:
+              concurrency: 6
+              verbose: true
   - name: http_unicorn_apache_hanami_resque
     data_bags_path: "test/integration/data_bags/http_unicorn_apache_hanami_resque"
     run_list:

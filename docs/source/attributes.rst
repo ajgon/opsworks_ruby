@@ -770,6 +770,32 @@ resque
   -  **Default:** ``*``
   -  Array of queues which should be processed by resque
 
+shoryuken
+^^^^^^^^^
+
+- ``app['worker']['config']``
+
+  -  Configuration parameters which will be directly passed to the worker.
+     For example, for ``shoryuken`` they will be serialized to the relevant
+     `shoryuken.yml config file`_.
+
+- ``app['worker']['process_count']``
+
+  - **Default:** ``1``
+  - Number of shoryuken runner daemons to start. Shoryuken is multithreaded, so defaults to 1.
+
+- ``app['worker']['require']``
+
+  - Path to require, relative to the currently deployed application directory.
+
+- ``app['worker']['require_rails']``
+
+  - Boolean: emits ``-R`` to require the rails environment on boot.
+
+- ``app['worker']['syslog']``
+
+  - Boolean: configures piping shoryuken runner log output to syslog via ``logger``
+
 .. _ruby-ng cookbook documentation: https://supermarket.chef.io/cookbooks/ruby-ng
 .. _figaro: https://github.com/laserlemon/figaro
 .. _dotenv: https://github.com/bkeepers/dotenv
@@ -828,6 +854,8 @@ resque
 .. _node['nginx'] attributes: https://github.com/miketheman/nginx/tree/2.7.x#attributes
 .. |sidekiq.yml config file| replace:: ``sidekiq.yml`` config file
 .. _sidekiq.yml config file: https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file
+.. |shoryuken.yml config file| replace:: ``shoryuken.yml`` config file
+.. _shoryuken.yml config file: https://github.com/phstc/shoryuken/wiki/Shoryuken-options
 
 Logrotate Attributes
 ----------------------
