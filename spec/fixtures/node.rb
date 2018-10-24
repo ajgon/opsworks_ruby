@@ -59,6 +59,7 @@ DEFAULT_NODE = {
       worker: {
         adapter: 'sidekiq',
         require: 'lorem_ipsum.rb',
+        require_rails: true,
         queues: 'test_queue'
       }
     }
