@@ -43,6 +43,7 @@ Author: [Igor Rzegocki](https://www.rzegocki.pl/) ([@ajgon](https://github.com/a
 * Nathan Flood ([@npflood](https://github.com/npflood))
 * Teruo Adachi ([@interu](https://github.com/interu))
 * Marcos Beirigo ([@marcosbeirigo](https://github.com/marcosbeirigo))
+* John Calvin Young ([@johncalvinyoung](https://github.com/johncalvinyoung))
 
 ## License
 

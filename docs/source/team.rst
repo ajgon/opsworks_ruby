@@ -16,6 +16,7 @@ Contributors
 * Nathan Flood (`@npflood`_)
 * Teruo Adachi (`@interu`_)
 * Marcos Beirigo (`@marcosbeirigo`_)
+* John Calvin Young (`@johncalvinyoung`_)
 
 .. _Igor Rzegocki: https://www.rzegocki.pl/
 .. _@ajgon: https://github.com/ajgon
@@ -26,3 +27,4 @@ Contributors
 .. _@npflood: https://github.com/npflood
 .. _@interu: https://github.com/interu
 .. _@marcosbeirigo: https://github.com/marcosbeirigo
+.. _@johncalvinyoung: https://github.com/johncalvinyoung
