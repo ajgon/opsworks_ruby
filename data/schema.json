@@ -734,6 +734,7 @@
         "null",
         "delayed_job",
         "resque",
+        "shoryuken",
         "sidekiq"
       ],
       "default":"null",
@@ -745,6 +746,7 @@
       "depends":[
         "delayed_job",
         "resque",
+        "shoryuken",
         "sidekiq"
       ],
       "description":"How many separate worker processes will be launched."
@@ -755,6 +757,7 @@
       "depends":[
         "delayed_job",
         "resque",
+        "shoryuken",
         "sidekiq"
       ],
       "description":"Determines if worker should output to syslog."
@@ -763,6 +766,7 @@
       "type":"json",
       "default":{},
       "depends":[
+        "shoryuken",
         "sidekiq"
       ],
       "description":"Configuration parameters which will be directly passed to the worker. Please use a valid JSON here.",
@@ -783,6 +787,21 @@
         "resque"
       ],
       "description":"Number of resque workers."
+    },
+    "require":{
+      "type":"string",
+      "depends":[
+        "shoryuken"
+      ],
+      "description":"Path to require, relative to the currently deployed application directory."
+    },
+    "require_rails":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "shoryuken"
+      ],
+      "description":"Emits -R to require the rails environment on boot."
     }
   }
 }
