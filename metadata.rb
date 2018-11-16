@@ -18,6 +18,8 @@ depends 'sudo'
 
 # indirect dependency, but breaks against the chef_version if updated to 3.1.0
 depends 'seven_zip', '~> 2.0'
+# indirect dependency required to maintain compatibility with chef 12
+depends 'windows', '< 5.0'
 
 supports 'amazon', '>= 2017.03'
 supports 'ubuntu', '>= 16.04'
