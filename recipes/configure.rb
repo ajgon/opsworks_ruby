@@ -13,6 +13,7 @@ every_enabled_application do |application|
   create_deploy_dir(application, File.join('shared', 'log'))
   create_deploy_dir(application, File.join('shared', 'scripts'))
   create_deploy_dir(application, File.join('shared', 'sockets'))
+  create_deploy_dir(application, File.join('shared', 'system'))
   create_deploy_dir(application, File.join('shared', 'vendor/bundle'))
   create_dir("/run/lock/#{application['shortname']}")
 
