@@ -62,6 +62,14 @@ apt_repository 'apache2' do
   only_if { node['defaults']['webserver']['use_apache2_ppa'] }
 end
 
+apt_repository 'nginx' do
+  uri        'http://nginx.org/packages/ubuntu/'
+  components ['nginx']
+  keyserver 'keyserver.ubuntu.com'
+  key 'ABF5BD827BD9BF62'
+  only_if { node['defaults']['webserver']['adapter'] == 'nginx' }
+end
+
 gem_package 'bundler' do
   action :install
 end
