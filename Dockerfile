@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.6
 
 RUN printf "deb http://deb.debian.org/debian testing main\ndeb http://deb.debian.org/debian testing-updates main\ndeb http://security.debian.org testing/updates main" >> /etc/apt/sources.list
 RUN apt-get update && \
