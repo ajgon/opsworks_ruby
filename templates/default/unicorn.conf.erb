@@ -24,6 +24,14 @@ stderr_path "<%= @deploy_dir %>/shared/log/unicorn.stderr.log"
 stdout_path "<%= @deploy_dir %>/shared/log/unicorn.stdout.log"
 
 preload_app <%= @out[:preload_app] %>
+<% if @out[:preload_app] %>
+  after_fork do |_server, _worker|
+    next unless defined?(ActiveRecord::Base) && defined?(Rails)
+    next unless Gem::Requirement.new('>= 4.1')
+                                .satisfied_by?(Gem::Version.new(Rails.version))
+    ActiveRecord::Base.establish_connection
+  end
+<% end %>
 GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=)
 
 # ensure Unicorn doesn't use a stale Gemfile when restarting
