@@ -70,8 +70,12 @@ apt_repository 'nginx' do
   only_if { node['defaults']['webserver']['adapter'] == 'nginx' }
 end
 
+bundler2_applicable = Gem::Requirement.new('>= 3.0.0.beta1').satisfied_by?(
+  Gem::Version.new(Gem::VERSION)
+)
 gem_package 'bundler' do
   action :install
+  version '~> 1' unless bundler2_applicable
 end
 
 if node['platform_family'] == 'debian'

@@ -189,14 +189,38 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Gems' do
-    it 'debian bundler' do
-      expect(chef_run).to install_gem_package(:bundler)
-      expect(chef_run).to create_link('/usr/local/bin/bundle').with(to: '/usr/bin/bundle')
+    context 'when rubygems version is < 3' do
+      before do
+        stub_const('Gem::VERSION', '2.7.8')
+      end
+
+      it 'debian bundler' do
+        expect(chef_run).to install_gem_package(:bundler).with(version: '~> 1')
+        expect(chef_run).to create_link('/usr/local/bin/bundle').with(to: '/usr/bin/bundle')
+      end
+
+      it 'rhel bundler' do
+        expect(chef_run_rhel).to install_gem_package(:bundler).with(version: '~> 1')
+        expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(to: '/usr/local/bin/bundler')
+      end
     end
 
-    it 'rhel bundler' do
-      expect(chef_run_rhel).to install_gem_package(:bundler)
-      expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(to: '/usr/local/bin/bundler')
+    context 'when rubygems version is >= 3' do
+      before do
+        stub_const('Gem::VERSION', '3.0.2')
+      end
+
+      it 'debian bundler' do
+        expect(chef_run).to install_gem_package(:bundler)
+        expect(chef_run).not_to install_gem_package(:bundler).with(version: '~> 1')
+        expect(chef_run).to create_link('/usr/local/bin/bundle').with(to: '/usr/bin/bundle')
+      end
+
+      it 'rhel bundler' do
+        expect(chef_run_rhel).to install_gem_package(:bundler)
+        expect(chef_run_rhel).not_to install_gem_package(:bundler).with(version: '~> 1')
+        expect(chef_run_rhel).to create_link('/usr/local/bin/bundle').with(to: '/usr/local/bin/bundler')
+      end
     end
   end
 

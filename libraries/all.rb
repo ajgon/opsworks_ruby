@@ -4,6 +4,7 @@ libdir = File.expand_path(__dir__)
 require File.join(libdir, 'core_ext')
 require File.join(libdir, 'helpers')
 require File.join(libdir, 'archive')
+require File.join(libdir, 'chef_patches')
 Dir[File.join(libdir, 'drivers_base.rb')].each { |f| require f }
 Dir[File.join(libdir, 'drivers_dsl_*.rb')].each { |f| require f }
 Dir[File.join(libdir, 'drivers_source_base.rb')].each { |f| require f }
