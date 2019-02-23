@@ -46,6 +46,19 @@ Listen <%= @out[:port] %>
     Header set X-Content-Type-Options "nosniff"
   </Location>
 
+  <% if @out[:acao_packs] %>
+  # Enable webpack serving
+  <Location "/packs/">
+    ExpiresActive on
+
+    Header set Cache-Control "public"
+    Header set Access-Control-Allow-Origin "<%= @out[:acao_packs_origin] %>"
+    Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
+    Header set Access-Control-Expose-Headers "ETag"
+    Header set X-Content-Type-Options "nosniff"
+    </Location>
+<% end %>
+
   RewriteEngine on
 
   <Proxy balancer://<%= upstream %>>
@@ -131,6 +144,19 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
     Header set Access-Control-Expose-Headers "ETag"
     Header set X-Content-Type-Options "nosniff"
   </Location>
+
+  <% if @out[:acao_packs] %>
+  # Enable webpack serving
+  <Location "/packs/">
+    ExpiresActive on
+
+    Header set Cache-Control "public"
+    Header set Access-Control-Allow-Origin "<%= @out[:acao_packs_origin] %>"
+    Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
+    Header set Access-Control-Expose-Headers "ETag"
+    Header set X-Content-Type-Options "nosniff"
+    </Location>
+<% end %>
 
   RewriteEngine on
 
