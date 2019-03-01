@@ -6,6 +6,7 @@ default['deployer']['group'] = 'deploy'
 default['deployer']['home'] = "/home/#{default['deployer']['user']}"
 
 # ruby
+default['apt']['compile_time_update'] = true
 default['build-essential']['compile_time'] = true
 default['ruby-version'] = node['ruby'].try(:[], 'version') || '2.6'
 default['nginx']['source']['modules'] = %w[
