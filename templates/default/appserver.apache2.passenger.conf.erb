@@ -91,10 +91,10 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 
   SSLEngine on
   SSLProxyEngine on
-  SSLCertificateFile /etc/apache2/ssl/<%= @application[:domains].first %>.crt
-  SSLCertificateKeyFile /etc/apache2/ssl/<%= @application[:domains].first %>.key
+  SSLCertificateFile <%= @ssl_cert_dir %>/<%= @application[:domains].first %>.crt
+  SSLCertificateKeyFile <%= @ssl_cert_dir %>/<%= @application[:domains].first %>.key
   <% if @application[:ssl_configuration][:chain] -%>
-  SSLCACertificateFile /etc/apache2/ssl/<%= @application[:domains].first %>.ca
+  SSLCACertificateFile <%= @ssl_cert_dir %>/<%= @application[:domains].first %>.ca
   <% end %>
   SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
 
@@ -144,6 +144,8 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
     PassengerBaseURI <%= @appserver_config[:mount_point] %>
     PassengerAppRoot <%= File.join(@deploy_dir, 'current') %>
   </Location>
+
+  RequestHeader set X-Forwarded-Proto "https"
 
   RewriteEngine on
 

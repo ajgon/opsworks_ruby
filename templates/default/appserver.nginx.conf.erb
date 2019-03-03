@@ -86,10 +86,10 @@ server {
   error_log <%= @out[:log_dir] %>/<%= @application[:domains].first %>-ssl.error.log <%= @out[:log_level] %>;
 
   ssl on;
-  ssl_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.crt;
-  ssl_certificate_key /etc/nginx/ssl/<%= @application[:domains].first %>.key;
+  ssl_certificate <%= @ssl_cert_dir %>/<%= @application[:domains].first %>.crt;
+  ssl_certificate_key <%= @ssl_cert_dir %>/<%= @application[:domains].first %>.key;
   <% if @application[:ssl_configuration][:chain] -%>
-  ssl_client_certificate /etc/nginx/ssl/<%= @application[:domains].first %>.ca;
+  ssl_client_certificate <%= @ssl_cert_dir %>/<%= @application[:domains].first %>.ca;
   <% end -%>
 
   <% if @out[:ssl_for_legacy_browsers] -%>
@@ -113,7 +113,7 @@ server {
   ssl_stapling_verify on;
   <% end -%>
   <% if @out[:dhparams].present? -%>
-  ssl_dhparam /etc/nginx/ssl/<%= @application[:domains].first %>.dhparams.pem;
+  ssl_dhparam <%= @ssl_cert_dir %>/<%= @application[:domains].first %>.dhparams.pem;
   <% end -%>
 
   root <%= File.join(@deploy_dir, 'current', 'public') %>;
