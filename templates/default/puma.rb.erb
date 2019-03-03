@@ -126,7 +126,7 @@ end
 # end
 on_worker_fork do |worker_id|
   <%= @out[:on_worker_fork] || 'puts "Before worker #{worker_id} fork..."' %>
-end
+end if Gem.loaded_specs['puma'].version >= Gem::Version.new('3.4.0')
 
 # Code to run in the master after a worker has been started. The worker's
 # index is passed as an argument.
@@ -138,7 +138,7 @@ end
 # end
 after_worker_fork do |worker_id|
   <%= @out[:after_worker_fork] || 'puts "After worker #{worker_id} fork..."' %>
-end
+end if Gem.loaded_specs['puma'].version >= Gem::Version.new('3.4.0')
 
 # Change the default timeout of worker startup
 # The default is 60
