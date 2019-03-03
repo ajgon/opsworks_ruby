@@ -150,6 +150,7 @@ server {
     add_header Access-Control-Allow-Origin "$http_origin";
     add_header Access-Control-Allow-Methods 'GET, PUT, POST, DELETE';
     add_header Access-Control-Expose-Headers ETag;
+    add_header X-Content-Type-Options nosniff;
   }
 
   <% if @out[:acao_packs] %>

@@ -5,6 +5,8 @@
 # Recipe:: setup
 #
 
+include_recipe 'apt'
+
 prepare_recipe
 
 # Create deployer user

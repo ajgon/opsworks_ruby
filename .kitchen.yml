@@ -4,7 +4,8 @@ driver:
 
 provisioner:
   name: chef_zero
-  require_chef_omnibus: 12
+  product_name: chef
+  product_version: 12
 
 # Uncomment the following verifier to leverage Inspec instead of Busser (the
 # default verifier)
@@ -46,8 +47,9 @@ suites:
           webserver:
             dhparams: |
               -----BEGIN DH PARAMETERS-----
-              MEYCQQDaYxpaoXcGqR9AiGLCNR2iRs1CzEMvetbqEfKgXUzplylWglfqbPoDLcef
-              IEm9LTZYRszYrC3l3StpAG0VI35rAgEC
+              MIGHAoGBANRGczP7P07whicqc7obbVeJ0XH04et8zhuFxIiFqzvFVWTq31wY/Cl6
+              0exI/+gU7ZeAooPEOogo/ejxv9VZyIQ0DtTr9e6NZmEYVc3AcT+m+p2aaSb3xtGw
+              PgDsea3pdwCZ3gTJm0w+0hAvoDmQGMFFjjPM2kgQdjJJ4oWTEpWrAgEC
               -----END DH PARAMETERS-----
             ssl_for_legacy_browsers: true
             client_max_body_size: "128m"
@@ -94,8 +96,9 @@ suites:
             adapter: 'apache2'
             dhparams: |
               -----BEGIN DH PARAMETERS-----
-              MEYCQQDaYxpaoXcGqR9AiGLCNR2iRs1CzEMvetbqEfKgXUzplylWglfqbPoDLcef
-              IEm9LTZYRszYrC3l3StpAG0VI35rAgEC
+              MIGHAoGBANRGczP7P07whicqc7obbVeJ0XH04et8zhuFxIiFqzvFVWTq31wY/Cl6
+              0exI/+gU7ZeAooPEOogo/ejxv9VZyIQ0DtTr9e6NZmEYVc3AcT+m+p2aaSb3xtGw
+              PgDsea3pdwCZ3gTJm0w+0hAvoDmQGMFFjjPM2kgQdjJJ4oWTEpWrAgEC
               -----END DH PARAMETERS-----
             limit_request_body: 134217728
             extra_config: "# lorem ipsum dolor sit amet"

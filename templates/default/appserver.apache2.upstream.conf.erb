@@ -172,6 +172,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   ProxyPreserveHost on
   ProxyAddHeaders On
   ProxyTimeout <%= @out[:proxy_timeout] || '60' %>
+  RequestHeader set X-Forwarded-Proto "https"
 
   <Proxy *>
     Order deny,allow
