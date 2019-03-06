@@ -43,9 +43,7 @@ module Drivers
       def configure
         define_service
         add_ssl_directory
-        add_ssl_item(:private_key)
-        add_ssl_item(:certificate)
-        add_ssl_item(:chain)
+        %i[private_key certificate chain].each(&method(:add_ssl_item))
         add_dhparams
 
         remove_defaults
