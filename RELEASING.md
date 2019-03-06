@@ -13,7 +13,9 @@
 1. `echo -n "<your chef login>"` > .chef.login
 1. Put your chef private key associated with `opsworks_ruby` cookbook as `client.pem`
    file into project directory
+1. `docker-compose run --rm cookbook bundle update`
 1. `docker-compose build`
+1. Run [Unit Testing and Linting](TESTING.md#unit-testing-and-linting)
 1. `docker-compose run --rm cookbook conventional-changelog -s -p angular -i CHANGELOG.md`
 1. Commit all the things with `chore: Version bump`
 1. Add new configuration options to `gh-pages-source` if necessary

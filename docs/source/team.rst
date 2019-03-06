@@ -17,6 +17,7 @@ Contributors
 * Teruo Adachi (`@interu`_)
 * Marcos Beirigo (`@marcosbeirigo`_)
 * John Calvin Young (`@johncalvinyoung`_)
+* Rich Seviora (`@richseviora`_)
 
 .. _Igor Rzegocki: https://www.rzegocki.pl/
 .. _@ajgon: https://github.com/ajgon
@@ -28,3 +29,4 @@ Contributors
 .. _@interu: https://github.com/interu
 .. _@marcosbeirigo: https://github.com/marcosbeirigo
 .. _@johncalvinyoung: https://github.com/johncalvinyoung
+.. _@richseviora: https://github.com/richseviora
