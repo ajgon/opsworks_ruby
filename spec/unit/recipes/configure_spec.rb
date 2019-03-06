@@ -3,8 +3,6 @@
 #
 # Cookbook Name:: opsworks_ruby
 # Spec:: configure
-#
-# Copyright (c) 2016-2018 The Authors, All Rights Reserved.
 
 require 'spec_helper'
 

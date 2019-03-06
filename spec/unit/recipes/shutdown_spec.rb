@@ -3,8 +3,6 @@
 #
 # Cookbook Name:: opsworks_ruby
 # Spec:: shutdown
-#
-# Copyright (c) 2016-2018 The Authors, All Rights Reserved.
 
 require 'spec_helper'
 
