@@ -22,6 +22,7 @@ Listen <%= @out[:port] %>
   DocumentRoot <%= File.join(@deploy_dir, 'current', 'public') %>
 
   <Directory <%= File.join(@deploy_dir, 'current') %>>
+    Require all granted
     Options FollowSymLinks
     AllowOverride None
     Order allow,deny
@@ -55,6 +56,7 @@ Listen <%= @out[:port] %>
   RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
   RewriteRule ^/(.*)$ balancer://<%= upstream %>%{REQUEST_URI} [P,QSA,L]
 
+  ProxyPass /assets "!"
   ProxyPass / balancer://<%= upstream %>/
   ProxyPassReverse / balancer://<%= upstream %>/
   ProxyPreserveHost on
@@ -83,6 +85,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   DocumentRoot <%= File.join(@deploy_dir, 'current', 'public') %>
 
   <Directory <%= File.join(@deploy_dir, 'current') %>>
+    Require all granted
     Options FollowSymLinks
     AllowOverride None
     Order allow,deny
@@ -141,6 +144,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
   RewriteRule ^/(.*)$ balancer://<%= upstream %>%{REQUEST_URI} [P,QSA,L]
 
+  ProxyPass /assets "!"
   ProxyPass / balancer://<%= upstream %>/
   ProxyPassReverse / balancer://<%= upstream %>/
   ProxyPreserveHost on
