@@ -636,6 +636,9 @@ describe 'opsworks_ruby::configure' do
         .not_to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content(/^Listen/)
       expect(chef_run).to create_link("/etc/apache2/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('BalancerMember http://127.0.0.1:3000')
     end
 
     it 'creates proper redirects for force ssl' do
@@ -695,6 +698,7 @@ describe 'opsworks_ruby::configure' do
         deploy[aws_opsworks_app['shortname']]['webserver']['adapter'] = 'apache2'
         deploy[aws_opsworks_app['shortname']]['webserver']['port'] = 8080
         deploy[aws_opsworks_app['shortname']]['webserver']['ssl_port'] = 8443
+        deploy[aws_opsworks_app['shortname']]['appserver']['port'] = 4000
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
 
@@ -709,6 +713,9 @@ describe 'opsworks_ruby::configure' do
       )
       expect(chefrun).to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
         'Listen 8443'
+      )
+      expect(chefrun).to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf").with_content(
+        'BalancerMember http://127.0.0.1:4000'
       )
     end
 
