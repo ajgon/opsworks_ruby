@@ -372,51 +372,39 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel).to create_template("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('check process sidekiq_dummy_project-1')
-        expect(chef_run_rhel)
-          .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-1.pid')
+          .with_content('check process sidekiq_dummy_project-1 matching "bundle exec sidekiq.*/sidekiq_1.yml"')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
-            '-i 0 ' \
-            '-P /run/lock/dummy_project/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-1\'" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/run/lock/dummy_project/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
+            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_1.yml | ' \
+            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('check process sidekiq_dummy_project-2')
-        expect(chef_run_rhel)
-          .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-2.pid')
+          .with_content('check process sidekiq_dummy_project-2 matching "bundle exec sidekiq.*/sidekiq_2.yml"')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
-            '-i 1 ' \
-            '-P /run/lock/dummy_project/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-2\'" with timeout 90 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/run/lock/dummy_project/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
+            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_2.yml | ' \
+            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -430,51 +418,39 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run).to create_template("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('check process sidekiq_dummy_project-1')
-        expect(chef_run)
-          .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-1.pid')
+          .with_content('check process sidekiq_dummy_project-1 matching "bundle exec sidekiq.*/sidekiq_1.yml"')
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_1.yml ' \
-            '-i 0 ' \
-            '-P /run/lock/dummy_project/sidekiq_dummy_project-1.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-1\'" with timeout 90 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/run/lock/dummy_project/sidekiq_dummy_project-1.pid 8\'" with timeout 18 seconds'
+            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_1.yml | ' \
+            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('check process sidekiq_dummy_project-2')
-        expect(chef_run)
-          .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('with pidfile /run/lock/dummy_project/sidekiq_dummy_project-2.pid')
+          .with_content('check process sidekiq_dummy_project-2 matching "bundle exec sidekiq.*/sidekiq_2.yml"')
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiq ' \
             '-C /srv/www/dummy_project/shared/config/sidekiq_2.yml ' \
-            '-i 1 ' \
-            '-P /run/lock/dummy_project/sidekiq_dummy_project-2.pid ' \
             '-r /srv/www/dummy_project/current/lorem_ipsum.rb 2>&1 ' \
             '| logger -t sidekiq-dummy_project-2\'" with timeout 90 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec sidekiqctl stop ' \
-            '/run/lock/dummy_project/sidekiq_dummy_project-2.pid 8\'" with timeout 18 seconds'
+            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_2.yml | ' \
+            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")

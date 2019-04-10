@@ -1,15 +1,13 @@
 <% ([@out[:process_count].to_i || 1].max).times do |n| %>
     <% identifier = "#{@application}-#{n+1}" %>
     <% conf_file = "#{@deploy_to}/shared/config/sidekiq_#{n+1}.yml" %>
-    <% pid_file = "/run/lock/#{@app_shortname}/sidekiq_#{identifier}.pid" %>
     <% syslog = !!@out[:syslog] ? "2>&1 | logger -t sidekiq-#{identifier}" : '' %>
     <% to_require = @out[:require].present? ? " -r #{File.join(@deploy_to, 'current', @out[:require])}" : '' %>
     <% timeout = (@out[:config]['timeout'] || 8).to_i %>
 
-    check process sidekiq_<%= identifier.to_s %>
-    with pidfile <%= pid_file.to_s %>
-    start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec sidekiq -C <%= conf_file.to_s %> -i <%= n %> -P <%= pid_file.to_s %><%= to_require.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
-    stop program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec sidekiqctl stop <%= pid_file %> <%= timeout %>'" with timeout <%= timeout + 10 %> seconds
+    check process sidekiq_<%= identifier.to_s %> matching "bundle exec sidekiq.*/sidekiq_<%= n+1 %>.yml"
+    start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec sidekiq -C <%= conf_file.to_s %><%= to_require.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
+    stop program = "/bin/su - <%= node['deployer']['user'] %> -c \"ps -ax | grep 'bundle exec sidekiq' | grep sidekiq_<%= n+1 %>.yml | grep -v grep | awk '{print $1}' | xargs kill\"" with timeout <%= timeout %> seconds
     group sidekiq_<%= @application.to_s %>_group
 
 <% end %>
