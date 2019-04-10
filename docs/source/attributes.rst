@@ -437,6 +437,8 @@ appserver
   - Bind the appserver to a port on 0.0.0.0.  This is
     useful for serving the application directly from the appserver without a web
     server middleware or separating the web server into its own container or server.
+    This can also be used for running multiple applications on a server when using
+    apache as your webserver.
 
 
 unicorn

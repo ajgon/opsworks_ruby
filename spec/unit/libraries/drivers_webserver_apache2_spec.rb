@@ -23,7 +23,8 @@ describe Drivers::Webserver::Apache2 do
       extra_config: 'extra_config {}',
       extra_config_ssl: 'extra_config_ssl {}',
       log_dir: '/var/log/httpd',
-      log_level: 'debug'
+      log_level: 'debug',
+      appserver_port: '3000'
     )
   end
 
@@ -39,7 +40,28 @@ describe Drivers::Webserver::Apache2 do
       extra_config: 'extra_config {}',
       extra_config_ssl: 'extra_config {}',
       log_dir: '/var/log/httpd',
-      log_level: 'debug'
+      log_level: 'debug',
+      appserver_port: '3000'
+    )
+  end
+
+  it 'copies appserver port to appserver_port when set' do
+    custom_json = { 'deploy' => {
+      aws_opsworks_app['shortname'] => {
+        'appserver' => { 'port' => '4000' },
+        'webserver' => { 'adapter' => 'apache2' }
+      }
+    } }
+    expect(
+      described_class.new(
+        dummy_context(node(custom_json)),
+        aws_opsworks_app
+      ).out
+    ).to eq(
+      extra_config_ssl: 'extra_config_ssl {}',
+      keepalive_timeout: '65',
+      log_dir: '/var/log/httpd',
+      appserver_port: '4000'
     )
   end
 end

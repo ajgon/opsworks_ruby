@@ -50,7 +50,7 @@ Listen <%= @out[:port] %>
   RewriteEngine on
 
   <Proxy balancer://<%= upstream %>>
-    BalancerMember http://127.0.0.1:3000
+    BalancerMember http://127.0.0.1:<%= @out[:appserver_port] %>
   </Proxy>
 
   RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
@@ -138,7 +138,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   RewriteEngine on
 
   <Proxy balancer://<%= upstream %>>
-    BalancerMember http://127.0.0.1:3000
+    BalancerMember http://127.0.0.1:<%= @out[:appserver_port] %>
   </Proxy>
 
   RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
