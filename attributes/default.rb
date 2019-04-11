@@ -14,7 +14,9 @@ default['nginx']['source']['modules'] = %w[
   nginx::http_stub_status_module
 ]
 
-default['nodejs']['version'] = '8.11.1'
+# nodejs
+default['nodejs']['repo'] = 'https://deb.nodesource.com/node_10.x'
+default['nodejs']['version'] = '10.15.3'
 
 default['deploy']['timeout'] = 600
 
