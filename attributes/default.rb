@@ -14,6 +14,8 @@ default['nginx']['source']['modules'] = %w[
   nginx::http_stub_status_module
 ]
 
+default['nodejs']['version'] = '8.11.1'
+
 default['deploy']['timeout'] = 600
 
 # global
@@ -23,11 +25,14 @@ default['defaults']['global']['symlinks'] = {
   'assets' => 'public/assets',
   'cache' => 'tmp/cache',
   'pids' => 'tmp/pids',
-  'log' => 'log'
+  'log' => 'log',
+  'node_modules' => 'node_modules',
+  'packs' => 'public/packs'
 }
 default['defaults']['global']['create_dirs_before_symlink'] =
-  %w[tmp public config ../../shared/cache ../../shared/assets]
-default['defaults']['global']['purge_before_symlink'] = %w[log tmp/cache tmp/pids public/system public/assets]
+  %w[tmp public config ../../shared/cache ../../shared/assets ../../shared/node_modules ../../shared/packs]
+default['defaults']['global']['purge_before_symlink'] =
+  %w[log tmp/cache tmp/pids public/system public/assets node_modules public/packs]
 default['defaults']['global']['rollback_on_error'] = true
 default['defaults']['global']['logrotate_rotate'] = 30
 default['defaults']['global']['logrotate_frequency'] = 'daily'
