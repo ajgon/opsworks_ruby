@@ -44,6 +44,10 @@ if node['platform_family'] == 'debian'
   end
 end
 
+# NodeJS and Yarn
+include_recipe 'nodejs'
+include_recipe 'yarn'
+
 # Ruby and bundler
 if node['platform_family'] == 'debian'
   node.default['ruby-ng']['ruby_version'] = node['ruby-version']

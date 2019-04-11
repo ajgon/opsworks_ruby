@@ -15,6 +15,8 @@ depends 'logrotate'
 depends 'ruby-ng'
 depends 's3_file'
 depends 'sudo'
+depends 'nodejs'
+depends 'yarn'
 
 # indirect dependency, but breaks against the chef_version if updated to 3.1.0
 depends 'seven_zip', '~> 2.0'
