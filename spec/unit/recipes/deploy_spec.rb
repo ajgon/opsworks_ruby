@@ -98,10 +98,14 @@ describe 'opsworks_ruby::deploy' do
           'cache' => 'tmp/cache',
           'pids' => 'tmp/pids',
           'log' => 'log',
+          'node_modules' => 'node_modules',
+          'packs' => 'public/packs',
           'test' => 'public/test'
         },
-        'create_dirs_before_symlink' => %w[tmp public config ../../shared/cache ../../shared/assets ../shared/test],
-        'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets public/test]
+        'create_dirs_before_symlink' => %w[tmp public config ../../shared/cache ../../shared/assets
+                                           ../../shared/node_modules ../../shared/packs ../shared/test],
+        'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets node_modules public/packs
+                                     public/test]
       )
 
       expect(chef_run).to disable_logrotate_app('rails')
