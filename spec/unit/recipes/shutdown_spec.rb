@@ -33,13 +33,15 @@ describe 'opsworks_ruby::shutdown' do
       expect(chef_run).to(
         run_execute(
           '/bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
-          'grep sidekiq_1.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TSTP"'
+          'grep sidekiq_1.yml | grep -v grep | awk \'{print \\$1}\' | ' \
+          'xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill -TSTP"'
         )
       )
       expect(chef_run).to(
         run_execute(
           '/bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
-          'grep sidekiq_2.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TSTP"'
+          'grep sidekiq_2.yml | grep -v grep | awk \'{print \\$1}\' | ' \
+          'xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill -TSTP"'
         )
       )
     end
@@ -48,13 +50,15 @@ describe 'opsworks_ruby::shutdown' do
       expect(chef_run).to(
         run_execute(
           'timeout 8 /bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
-          'grep sidekiq_1.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TERM"'
+          'grep sidekiq_1.yml | grep -v grep | awk \'{print \\$1}\' | ' \
+          'xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill"'
         )
       )
       expect(chef_run).to(
         run_execute(
           'timeout 8 /bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
-          'grep sidekiq_2.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TERM"'
+          'grep sidekiq_2.yml | grep -v grep | awk \'{print \\$1}\' | ' \
+          'xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill"'
         )
       )
     end

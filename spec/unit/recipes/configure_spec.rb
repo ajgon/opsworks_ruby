@@ -385,8 +385,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_1.yml | ' \
-            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
+            'stop program = "/bin/su - deploy -c \'ps -ax | grep "bundle exec sidekiq" | grep sidekiq_1.yml | ' \
+            'grep -v grep | awk "{print \$1}" | xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill\'" ' \
+            'with timeout 8 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -403,8 +404,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_2.yml | ' \
-            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
+            'stop program = "/bin/su - deploy -c \'ps -ax | grep "bundle exec sidekiq" | grep sidekiq_2.yml | ' \
+            'grep -v grep | awk "{print \$1}" | xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill\'" ' \
+            'with timeout 8 seconds'
           )
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -431,8 +433,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_1.yml | ' \
-            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
+            'stop program = "/bin/su - deploy -c \'ps -ax | grep "bundle exec sidekiq" | grep sidekiq_1.yml | ' \
+            'grep -v grep | awk "{print \$1}" | xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill\'" ' \
+            'with timeout 8 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
@@ -449,8 +452,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content(
-            'stop program = "/bin/su - deploy -c \"ps -ax | grep \'bundle exec sidekiq\' | grep sidekiq_2.yml | ' \
-            'grep -v grep | awk \'{print $1}\' | xargs kill\"" with timeout 8 seconds'
+            'stop program = "/bin/su - deploy -c \'ps -ax | grep "bundle exec sidekiq" | grep sidekiq_2.yml | ' \
+            'grep -v grep | awk "{print \$1}" | xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill\'" ' \
+            'with timeout 8 seconds'
           )
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
