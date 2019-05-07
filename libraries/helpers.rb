@@ -40,7 +40,7 @@ def old_globals(index, application)
     "DEPRECATION WARNING: node['deploy']['#{application}']['#{index}'] is deprecated and will be removed. " \
     "Please use node['deploy']['#{application}']['global']['#{index}'] instead."
   Chef::Log.warn(message)
-  STDERR.puts(message)
+  warn(message)
   node['deploy'][application][index.to_s]
 end
 

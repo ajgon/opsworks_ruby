@@ -11,6 +11,7 @@ group :lint do
   gem 'mdl'
   gem 'overcommit'
   gem 'rubocop'
+  gem 'rubocop-performance'
   gem 'travis'
 end
 

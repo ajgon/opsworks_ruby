@@ -47,44 +47,29 @@ module Drivers
 
       def quiet_sidekiq
         (1..process_count).each do |process_number|
-          pid_file = pid_file(process_number)
-          Chef::Log.info("Quiet Sidekiq process if exists: #{pid_file}")
-          next unless File.file?(pid_file) && pid_exists?(File.open(pid_file).read)
+          Chef::Log.info("Quiet Sidekiq process if exists: no. #{process_number}")
 
-          execute_sidekiqctl 'quiet', pid_file
+          context.execute(
+            "/bin/su - #{node['deployer']['user']} -c \"ps -ax | grep 'bundle exec sidekiq' | " \
+            "grep sidekiq_#{process_number}.yml | grep -v grep | awk '{print $1}' | xargs kill -TSTP\""
+          )
         end
       end
 
       def stop_sidekiq
         (1..process_count).each do |process_number|
-          pid_file = pid_file(process_number)
           timeout = (out[:config]['timeout'] || 8).to_i
+          Chef::Log.info("Stop Sidekiq process if exists: no. #{process_number}")
 
-          execute_sidekiqctl 'stop', pid_file, timeout
+          context.execute(
+            "timeout #{timeout} /bin/su - #{node['deployer']['user']} -c \"ps -ax | grep 'bundle exec sidekiq' | " \
+            "grep sidekiq_#{process_number}.yml | grep -v grep | awk '{print $1}' | xargs kill -TERM\""
+          )
         end
-      end
-
-      def pid_file(process_number)
-        "/run/lock/#{app['shortname']}/sidekiq_#{app['shortname']}-#{process_number}.pid"
-      end
-
-      def pid_exists?(pid)
-        Process.getpgid(pid.to_i)
-        true
-      rescue Errno::ESRCH
-        false
       end
 
       def configuration
         JSON.parse(out[:config].to_json, symbolize_names: true)
-      end
-
-      def execute_sidekiqctl(*params)
-        context.execute(
-          "/bin/su - #{node['deployer']['user']} -c 'cd #{File.join(deploy_dir(app), 'current')} && " \
-          "#{environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ')} " \
-          "bundle exec sidekiqctl #{params.map { |param| param.to_s.strip }.join(' ')}'"
-        )
       end
     end
   end

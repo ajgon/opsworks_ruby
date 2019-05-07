@@ -9,10 +9,11 @@ bash -c "overcommit --sign && overcommit -r && rspec"
 
 ## Integration Testing
 
-To run integration tests you need [Chef Development Kit](https://downloads.chef.io/chefdk).
+To run integration tests you need [Chef Development Kit](https://downloads.chef.io/chefdk)
+and [Vagrant](https://www.vagrantup.com/).
 After installing it, invoke:
 
 ```
-chef exec bundle install -j 4 --path vendor
-sudo chef exec bundle exec rake integration:docker
+kitchen converge
+kitchen verify
 ```

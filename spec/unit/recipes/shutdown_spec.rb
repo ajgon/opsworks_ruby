@@ -29,19 +29,32 @@ describe 'opsworks_ruby::shutdown' do
       expect(chef_run).to run_execute('monit unmonitor sidekiq_dummy_project-2')
     end
 
-    it 'shutsdown sidekiq processes' do
+    it 'quiets sidekiq processes' do
       expect(chef_run).to(
         run_execute(
-          '/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" ' \
-          'bundle exec sidekiqctl stop /run/lock/dummy_project/sidekiq_dummy_project-1.pid 8\''
+          '/bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
+          'grep sidekiq_1.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TSTP"'
         )
       )
       expect(chef_run).to(
         run_execute(
-          '/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" '\
-          'bundle exec sidekiqctl stop /run/lock/dummy_project/sidekiq_dummy_project-2.pid 8\''
+          '/bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
+          'grep sidekiq_2.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TSTP"'
+        )
+      )
+    end
+
+    it 'shutsdown sidekiq processes' do
+      expect(chef_run).to(
+        run_execute(
+          'timeout 8 /bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
+          'grep sidekiq_1.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TERM"'
+        )
+      )
+      expect(chef_run).to(
+        run_execute(
+          'timeout 8 /bin/su - deploy -c "ps -ax | grep \'bundle exec sidekiq\' | ' \
+          'grep sidekiq_2.yml | grep -v grep | awk \'{print $1}\' | xargs kill -TERM"'
         )
       )
     end
