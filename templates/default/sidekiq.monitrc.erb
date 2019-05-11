@@ -7,7 +7,7 @@
 
     check process sidekiq_<%= identifier.to_s %> matching "bundle exec sidekiq.*/sidekiq_<%= n+1 %>.yml"
     start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec sidekiq -C <%= conf_file.to_s %><%= to_require.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
-    stop program = "/bin/su - <%= node['deployer']['user'] %> -c \"ps -ax | grep 'bundle exec sidekiq' | grep sidekiq_<%= n+1 %>.yml | grep -v grep | awk '{print $1}' | xargs kill\"" with timeout <%= timeout %> seconds
+    stop program = "/bin/su - <%= node['deployer']['user'] %> -c 'ps -ax | grep "bundle exec sidekiq" | grep sidekiq_<%= n+1 %>.yml | grep -v grep | awk "{print \$1}" | xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill'" with timeout <%= timeout %> seconds
     group sidekiq_<%= @application.to_s %>_group
 
 <% end %>

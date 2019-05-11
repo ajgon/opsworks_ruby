@@ -49,10 +49,7 @@ module Drivers
         (1..process_count).each do |process_number|
           Chef::Log.info("Quiet Sidekiq process if exists: no. #{process_number}")
 
-          context.execute(
-            "/bin/su - #{node['deployer']['user']} -c \"ps -ax | grep 'bundle exec sidekiq' | " \
-            "grep sidekiq_#{process_number}.yml | grep -v grep | awk '{print $1}' | xargs kill -TSTP\""
-          )
+          context.execute(send_signal_to_sidekiq(process_number, :TSTP))
         end
       end
 
@@ -61,11 +58,14 @@ module Drivers
           timeout = (out[:config]['timeout'] || 8).to_i
           Chef::Log.info("Stop Sidekiq process if exists: no. #{process_number}")
 
-          context.execute(
-            "timeout #{timeout} /bin/su - #{node['deployer']['user']} -c \"ps -ax | grep 'bundle exec sidekiq' | " \
-            "grep sidekiq_#{process_number}.yml | grep -v grep | awk '{print $1}' | xargs kill -TERM\""
-          )
+          context.execute("timeout #{timeout} #{send_signal_to_sidekiq(process_number)}")
         end
+      end
+
+      def send_signal_to_sidekiq(process_number, signal = nil)
+        "/bin/su - #{node['deployer']['user']} -c \"ps -ax | grep 'bundle exec sidekiq' | " \
+        "grep sidekiq_#{process_number}.yml | grep -v grep | awk '{print \\$1}' | " \
+        "xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill#{" -#{signal}" if signal}\""
       end
 
       def configuration
