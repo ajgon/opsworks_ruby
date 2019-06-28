@@ -5,12 +5,6 @@ directory "<%= @deploy_dir %>/current"
 
 <% if @out[:preload_app] %>
   preload_app!
-  on_worker_boot do
-    next unless defined?(ActiveRecord::Base) && defined?(Rails)
-    next unless Gem::Requirement.new('>= 4.1')
-                                .satisfied_by?(Gem::Version.new(Rails.version))
-    ActiveRecord::Base.establish_connection
-  end
 <% end %>
 
 # Set the environment in which the rack's app will run. The value must be a string.
@@ -103,6 +97,13 @@ end
 # end
 on_worker_boot do
   <%= @out[:on_worker_boot] || 'puts "On worker boot..."' %>
+
+  <% if @out[:preload_app] %>
+    next unless defined?(ActiveRecord::Base) && defined?(Rails)
+    next unless Gem::Requirement.new('>= 4.1')
+                                .satisfied_by?(Gem::Version.new(Rails.version))
+    ActiveRecord::Base.establish_connection
+  <% end %>
 end
 
 # Code to run in a worker right before it exits.
