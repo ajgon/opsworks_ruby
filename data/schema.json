@@ -2,8 +2,13 @@
   "server":{
     "ruby-version":{
       "type":"string",
-      "default":"2.5",
+      "default":"2.6",
       "description":"Sets the Ruby version used through the system. For debian-based distributions, a `ruby-ng` cookbook is used. For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.)."
+    },
+    "use-nodejs":{
+      "type":"boolean",
+      "default": false,
+      "description":"If enabled, a nodejs and yarn will be installed on a machine, to provide support for webpack and assets precompilation."
     }
   },
   "global":{

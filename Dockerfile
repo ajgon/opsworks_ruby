@@ -1,6 +1,6 @@
 FROM ruby:2.5
 
-RUN printf "deb http://deb.debian.org/debian testing main\ndeb http://deb.debian.org/debian testing-updates main\ndeb http://security.debian.org testing/updates main" >> /etc/apt/sources.list
+RUN printf "deb http://deb.debian.org/debian testing main\ndeb http://deb.debian.org/debian testing-updates main" >> /etc/apt/sources.list
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends apt-transport-https && \
     apt-get clean && \
