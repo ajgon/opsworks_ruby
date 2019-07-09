@@ -98,20 +98,64 @@ describe 'opsworks_ruby::deploy' do
           'cache' => 'tmp/cache',
           'pids' => 'tmp/pids',
           'log' => 'log',
-          'node_modules' => 'node_modules',
-          'packs' => 'public/packs',
           'test' => 'public/test'
         },
         'create_dirs_before_symlink' => %w[tmp public config ../../shared/cache ../../shared/assets
-                                           ../../shared/node_modules ../../shared/packs ../shared/test],
-        'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets node_modules public/packs
-                                     public/test]
+                                           ../shared/test],
+        'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets public/test]
       )
 
       expect(chef_run).to disable_logrotate_app('rails')
       expect(chef_run).to run_execute('stop-start unicorn')
       expect(deploy).to notify('service[nginx]').to(:reload).delayed
       expect(service).to do_nothing
+    end
+
+    context 'with nodejs enabled' do
+      let(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          deploy = node['deploy']
+          deploy['dummy_project']['source'].delete('ssh_wrapper')
+          solo_node.set['deploy'] = deploy
+          solo_node.set['use-nodejs'] = true
+        end
+      end
+
+      it 'performs a deploy' do
+        deploy = chef_run.deploy(aws_opsworks_app['shortname'])
+        service = chef_run.service('nginx')
+
+        expect(chef_run).to deploy_deploy('dummy_project').with(
+          repository: 'git@git.example.com:repo/project.git',
+          revision: 'master',
+          scm_provider: Chef::Provider::Git,
+          enable_submodules: false,
+          rollback_on_error: true,
+          environment: aws_opsworks_app['environment'].merge(
+            'RAILS_ENV' => 'staging', 'GIT_SSH' => '/tmp/ssh-git-wrapper.sh'
+          ),
+          ssh_wrapper: '/tmp/ssh-git-wrapper.sh',
+          symlinks: {
+            'system' => 'public/system',
+            'assets' => 'public/assets',
+            'cache' => 'tmp/cache',
+            'pids' => 'tmp/pids',
+            'log' => 'log',
+            'node_modules' => 'node_modules',
+            'packs' => 'public/packs',
+            'test' => 'public/test'
+          },
+          'create_dirs_before_symlink' => %w[tmp public config ../../shared/cache ../../shared/assets
+                                             ../../shared/node_modules ../../shared/packs ../shared/test],
+          'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets node_modules public/packs
+                                       public/test]
+        )
+
+        expect(chef_run).to disable_logrotate_app('rails')
+        expect(chef_run).to run_execute('stop-start unicorn')
+        expect(deploy).to notify('service[nginx]').to(:reload).delayed
+        expect(service).to do_nothing
+      end
     end
 
     context 'when the location of the generated Git SSH wrapper is overridden' do

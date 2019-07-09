@@ -44,9 +44,11 @@ if node['platform_family'] == 'debian'
   end
 end
 
-# NodeJS and Yarn
-include_recipe 'nodejs'
-include_recipe 'yarn'
+if node['use-nodejs']
+  # NodeJS and Yarn
+  include_recipe 'nodejs'
+  include_recipe 'yarn'
+end
 
 # Ruby and bundler
 if node['platform_family'] == 'debian'

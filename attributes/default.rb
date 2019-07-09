@@ -14,11 +14,11 @@ default['nginx']['source']['modules'] = %w[
   nginx::http_stub_status_module
 ]
 
-# nodejs
-default['nodejs']['repo'] = 'https://deb.nodesource.com/node_10.x'
-default['nodejs']['version'] = '10.15.3'
-
-default['deploy']['timeout'] = 600
+if node['use-nodejs']
+  # nodejs
+  default['nodejs']['repo'] = 'https://deb.nodesource.com/node_10.x'
+  default['nodejs']['version'] = '10.15.3'
+end
 
 # global
 default['defaults']['global']['environment'] = 'production'
@@ -27,20 +27,27 @@ default['defaults']['global']['symlinks'] = {
   'assets' => 'public/assets',
   'cache' => 'tmp/cache',
   'pids' => 'tmp/pids',
-  'log' => 'log',
-  'node_modules' => 'node_modules',
-  'packs' => 'public/packs'
+  'log' => 'log'
 }
 default['defaults']['global']['create_dirs_before_symlink'] =
-  %w[tmp public config ../../shared/cache ../../shared/assets ../../shared/node_modules ../../shared/packs]
-default['defaults']['global']['purge_before_symlink'] =
-  %w[log tmp/cache tmp/pids public/system public/assets node_modules public/packs]
+  %w[tmp public config ../../shared/cache ../../shared/assets]
+default['defaults']['global']['purge_before_symlink'] = %w[log tmp/cache tmp/pids public/system public/assets]
 default['defaults']['global']['rollback_on_error'] = true
 default['defaults']['global']['logrotate_rotate'] = 30
 default['defaults']['global']['logrotate_frequency'] = 'daily'
 default['defaults']['global']['logrotate_options'] = %w[
   missingok compress delaycompress notifempty copytruncate sharedscripts
 ]
+default['defaults']['global']['use_nodejs'] = false
+
+if node['use-nodejs']
+  default['defaults']['global']['symlinks']['node_modules'] = 'node_modules'
+  default['defaults']['global']['symlinks']['packs'] = 'public/packs'
+  default['defaults']['global']['create_dirs_before_symlink'].push('../../shared/node_modules')
+  default['defaults']['global']['create_dirs_before_symlink'].push('../../shared/packs')
+  default['defaults']['global']['purge_before_symlink'].push('node_modules')
+  default['defaults']['global']['purge_before_symlink'].push('public/packs')
+end
 
 # database
 ## common

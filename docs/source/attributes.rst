@@ -46,6 +46,13 @@ convention).
      and not on the other (for example ``ruby-ng`` gets freshest versions of ruby
      way earlier than Amazon Linux).
 
+-  ``node['use-nodejs']``
+
+  -  **Type:** boolean
+  -  **Default:** ``false``
+  -  If enabled, a nodejs and yarn will be installed on a machine, to provide support
+     for webpack and assets precompilation.
+
 Cross-application attributes
 ----------------------------
 
