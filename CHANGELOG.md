@@ -1,3 +1,25 @@
+# [1.15.0](https://github.com/ajgon/opsworks_ruby/compare/v1.14.0...v1.15.0) (2019-07-09)
+
+
+### Bug Fixes
+
+* **apache:** fix apache serving assets rather than proxying to app server ([#210](https://github.com/ajgon/opsworks_ruby/issues/210)) ([9dfdeed](https://github.com/ajgon/opsworks_ruby/commit/9dfdeed))
+* **appserver:** Compare lockfiles instead of main Gemfile ([c02af02](https://github.com/ajgon/opsworks_ruby/commit/c02af02))
+* **appserver:** fix duplicate after_fork/on_worker_boot stanzas in appserver configs ([c0b0e84](https://github.com/ajgon/opsworks_ruby/commit/c0b0e84))
+* **worker:** adapted monit config for sidekiq 6.x ([4a58654](https://github.com/ajgon/opsworks_ruby/commit/4a58654)), closes [#215](https://github.com/ajgon/opsworks_ruby/issues/215)
+* **worker:** fix sidekiq quiet/shutdown scripts ([59198b9](https://github.com/ajgon/opsworks_ruby/commit/59198b9)), closes [#217](https://github.com/ajgon/opsworks_ruby/issues/217)
+* **worker:** quieting and stopping sidekiq ([efc1231](https://github.com/ajgon/opsworks_ruby/commit/efc1231))
+
+
+### Features
+
+* **apache:** apache configuration to use appserver’s port provided in custom json ([b576788](https://github.com/ajgon/opsworks_ruby/commit/b576788))
+* **setup:** add global option for enabling/disabling nodejs ([1f1fa4b](https://github.com/ajgon/opsworks_ruby/commit/1f1fa4b))
+* **setup:** support for webpacker ([569b9bb](https://github.com/ajgon/opsworks_ruby/commit/569b9bb))
+* **setup:** use latest nodejs lts 10.15.3 ([61bb605](https://github.com/ajgon/opsworks_ruby/commit/61bb605))
+
+
+
 # [1.14.0](https://github.com/ajgon/opsworks_ruby/compare/v1.13.0...v1.14.0) (2019-03-06)
 
 
