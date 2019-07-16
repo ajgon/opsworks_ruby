@@ -41,6 +41,7 @@ module Drivers
         add_ssl_item(:chain)
         add_dhparams
 
+        remove_defaults
         add_appserver_config
         enable_appserver_config
         super
@@ -58,6 +59,16 @@ module Drivers
       def service_name
         'nginx'
       end
+
+      private
+
+        def remove_defaults
+          conf_path = "#{conf_dir}/conf.d/default.conf"
+
+          notifying_file "#{conf_path}/sites-enabled/#{file}", :reload do
+            action :delete
+          end
+        end
     end
   end
 end
