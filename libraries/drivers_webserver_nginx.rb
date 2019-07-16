@@ -63,9 +63,7 @@ module Drivers
       private
 
         def remove_defaults
-          conf_path = "#{conf_dir}/conf.d/default.conf"
-
-          notifying_file "#{conf_path}/sites-enabled/#{file}", :reload do
+          notifying_file "#{conf_dir}/conf.d/default.conf", :reload do
             action :delete
           end
         end
