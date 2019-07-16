@@ -62,11 +62,11 @@ module Drivers
 
       private
 
-        def remove_defaults
-          notifying_file "#{conf_dir}/conf.d/default.conf", :reload do
-            action :delete
-          end
+      def remove_defaults
+        notifying_file "#{conf_dir}/conf.d/default.conf", :reload do
+          action :delete
         end
+      end
     end
   end
 end
