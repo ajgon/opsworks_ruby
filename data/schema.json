@@ -9,6 +9,11 @@
       "type":"boolean",
       "default": false,
       "description":"If enabled, a nodejs and yarn will be installed on a machine, to provide support for webpack and assets precompilation."
+    },
+    "chef-version":{
+      "type":"integer",
+      "default":12,
+      "description":"If enabled current chef on OpsWorks will be updated to provided version."
     }
   },
   "global":{
