@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+# chef client updater
+if node['chef-version']
+  chef_version = node['chef-version'].to_s.to_i
+  default['chef_client_updater']['post_install_action'] = 'exec'
+  default['chef_client_updater']['version'] = chef_version.positive? ? chef_version.to_s : 'latest'
+end
+
 # deployer
 default['deployer']['user'] = 'deploy'
 default['deployer']['group'] = 'deploy'

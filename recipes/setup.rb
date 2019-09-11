@@ -9,6 +9,30 @@ include_recipe 'apt'
 
 prepare_recipe
 
+# Upgrade chef
+# Taken from `chef-upgrade` cookbook <https://github.com/inopinatus/chef-upgrade> by Josh Goodall
+# The Chef updater will try to kill its own process. This causes setup failure.
+# We force it to accept our "exec" configuration by monkey-patching the LWRP.
+if node['chef-version']
+  update_provider = Chef.provider_handler_map.get(node, :chef_client_updater)
+  update_provider.prepend(CannotSelfTerminate)
+  include_recipe 'chef_client_updater::default'
+
+  directory '/opt/aws/opsworks/current/plugins' do
+    owner 'root'
+    group 'aws'
+    mode '0755'
+    recursive true
+  end
+
+  cookbook_file '/opt/aws/opsworks/current/plugins/debian_downgrade_protection.rb' do
+    source 'debian_downgrade_protection.rb'
+    owner 'root'
+    group 'aws'
+    mode '0644'
+  end
+end
+
 # Create deployer user
 group node['deployer']['group'] do
   gid 5000

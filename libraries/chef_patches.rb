@@ -10,3 +10,12 @@ class Chef
     end
   end
 end
+
+# Taken from: <https://github.com/inopinatus/chef-upgrade>
+module CannotSelfTerminate
+  def eval_post_install_action
+    Chef::Log.info '>>>>>>>>>>>>>>>>>                         <<<<<<<<<<<<<<<<'
+    Chef::Log.info '>>>>>>>>>>>>>>>>> I cannot self terminate <<<<<<<<<<<<<<<<'
+    Chef::Log.info '>>>>>>>>>>>>>>>>>                         <<<<<<<<<<<<<<<<'
+  end
+end

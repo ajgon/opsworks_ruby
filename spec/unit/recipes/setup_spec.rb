@@ -32,6 +32,40 @@ describe 'opsworks_ruby::setup' do
     stub_command('which nginx').and_return(false)
   end
 
+  context 'Chef version' do
+    it 'not set' do
+      expect(chef_run).not_to create_directory('/opt/aws/opsworks/current/plugins')
+    end
+
+    it 'set to false' do
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['chef-version'] = false
+      end.converge(described_recipe)
+
+      expect(chef_run).not_to create_directory('/opt/aws/opsworks/current/plugins')
+    end
+
+    it 'set to 14' do
+      chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['chef-version'] = '14'
+      end.converge(described_recipe)
+
+      expect(chef_run).to create_directory('/opt/aws/opsworks/current/plugins').with(
+        owner: 'root',
+        group: 'aws',
+        mode: '0755',
+        recursive: true
+      )
+      expect(chef_run).to create_cookbook_file('/opt/aws/opsworks/current/plugins/debian_downgrade_protection.rb').with(
+        source: 'debian_downgrade_protection.rb',
+        owner: 'root',
+        group: 'aws',
+        mode: '0644'
+      )
+      expect(chef_run).to update_chef_client_updater('update chef-client')
+    end
+  end
+
   context 'Deployer' do
     it 'debian user' do
       expect(chef_run).to create_group('deploy').with(gid: 5000)
