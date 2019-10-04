@@ -14,6 +14,7 @@ DEFAULT_NODE = {
         environment: 'staging',
         create_dirs_before_symlink: %(../shared/test),
         purge_before_symlink: %w[public/test],
+        do_not_purge_before_symlink: %w[tmp/pids],
         symlinks: { 'test' => 'public/test' }
       },
       # database: {

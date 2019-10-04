@@ -102,7 +102,7 @@ describe 'opsworks_ruby::deploy' do
         },
         'create_dirs_before_symlink' => %w[tmp public config ../../shared/cache ../../shared/assets
                                            ../shared/test],
-        'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets public/test]
+        'purge_before_symlink' => %w[log tmp/cache public/system public/assets public/test]
       )
 
       expect(chef_run).to disable_logrotate_app('rails')
@@ -147,7 +147,7 @@ describe 'opsworks_ruby::deploy' do
           },
           'create_dirs_before_symlink' => %w[tmp public config ../../shared/cache ../../shared/assets
                                              ../../shared/node_modules ../../shared/packs ../shared/test],
-          'purge_before_symlink' => %w[log tmp/cache tmp/pids public/system public/assets node_modules public/packs
+          'purge_before_symlink' => %w[log tmp/cache public/system public/assets node_modules public/packs
                                        public/test]
         )
 

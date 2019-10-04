@@ -43,7 +43,8 @@ every_enabled_application do |application|
     purge_before_symlink(
       (
         node['defaults']['global']['purge_before_symlink'] +
-        Array.wrap(globals(:purge_before_symlink, application['shortname']))
+        Array.wrap(globals(:purge_before_symlink, application['shortname'])) -
+        Array.wrap(globals(:do_not_purge_before_symlink, application['shortname']))
       ).uniq
     )
     symlink_before_migrate globals(:symlink_before_migrate, application['shortname'])
