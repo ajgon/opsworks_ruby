@@ -73,12 +73,13 @@ every_enabled_application do |application|
   framework    = Drivers::Framework::Factory.build(self, application, databases: databases)
   appserver    = Drivers::Appserver::Factory.build(self, application)
   worker       = Drivers::Worker::Factory.build(self, application, databases: databases)
-  hutch_worker = Drivers::Worker::Hutch.new(self, application, databases: databases)
   webserver    = Drivers::Webserver::Factory.build(self, application)
   bundle_env   = scm.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => scm.out[:ssh_wrapper] } : {}
+  items        = databases + [scm, framework, appserver, worker, webserver]
 
-  items = databases + [scm, framework, appserver, worker, webserver]
-  items << hutch_worker if node['hutch_server'] && node['hutch_server']['enabled']
+  if node['hutch_server'] && node['hutch_server']['enabled']
+    items << Drivers::Worker::Hutch.new(self, application, databases: databases)
+  end
 
   fire_hook(:before_deploy, items: items)
 
