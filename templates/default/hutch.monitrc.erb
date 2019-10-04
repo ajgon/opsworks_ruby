@@ -1,11 +1,5 @@
-<% ([@out[:process_count].to_i || 1].max).times do |n| %>
-  <% identifier = "#{@application}-#{n+1}" %>
-  <% pid_file = "/run/lock/#{@app_shortname}/hutch_#{identifier}.pid" %>
-
-check process hutch_<%= identifier.to_s %>
-  with pidfile <%= pid_file.to_s %>
-  start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %>  bundle exec hutch --pidfile=<%= pid_file.to_s %> '" with timeout 90 seconds
-  stop  program = "/bin/su - <%= node['deployer']['user'] %> -c 'kill -s TERM `cat <%= pid_file.to_s %>`'" with timeout 90 seconds
-  group hutch_<%= @application.to_s %>_group
-
-<% end %>
+check process <%= @hutch_identifier.to_s %>
+with pidfile <%= @hutch_pid_file.to_s %>
+start program = "/bin/su - <%= @executing_user %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @hutch_shell_cmd.to_s %> '" with timeout 90 seconds
+stop  program = "/bin/su - <%= @executing_user %> -c 'kill -s TERM `cat <%= @hutch_pid_file.to_s %>`'" with timeout 90 seconds
+group <%= @hutch_identifier.to_s %>_group
