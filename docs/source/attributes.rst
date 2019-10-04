@@ -131,6 +131,14 @@ Global parameters apply to the whole application, and can be used by any section
   -  List of directories to be wiped out before symlinking. Paths are relative to ``release_path``.
      For example ``tmp`` becomes ``/srv/www/app_name/current/tmp``.
 
+- ``app['global']['do_not_purge_before_symlink']``
+
+  -  **Type:** array
+  -  **Default:** ``[]``
+  -  List of directories to exclude from the default list of directories to be purged. Paths are relative to ``release_path``.
+     For example ``tmp`` becomes ``/srv/www/app_name/current/tmp``.
+
+
 - ``app['global']['rollback_on_error']``
 
   -  **Type:** boolean
