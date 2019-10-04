@@ -38,6 +38,7 @@ module Drivers
           app_shortname:    app['shortname'],
           hutch_identifier: hutch_identifier,
           hutch_pid_file:   hutch_pid_file,
+          hutch_shell_cmd:  hutch_shell_cmd,
           executing_user:   user
         }
 
