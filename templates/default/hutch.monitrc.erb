@@ -4,7 +4,7 @@
 
 check process hutch_<%= identifier.to_s %>
 with pidfile <%= hutch_pidfile.to_s %>
-start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec hutch --verbose --pidfile <%= hutch_pidfile.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
+start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map { |k, v| "#{k}=\"#{v}\"" }.join(' ') %> bundle exec hutch -d --pidfile <%= hutch_pidfile.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
 stop  program = "/bin/su - <%= node['deployer']['user'] %> -c 'kill -s TERM `cat <%= hutch_pidfile.to_s %>`'" with timeout 90 seconds
 group hutch_<%= @application.to_s %>_group
 
