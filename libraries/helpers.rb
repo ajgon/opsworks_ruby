@@ -122,16 +122,32 @@ def perform_bundle_install(shared_path, envs = {})
       user(deploy_user)
     end
 
+    rbenv_script 'bundler update' do
+      code "bundle update --bundler"
+      user deploy_user
+      group www_group
+      environment envs
+      cwd release_path
+    end
+
     rbenv_script 'bundle install' do
-      code "bundle install --deployment --without development test --path #{bundle_path}"
+      code "bundle install --deployment -j3 --without development test --path #{bundle_path}"
       user deploy_user
       group www_group
       environment envs
       cwd release_path
     end
   else
+    execute 'bundle_update' do
+      command "/usr/local/bin/bundle update --bundler"
+      user node['deployer']['user'] || 'root'
+      group www_group
+      environment envs
+      cwd release_path
+    end
+
     execute 'bundle_install' do
-      command "/usr/local/bin/bundle install --deployment --without development test --path #{bundle_path}"
+      command "/usr/local/bin/bundle install --deployment -j3 --without development test --path #{bundle_path}"
       user node['deployer']['user'] || 'root'
       group www_group
       environment envs
