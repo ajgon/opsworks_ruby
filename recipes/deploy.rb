@@ -70,13 +70,18 @@ every_enabled_application do |application|
   end
 
   scm = Drivers::Scm::Factory.build(self, application)
-  framework = Drivers::Framework::Factory.build(self, application, databases: databases)
-  appserver = Drivers::Appserver::Factory.build(self, application)
-  worker = Drivers::Worker::Factory.build(self, application, databases: databases)
-  webserver = Drivers::Webserver::Factory.build(self, application)
-  bundle_env = scm.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => scm.out[:ssh_wrapper] } : {}
+  framework    = Drivers::Framework::Factory.build(self, application, databases: databases)
+  appserver    = Drivers::Appserver::Factory.build(self, application)
+  worker       = Drivers::Worker::Factory.build(self, application, databases: databases)
+  webserver    = Drivers::Webserver::Factory.build(self, application)
+  bundle_env   = scm.class.adapter.to_s == 'Chef::Provider::Git' ? { 'GIT_SSH' => scm.out[:ssh_wrapper] } : {}
+  items        = databases + [scm, framework, appserver, worker, webserver]
 
-  fire_hook(:before_deploy, items: databases + [scm, framework, appserver, worker, webserver])
+  if node['hutch_server'] && node['hutch_server']['enabled']
+    items << Drivers::Worker::Hutch.new(self, application, databases: databases)
+  end
+
+  fire_hook(:before_deploy, items: items)
 
   deploy application['shortname'] do
     deploy_to deploy_dir(application)
@@ -123,9 +128,7 @@ every_enabled_application do |application|
     before_migrate do
       perform_bundle_install(shared_path, bundle_env)
 
-      fire_hook(
-        :deploy_before_migrate, context: self, items: databases + [scm, framework, appserver, worker, webserver]
-      )
+      fire_hook(:deploy_before_migrate, context: self, items: items)
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_migrate.rb'))
     end
@@ -133,25 +136,19 @@ every_enabled_application do |application|
     before_symlink do
       perform_bundle_install(shared_path, bundle_env) unless framework.migrate?
 
-      fire_hook(
-        :deploy_before_symlink, context: self, items: databases + [scm, framework, appserver, worker, webserver]
-      )
+      fire_hook(:deploy_before_symlink, context: self, items: items)
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_symlink.rb'))
     end
 
     before_restart do
-      fire_hook(
-        :deploy_before_restart, context: self, items: databases + [scm, framework, appserver, worker, webserver]
-      )
+      fire_hook(:deploy_before_restart, context: self, items: items)
 
       run_callback_from_file(File.join(release_path, 'deploy', 'before_restart.rb'))
     end
 
     after_restart do
-      fire_hook(
-        :deploy_after_restart, context: self, items: databases + [scm, framework, appserver, worker, webserver]
-      )
+      fire_hook(:deploy_after_restart, context: self, items: items)
 
       run_callback_from_file(File.join(release_path, 'deploy', 'after_restart.rb'))
     end
@@ -159,5 +156,5 @@ every_enabled_application do |application|
     timeout node['deploy']['timeout']
   end
 
-  fire_hook(:after_deploy, items: databases + [scm, framework, appserver, worker, webserver])
+  fire_hook(:after_deploy, items: items)
 end

@@ -13,11 +13,17 @@ every_enabled_application do |application|
     databases.push(Drivers::Db::Factory.build(self, application, rds: rds))
   end
 
-  scm = Drivers::Scm::Factory.build(self, application)
+  scm       = Drivers::Scm::Factory.build(self, application)
   framework = Drivers::Framework::Factory.build(self, application, databases: databases)
   appserver = Drivers::Appserver::Factory.build(self, application)
-  worker = Drivers::Worker::Factory.build(self, application, databases: databases)
+  worker    = Drivers::Worker::Factory.build(self, application, databases: databases)
   webserver = Drivers::Webserver::Factory.build(self, application)
+  items     = databases + [scm, framework, appserver, worker, webserver]
 
-  fire_hook(:shutdown, items: databases + [scm, framework, appserver, worker, webserver])
+  if node['hutch_server'] && node['hutch_server']['enabled']
+    items << Drivers::Worker::Hutch.new(self, application, databases: databases)
+  end
+
+
+  fire_hook(:shutdown, items: items)
 end
