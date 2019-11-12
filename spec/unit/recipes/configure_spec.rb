@@ -65,13 +65,33 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'Postgresql + Git + Unicorn + Nginx + Rails + Sidekiq' do
-    it 'creates proper database.yml template' do
+    it 'creates proper database.yml template with connection options' do
       db_config = Drivers::Db::Postgresql.new(chef_run, aws_opsworks_app, rds: aws_opsworks_rds_db_instance).out
       expect(db_config[:adapter]).to eq 'postgresql'
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
           JSON.parse({ development: db_config, production: db_config, staging: db_config }.to_json).to_yaml
         )
+    end
+
+    context 'custom database config' do
+      let(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          app_name = aws_opsworks_app['shortname']
+          solo_node.set['deploy'][app_name]['database'] = {
+            'primary' => { 'test' => 1 },
+            'secondary' => { 'test' => 2 }
+          }
+        end
+      end
+
+      it 'creates proper database.yml template when multi-level config is provided' do
+        db_config = { primary: { test: 1 }, secondary: { test: 2 } }
+        expect(chef_run)
+          .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/database.yml").with_content(
+            JSON.parse({ development: db_config, production: db_config }.to_json).to_yaml
+          )
+      end
     end
 
     it 'creates logrotate file for rails' do

@@ -21,6 +21,8 @@ module Drivers
       end
 
       def out
+        return handle_output(super) if multiple_databases?
+
         output = super
         output[:database] ||= 'db/data.sqlite3'
         handle_output(output)
@@ -34,25 +36,29 @@ module Drivers
 
       # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       def link_sqlite_database
-        deploy_to = deploy_dir(app)
-        relative_db_path = out[:database]
-        shared_directory_path = File.join(deploy_to, 'shared', relative_db_path.sub(%r{/[^/]+\.sqlite3?$}, ''))
-        release_path = Dir[File.join(deploy_to, 'releases', '*')].last
+        database_configs = multiple_databases? ? out.values : [out]
 
-        context.directory shared_directory_path do
-          recursive true
-          not_if { ::File.exist?(shared_directory_path) }
-        end
+        database_configs.each do |database_config|
+          deploy_to = deploy_dir(app)
+          relative_db_path = database_config[:database]
+          shared_directory_path = File.join(deploy_to, 'shared', relative_db_path.sub(%r{/[^/]+\.sqlite3?$}, ''))
+          release_path = Dir[File.join(deploy_to, 'releases', '*')].last
 
-        db_path = File.join(deploy_to, 'shared', relative_db_path)
-        context.file db_path do
-          action :create
-          not_if { ::File.exist?(File.join(deploy_to, 'shared', relative_db_path)) }
-        end
+          context.directory shared_directory_path do
+            recursive true
+            not_if { ::File.exist?(shared_directory_path) }
+          end
 
-        context.link File.join(release_path, relative_db_path) do
-          to db_path
-          not_if { ::File.exist?(::File.join(release_path, relative_db_path)) }
+          db_path = File.join(deploy_to, 'shared', relative_db_path)
+          context.file db_path do
+            action :create
+            not_if { ::File.exist?(File.join(deploy_to, 'shared', relative_db_path)) }
+          end
+
+          context.link File.join(release_path, relative_db_path) do
+            to db_path
+            not_if { ::File.exist?(::File.join(release_path, relative_db_path)) }
+          end
         end
       end
       # rubocop:enable Metrics/MethodLength, Metrics/AbcSize

@@ -12,7 +12,7 @@ chef_version '>= 12.0' if respond_to?(:chef_version)
 depends 'apt', '< 7.0'
 depends 'chef_client_updater'
 depends 'deploy_resource'
-depends 'logrotate'
+depends 'logrotate', '2.2.1' # 2.2.2 breaks tests for whatever reason
 depends 'nginx', '< 9.0'
 depends 'nodejs'
 depends 'ohai', '< 5.3'

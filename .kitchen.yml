@@ -175,7 +175,12 @@ suites:
             max_pool_size: 3
             min_instances: 2
           database:
-            adapter: 'null'
+            primary:
+              adapter: 'sqlite3'
+              database: 'db/primary.sqlite3'
+            secondary:
+              adapter: 'sqlite3'
+              database: 'db/secondary.sqlite3'
           framework:
             adapter: 'rails'
             assets_precompilation_command: '/bin/true'
@@ -211,4 +216,4 @@ suites:
           webserver:
             adapter: 'apache2'
             port: 8081
-      'ruby-version': '2.3'
+      'ruby-version': '2.6'

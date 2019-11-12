@@ -174,13 +174,13 @@ Global parameters apply to the whole application, and can be used by any section
 database
 ~~~~~~~~
 
-| Those parameters will be passed without any alteration to the
-  ``database.yml``
-| file. Keep in mind, that if you have RDS connected to your OpsWorks
-  application,
-| you don’t need to use them. The chef will do all the job, and
-  determine them
-| for you.
+Those parameters will be passed without any alteration to the ``database.yml`` file. Keep in mind, that if you have
+RDS connected to your OpsWorks application, you don’t need to use them. The chef will do all the job, and determine
+them for you.
+
+**Important** Rails 6 introduced multiple database support. This configuration option supports that, by adding
+extra key to ``database`` which is grouping the fields, for example: ``app['database']['primary']['adapter']``.
+For backward compatibility old format is also supported.
 
 -  ``app['database']['adapter']``
 
