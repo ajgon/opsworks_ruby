@@ -1,3 +1,67 @@
+# [1.17.0](https://github.com/ajgon/opsworks_ruby/compare/v1.16.0...v1.17.0) (2019-11-23)
+
+
+### Bug Fixes
+
+* replace symlink options instead of appending them ([b2650fb](https://github.com/ajgon/opsworks_ruby/commit/b2650fbea79c44d4f073c00a511a1017b3d4199f)), closes [#224](https://github.com/ajgon/opsworks_ruby/issues/224)
+
+
+### Features
+
+* **database:** add support for multiple databases per environment ([0c7f89f](https://github.com/ajgon/opsworks_ruby/commit/0c7f89fe83933be7ef0cead39363dce7e8fbe346)), closes [#226](https://github.com/ajgon/opsworks_ruby/issues/226)
+
+
+### BREAKING CHANGES
+
+* `app['global']['create_dirs_before_symlink']`,
+`app['global']['purge_before_symlink']` and `app['global']['symlinks']`
+now overrides defaults instead of appending them. If you were relying on
+those options in your Custom JSON, you need to add missing defaults
+manually.
+
+For example given:
+
+```json
+{
+  "deploy": {
+    "myapp": {
+      "global": {
+        "create_dirs_before_symlink": ["test/create"],
+        "purge_before_symlink": ["test/purge"],
+        "symlinks": {
+          "test": "test/symlinks"
+        }
+      }
+    }
+  }
+}
+```
+
+you need to replace it to:
+
+```json
+{
+  "deploy": {
+    "myapp": {
+      "global": {
+        "create_dirs_before_symlink": ["tmp", "public", "config", "../../shared/cache", "../../shared/assets", "test/create"],
+        "purge_before_symlink": ["log", "tmp/cache", "tmp/pids", "public/system", "public/assets", "test/purge"],
+        "symlinks": {
+          "system": "public/system",
+          "assets": "public/assets",
+          "cache": "tmp/cache",
+          "pids": "tmp/pids",
+          "log": "log",
+          "test": "test/symlinks"
+        }
+      }
+    }
+  }
+}
+```
+
+
+
 # [1.16.0](https://github.com/ajgon/opsworks_ruby/compare/v1.15.0...v1.16.0) (2019-09-11)
 
 
