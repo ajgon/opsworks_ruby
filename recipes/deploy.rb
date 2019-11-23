@@ -36,18 +36,18 @@ every_enabled_application do |application|
     keep_releases globals(:keep_releases, application['shortname'])
     create_dirs_before_symlink(
       (
-        node['defaults']['global']['create_dirs_before_symlink'] +
-        Array.wrap(globals(:create_dirs_before_symlink, application['shortname']))
+        Array.wrap(globals(:create_dirs_before_symlink, application['shortname'])).presence ||
+        node['defaults']['global']['create_dirs_before_symlink']
       ).uniq
     )
     purge_before_symlink(
       (
-        node['defaults']['global']['purge_before_symlink'] +
-        Array.wrap(globals(:purge_before_symlink, application['shortname']))
+        Array.wrap(globals(:purge_before_symlink, application['shortname'])).presence ||
+        node['defaults']['global']['purge_before_symlink']
       ).uniq
     )
     symlink_before_migrate globals(:symlink_before_migrate, application['shortname'])
-    symlinks(node['defaults']['global']['symlinks'].merge(globals(:symlinks, application['shortname']) || {}))
+    symlinks(globals(:symlinks, application['shortname']).presence || node['defaults']['global']['symlinks'])
 
     source.fetch(self)
 
