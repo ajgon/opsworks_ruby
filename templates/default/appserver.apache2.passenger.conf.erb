@@ -55,6 +55,12 @@ Header always unset "X-Powered-By"
 <% if @appserver_config[:min_instances] -%>
   PassengerMinInstances <%= @appserver_config[:min_instances] %>
 <% end %>
+<% if @appserver_config[:pool_idle_time] -%>
+  PassengerPoolIdleTime <%= @appserver_config[:pool_idle_time] %>
+<% end %>
+<% if @appserver_config[:max_request_queue_size] -%>
+  PassengerMaxRequestQueueSize <%= @appserver_config[:max_request_queue_size] %>
+<% end %>
 
   <Location <%= @appserver_config[:mount_point] %>>
     PassengerAppEnv <%= @deploy_env %>
@@ -63,6 +69,13 @@ Header always unset "X-Powered-By"
   </Location>
 
   RewriteEngine on
+
+  <% if @appserver_config[:error_document] -%>
+  PassengerErrorOverride on
+  <% @appserver_config[:error_document].each do | status, file | %>
+  ErrorDocument <%= status %> "/<%= file %>"
+  <% end %>
+  <% end %>
 <% end %>
 
   <%= @out[:extra_config] %>
@@ -138,6 +151,12 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 <% if @appserver_config[:min_instances] -%>
   PassengerMinInstances <%= @appserver_config[:min_instances] %>
 <% end %>
+<% if @appserver_config[:pool_idle_time] -%>
+  PassengerPoolIdleTime <%= @appserver_config[:pool_idle_time] %>
+<% end %>
+<% if @appserver_config[:max_request_queue_size] -%>
+  PassengerMaxRequestQueueSize <%= @appserver_config[:max_request_queue_size] %>
+<% end %>
 
   <Location <%= @appserver_config[:mount_point] %>>
     PassengerAppEnv <%= @deploy_env %>
@@ -148,6 +167,13 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   RequestHeader set X-Forwarded-Proto "https"
 
   RewriteEngine on
+
+  <% if @appserver_config[:error_document] -%>
+  PassengerErrorOverride on
+  <% @appserver_config[:error_document].each do | status, file | %>
+  ErrorDocument <%= status %> "/<%= file %>"
+  <% end %>
+  <% end %>
 
   <%= @out[:extra_config_ssl] %>
 
