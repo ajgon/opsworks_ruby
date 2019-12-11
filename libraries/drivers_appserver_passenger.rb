@@ -11,6 +11,7 @@ module Drivers
         pool_idle_time
         max_request_queue_size
         error_document
+        passenger_max_preloader_idle_time
       ].freeze
       output filter: WEBSERVER_CONFIG_PARAMS
 

@@ -565,6 +565,12 @@ passenger
   - Sets the { "status": "file" } parameter
     e.g. { "500": "500.html", "503": "503.html" }
 
+- ``app['appserver']['passenger_max_preloader_idle_time']``
+
+  - **Type:** Integer
+  - **Default:** 300
+  - Sets the ``PassengerMaxPreloaderIdleTime`` parameter
+
 webserver
 ~~~~~~~~~
 

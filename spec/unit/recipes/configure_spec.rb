@@ -875,6 +875,7 @@ describe 'opsworks_ruby::configure' do
         deploy['dummy_project']['appserver']['pool_idle_time'] = 300
         deploy['dummy_project']['appserver']['max_request_queue_size'] = 100
         deploy['dummy_project']['appserver']['error_document'] = { "503": '503.html', "504": '504.html' }
+        deploy['dummy_project']['appserver']['passenger_max_preloader_idle_time'] = 300
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['global']['environment'] = 'production'
         solo_node.set['deploy'] = deploy

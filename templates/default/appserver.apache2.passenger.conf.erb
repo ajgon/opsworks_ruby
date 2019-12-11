@@ -61,6 +61,9 @@ Header always unset "X-Powered-By"
 <% if @appserver_config[:max_request_queue_size] -%>
   PassengerMaxRequestQueueSize <%= @appserver_config[:max_request_queue_size] %>
 <% end %>
+<% if @appserver_config[:passenger_max_preloader_idle_time] -%>
+  PassengerMaxPreloaderIdleTime <%= @appserver_config[:passenger_max_preloader_idle_time] %>
+<% end %>
 
   <Location <%= @appserver_config[:mount_point] %>>
     PassengerAppEnv <%= @deploy_env %>
@@ -156,6 +159,9 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
 <% end %>
 <% if @appserver_config[:max_request_queue_size] -%>
   PassengerMaxRequestQueueSize <%= @appserver_config[:max_request_queue_size] %>
+<% end %>
+<% if @appserver_config[:passenger_max_preloader_idle_time] -%>
+  PassengerMaxPreloaderIdleTime <%= @appserver_config[:passenger_max_preloader_idle_time] %>
 <% end %>
 
   <Location <%= @appserver_config[:mount_point] %>>
