@@ -76,7 +76,7 @@ Header always unset "X-Powered-By"
   <% if @appserver_config[:error_document] -%>
   PassengerErrorOverride on
   <% @appserver_config[:error_document].each do | status, file | %>
-  ErrorDocument <%= status %> "/<%= file %>"
+  ErrorDocument <%= status %> /<%= file %>
   <% end %>
   <% end %>
 <% end %>
@@ -177,7 +177,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   <% if @appserver_config[:error_document] -%>
   PassengerErrorOverride on
   <% @appserver_config[:error_document].each do | status, file | %>
-  ErrorDocument <%= status %> "/<%= file %>"
+  ErrorDocument <%= status %> /<%= file %>
   <% end %>
   <% end %>
 

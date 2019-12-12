@@ -6,7 +6,8 @@ module Drivers
       adapter :passenger
       allowed_engines :passenger
       WEBSERVER_CONFIG_PARAMS = %i[
-        max_pool_size min_instances
+        max_pool_size
+        min_instances
         mount_point
         pool_idle_time
         max_request_queue_size
