@@ -879,6 +879,10 @@ describe 'opsworks_ruby::configure' do
         deploy['dummy_project']['appserver']['max_pool_size'] = 10
         deploy['dummy_project']['appserver']['min_instances'] = 5
         deploy['dummy_project']['appserver']['mount_point'] = '/some/mount/point'
+        deploy['dummy_project']['appserver']['pool_idle_time'] = 300
+        deploy['dummy_project']['appserver']['max_request_queue_size'] = 100
+        deploy['dummy_project']['appserver']['error_document'] = { "503": '503.html', "504": '504.html' }
+        deploy['dummy_project']['appserver']['passenger_max_preloader_idle_time'] = 300
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
         deploy['dummy_project']['global']['environment'] = 'production'
         solo_node.set['deploy'] = deploy
@@ -927,6 +931,20 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('PassengerMinInstances 5')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('PoolIdleTime 300')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('MaxRequestQueueSize 100')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('PassengerErrorOverride on')
+        .with_content('ErrorDocument 503 /503.html')
+        .with_content('ErrorDocument 504 /504.html')
+      expect(chef_run)
+        .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('PassengerMaxPreloaderIdleTime 300')
       expect(chef_run)
         .to render_file("/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf")
       expect(chef_run)

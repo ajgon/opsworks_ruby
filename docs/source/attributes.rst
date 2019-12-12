@@ -564,6 +564,31 @@ passenger
     made to your web server. Useful for certain hybrid static/dynamic
     web sites.
 
+- ``app['appserver']['pool_idle_time']``
+
+  - **Type:** Integer
+  - **Default:** 300
+  - Sets the ``PoolIdleTime`` parameter
+
+- ``app['appserver']['max_request_queue_size']``
+
+  - **Type:** Integer
+  - **Default:** 100
+  - Sets the ``MaxRequestQueueSize`` parameter
+
+- ``app['appserver']['error_document']``
+
+  - **Type:** Hash
+  - **Default:** off
+  - Sets the { "status": "file" } parameter
+    e.g. { "500": "500.html", "503": "503.html" }
+
+- ``app['appserver']['passenger_max_preloader_idle_time']``
+
+  - **Type:** Integer
+  - **Default:** 300
+  - Sets the ``PassengerMaxPreloaderIdleTime`` parameter
+
 webserver
 ~~~~~~~~~
 
