@@ -10,7 +10,8 @@ version '1.17.0'
 chef_version '>= 12.0' if respond_to?(:chef_version)
 
 depends 'apt', '< 7.0'
-depends 'chef_client_updater'
+depends 'ark', '= 4.0.0'
+depends 'chef_client_updater', '~> 3.6.0' # 3.7 introduces breaking change
 depends 'deploy_resource'
 depends 'logrotate', '2.2.1' # 2.2.2 breaks tests for whatever reason
 depends 'nginx', '< 9.0'
@@ -18,13 +19,10 @@ depends 'nodejs'
 depends 'ohai', '< 5.3'
 depends 'ruby-ng'
 depends 's3_file'
-depends 'sudo'
-depends 'yarn'
-
-# indirect dependency, but breaks against the chef_version if updated to 3.1.0
 depends 'seven_zip', '~> 2.0'
-# indirect dependency required to maintain compatibility with chef 12
+depends 'sudo', '= 5.4.4'
 depends 'windows', '< 5.0'
+depends 'yarn'
 
 supports 'amazon', '>= 2017.03'
 supports 'ubuntu', '>= 16.04'
