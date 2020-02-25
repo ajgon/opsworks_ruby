@@ -43,7 +43,7 @@ end
 require File.expand_path('../libraries/all.rb', __dir__)
 
 # Require all fixtures
-Dir[File.expand_path('fixtures/*.rb', __dir__)].each { |f| require f }
+Dir[File.expand_path('fixtures/*.rb', __dir__)].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.log_level = :error

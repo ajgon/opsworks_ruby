@@ -1,17 +1,27 @@
 ---
-require: rubocop-performance
+require:
+  - rubocop-performance
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
-
-Style/Documentation:
-  Enabled: false
 
 Metrics/AbcSize:
   Max: 25
 
 Metrics/BlockLength:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
 
 AllCops:
   TargetRubyVersion: 2.3
