@@ -16,6 +16,7 @@ default['deployer']['home'] = "/home/#{default['deployer']['user']}"
 default['apt']['compile_time_update'] = true
 default['build-essential']['compile_time'] = true
 default['ruby-version'] = node['ruby'].try(:[], 'version') || '2.6'
+default['ruby-provider'] = 'ruby-ng'
 default['nginx']['source']['modules'] = %w[
   nginx::http_ssl_module nginx::http_realip_module nginx::http_gzip_static_module nginx::headers_more_module
   nginx::http_stub_status_module

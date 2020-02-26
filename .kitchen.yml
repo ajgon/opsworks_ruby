@@ -13,7 +13,7 @@ provisioner:
 #   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
+  - name: ubuntu-18.04
 
 suites:
   - name: default
@@ -63,12 +63,15 @@ suites:
               queues:
                 - default
                 - mailers
-  - name: default_with_shoryuken
-    data_bags_path: "test/integration/data_bags/default_with_shoryuken"
+  - name: default_with_shoryuken_and_fullstaq
+    data_bags_path: "test/integration/data_bags/default_with_shoryuken_and_fullstaq"
     run_list:
       - recipe[opsworks_ruby::setup]
       - recipe[opsworks_ruby::deploy]
     attributes:
+      'ruby-version': '2.6'
+      'ruby-variant': 'jemalloc'
+      'ruby-provider': 'fullstaq'
       deploy:
         dummy_project:
           worker:

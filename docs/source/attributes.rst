@@ -34,6 +34,20 @@ convention).
      of an application, not included in this list - it will be skipped, as this list
      takes precedence over anything else.
 
+-  ``node['ruby-provider']``
+
+  -  **Type:** string
+     ``sqlite3``, ``null``
+  -  **Default:** ``ruby-ng``
+  -  **Supported values:** ``ruby-ng``, ``fullstaq``
+  -  Sets the rubies packages provider. It configures proper apt repository and
+     package namespaces.
+     **Important** please note, that *NO** compatibility cheks for distro/repositories
+     are performed. It's user responsibility to ensure, that given ruby version from
+     given provider can be installed on given platform.
+     For example ``fullstaq`` only works on ``Ubuntu 18.04`` platform, installing it
+     on ``16.04`` will fail.
+
 -  ``node['ruby-version']``
 
   -  **Type:** string
@@ -45,6 +59,15 @@ convention).
      **Important** please note, that some versions may be available on one system,
      and not on the other (for example ``ruby-ng`` gets freshest versions of ruby
      way earlier than Amazon Linux).
+
+-  ``node['ruby-variant']``
+
+  -  **Type:** string
+  -  **Default:** none
+  -  **Supported values:** none, ``jemalloc``, ``malloctrim``
+  -  Sets ruby varian for given version.
+     **Important** This option works only when ``node['ruby-provider']``
+     is set to ``fullstaq``.
 
 -  ``node['use-nodejs']``
 

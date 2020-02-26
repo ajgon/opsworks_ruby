@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::setup' do
-  describe package('ruby2.6') do
+  describe package('fullstaq-ruby-2.6-jemalloc') do
     it { should be_installed }
   end
 
@@ -12,6 +12,10 @@ describe 'opsworks_ruby::setup' do
   end
 
   describe package('git') do
+    it { should be_installed }
+  end
+
+  describe package('gnupg2') do
     it { should be_installed }
   end
 
@@ -25,6 +29,12 @@ describe 'opsworks_ruby::setup' do
 
   describe file('/usr/local/bin/bundle') do
     it { should be_symlink }
+  end
+
+  describe file('/etc/environment') do
+    its(:content) do
+      should include 'PATH="/usr/lib/fullstaq-ruby/versions/2.6-jemalloc/bin'
+    end
   end
 end
 

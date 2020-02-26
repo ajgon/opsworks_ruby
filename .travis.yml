@@ -1,5 +1,6 @@
 ---
 sudo: required
+dist: bionic
 services:
   - docker
 
@@ -14,20 +15,23 @@ rvm:
 addons:
   apt:
     sources:
-      - chef-stable-precise
+      - sourceline: "deb https://packages.chef.io/repos/apt/stable bionic main"
+        key_url: "https://packages.chef.io/chef.asc"
     packages:
       - chefdk
       - python-pip
 
 env:
+  global:
+    - CHEF_LICENSE=accept
   matrix:
-    - INSTANCE=default-ubuntu-1604
-    - INSTANCE=all-options-ubuntu-1604
-    - INSTANCE=default-with-shoryuken-ubuntu-1604
-    - INSTANCE=http-unicorn-apache-hanami-resque-ubuntu-1604
-    - INSTANCE=s3-thin-nginx-padrino-delayed-job-ubuntu-1604
-    - INSTANCE=nullified-ubuntu-1604
-    - INSTANCE=maximum-override-ubuntu-1604
+    - INSTANCE=default-ubuntu-1804
+    - INSTANCE=all-options-ubuntu-1804
+    - INSTANCE=default-with-shoryuken-and-fullstaq-ubuntu-1804
+    - INSTANCE=http-unicorn-apache-hanami-resque-ubuntu-1804
+    - INSTANCE=s3-thin-nginx-padrino-delayed-job-ubuntu-1804
+    - INSTANCE=nullified-ubuntu-1804
+    - INSTANCE=maximum-override-ubuntu-1804
 
 before_install:
   - gem install bundler
