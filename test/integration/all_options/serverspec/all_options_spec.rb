@@ -182,6 +182,26 @@ describe 'opsworks_ruby::deploy' do
       its(:content) { should include 'RAILS_ENV="staging"' }
     end
 
+    describe file('/srv/www/dummy_project/current/public/system') do
+      it { should be_symlink }
+    end
+
+    describe file('/srv/www/dummy_project/current/public/assets') do
+      it { should be_symlink }
+    end
+
+    describe file('/srv/www/dummy_project/current/tmp/cache') do
+      it { should be_symlink }
+    end
+
+    describe file('/srv/www/dummy_project/current/tmp/pids') do
+      it { should be_symlink }
+    end
+
+    describe file('/srv/www/dummy_project/current/log') do
+      it { should be_symlink }
+    end
+
     describe file('/srv/www/dummy_project/current/.env') do
       it { should be_symlink }
     end

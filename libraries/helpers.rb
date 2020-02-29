@@ -128,3 +128,10 @@ def enable_mod_passenger_repo(context)
     key '561F9B9CAC40B2F7'
   end
 end
+
+def append_to_overwritable_defaults(field, options) # rubocop:disable Metrics/AbcSize
+  if node.default['deploy'][app['shortname']]['global'][field].blank?
+    node.default['deploy'][app['shortname']]['global'][field] = node['defaults']['global'][field]
+  end
+  node.default['deploy'][app['shortname']]['global'][field].merge!(options)
+end

@@ -97,15 +97,14 @@ module Drivers
       def setup_application_yml
         return unless raw_out[:application_yml]
 
-        node.default['deploy'][app['shortname']]['global']['symlinks']['config/application.yml'] =
-          'config/application.yml'
+        append_to_overwritable_defaults('symlinks', 'config/application.yml' => 'config/application.yml')
         env_config(source_file: 'config/application.yml', destination_file: 'config/application.yml')
       end
 
       def setup_dot_env
         return unless raw_out[:dot_env]
 
-        node.default['deploy'][app['shortname']]['global']['symlinks']['dot_env'] = '.env'
+        append_to_overwritable_defaults('symlinks', 'dot_env' => '.env')
         env_config(source_file: 'dot_env', destination_file: 'dot_env')
       end
 
