@@ -1,5 +1,24 @@
 {
   "server":{
+    "ruby-provider":{
+      "type":"string",
+      "values":[
+        "ruby-ng",
+        "fullstaq"
+      ],
+      "default":"ruby-ng",
+      "description":"Sets the rubies packages provider. It configures proper apt repository and package namespaces."
+    },
+    "ruby-variant":{
+      "type":"string",
+      "values":[
+        "null",
+        "jemalloc",
+        "malloctrim"
+      ],
+      "default":"null",
+      "description":"Sets ruby variant for given version."
+    },
     "ruby-version":{
       "type":"string",
       "default":"2.6",
@@ -498,6 +517,37 @@
         "passenger"
       ],
       "description":"Which URL path should be handled by Passenger. This option allows you to configure your application to handle only a subset of requests made to your web server. Useful for certain hybrid static/dynamic web sites."
+    },
+    "pool_idle_time":{
+      "type":"integer",
+      "default":300,
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PoolIdleTime` parameter."
+    },
+    "max_request_queue_size":{
+      "type":"integer",
+      "default":100,
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `MaxRequestQueueSize` parameter."
+    },
+    "error_document":{
+      "type":"json",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `{ \"status\": \"file\" }` parameter e.g. `{ \"500\": \"500.html\", \"503\": \"503.html\" }`."
+    },
+    "passenger_max_preloader_idle_time":{
+      "type":"integer",
+      "default":300,
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PassengerMaxPreloaderIdleTime` parameter."
     }
   },
   "webserver":{

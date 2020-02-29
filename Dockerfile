@@ -29,6 +29,7 @@ COPY package.json $APP_HOME/
 RUN npm install
 
 COPY Gemfile* $APP_HOME/
-RUN bundle install -j 4
+RUN gem install bundler -v "$(cat Gemfile.lock | grep 'BUNDLED WITH' -A2 | tail -n 1)"
+RUN bundle install
 
 CMD jekyll s -H 0.0.0.0
