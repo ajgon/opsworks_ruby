@@ -1,3 +1,18 @@
+# [1.18.0](https://github.com/ajgon/opsworks_ruby/compare/v1.17.0...v1.18.0) (2020-02-29)
+
+
+### Bug Fixes
+
+* **appserver:** fix .env and application.yml symlinks creation ([0580955](https://github.com/ajgon/opsworks_ruby/commit/05809558c5aa1eb10dd4e883f2e2dcfd7654b712)), closes [#232](https://github.com/ajgon/opsworks_ruby/issues/232)
+
+
+### Features
+
+* **appserver:** Add new appserver config params for passenger ([#227](https://github.com/ajgon/opsworks_ruby/issues/227)) ([0500521](https://github.com/ajgon/opsworks_ruby/commit/050052148c543c557783589cf0347fd026f16bfd))
+* **setup:** add support for fullstaq ruby repos ([1489d01](https://github.com/ajgon/opsworks_ruby/commit/1489d01c14caf51d2150784db09cfdecfddf281a)), closes [#229](https://github.com/ajgon/opsworks_ruby/issues/229)
+
+
+
 # [1.17.0](https://github.com/ajgon/opsworks_ruby/compare/v1.16.0...v1.17.0) (2019-11-23)
 
 

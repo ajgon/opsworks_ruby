@@ -18,6 +18,7 @@ Contributors
 * Marcos Beirigo (`@marcosbeirigo`_)
 * John Calvin Young (`@johncalvinyoung`_)
 * Rich Seviora (`@richseviora`_)
+* Kazuki Fujii (`@kazukifujii`_)
 
 .. _Igor Rzegocki: https://www.rzegocki.pl/
 .. _@ajgon: https://github.com/ajgon
@@ -30,3 +31,4 @@ Contributors
 .. _@marcosbeirigo: https://github.com/marcosbeirigo
 .. _@johncalvinyoung: https://github.com/johncalvinyoung
 .. _@richseviora: https://github.com/richseviora
+.. _@kazukifujii: https://github.com/kazukifujii

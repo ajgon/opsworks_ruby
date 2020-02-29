@@ -37,7 +37,6 @@ convention).
 -  ``node['ruby-provider']``
 
   -  **Type:** string
-     ``sqlite3``, ``null``
   -  **Default:** ``ruby-ng``
   -  **Supported values:** ``ruby-ng``, ``fullstaq``
   -  Sets the rubies packages provider. It configures proper apt repository and
@@ -63,9 +62,8 @@ convention).
 -  ``node['ruby-variant']``
 
   -  **Type:** string
-  -  **Default:** none
   -  **Supported values:** none, ``jemalloc``, ``malloctrim``
-  -  Sets ruby varian for given version.
+  -  Sets ruby variant for given version.
      **Important** This option works only when ``node['ruby-provider']``
      is set to ``fullstaq``.
 
