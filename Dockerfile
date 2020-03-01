@@ -25,12 +25,12 @@ RUN curl -o /tmp/chefdk.deb https://packages.chef.io/files/stable/chefdk/1.6.11/
 ENV APP_HOME /cookbooks/opsworks_ruby
 RUN mkdir -p "$APP_HOME"
 
-RUN gem install bundler
 RUN pip install yamllint
 
+COPY Gemfile* $APP_HOME/
 WORKDIR $APP_HOME
 
-COPY Gemfile* $APP_HOME/
+RUN gem install bundler -v "$(cat Gemfile.lock | grep 'BUNDLED WITH' -A2 | tail -n 1)"
 RUN bundle install -j 4
 
 COPY package.json $APP_HOME/
