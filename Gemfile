@@ -25,3 +25,5 @@ group :chef do
   gem 'rspec'
   gem 'test-kitchen'
 end
+
+gem 'ohai' git: 'https://github.com/macroplant/ohai.git', branch: 'imds-v2'
