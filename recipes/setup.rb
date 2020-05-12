@@ -131,6 +131,10 @@ if node['ruby-provider'] == 'fullstaq'
   link '/usr/local/bin/bundle' do
     to "/usr/lib/fullstaq-ruby/versions/#{ruby_package_ver}/bin/bundle"
   end
+
+  link '/usr/local/bin/ruby' do
+    to "/usr/lib/fullstaq-ruby/versions/#{ruby_package_ver}/bin/ruby"
+  end
 else
   # ruby-ng provider
   if node['platform_family'] == 'debian'

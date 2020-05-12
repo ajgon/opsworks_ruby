@@ -124,6 +124,12 @@ describe 'opsworks_ruby::setup' do
       )
     end
 
+    it 'links ruby' do
+      expect(chef_run).to create_link('/usr/local/bin/ruby').with(
+        to: '/usr/lib/fullstaq-ruby/versions/2.6/bin/ruby'
+      )
+    end
+
     context 'Debian' do
       it 'installs ruby 2.5' do
         chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
