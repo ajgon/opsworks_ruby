@@ -2,8 +2,20 @@
 require:
   - rubocop-performance
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
 Layout/LineLength:
   Max: 120
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
 
 Metrics/AbcSize:
   Max: 25
@@ -14,15 +26,21 @@ Metrics/BlockLength:
 Style/Documentation:
   Enabled: false
 
+Style/ExponentialNotation:
+  Enabled: true
+
 Style/HashEachMethods:
   Enabled: true
 
 Style/HashTransformKeys:
-  Enabled: true
+  Enabled: false
 
 Style/HashTransformValues:
+  Enabled: false
+
+Style/SlicingWithRange:
   Enabled: true
 
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.6
   DisplayCopNames: true
