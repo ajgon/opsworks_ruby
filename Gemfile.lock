@@ -244,7 +244,7 @@ GEM
     pusher-client (0.6.2)
       json
       websocket (~> 1.0)
-    rack (2.2.2)
+    rack (2.2.3)
     rainbow (3.0.0)
     rake (13.0.1)
     retryable (2.0.4)
