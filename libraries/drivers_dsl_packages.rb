@@ -3,7 +3,7 @@
 module Drivers
   module Dsl
     module Packages
-      # rubocop:disable Metrics/MethodLength
+      # rubocop:disable Metrics/MethodLength, Metrics/CyclomaticComplexity
       def self.included(klass)
         klass.instance_eval do
           def packages(*to_support)
@@ -23,7 +23,7 @@ module Drivers
           end
         end
       end
-      # rubocop:enable Metrics/MethodLength
+      # rubocop:enable Metrics/MethodLength, Metrics/CyclomaticComplexity
 
       def packages
         self.class.packages.presence || (self.class.superclass.respond_to?(:packages) && self.class.superclass.packages)
