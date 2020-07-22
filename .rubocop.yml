@@ -14,6 +14,9 @@ Layout/SpaceAroundMethodCallOperator:
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
+Lint/DuplicateElsifCondition:
+  Enabled: true
+
 Lint/MixedRegexpCaptureTypes:
   Enabled: true
 
@@ -29,13 +32,55 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Enabled: false
 
+Performance/AncestorsInclude:
+  Enabled: true
+
+Performance/BigDecimalWithNumericArgument:
+  Enabled: true
+
+Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/RedundantStringChars:
+  Enabled: true
+
+Performance/ReverseFirst:
+  Enabled: true
+
+Performance/SortReverse:
+  Enabled: true
+
+Performance/Squeeze:
+  Enabled: true
+
+Performance/StringInclude:
+  Enabled: true
+
+Style/AccessorGrouping:
+  Enabled: true
+
+Style/ArrayCoercion:
+  Enabled: true
+
+Style/BisectedAttrAccessor:
+  Enabled: true
+
+Style/CaseLikeIf:
+  Enabled: true
+
 Style/Documentation:
   Enabled: false
 
 Style/ExponentialNotation:
   Enabled: true
 
+Style/HashAsLastArrayItem:
+  Enabled: true
+
 Style/HashEachMethods:
+  Enabled: true
+
+Style/HashLikeCase:
   Enabled: true
 
 Style/HashTransformKeys:
@@ -44,7 +89,13 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: false
 
+Style/RedundantAssignment:
+  Enabled: true
+
 Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/RedundantFileExtensionInRequire:
   Enabled: true
 
 Style/RedundantRegexpCharacterClass:
@@ -59,3 +110,6 @@ Style/SlicingWithRange:
 AllCops:
   TargetRubyVersion: 2.6
   DisplayCopNames: true
+  Exclude:
+    - libraries/provider_*.rb
+    - libraries/resource_deploy*.rb

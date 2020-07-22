@@ -24,6 +24,8 @@ PreCommit:
     enabled: true
     exclude:
       - RELEASING.md
+      - libraries/provider_*.rb
+      - libraries/resource_deploy*.rb
   Foodcritic:
     enabled: true
     flags: ['-t', '~chef13', '-t', '~chef14', '-t', '~chef15', '-t', '~chef16']
