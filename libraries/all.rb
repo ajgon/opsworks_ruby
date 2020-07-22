@@ -6,6 +6,10 @@ require File.join(libdir, 'helpers')
 require File.join(libdir, 'archive')
 require File.join(libdir, 'chef_patches')
 
+# resource_deploy
+Dir[File.join(libdir, 'provider_*.rb')].sort.each { |f| require f }
+Dir[File.join(libdir, 'resource_*.rb')].sort.each { |f| require f }
+
 require File.join(libdir, 'drivers_base.rb')
 Dir[File.join(libdir, 'drivers_dsl_*.rb')].sort.each { |f| require f }
 
