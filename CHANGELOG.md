@@ -1,3 +1,12 @@
+# [1.19.0](https://github.com/ajgon/opsworks_ruby/compare/v1.18.1...v1.19.0) (2020-08-02)
+
+
+### Features
+
+* **deploy:** include deploy resource polyfill ([4f6d6fd](https://github.com/ajgon/opsworks_ruby/commit/4f6d6fd634e949ee7751664d7da5061a1d2ea748)), closes [#242](https://github.com/ajgon/opsworks_ruby/issues/242)
+
+
+
 ## [1.18.1](https://github.com/ajgon/opsworks_ruby/compare/v1.18.0...v1.18.1) (2020-05-13)
 
 

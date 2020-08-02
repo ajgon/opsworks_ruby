@@ -1,14 +1,14 @@
-FROM ruby:2.7
+FROM ruby:2.7-buster
 
 RUN printf "deb http://deb.debian.org/debian testing main\ndeb http://deb.debian.org/debian testing-updates main" >> /etc/apt/sources.list
 RUN apt-get update && \
     apt-get install --yes --no-install-recommends apt-transport-https && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN echo 'deb https://deb.nodesource.com/node_6.x jessie main' > /etc/apt/sources.list.d/nodesource.list && \
+RUN echo 'deb https://deb.nodesource.com/node_14.x buster main' > /etc/apt/sources.list.d/nodesource.list && \
     curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
     apt-get update && \
-    apt-get install --yes --target-release=jessie --no-install-recommends build-essential git locales nodejs python-pip python-setuptools python-sphinx python-yaml && \
+    apt-get install --yes --target-release=buster --no-install-recommends build-essential git locales nodejs python3-pip python3-setuptools python3-sphinx python3-yaml && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 RUN gem update --no-document --system
@@ -25,7 +25,7 @@ RUN curl -o /tmp/chefdk.deb https://packages.chef.io/files/stable/chefdk/1.6.11/
 ENV APP_HOME /cookbooks/opsworks_ruby
 RUN mkdir -p "$APP_HOME"
 
-RUN pip install yamllint
+RUN pip3 install yamllint
 
 COPY Gemfile* $APP_HOME/
 WORKDIR $APP_HOME
