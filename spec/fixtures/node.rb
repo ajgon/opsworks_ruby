@@ -104,7 +104,7 @@ DEFAULT_NODE = {
   }
 }.freeze
 
-def node(override = {}, deep_merge = false)
+def node(override = {}, deep_merge = false) # rubocop:disable Style/OptionalBooleanParameter
   item =
     if deep_merge
       RubyOpsworksTests::DeepMergeableHash.new(DEFAULT_NODE).deep_merge(override)

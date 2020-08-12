@@ -14,7 +14,7 @@ module Drivers
 
       protected
 
-      def add_worker_monit # rubocop:disable Metrics/AbcSize
+      def add_worker_monit
         opts = { application: app['shortname'], name: app['name'], out: out, deploy_to: deploy_dir(app),
                  environment: environment, adapter: adapter, app_shortname: app['shortname'] }
 

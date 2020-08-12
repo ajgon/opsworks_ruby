@@ -8,7 +8,6 @@ group :lint do
   gem 'coveralls'
   gem 'fasterer'
   gem 'foodcritic'
-  gem 'mdl'
   gem 'overcommit'
   gem 'rubocop'
   gem 'rubocop-performance'

@@ -11,26 +11,56 @@ Layout/LineLength:
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: true
+
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
 Lint/DuplicateElsifCondition:
   Enabled: true
 
+Lint/DuplicateRescueException:
+  Enabled: true
+
+Lint/EmptyConditionalBody:
+  Enabled: true
+
+Lint/FloatComparison:
+  Enabled: true
+
+Lint/MissingSuper:
+  Enabled: true
+
 Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/OutOfRangeRegexpRef:
   Enabled: true
 
 Lint/RaiseException:
   Enabled: true
 
+Lint/SelfAssignment:
+  Enabled: true
+
 Lint/StructNewOverride:
   Enabled: true
 
+Lint/TopLevelReturnWithArgument:
+  Enabled: true
+
+Lint/UnreachableLoop:
+  Enabled: true
+
 Metrics/AbcSize:
-  Max: 25
+  Max: 30
 
 Metrics/BlockLength:
   Enabled: false
+
+Metrics/PerceivedComplexity:
+  Max: 10
 
 Performance/AncestorsInclude:
   Enabled: true
@@ -71,7 +101,13 @@ Style/CaseLikeIf:
 Style/Documentation:
   Enabled: false
 
+Style/ExplicitBlockArgument:
+  Enabled: true
+
 Style/ExponentialNotation:
+  Enabled: true
+
+Style/GlobalStdStream:
   Enabled: true
 
 Style/HashAsLastArrayItem:
@@ -89,6 +125,9 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: false
 
+Style/OptionalBooleanParameter:
+  Enabled: true
+
 Style/RedundantAssignment:
   Enabled: true
 
@@ -104,7 +143,13 @@ Style/RedundantRegexpCharacterClass:
 Style/RedundantRegexpEscape:
   Enabled: true
 
+Style/SingleArgumentDig:
+  Enabled: true
+
 Style/SlicingWithRange:
+  Enabled: true
+
+Style/StringConcatenation:
   Enabled: true
 
 AllCops:

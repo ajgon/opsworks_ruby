@@ -53,7 +53,6 @@ module Drivers
         end
       end
 
-      # rubocop:disable Metrics/AbcSize
       def add_appserver_config
         opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: deploy_env,
                  webserver: Drivers::Webserver::Factory.build(context, app).adapter,
@@ -67,7 +66,6 @@ module Drivers
           variables opts
         end
       end
-      # rubocop:enable Metrics/AbcSize
 
       def add_appserver_service_script
         opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], name: adapter, environment: environment,

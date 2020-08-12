@@ -87,11 +87,9 @@ def every_enabled_application
   end
 end
 
-def every_enabled_rds(context, application)
+def every_enabled_rds(context, application, &block)
   data = [rdses.presence, Drivers::Db::Factory.build(context, application)].flatten.compact
-  data.each do |rds|
-    yield rds
-  end
+  data.each(&block)
 end
 
 def perform_bundle_install(shared_path, envs = {})

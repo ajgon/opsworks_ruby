@@ -17,7 +17,6 @@ module Drivers
         handle_packages
       end
 
-      # rubocop:disable Metrics/AbcSize:
       def out
         return out_defaults if multiple_databases?
         return out_node_engine if configuration_data_source == :node_engine
@@ -28,7 +27,6 @@ module Drivers
           database: app['data_sources'].first.try(:[], 'database_name')
         ).reject { |_k, v| v.blank? }
       end
-      # rubocop:enable Metrics/AbcSize:
 
       def out_node_engine
         out_defaults.merge(

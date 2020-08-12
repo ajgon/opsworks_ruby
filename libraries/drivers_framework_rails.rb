@@ -55,9 +55,11 @@ module Drivers
 
         return unless File.exist?(application_rb_path)
 
+        # rubocop:disable Style/StringConcatenation
         env_code = "if(defined?(Rails::Console))\n  " +
                    environment.map { |key, value| "ENV['#{key}'] = #{value.inspect}" }.join("\n  ") +
                    "\nend\n"
+        # rubocop:enable Style/StringConcatenation
 
         contents = File.read(application_rb_path).sub(/(^(?:module|class).*$)/, "#{env_code}\n\\1")
 

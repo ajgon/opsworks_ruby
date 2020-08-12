@@ -38,11 +38,6 @@ PreCommit:
     enabled: true
   LocalPathsInGemfile:
     enabled: true
-  Mdl:
-    enabled: true
-    exclude:
-      - CHANGELOG.md
-      - .github/ISSUE_TEMPLATE.md
   MergeConflicts:
     enabled: true
   RuboCop:
