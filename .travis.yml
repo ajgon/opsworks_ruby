@@ -15,7 +15,7 @@ rvm:
 addons:
   apt:
     sources:
-      - sourceline: "deb https://packages.chef.io/repos/apt/stable bionic main"
+      - sourceline: "deb [trusted=yes] https://packages.chef.io/repos/apt/stable bionic main"
         key_url: "https://packages.chef.io/chef.asc"
     packages:
       - chefdk

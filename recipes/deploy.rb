@@ -27,6 +27,8 @@ every_enabled_application do |application|
     group www_group
     environment env_vars
 
+    provider Chef::Provider::Deploy::Revision if globals(:deploy_revision, application['shortname'])
+
     if globals(:rollback_on_error, application['shortname']).nil?
       rollback_on_error node['defaults']['global']['rollback_on_error']
     else

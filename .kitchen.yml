@@ -191,6 +191,7 @@ suites:
             logrotate_frequency: 'weekly'
             logrotate_template_mode: '0750'
           global:
+            deploy_revision: true
             logrotate_name: 'this-will-be-ignored'
             logrotate_frequency: 'monthly'
             logrotate_log_paths:

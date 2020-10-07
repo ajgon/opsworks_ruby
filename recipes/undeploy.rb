@@ -21,6 +21,8 @@ every_enabled_application do |application|
     user node['deployer']['user'] || 'root'
     group www_group
 
+    provider Chef::Provider::Deploy::Revision if globals(:deploy_revision, application['shortname'])
+
     [appserver, webserver].each do |server|
       server.notifies[:undeploy].each do |config|
         notifies config[:action],

@@ -46,6 +46,7 @@ default['defaults']['global']['logrotate_frequency'] = 'daily'
 default['defaults']['global']['logrotate_options'] = %w[
   missingok compress delaycompress notifempty copytruncate sharedscripts
 ]
+default['defaults']['global']['deploy_revision'] = false
 default['defaults']['global']['use_nodejs'] = false
 
 if node['use-nodejs']

@@ -387,11 +387,13 @@ describe 'opsworks_ruby::deploy' do
         solo_node.set['lsb'] = node['lsb']
         solo_node.set['deploy'] = { 'a1' => {} }
         solo_node.set['deploy']['a1']['global']['deploy_dir'] = deploy_dir if deploy_dir
+        solo_node.set['deploy']['a1']['global']['deploy_revision'] = deploy_revision if deploy_revision
       end
     end
 
     context 'when deploy_dir is not specified' do
       let(:deploy_dir) { nil }
+      let(:deploy_revision) { false }
 
       it 'deploys a1 using the default deploy directory of /srv/www' do
         expect(chef_run).to create_directory('/srv/www/a1/shared')
@@ -409,6 +411,7 @@ describe 'opsworks_ruby::deploy' do
 
     context 'when a deploy_dir is specified' do
       let(:deploy_dir) { '/some/other/path/to/a1' }
+      let(:deploy_revision) { false }
 
       it 'deploys a1 using the provided deploy directory instead' do
         expect(chef_run).to create_directory('/some/other/path/to/a1/shared')
