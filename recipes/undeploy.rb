@@ -16,10 +16,14 @@ every_enabled_application do |application|
 
   fire_hook(:before_undeploy, items: databases + [source, framework, appserver, worker, webserver])
 
-  deploy_revision application['shortname'] do
+  deploy application['shortname'] do
     deploy_to deploy_dir(application)
     user node['deployer']['user'] || 'root'
     group www_group
+
+    if globals(:deploy_revision, application['shortname'])
+      provider Chef::Provider::Deploy::Revision
+    end
 
     [appserver, webserver].each do |server|
       server.notifies[:undeploy].each do |config|

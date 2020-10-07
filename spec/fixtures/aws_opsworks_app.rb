@@ -6,7 +6,7 @@ def aws_opsworks_app(override = {})
     app_id: '3aef37c1-7e2b-4255-bbf1-03e06f07701a',
     app_source: {
       password: '3aa161d358a167204502',
-      revision: 'master',
+      revision: 'dbfbd8dbc989e3a4465504d83fafc5ec7f204e7f',
       ssh_key: '--- SSH KEY ---',
       type: 'git',
       url: 'git@git.example.com:repo/project.git',

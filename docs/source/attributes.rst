@@ -191,6 +191,15 @@ Global parameters apply to the whole application, and can be used by any section
      will result in the ``logrotate_app`` resource being invoked with the resource value ``cookbook 'my_cookbook'``.
   -  See Logrotate Attributes for more information on logrotate attribute precedence.
 
+- ``app['global']['deploy_revision']``
+
+  -  **Type:** boolean
+  -  **Default:** ``false``
+  -  When set to true, deployments will use the ``deploy_revision`` provider.
+     The name of a release sub-directory will use a revision identifier rather
+     than a timestamp.
+  -  See `the deploy_revision documentation`_ for more information.
+
 
 database
 ~~~~~~~~
@@ -893,6 +902,7 @@ shoryuken
 .. _app['appserver']['after_worker_fork']: https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L150
 .. _Read more here.: https://weakdh.org/sysadmin.html
 .. _covered in this article: https://cipherli.st/
+.. _the deploy_revision documentation: https://docs-archive.chef.io/release/12-13/resource_deploy.html#deploy-revision
 .. |app['webserver']['limit_request_body']| replace:: ``app['webserver']['limit_request_body']``
 .. _app['webserver']['limit_request_body']: https://httpd.apache.org/docs/2.4/mod/core.html#limitrequestbody
 .. |app['webserver']['log_level']| replace:: ``app['webserver']['log_level']``

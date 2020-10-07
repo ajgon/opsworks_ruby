@@ -387,6 +387,7 @@ describe 'opsworks_ruby::deploy' do
         solo_node.set['lsb'] = node['lsb']
         solo_node.set['deploy'] = { 'a1' => {} }
         solo_node.set['deploy']['a1']['global']['deploy_dir'] = deploy_dir if deploy_dir
+        solo_node.set['deploy']['a1']['global']['deploy_revision'] = deploy_revision if deploy_revision
       end
     end
 
@@ -404,6 +405,14 @@ describe 'opsworks_ruby::deploy' do
         expect(chef_run).to create_template('/srv/www/a1/shared/config/database.yml')
         expect(chef_run).to create_template('/srv/www/a1/shared/config/puma.rb')
         expect(chef_run).to create_template('/srv/www/a1/shared/scripts/puma.service')
+      end
+    end
+
+    context 'when deploy_revision is true' do
+      let(:deploy_revision) { true }
+
+      it 'deploys a1 using a release subdirectory named by revision' do
+        expect(chef_run).to create_directory("/srv/www/a1/releases/dbfbd8dbc989e3a4465504d83fafc5ec7f204e7f")
       end
     end
 

@@ -21,11 +21,15 @@ every_enabled_application do |application|
 
   fire_hook(:before_deploy, items: databases + [source, framework, appserver, worker, webserver])
 
-  deploy_revision application['shortname'] do
+  deploy application['shortname'] do
     deploy_to deploy_dir(application)
     user node['deployer']['user'] || 'root'
     group www_group
     environment env_vars
+
+    if globals(:deploy_revision, application['shortname'])
+      provider Chef::Provider::Deploy::Revision
+    end
 
     if globals(:rollback_on_error, application['shortname']).nil?
       rollback_on_error node['defaults']['global']['rollback_on_error']
