@@ -21,7 +21,7 @@ every_enabled_application do |application|
 
   fire_hook(:before_deploy, items: databases + [source, framework, appserver, worker, webserver])
 
-  deploy application['shortname'] do
+  deploy_revision application['shortname'] do
     deploy_to deploy_dir(application)
     user node['deployer']['user'] || 'root'
     group www_group
