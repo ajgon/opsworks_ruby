@@ -814,6 +814,11 @@ nginx
 worker
 ~~~~~~
 
+-  ``app['worker']['monit_template_cookbook']``
+
+  -  **Default** ``opsworks_ruby``
+  -  The name of the cookbook from which the worker monit template(s) will be drawn.
+
 sidekiq
 ^^^^^^^
 

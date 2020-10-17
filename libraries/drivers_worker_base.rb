@@ -16,15 +16,21 @@ module Drivers
 
       def add_worker_monit
         opts = { application: app['shortname'], name: app['name'], out: out, deploy_to: deploy_dir(app),
-                 environment: environment, adapter: adapter, app_shortname: app['shortname'] }
+                 environment: environment, adapter: adapter, app_shortname: app['shortname'],
+                 source_cookbook: worker_monit_template_cookbook }
 
         context.template File.join(node['monit']['basedir'], "#{opts[:adapter]}_#{opts[:application]}.monitrc") do
           mode '0640'
           source "#{opts[:adapter]}.monitrc.erb"
+          cookbook opts[:source_cookbook].to_s
           variables opts
         end
 
         context.execute 'monit reload'
+      end
+
+      def worker_monit_template_cookbook
+        node['deploy'][app['shortname']][driver_type]['monit_template_cookbook'] || context.cookbook_name
       end
 
       def restart_monit
