@@ -173,7 +173,7 @@ describe 'opsworks_ruby::setup' do
       end
 
       it 'adds fullstaq apt repository' do
-        keyurl = 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/master/fullstaq-ruby.asc'
+        keyurl = 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/main/fullstaq-ruby.asc'
 
         expect(chef_run).to add_apt_repository('fullstaq-ruby').with(
           uri: 'https://apt.fullstaqruby.org',
@@ -244,7 +244,7 @@ describe 'opsworks_ruby::setup' do
           baseurl: 'https://yum.fullstaqruby.org/centos-7/$basearch',
           enabled: true,
           gpgcheck: false,
-          gpgkey: 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/master/fullstaq-ruby.asc',
+          gpgkey: 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/main/fullstaq-ruby.asc',
           repo_gpgcheck: true,
           sslverify: true
         )

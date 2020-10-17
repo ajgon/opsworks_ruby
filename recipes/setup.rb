@@ -82,7 +82,7 @@ if node['ruby-provider'] == 'fullstaq'
 
     # For whatever reason `apt_repository.key` doesn't work here.
     remote_file "#{Chef::Config[:file_cache_path]}/fullstaq-ruby.asc" do
-      source 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/master/fullstaq-ruby.asc'
+      source 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/main/fullstaq-ruby.asc'
     end
 
     execute 'add fullstaq repository key' do
@@ -101,7 +101,7 @@ if node['ruby-provider'] == 'fullstaq'
       baseurl 'https://yum.fullstaqruby.org/centos-7/$basearch'
       enabled true
       gpgcheck false
-      gpgkey 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/master/fullstaq-ruby.asc'
+      gpgkey 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/main/fullstaq-ruby.asc'
       repo_gpgcheck true
       sslverify true
       only_if { node['ruby-provider'] == 'fullstaq' }
