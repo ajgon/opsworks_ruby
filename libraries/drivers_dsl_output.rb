@@ -37,7 +37,7 @@ module Drivers
       end
 
       def handle_output(unfiltered)
-        if output[:filter]&.is_a?(Array)
+        if output[:filter]&.is_a?(Array) # rubocop:disable Lint/RedundantSafeNavigation
           unfiltered.select { |k, _v| output[:filter].include?(k.to_sym) }
         else
           unfiltered

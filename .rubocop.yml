@@ -2,6 +2,9 @@
 require:
   - rubocop-performance
 
+Layout/BeginEndAlignment:
+  Enabled: true
+
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 
@@ -14,10 +17,16 @@ Layout/SpaceAroundMethodCallOperator:
 Lint/BinaryOperatorWithIdenticalOperands:
   Enabled: true
 
+Lint/ConstantDefinitionInBlock:
+  Enabled: true
+
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
 Lint/DuplicateElsifCondition:
+  Enabled: true
+
+Lint/DuplicateRequire:
   Enabled: true
 
 Lint/DuplicateRescueException:
@@ -26,7 +35,15 @@ Lint/DuplicateRescueException:
 Lint/EmptyConditionalBody:
   Enabled: true
 
+Lint/EmptyFile:
+  Enabled: true
+
 Lint/FloatComparison:
+  Enabled: true
+
+Lint/HashCompareByIdentity:
+  Enabled: true
+Lint/IdentityComparison:
   Enabled: true
 
 Lint/MissingSuper:
@@ -41,6 +58,9 @@ Lint/OutOfRangeRegexpRef:
 Lint/RaiseException:
   Enabled: true
 
+Lint/RedundantSafeNavigation:
+  Enabled: true
+
 Lint/SelfAssignment:
   Enabled: true
 
@@ -50,7 +70,16 @@ Lint/StructNewOverride:
 Lint/TopLevelReturnWithArgument:
   Enabled: true
 
+Lint/TrailingCommaInAttributeDeclaration:
+  Enabled: true
+
 Lint/UnreachableLoop:
+  Enabled: true
+
+Lint/UselessMethodDefinition:
+  Enabled: true
+
+Lint/UselessTimes:
   Enabled: true
 
 Metrics/AbcSize:
@@ -86,6 +115,9 @@ Performance/Squeeze:
 Performance/StringInclude:
   Enabled: true
 
+Performance/Sum:
+  Enabled: true
+
 Style/AccessorGrouping:
   Enabled: true
 
@@ -96,6 +128,12 @@ Style/BisectedAttrAccessor:
   Enabled: true
 
 Style/CaseLikeIf:
+  Enabled: true
+
+Style/ClassEqualityComparison:
+  Enabled: true
+
+Style/CombinableLoops:
   Enabled: true
 
 Style/Documentation:
@@ -125,6 +163,9 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: false
 
+Style/KeywordParametersOrder:
+  Enabled: true
+
 Style/OptionalBooleanParameter:
   Enabled: true
 
@@ -143,10 +184,16 @@ Style/RedundantRegexpCharacterClass:
 Style/RedundantRegexpEscape:
   Enabled: true
 
+Style/RedundantSelfAssignment:
+  Enabled: true
+
 Style/SingleArgumentDig:
   Enabled: true
 
 Style/SlicingWithRange:
+  Enabled: true
+
+Style/SoleNestedConditional:
   Enabled: true
 
 Style/StringConcatenation:

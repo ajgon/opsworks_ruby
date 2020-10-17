@@ -49,13 +49,10 @@ describe 'Core extensions' do
     end
 
     it 'descendants' do
-      A = Class.new
-      B = Class.new(A)
+      klass_a = Class.new
+      klass_b = Class.new(klass_a)
 
-      expect(A.descendants).to eq [B]
-
-      Object.send(:remove_const, :B)
-      Object.send(:remove_const, :A)
+      expect(klass_a.descendants).to eq [klass_b]
     end
   end
 

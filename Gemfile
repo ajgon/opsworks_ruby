@@ -11,7 +11,6 @@ group :lint do
   gem 'overcommit'
   gem 'rubocop'
   gem 'rubocop-performance'
-  gem 'travis'
 end
 
 group :chef do

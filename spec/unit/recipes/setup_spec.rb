@@ -6,6 +6,8 @@
 
 require 'spec_helper'
 
+ALL_APACHE2_MODULES = %w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl].freeze
+
 describe 'opsworks_ruby::setup' do
   let(:chef_runner) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
@@ -515,7 +517,6 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Mysql + S3 + apache2 + resque' do
-    ALL_APACHE2_MODULES = %w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl].freeze
     let(:modules_already_enabled) { false }
 
     before do
