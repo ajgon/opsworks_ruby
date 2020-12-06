@@ -16,17 +16,11 @@ module Drivers
       ].freeze
       output filter: WEBSERVER_CONFIG_PARAMS
 
-      def manual_action(action); end
-
       def add_appserver_config; end
-
-      def add_appserver_service_script; end
-
-      def add_appserver_service_context; end
 
       def webserver_config_params
         o = out
-        Hash[WEBSERVER_CONFIG_PARAMS.map { |k| [k, o[k]] }].reject { |_k, v| v.nil? }
+        Hash[WEBSERVER_CONFIG_PARAMS.map { |k| [k, o[k]] }].reject { |_k, v| v.nil? } # rubocop:disable Style/CollectionCompact
       end
     end
   end

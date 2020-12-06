@@ -98,7 +98,7 @@ describe 'opsworks_ruby::deploy' do
       )
 
       expect(chef_run).to disable_logrotate_app('rails')
-      expect(chef_run).to run_execute('stop-start unicorn')
+      expect(chef_run).to run_execute('monit restart unicorn_dummy_project')
       expect(deploy).to notify('service[nginx]').to(:reload).delayed
       expect(service).to do_nothing
     end
@@ -145,7 +145,7 @@ describe 'opsworks_ruby::deploy' do
         )
 
         expect(chef_run).to disable_logrotate_app('rails')
-        expect(chef_run).to run_execute('stop-start unicorn')
+        expect(chef_run).to run_execute('monit restart unicorn_dummy_project')
         expect(deploy).to notify('service[nginx]').to(:reload).delayed
         expect(service).to do_nothing
       end
@@ -166,7 +166,8 @@ describe 'opsworks_ruby::deploy' do
       end
     end
 
-    it 'restarts sidekiqs via monit' do
+    it 'restarts unicorn and sidekiqs via monit' do
+      expect(chef_run).to run_execute("monit restart unicorn_#{aws_opsworks_app['shortname']}")
       expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-1")
       expect(chef_run).to run_execute("monit restart sidekiq_#{aws_opsworks_app['shortname']}-2")
     end
@@ -242,17 +243,18 @@ describe 'opsworks_ruby::deploy' do
       deploy_debian = chef_run.deploy(aws_opsworks_app['shortname'])
 
       expect(deploy_debian).to notify('service[apache2]').to(:reload).delayed
-      expect(chef_run).to run_execute('stop-start puma')
+      expect(chef_run).to run_execute('monit restart puma_dummy_project')
     end
 
     it 'performs a deploy on rhel' do
       deploy_rhel = chef_run_rhel.deploy(aws_opsworks_app['shortname'])
 
       expect(deploy_rhel).to notify('service[httpd]').to(:reload).delayed
-      expect(chef_run_rhel).to run_execute('stop-start puma')
+      expect(chef_run_rhel).to run_execute('monit restart puma_dummy_project')
     end
 
-    it 'restarts resques via monit' do
+    it 'restarts puma and resques via monit' do
+      expect(chef_run).to run_execute("monit restart puma_#{aws_opsworks_app['shortname']}")
       expect(chef_run).to run_execute("monit restart resque_#{aws_opsworks_app['shortname']}-1")
       expect(chef_run).to run_execute("monit restart resque_#{aws_opsworks_app['shortname']}-2")
     end
@@ -318,14 +320,15 @@ describe 'opsworks_ruby::deploy' do
     end
 
     it 'performs a deploy on debian' do
-      expect(chef_run).to run_execute('stop-start thin')
+      expect(chef_run).to run_execute('monit restart thin_dummy_project')
     end
 
     it 'performs a deploy on rhel' do
-      expect(chef_run_rhel).to run_execute('stop-start thin')
+      expect(chef_run_rhel).to run_execute('monit restart thin_dummy_project')
     end
 
-    it 'restarts delayed_jobs via monit' do
+    it 'restarts thin and delayed_jobs via monit' do
+      expect(chef_run).to run_execute("monit restart thin_#{aws_opsworks_app['shortname']}")
       expect(chef_run).to run_execute("monit restart delayed_job_#{aws_opsworks_app['shortname']}-1")
       expect(chef_run).to run_execute("monit restart delayed_job_#{aws_opsworks_app['shortname']}-2")
     end
@@ -352,7 +355,6 @@ describe 'opsworks_ruby::deploy' do
       solo_node.set['deploy'] = { 'a1' => {}, 'a2' => {}, 'a3' => {} }
       solo_node.set['applications'] = %w[a1 a2]
     end.converge(described_recipe)
-    service = chef_run.service('puma_a1')
 
     expect(chef_run).to create_directory('/run/lock/a1')
     expect(chef_run).to create_directory('/srv/www/a1/shared')
@@ -363,14 +365,12 @@ describe 'opsworks_ruby::deploy' do
     expect(chef_run).to create_directory('/srv/www/a1/shared/vendor/bundle')
     expect(chef_run).to create_template('/srv/www/a1/shared/config/database.yml')
     expect(chef_run).to create_template('/srv/www/a1/shared/config/puma.rb')
-    expect(chef_run).to create_template('/srv/www/a1/shared/scripts/puma.service')
     expect(chef_run).to create_template('/etc/nginx/sites-available/a1.conf')
     expect(chef_run).to create_link('/srv/www/a1/shared/pids')
     expect(chef_run).to create_link('/etc/nginx/sites-enabled/a1.conf')
     expect(chef_run).to enable_logrotate_app('a1-nginx-production')
     expect(chef_run).to enable_logrotate_app('a1-rails-production')
 
-    expect(service).to do_nothing
     expect(chef_run).to deploy_deploy('a1')
     expect(chef_run).not_to deploy_deploy('a2')
   end
@@ -405,7 +405,6 @@ describe 'opsworks_ruby::deploy' do
         expect(chef_run).to create_directory('/run/lock/a1')
         expect(chef_run).to create_template('/srv/www/a1/shared/config/database.yml')
         expect(chef_run).to create_template('/srv/www/a1/shared/config/puma.rb')
-        expect(chef_run).to create_template('/srv/www/a1/shared/scripts/puma.service')
       end
     end
 
@@ -424,7 +423,6 @@ describe 'opsworks_ruby::deploy' do
         expect(chef_run).to create_link('/some/other/path/to/a1/shared/pids')
         expect(chef_run).to create_template('/some/other/path/to/a1/shared/config/database.yml')
         expect(chef_run).to create_template('/some/other/path/to/a1/shared/config/puma.rb')
-        expect(chef_run).to create_template('/some/other/path/to/a1/shared/scripts/puma.service')
       end
     end
   end

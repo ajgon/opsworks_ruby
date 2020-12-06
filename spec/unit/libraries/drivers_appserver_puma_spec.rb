@@ -16,6 +16,6 @@ describe Drivers::Appserver::Puma do
   end
 
   it 'returns proper out data' do
-    expect(driver.out).to eq(worker_processes: 8, thread_min: 0, thread_max: 16, after_deploy: 'stop-start')
+    expect(driver.out).to eq(worker_processes: 8, thread_min: 0, thread_max: 16)
   end
 end

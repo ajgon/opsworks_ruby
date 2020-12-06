@@ -14,7 +14,7 @@ depends 'ark', '= 4.0.0'
 depends 'chef_client_updater', '~> 3.6.0' # 3.7 introduces breaking change
 depends 'logrotate', '2.2.1' # 2.2.2 breaks tests for whatever reason
 depends 'nginx', '< 9.0'
-depends 'nodejs'
+depends 'nodejs', '< 7.0'
 depends 'ohai', '< 5.3'
 depends 'ruby-ng'
 depends 's3_file'

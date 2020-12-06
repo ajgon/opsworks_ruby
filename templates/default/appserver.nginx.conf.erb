@@ -1,5 +1,11 @@
 upstream <%= @name %>_<%= @application[:domains].first %> {
- server unix:<%= @deploy_dir.to_s %>/shared/sockets/<%= @name %>.sock fail_timeout=0;
+<% if @name == 'thin' %>
+<% 0.upto([@appserver_config[:worker_processes].to_i - 1, 0].max).each do |idx| %>
+  server unix:<%= @deploy_dir.to_s %>/shared/sockets/<%= @name %>.<%= idx %>.sock fail_timeout=0;
+<% end %>
+<% else %>
+  server unix:<%= @deploy_dir.to_s %>/shared/sockets/<%= @name %>.sock fail_timeout=0;
+<% end %>
 }
 
 server {

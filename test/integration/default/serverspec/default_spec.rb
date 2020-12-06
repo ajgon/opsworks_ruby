@@ -82,14 +82,6 @@ describe 'opsworks_ruby::configure' do
       its(:content) { should include 'unix:///srv/www/dummy_project/shared/sockets/puma.sock' }
       its(:content) { should include 'environment "production"' }
     end
-
-    describe file('/srv/www/dummy_project/shared/scripts/puma.service') do
-      its(:content) { should include 'ENV[\'ENV_VAR1\'] = "test"' }
-      its(:content) { should include 'ENV[\'RAILS_ENV\'] = "production"' }
-      its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
-      its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
-      its(:content) { should include 'PID_PATH="/run/lock/dummy_project/puma.pid"' }
-    end
   end
 
   context 'framework' do

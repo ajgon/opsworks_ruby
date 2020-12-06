@@ -10,7 +10,7 @@ max_persistent_conns: <%= @out[:max_persistent_connections] %>
 servers: <%= @out[:worker_processes] %>
 threaded: true
 no-epoll: true
-daemonize: true
+daemonize: false
 <% if @out[:port] %>
 address: "0.0.0.0"
 port: <%= @out[:port] %>

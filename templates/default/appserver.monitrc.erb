@@ -1,0 +1,6 @@
+<% pid_dir = "/run/lock/#{@app_shortname}/" %>
+
+check process <%= @appserver_name %>_<%= @app_shortname %> with pidfile <%= pid_dir %><%= @appserver_name %>.pid
+start program = "/bin/sh -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %> <%= @appserver_command %> | logger -t <%= @appserver_name %>-<%= @app_shortname %>'" as uid "<%= node['deployer']['user'] %>" and gid "<%= node['deployer']['group'] %>" with timeout 90 seconds
+stop program = "/bin/sh -c 'cat <%= pid_dir %><%= @appserver_name %>.pid | xargs --no-run-if-empty kill -QUIT; sleep 5'" as uid "<%= node['deployer']['user'] %>" and gid "<%= node['deployer']['group'] %>"
+group <%= @appserver_name %>_<%= @app_shortname.to_s %>_group

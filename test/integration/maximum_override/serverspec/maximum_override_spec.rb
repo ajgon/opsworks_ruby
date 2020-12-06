@@ -141,10 +141,6 @@ describe 'opsworks_ruby::configure' do
       describe file('/srv/www/other_project/shared/config/unicorn.conf') do
         it { should_not exist }
       end
-
-      describe file('/srv/www/other_project/shared/scripts/unicorn.service') do
-        it { should_not exist }
-      end
     end
 
     context 'second installed app' do
@@ -152,14 +148,6 @@ describe 'opsworks_ruby::configure' do
         its(:content) { should include ':backlog => 1024' }
         its(:content) { should include ':tries => 5' }
         its(:content) { should include 'listen "127.0.0.1:3000"' }
-      end
-
-      describe file('/srv/www/yet_another_project/shared/scripts/unicorn.service') do
-        its(:content) { should include 'ENV[\'ENV_VAR1\'] = "test"' }
-        its(:content) { should include 'ENV[\'RAILS_ENV\'] = "production"' }
-        its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
-        its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
-        its(:content) { should include 'PID_PATH="/run/lock/yet_another_project/unicorn.pid"' }
       end
     end
   end

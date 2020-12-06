@@ -189,48 +189,6 @@ describe 'opsworks_ruby::configure' do
         .with_content(':delay => 3')
     end
 
-    it 'creates proper unicorn.service file' do
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('ENV[\'RAILS_ENV\'] = "staging"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('ENV[\'ENV_VAR1\'] = "test"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('ENV[\'HOME\'] = "/home/deploy"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('ENV[\'USER\'] = "deploy"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content("ROOT_PATH=\"/srv/www/#{aws_opsworks_app['shortname']}\"")
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('DEPLOY_ENV="staging"')
-      # rubocop:disable Lint/InterpolationCheck
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service")
-        .with_content('unicorn_rails --env #{DEPLOY_ENV} --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf')
-      # rubocop:enable Lint/InterpolationCheck
-    end
-
-    it 'defines unicorn service' do
-      service = chef_run.service("unicorn_#{aws_opsworks_app['shortname']}")
-      expect(service).to do_nothing
-      expect(service.start_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service start"
-      expect(service.stop_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service stop"
-      expect(service.restart_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service restart"
-      expect(service.status_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/unicorn.service status"
-    end
-
     it 'creates nginx unicorn proxy handler config' do
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
@@ -433,6 +391,30 @@ describe 'opsworks_ruby::configure' do
           .with_content('group sidekiq_dummy_project_group')
         expect(chef_run_rhel).to run_execute('monit reload')
       end
+
+      it 'creates unicorn.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process unicorn_dummy_project with pidfile /run/lock/dummy_project/unicorn.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec unicorn_rails ' \
+            '--env staging -c /srv/www/dummy_project/shared/config/unicorn.conf ' \
+            '| logger -t unicorn-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/unicorn.pid ' \
+            '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group unicorn_dummy_project_group')
+      end
     end
 
     context 'debian' do
@@ -480,6 +462,30 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group sidekiq_dummy_project_group')
         expect(chef_run).to run_execute('monit reload')
+      end
+
+      it 'creates unicorn.monitrc conf' do
+        expect(chef_run).to create_template("/etc/monit/conf.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run)
+          .to render_file("/etc/monit/conf.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process unicorn_dummy_project with pidfile /run/lock/dummy_project/unicorn.pid')
+        expect(chef_run)
+          .to render_file("/etc/monit/conf.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RAILS_ENV="staging" HOME="/home/deploy" USER="deploy" bundle exec unicorn_rails ' \
+            '--env staging -c /srv/www/dummy_project/shared/config/unicorn.conf ' \
+            '| logger -t unicorn-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+          )
+        expect(chef_run)
+          .to render_file("/etc/monit/conf.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/unicorn.pid ' \
+            '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+          )
+        expect(chef_run)
+          .to render_file("/etc/monit/conf.d/unicorn_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group unicorn_dummy_project_group')
       end
     end
   end
@@ -551,54 +557,6 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/puma.rb")
         .with_content('plugin :tmp_restart')
-    end
-
-    it 'creates proper puma.service file' do
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content('ENV[\'HANAMI_ENV\'] = "staging"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content('ENV[\'ENV_VAR1\'] = "test"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content('ENV[\'HOME\'] = "/home/deploy"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content('ENV[\'USER\'] = "deploy"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content(
-          'ENV[\'DATABASE_URL\'] = "mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb"'
-        )
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content("ROOT_PATH=\"/srv/www/#{aws_opsworks_app['shortname']}\"")
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content('DEPLOY_ENV="staging"')
-      # rubocop:disable Lint/InterpolationCheck
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service")
-        .with_content('puma -C #{ROOT_PATH}/shared/config/puma.rb')
-      # rubocop:enable Lint/InterpolationCheck
-    end
-
-    it 'defines puma service' do
-      service = chef_run.service("puma_#{aws_opsworks_app['shortname']}")
-      expect(service).to do_nothing
-      expect(service.start_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service start"
-      expect(service.stop_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service stop"
-      expect(service.restart_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service restart"
-      expect(service.status_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/puma.service status"
     end
 
     it 'creates apache2 puma proxy handler config' do
@@ -779,6 +737,32 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run).to run_execute('monit reload')
     end
 
+    it 'creates puma.monitrc conf' do
+      expect(chef_run).to create_template("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process puma_dummy_project with pidfile /run/lock/dummy_project/puma.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
+          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" ' \
+          'HOME="/home/deploy" USER="deploy" bundle exec puma ' \
+          '-C /srv/www/dummy_project/shared/config/puma.rb ' \
+          '| logger -t puma-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/puma.pid ' \
+          '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('group puma_dummy_project_group')
+    end
+
     context 'rhel' do
       let(:chef_run_rhel) do
         ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
@@ -860,6 +844,32 @@ describe 'opsworks_ruby::configure' do
         %w[default default.conf 000-default 000-default.conf default-ssl default-ssl.conf].each do |file|
           expect(chef_run_rhel).to delete_file("/etc/httpd/sites-enabled/#{file}")
         end
+      end
+
+      it 'creates puma.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process puma_dummy_project with pidfile /run/lock/dummy_project/puma.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
+            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" ' \
+            'HOME="/home/deploy" USER="deploy" bundle exec puma ' \
+            '-C /srv/www/dummy_project/shared/config/puma.rb ' \
+            '| logger -t puma-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/puma.pid ' \
+            '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group puma_dummy_project_group')
       end
     end
   end
@@ -1037,49 +1047,22 @@ describe 'opsworks_ruby::configure' do
         .with_content('timeout: 60')
     end
 
-    it 'creates proper thin.service file' do
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content('ENV[\'ENV_VAR1\'] = "test"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content('ENV[\'RACK_ENV\'] = "staging"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content('ENV[\'HOME\'] = "/home/deploy"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content('ENV[\'USER\'] = "deploy"')
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content("APP_NAME=\"#{aws_opsworks_app['shortname']}\"")
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content("ROOT_PATH=\"/srv/www/#{aws_opsworks_app['shortname']}\"")
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content('DEPLOY_ENV="staging"')
-      # rubocop:disable Lint/InterpolationCheck
-      expect(chef_run)
-        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service")
-        .with_content('thin -C #{ROOT_PATH}/shared/config/thin.yml')
-      # rubocop:enable Lint/InterpolationCheck
-    end
-
-    it 'defines thin service' do
-      service = chef_run.service("thin_#{aws_opsworks_app['shortname']}")
-      expect(service).to do_nothing
-      expect(service.start_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service start"
-      expect(service.stop_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service stop"
-      expect(service.restart_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service restart"
-      expect(service.status_command)
-        .to eq "/srv/www/#{aws_opsworks_app['shortname']}/shared/scripts/thin.service status"
-    end
-
     it 'creates nginx thin proxy handler config' do
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.0.sock fail_timeout=0;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.1.sock fail_timeout=0;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.2.sock fail_timeout=0;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.3.sock fail_timeout=0;')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.4.sock fail_timeout=0;')
       expect(chef_run)
         .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
         .with_content('error_log /var/log/nginx/dummy-project.example.com-ssl.error.log debug;')
@@ -1178,6 +1161,32 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run).to run_execute('monit reload')
     end
 
+    it 'creates thin.monitrc conf' do
+      expect(chef_run).to create_template("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process thin_dummy_project with pidfile /run/lock/dummy_project/thin.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RACK_ENV="staging" ' \
+          'DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3" ' \
+          'HOME="/home/deploy" USER="deploy" bundle exec thin ' \
+          '-C /srv/www/dummy_project/shared/config/thin.yml start ' \
+          '| logger -t thin-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/thin.pid ' \
+          '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('group thin_dummy_project_group')
+    end
+
     context 'rhel' do
       it 'creates delayed_job.monitrc conf' do
         expect(chef_run_rhel).to create_template("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
@@ -1233,6 +1242,32 @@ describe 'opsworks_ruby::configure' do
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group delayed_job_dummy_project_group')
         expect(chef_run_rhel).to run_execute('monit reload')
+      end
+
+      it 'creates thin.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process thin_dummy_project with pidfile /run/lock/dummy_project/thin.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RACK_ENV="staging" ' \
+            'DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3" ' \
+            'HOME="/home/deploy" USER="deploy" bundle exec thin ' \
+            '-C /srv/www/dummy_project/shared/config/thin.yml start ' \
+            '| logger -t thin-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/thin.pid ' \
+            '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group thin_dummy_project_group')
       end
     end
   end

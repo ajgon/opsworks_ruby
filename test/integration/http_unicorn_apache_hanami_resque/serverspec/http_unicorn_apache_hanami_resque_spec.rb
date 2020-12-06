@@ -83,14 +83,6 @@ describe 'opsworks_ruby::configure' do
       its(:content) { should include ':tries => 10' }
       its(:content) { should include 'listen "127.0.0.1:3000"' }
     end
-
-    describe file('/srv/www/dummy_project/shared/scripts/unicorn.service') do
-      its(:content) { should include 'ENV[\'ENV_VAR1\'] = "test"' }
-      its(:content) { should include 'ENV[\'HANAMI_ENV\'] = "production"' }
-      its(:content) { should include 'ENV[\'HOME\'] = "/home/deploy"' }
-      its(:content) { should include 'ENV[\'USER\'] = "deploy"' }
-      its(:content) { should include 'PID_PATH="/run/lock/dummy_project/unicorn.pid"' }
-    end
   end
 
   context 'framework' do

@@ -463,20 +463,6 @@ appserver
      version provided by the Passenger APT PPA. Set this to a non-nil
      value to lock your Passenger installation at a specific version.
 
-- ``app['appserver']['after_deploy']``
-
-  - **Default:** ``stop-start``
-  - **Supported values:** ``stop-start``, ``restart``, ``clean-restart``
-  - Tell the appserver how to restart following a deployment.  A ``stop-start``
-    will instruct the appserver to stop and then start immediately.  This is
-    can cause requests from the webserver to be dropped since it closes the socket.
-    A ``restart`` sends a signal to the appserver instructing it to restart while
-    maintaining the open socket.  Requests will hang while the app boots, but
-    will not be lost. A ``clean-restart`` will perform a ``stop-start`` if the
-    Gemfile has changed or a ``restart`` otherwise.  The behavior of each of
-    these approaches varies between appservers.  See their documentation for more
-    details.
-
 - ``app['appserver']['port']``
 
   - **Default:** None

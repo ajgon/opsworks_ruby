@@ -9,15 +9,33 @@ module Drivers
         backlog delay preload_app tcp_nodelay tcp_nopush tries timeout worker_processes
         port
       ]
+      packages 'monit'
+
+      def configure
+        super
+        add_appserver_monit
+      end
+
+      def after_deploy
+        super
+        restart_monit
+      end
+
+      def after_undeploy
+        super
+        restart_monit
+      end
+
+      def shutdown
+        unmonitor_monit
+      end
 
       def appserver_config
         'unicorn.conf'
       end
 
       def appserver_command
-        # rubocop:disable Lint/InterpolationCheck
-        'unicorn_rails --env #{DEPLOY_ENV} --daemonize -c #{ROOT_PATH}/shared/config/unicorn.conf'
-        # rubocop:enable Lint/InterpolationCheck
+        "bundle exec unicorn_rails --env #{deploy_env} -c #{deploy_dir(app)}/shared/config/unicorn.conf"
       end
     end
   end

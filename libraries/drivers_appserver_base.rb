@@ -5,25 +5,21 @@ module Drivers
     class Base < Drivers::Base
       include Drivers::Dsl::Notifies
       include Drivers::Dsl::Output
+      include Drivers::Dsl::Packages
+
+      def setup
+        handle_packages
+      end
 
       def configure
         super
         add_appserver_config
-        add_appserver_service_script
-        add_appserver_service_context
       end
 
       def before_deploy
         setup_application_yml
         setup_dot_env
       end
-
-      def after_deploy
-        action = node['deploy'][app['shortname']].try(:[], 'appserver').try(:[], 'after_deploy') ||
-                 node['defaults']['appserver']['after_deploy']
-        manual_action(action)
-      end
-      alias after_undeploy after_deploy
 
       def validate_app_engine; end
 
@@ -41,17 +37,35 @@ module Drivers
         raise NotImplementedError
       end
 
-      private
+      def add_appserver_monit
+        opts = { app_shortname: app['shortname'], appserver_name: adapter, appserver_command: appserver_command,
+                 deploy_to: deploy_dir(app), environment: environment }
 
-      def manual_action(action)
-        deploy_to = deploy_dir(app)
-        service_script = File.join(deploy_to, File.join('shared', 'scripts', "#{adapter}.service"))
+        file_path = File.join(node['monit']['basedir'], "#{opts[:appserver_name]}_#{opts[:app_shortname]}.monitrc")
+        context.template file_path do
+          mode '0640'
+          source 'appserver.monitrc.erb'
+          variables opts
+        end
 
-        context.execute "#{action} #{adapter}" do
-          command "#{service_script} #{action}"
-          live_stream true
+        context.execute 'monit reload'
+      end
+
+      def restart_monit
+        return if ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
+
+        context.execute "monit restart #{adapter}_#{app['shortname']}" do
+          retries 3
         end
       end
+
+      def unmonitor_monit
+        context.execute "monit unmonitor #{adapter}_#{app['shortname']}" do
+          retries 3
+        end
+      end
+
+      private
 
       def add_appserver_config
         opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: deploy_env,
@@ -64,31 +78,6 @@ module Drivers
           mode '0644'
           source "#{opts[:appserver_config]}.erb"
           variables opts
-        end
-      end
-
-      def add_appserver_service_script
-        opts = { deploy_dir: deploy_dir(app), app_shortname: app['shortname'], name: adapter, environment: environment,
-                 command: appserver_command, deploy_env: deploy_env }
-
-        context.template File.join(opts[:deploy_dir], File.join('shared', 'scripts', "#{opts[:name]}.service")) do
-          owner node['deployer']['user']
-          group www_group
-          mode '0755'
-          source 'appserver.service.erb'
-          variables opts
-        end
-      end
-
-      def add_appserver_service_context
-        deploy_to = deploy_dir(app)
-        name = adapter
-
-        context.service "#{name}_#{app['shortname']}" do
-          start_command "#{deploy_to}/shared/scripts/#{name}.service start"
-          stop_command "#{deploy_to}/shared/scripts/#{name}.service stop"
-          restart_command "#{deploy_to}/shared/scripts/#{name}.service restart"
-          status_command "#{deploy_to}/shared/scripts/#{name}.service status"
         end
       end
 
