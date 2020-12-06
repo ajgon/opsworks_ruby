@@ -6,7 +6,7 @@ class Object
   end
 
   def try!(*methods, &block)
-    if methods.empty? && block_given?
+    if methods.empty? && block
       if block.arity.zero?
         instance_eval(&block)
       else

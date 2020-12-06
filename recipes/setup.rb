@@ -146,8 +146,8 @@ else
     end
   else
     ruby_pkg_version = node['ruby-version'].split('.')[0..1]
-    package "ruby#{ruby_pkg_version.join('')}"
-    package "ruby#{ruby_pkg_version.join('')}-devel"
+    package "ruby#{ruby_pkg_version.join}"
+    package "ruby#{ruby_pkg_version.join}-devel"
     execute "/usr/sbin/alternatives --set ruby /usr/bin/ruby#{ruby_pkg_version.join('.')}"
 
     link '/usr/local/bin/bundle' do

@@ -10,6 +10,7 @@ Layout/EmptyLinesAroundAttributeAccessor:
 
 Layout/LineLength:
   Max: 120
+  Enabled: true
 
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
@@ -23,13 +24,25 @@ Lint/ConstantDefinitionInBlock:
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
+Lint/DuplicateBranch:
+  Enabled: true
+
 Lint/DuplicateElsifCondition:
+  Enabled: true
+
+Lint/DuplicateRegexpCharacterClassElement:
   Enabled: true
 
 Lint/DuplicateRequire:
   Enabled: true
 
 Lint/DuplicateRescueException:
+  Enabled: true
+
+Lint/EmptyBlock:
+  Enabled: true
+
+Lint/EmptyClass:
   Enabled: true
 
 Lint/EmptyConditionalBody:
@@ -43,6 +56,7 @@ Lint/FloatComparison:
 
 Lint/HashCompareByIdentity:
   Enabled: true
+
 Lint/IdentityComparison:
   Enabled: true
 
@@ -50,6 +64,9 @@ Lint/MissingSuper:
   Enabled: true
 
 Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/NoReturnInBeginEndBlocks:
   Enabled: true
 
 Lint/OutOfRangeRegexpRef:
@@ -67,10 +84,19 @@ Lint/SelfAssignment:
 Lint/StructNewOverride:
   Enabled: true
 
+Lint/ToEnumArguments:
+  Enabled: true
+
 Lint/TopLevelReturnWithArgument:
   Enabled: true
 
 Lint/TrailingCommaInAttributeDeclaration:
+  Enabled: true
+
+Lint/UnexpectedBlockArity:
+  Enabled: true
+
+Lint/UnmodifiedReduceAccumulator:
   Enabled: true
 
 Lint/UnreachableLoop:
@@ -84,17 +110,31 @@ Lint/UselessTimes:
 
 Metrics/AbcSize:
   Max: 30
+  Enabled: true
 
 Metrics/BlockLength:
   Enabled: false
 
 Metrics/PerceivedComplexity:
   Max: 10
+  Enabled: true
 
 Performance/AncestorsInclude:
   Enabled: true
 
 Performance/BigDecimalWithNumericArgument:
+  Enabled: true
+
+Performance/BlockGivenWithExplicitBlock:
+  Enabled: true
+
+Performance/CollectionLiteralInLoop:
+  Enabled: true
+
+Performance/ConstantRegexp:
+  Enabled: true
+
+Performance/MethodObjectAsBlock:
   Enabled: true
 
 Performance/RedundantSortBlock:
@@ -121,6 +161,9 @@ Performance/Sum:
 Style/AccessorGrouping:
   Enabled: true
 
+Style/ArgumentsForwarding:
+  Enabled: true
+
 Style/ArrayCoercion:
   Enabled: true
 
@@ -133,7 +176,13 @@ Style/CaseLikeIf:
 Style/ClassEqualityComparison:
   Enabled: true
 
+Style/CollectionCompact:
+  Enabled: true
+
 Style/CombinableLoops:
+  Enabled: true
+
+Style/DocumentDynamicEvalDefinition:
   Enabled: true
 
 Style/Documentation:
@@ -166,7 +215,16 @@ Style/HashTransformValues:
 Style/KeywordParametersOrder:
   Enabled: true
 
+Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/NilLambda:
+  Enabled: true
+
 Style/OptionalBooleanParameter:
+  Enabled: true
+
+Style/RedundantArgument:
   Enabled: true
 
 Style/RedundantAssignment:
@@ -199,9 +257,13 @@ Style/SoleNestedConditional:
 Style/StringConcatenation:
   Enabled: true
 
+Style/SwapValues:
+  Enabled: true
+
 AllCops:
   TargetRubyVersion: 2.6
   DisplayCopNames: true
+
   Exclude:
     - libraries/provider_*.rb
     - libraries/resource_deploy*.rb

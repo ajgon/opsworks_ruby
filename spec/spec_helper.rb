@@ -29,7 +29,7 @@ module RubyOpsworksTests
       @target.dup.merge!(other) do |key, old_val, new_val|
         if old_val.is_a?(Hash) && new_val.is_a?(Hash)
           DeepMergeableHash.new(old_val).deep_merge(new_val, &block)
-        elsif block_given?
+        elsif block
           yield(key, old_val, new_val)
         else
           new_val
