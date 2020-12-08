@@ -480,16 +480,6 @@
       ],
       "description":"Which Debian APT package version should be installed from the PPA repo provided by Passenger. Currently this defaults to the latest repo provided by Passenger. Currently this defaults to the latest value to lock your Passenger installation at a specific version."
     },
-    "after_deploy":{
-      "type":"string",
-      "values":[
-        "stop-start",
-        "restart",
-        "clean-restart"
-      ],
-      "default":"stop-start",
-      "description":"Tell the appserver how to restart following a deployment. A `stop-start` will instruct the appserver to stop and then start immediately. This is can cause requests from the webserver to be dropped since it closes the socket. A `restart` sends a signal to the appserver instructing it to restart while maintaining the open socket. Requests will hang while the app boots, but will not be lost. A `clean-restart` will perform a `stop-start` if the Gemfile has changed or a `restart` otherwise. The behavior of each of these approaches varies between appservers. See their documentation for more details."
-    },
     "port":{
       "type":"integer",
       "description": "Bind the appserver to a port on 0.0.0.0. This is useful for serving the application directly from the appserver without a web server middleware or separating the web server into its own container or server."
