@@ -1,3 +1,28 @@
+# [1.20.0](https://github.com/ajgon/opsworks_ruby/compare/v1.19.0...v1.20.0) (2020-12-08)
+
+
+### Bug Fixes
+
+* **setup:** fix fullstaq key url ([#247](https://github.com/ajgon/opsworks_ruby/issues/247)) ([62ced10](https://github.com/ajgon/opsworks_ruby/commit/62ced108e339c9932a7ace310ee0b2b5303d497c))
+
+
+### Features
+
+* **appserver:** move appserver processes to foreground ([37b9465](https://github.com/ajgon/opsworks_ruby/commit/37b9465733c5c3b201fd9ce8df75695848c4c0bf)), closes [#244](https://github.com/ajgon/opsworks_ruby/issues/244)
+* **deploy:** use revision-based deploy provider ([#245](https://github.com/ajgon/opsworks_ruby/issues/245)) ([27887e6](https://github.com/ajgon/opsworks_ruby/commit/27887e6b50d94be77b28ee40166019b3f5b92b44))
+
+
+### BREAKING CHANGES
+
+* **appserver:** Theoretically everything should work out of the box,
+and you shouldn't notice any change on your environment. However if your
+appserver start behave oddly (or probably - won't start at all) - this
+may be the first reason for that. Check generated monit files, check if
+monit is running and also check the syslog (monit is configured to write
+all the appserver output there).
+
+
+
 # [1.19.0](https://github.com/ajgon/opsworks_ruby/compare/v1.18.1...v1.19.0) (2020-08-02)
 
 
