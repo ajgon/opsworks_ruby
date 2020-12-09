@@ -47,6 +47,16 @@ Listen <%= @out[:port] %>
     Header set X-Content-Type-Options "nosniff"
   </Location>
 
+  <Location "/packs/">
+    ExpiresActive on
+
+    Header set Cache-Control "public"
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
+    Header set Access-Control-Expose-Headers "ETag"
+    Header set X-Content-Type-Options "nosniff"
+  </Location>
+
   RewriteEngine on
 
   <Proxy balancer://<%= upstream %>>
@@ -126,6 +136,16 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   KeepAliveTimeout <%= @out[:keepalive_timeout] || '15' %>
 
   <Location "/assets/">
+    ExpiresActive on
+
+    Header set Cache-Control "public"
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
+    Header set Access-Control-Expose-Headers "ETag"
+    Header set X-Content-Type-Options "nosniff"
+  </Location>
+
+  <Location "/packs/">
     ExpiresActive on
 
     Header set Cache-Control "public"

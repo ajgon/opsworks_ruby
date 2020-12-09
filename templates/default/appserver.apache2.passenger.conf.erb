@@ -47,7 +47,17 @@ Header always unset "X-Powered-By"
     Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
     Header set Access-Control-Expose-Headers "ETag"
     Header set X-Content-Type-Options "nosniff"
-    </Location>
+  </Location>
+
+  <Location "/packs/">
+    ExpiresActive on
+
+    Header set Cache-Control "public"
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
+    Header set Access-Control-Expose-Headers "ETag"
+    Header set X-Content-Type-Options "nosniff"
+  </Location>
 
 <% if @appserver_config[:max_pool_size] -%>
   PassengerMaxPoolSize <%= @appserver_config[:max_pool_size] %>
@@ -139,6 +149,16 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   KeepAliveTimeout <%= @out[:keepalive_timeout] || '15' %>
 
   <Location "/assets/">
+    ExpiresActive on
+
+    Header set Cache-Control "public"
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
+    Header set Access-Control-Expose-Headers "ETag"
+    Header set X-Content-Type-Options "nosniff"
+  </Location>
+
+  <Location "/packs/">
     ExpiresActive on
 
     Header set Cache-Control "public"
