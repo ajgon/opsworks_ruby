@@ -15,6 +15,7 @@ group :lint do
 end
 
 group :chef do
+  gem 'ffi', '~> 1.13'
   gem 'berkshelf'
   gem 'chef', '~> 12.0'
   gem 'chef-zero', '~> 5.3'

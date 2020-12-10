@@ -5,6 +5,34 @@
 # Recipe:: setup
 #
 
+
+
+module GemInstallDecorator
+  # Patch Added:       12-10-2020
+  # Required for:      Ruby Version >= 2.6
+  # Reason:            Patching gem install due to "--no-rdoc" & "--no-ri" has been deprecated to just "--no-document"
+  # Other ways to fix: Update Chef / Opsworks_ruby
+  #     - Will require us to update our Infrastructure to Ubuntu 18 LTS (we're 16 LTS)
+  #     - Will require us to also transfer some of our "custom" changes too
+  def install_via_gem_command(name, version)
+    if new_resource.source =~ /\.gem$/i
+      name = new_resource.source
+    elsif new_resource.clear_sources
+      src = " --clear-sources"
+      src << (new_resource.source && " --source=#{new_resource.source}" || "")
+    else
+      src = new_resource.source && " --source=#{new_resource.source} --source=#{Chef::Config[:rubygems_url]}"
+    end
+    if !version.nil? && !version.empty?
+      shell_out_with_timeout!("#{gem_binary_path} install #{name} -q --no-document -v \"#{version}\"#{src}#{opts}", env: nil)
+    else
+      shell_out_with_timeout!("#{gem_binary_path} install \"#{name}\" -q --no-document #{src}#{opts}", env: nil)
+    end
+  end
+end
+
+::Chef::Provider::Package::Rubygems.prepend(GemInstallDecorator)
+
 prepare_recipe
 
 # Install additional packages set in configuration
@@ -33,8 +61,8 @@ include_recipe 'deployer'
 # Install Ruby, either via rbenv or ng-ruby
 if node['rbenv']
   # Install Ruby via rbenv
-  ruby_version = node['rbenv']['ruby_version']
-  deploy_user = node['deployer']['user'] || root
+  ruby_version    = node['rbenv']['ruby_version']
+  deploy_user     = node['deployer']['user'] || root
 
   # Install rbenv for deploy user
   rbenv_user_install(deploy_user)

@@ -112,7 +112,7 @@ GEM
       ruby_parser (~> 3.7)
     fauxhai (4.1.0)
       net-ssh
-    ffi (1.9.18)
+    ffi (1.13.1)
     ffi-yajl (2.3.1)
       libyajl2 (~> 1.2)
     foodcritic (12.2.1)
@@ -142,7 +142,7 @@ GEM
     httpclient (2.8.3)
     iniparse (1.4.4)
     ipaddress (0.8.3)
-    json (2.1.0)
+    json (2.3.1)
     kitchen-docker (2.6.0)
       test-kitchen (>= 1.0.0)
     kitchen-vagrant (1.2.1)
@@ -369,6 +369,7 @@ DEPENDENCIES
   chefspec (~> 6.0)
   coveralls
   fasterer
+  ffi (~> 1.13)
   foodcritic
   kitchen-docker
   kitchen-vagrant
@@ -380,4 +381,4 @@ DEPENDENCIES
   travis
 
 BUNDLED WITH
-   1.15.4
+   1.16.2
