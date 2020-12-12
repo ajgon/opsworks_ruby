@@ -38,7 +38,7 @@ server {
     try_files $uri/index.html $uri/index.htm @<%= @name %>;
   }
 
-  location ^~ /assets/ {
+  location ~* ^/(assets|packs)/ {
     gzip_static on;
     expires max;
     add_header Cache-Control public;
@@ -137,7 +137,7 @@ server {
     try_files $uri/index.html $uri/index.htm @<%= @name %>;
   }
 
-  location ^~ /assets/ {
+  location ~* ^/(assets|packs)/ {
     gzip_static on;
     expires max;
     add_header Cache-Control public;

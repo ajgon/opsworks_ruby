@@ -37,7 +37,7 @@ Listen <%= @out[:port] %>
   LimitRequestBody <%= @out[:limit_request_body] || '1048576' %>
   KeepAliveTimeout <%= @out[:keepalive_timeout] || '15' %>
 
-  <Location "/assets/">
+  <LocationMatch "/(assets|packs)/">
     ExpiresActive on
 
     Header set Cache-Control "public"
@@ -45,7 +45,7 @@ Listen <%= @out[:port] %>
     Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
     Header set Access-Control-Expose-Headers "ETag"
     Header set X-Content-Type-Options "nosniff"
-  </Location>
+  </LocationMatch>
 
   RewriteEngine on
 
@@ -57,6 +57,7 @@ Listen <%= @out[:port] %>
   RewriteRule ^/(.*)$ balancer://<%= upstream %>%{REQUEST_URI} [P,QSA,L]
 
   ProxyPass /assets "!"
+  ProxyPass /packs "!"
   ProxyPass / balancer://<%= upstream %>/
   ProxyPassReverse / balancer://<%= upstream %>/
   ProxyPreserveHost on
@@ -125,7 +126,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   LimitRequestBody <%= @out[:client_max_body_size] || '1048576' %>
   KeepAliveTimeout <%= @out[:keepalive_timeout] || '15' %>
 
-  <Location "/assets/">
+  <LocationMatch "/(assets|packs)/">
     ExpiresActive on
 
     Header set Cache-Control "public"
@@ -133,7 +134,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
     Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
     Header set Access-Control-Expose-Headers "ETag"
     Header set X-Content-Type-Options "nosniff"
-  </Location>
+  </LocationMatch>
 
   RewriteEngine on
 
@@ -145,6 +146,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   RewriteRule ^/(.*)$ balancer://<%= upstream %>%{REQUEST_URI} [P,QSA,L]
 
   ProxyPass /assets "!"
+  ProxyPass /packs "!"
   ProxyPass / balancer://<%= upstream %>/
   ProxyPassReverse / balancer://<%= upstream %>/
   ProxyPreserveHost on
