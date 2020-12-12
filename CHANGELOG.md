@@ -1,3 +1,12 @@
+## [1.20.1](https://github.com/ajgon/opsworks_ruby/compare/v1.20.0...v1.20.1) (2020-12-12)
+
+
+### Features
+
+* **webserver:** add CORS for /packs endpoints ([ede019d](https://github.com/ajgon/opsworks_ruby/commit/ede019dce9472f7bdf5f4c6f0fdd0c0e8df59f37)), closes [#248](https://github.com/ajgon/opsworks_ruby/issues/248)
+
+
+
 # [1.20.0](https://github.com/ajgon/opsworks_ruby/compare/v1.19.0...v1.20.0) (2020-12-08)
 
 
