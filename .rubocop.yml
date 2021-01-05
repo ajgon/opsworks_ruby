@@ -15,6 +15,9 @@ Layout/LineLength:
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
+Lint/AmbiguousAssignment:
+  Enabled: true
+
 Lint/BinaryOperatorWithIdenticalOperands:
   Enabled: true
 
@@ -80,6 +83,9 @@ Lint/RedundantSafeNavigation:
 
 Lint/SelfAssignment:
   Enabled: true
+
+Layout/SpaceBeforeBrackets:
+  Enabled: false
 
 Lint/StructNewOverride:
   Enabled: true
@@ -201,6 +207,9 @@ Style/HashAsLastArrayItem:
   Enabled: true
 
 Style/HashEachMethods:
+  Enabled: true
+
+Style/HashExcept:
   Enabled: true
 
 Style/HashLikeCase:
