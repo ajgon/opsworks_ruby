@@ -24,9 +24,11 @@ describe 'opsworks_ruby::configure' do
   let(:chef_run_rhel) do
     chef_runner_rhel.converge(described_recipe)
   end
+  let(:monit_installed) { false }
   before do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
+    stub_command('which monit').and_return(monit_installed)
   end
 
   context 'context savvy' do
@@ -65,6 +67,8 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'Postgresql + Git + Unicorn + Nginx + Rails + Sidekiq' do
+    let(:monit_installed) { true }
+
     it 'creates proper database.yml template with connection options' do
       db_config = Drivers::Db::Postgresql.new(chef_run, aws_opsworks_app, rds: aws_opsworks_rds_db_instance).out
       expect(db_config[:adapter]).to eq 'postgresql'
@@ -502,6 +506,7 @@ describe 'opsworks_ruby::configure' do
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
+    let(:monit_installed) { true }
 
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
@@ -1023,6 +1028,7 @@ describe 'opsworks_ruby::configure' do
         solo_node.set['nginx'] = node['nginx']
       end.converge(described_recipe)
     end
+    let(:monit_installed) { true }
 
     before do
       stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(data_sources: [])])

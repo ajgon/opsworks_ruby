@@ -25,8 +25,6 @@ module Drivers
           cookbook opts[:source_cookbook].to_s
           variables opts
         end
-
-        context.execute 'monit reload'
       end
 
       def worker_monit_template_cookbook

@@ -47,8 +47,6 @@ module Drivers
           source 'appserver.monitrc.erb'
           variables opts
         end
-
-        context.execute 'monit reload'
       end
 
       def restart_monit
