@@ -20,9 +20,11 @@ describe 'opsworks_ruby::deploy' do
   let(:chef_run_rhel) do
     chef_runner_rhel.converge(described_recipe)
   end
+  let(:monit_installed) { false }
   before do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
+    stub_command('which monit').and_return(monit_installed)
   end
 
   it 'includes recipes' do
@@ -69,6 +71,8 @@ describe 'opsworks_ruby::deploy' do
   end
 
   context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
+    let(:monit_installed) { true }
+
     it 'creates git wrapper script' do
       expect(chef_run).to create_template('/tmp/ssh-git-wrapper.sh')
     end
@@ -204,6 +208,7 @@ describe 'opsworks_ruby::deploy' do
         solo_node.set['deploy'] = deploy
       end
     end
+    let(:monit_installed) { true }
     let(:tmpdir) { '/tmp/opsworks_ruby' }
 
     before do
@@ -289,6 +294,7 @@ describe 'opsworks_ruby::deploy' do
         solo_node.set['deploy'] = deploy
       end
     end
+    let(:monit_installed) { true }
     let(:tmpdir) { '/tmp/opsworks_ruby' }
 
     before do

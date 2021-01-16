@@ -35,4 +35,8 @@ every_enabled_application do |application|
   webserver = Drivers::Webserver::Factory.build(self, application)
 
   fire_hook(:configure, items: databases + [source, framework, appserver, worker, webserver])
+
+  execute 'monit reload' do
+    only_if 'which monit'
+  end
 end
