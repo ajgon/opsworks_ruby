@@ -2,4 +2,5 @@ extends: default
 
 rules:
   line-length:
+    ignore: .travis.yml
     max: 120

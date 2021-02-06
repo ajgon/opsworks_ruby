@@ -1,11 +1,9 @@
 {
   "app_id": "3aef37c1-7e2b-4255-bbf1-03e06f07701a",
   "app_source": {
-    "password": "xhFwHAMEr51z1+eKylU0zLZEzxwgleiaMcFikGW7",
     "ssh_key_comment": "Don't get cocky, this is are dummy AWS credentials only for this purpose",
     "type": "s3",
-    "url": "https://s3.eu-west-2.amazonaws.com/opsworks-ruby-dummy-app/test/s3_thin_nginx_padrino_delayed_job.tar.gz",
-    "user": "AKIAJLVMILCB53T2UMQA"
+    "url": "https://s3.eu-west-2.amazonaws.com/opsworks-ruby-dummy-app/test/s3_thin_nginx_padrino_delayed_job.tar.gz"
   },
   "attributes": {
     "auto_bundle_on_deploy": true,
