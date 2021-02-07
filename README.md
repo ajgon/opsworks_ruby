@@ -47,6 +47,7 @@ Author: [Igor Rzegocki](https://www.rzegocki.pl/) ([@ajgon](https://github.com/a
 * Rich Seviora ([@richseviora](https://github.com/richseviora))
 * Josh Goodall ([@inopinatus](https://github.com/inopinatus))
 * Kazuki Fujii ([@kazukifujii](https://github.com/kazukifujii))
+* Kazuki Nishikawa ([@kzkn](https://github.com/kzkn))
 
 ## License
 

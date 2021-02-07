@@ -19,6 +19,7 @@ Contributors
 * John Calvin Young (`@johncalvinyoung`_)
 * Rich Seviora (`@richseviora`_)
 * Kazuki Fujii (`@kazukifujii`_)
+* Kazuki Nishikawa (`@kzkn`_)
 
 .. _Igor Rzegocki: https://www.rzegocki.pl/
 .. _@ajgon: https://github.com/ajgon
@@ -32,3 +33,4 @@ Contributors
 .. _@johncalvinyoung: https://github.com/johncalvinyoung
 .. _@richseviora: https://github.com/richseviora
 .. _@kazukifujii: https://github.com/kazukifujii
+.. _@kzkn: https://github.com/kzkn
