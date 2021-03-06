@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/MethodLength
 def aws_opsworks_app(override = {})
   item = {
     app_id: '3aef37c1-7e2b-4255-bbf1-03e06f07701a',
@@ -41,4 +40,3 @@ def aws_opsworks_app(override = {})
 
   JSON.parse(item.to_json)
 end
-# rubocop:enable Metrics/MethodLength

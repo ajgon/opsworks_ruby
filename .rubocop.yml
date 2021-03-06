@@ -162,6 +162,10 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Enabled: false
 
+Metrics/MethodLength:
+  Enabled: true
+  CountAsOne: ["array", "hash", "heredoc"]
+
 Metrics/PerceivedComplexity:
   Max: 10
   Enabled: true

@@ -37,14 +37,23 @@ module Drivers
         raise NotImplementedError
       end
 
+      # Creates a monit config file for managing the appserver.
       def add_appserver_monit
-        opts = { app_shortname: app['shortname'], appserver_name: adapter, appserver_command: appserver_command,
-                 deploy_to: deploy_dir(app), environment: environment }
-
-        file_path = File.join(node['monit']['basedir'], "#{opts[:appserver_name]}_#{opts[:app_shortname]}.monitrc")
+        opts = {
+          app_shortname: app['shortname'],
+          adapter: adapter,
+          appserver_command: appserver_command,
+          appserver_name: adapter,
+          deploy_to: deploy_dir(app),
+          environment: environment,
+          source_cookbook: appserver_monit_template_cookbook
+        }
+        file_path = File.join(node['monit']['basedir'],
+                              "#{opts[:appserver_name]}_#{opts[:app_shortname]}.monitrc")
         context.template file_path do
           mode '0640'
-          source 'appserver.monitrc.erb'
+          source "#{opts[:adapter]}.monitrc.erb"
+          cookbook opts[:source_cookbook].to_s
           variables opts
         end
       end
@@ -64,6 +73,17 @@ module Drivers
       end
 
       private
+
+      # Overriding the appserver monit configs can be useful to provide more
+      # fine-grained control over how the appserver starts, stops and restarts.
+      # It can also allow additional configuration to provide alerting.
+      #
+      # @return [String] configured cookbook to pull custom appserver monit
+      #   configs from. Defaults to `opsworks_ruby`.
+      def appserver_monit_template_cookbook
+        node['deploy'][app['shortname']].try(:[], driver_type).try(:[],
+                                                                   'monit_template_cookbook') || context.cookbook_name
+      end
 
       def add_appserver_config
         opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: deploy_env,
