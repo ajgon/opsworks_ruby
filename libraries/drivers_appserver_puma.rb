@@ -54,7 +54,7 @@ module Drivers
         pidfile = "/var/run/lock/#{app['shortname']}/puma.pid"
         context.execute "monit restart #{adapter}_#{app['shortname']}" do
           retries 3
-          not_if { ::File.exist?(pidfile) }
+          only_if { ::File.exist?(pidfile) }
         end
       end
 
