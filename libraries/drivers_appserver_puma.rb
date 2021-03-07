@@ -10,16 +10,6 @@ module Drivers
                         on_worker_fork after_worker_fork after_deploy port]
       packages 'monit'
 
-      # This is done the first time an instance is setup and then only on demand
-      # after that. We need to invoke the monit start script here because puma
-      # will not startup if no statefile has been created and the puma 'restart'
-      # command won't do that.
-      def setup
-        super
-        add_appserver_monit
-        start_monit
-      end
-
       def configure
         super
         add_appserver_monit
@@ -28,6 +18,7 @@ module Drivers
       def after_deploy
         super
         restart_monit
+        start_monit
       end
 
       def after_undeploy
@@ -41,6 +32,28 @@ module Drivers
 
       def appserver_config
         'puma.rb'
+      end
+
+      # Invoke the monit start command for the appserver. This may only be
+      # needed during the initial setup of the instance. After that the
+      # 'restart' command is sufficient. If puma is already running this
+      # resource will not do anything.
+      def start_monit
+        context.execute "monit start #{adapter}_#{app['shortname']}" do
+          retries 3
+          creates "/var/run/lock/#{app['shortname']}/puma.pid"
+        end
+      end
+
+      # Immediately attempts to restart the appserver using monit. Do not
+      # attempt a restart if the pid file doesn't exist
+      def restart_monit
+        return if ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
+
+        context.execute "monit restart #{adapter}_#{app['shortname']}" do
+          retries 3
+          not_if { ::File.exist?("/var/run/lock/#{app['shortname']}/puma.pid") }
+        end
       end
 
       def appserver_command
