@@ -39,9 +39,10 @@ module Drivers
       # 'restart' command is sufficient. If puma is already running this
       # resource will not do anything.
       def start_monit
+        pidfile = "/var/run/lock/#{app['shortname']}/puma.pid"
         context.execute "monit start #{adapter}_#{app['shortname']}" do
           retries 3
-          creates "/var/run/lock/#{app['shortname']}/puma.pid"
+          creates pidfile
         end
       end
 
@@ -50,9 +51,10 @@ module Drivers
       def restart_monit
         return if ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
 
+        pidfile = "/var/run/lock/#{app['shortname']}/puma.pid"
         context.execute "monit restart #{adapter}_#{app['shortname']}" do
           retries 3
-          not_if { ::File.exist?("/var/run/lock/#{app['shortname']}/puma.pid") }
+          not_if { ::File.exist?(pidfile) }
         end
       end
 
