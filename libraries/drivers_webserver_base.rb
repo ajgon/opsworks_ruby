@@ -2,7 +2,7 @@
 
 module Drivers
   module Webserver
-    class Base < Drivers::Base # rubocop:disable Metrics/ClassLength
+    class Base < Drivers::Base
       include Drivers::Dsl::Logrotate
       include Drivers::Dsl::Notifies
       include Drivers::Dsl::Output

@@ -10,6 +10,16 @@ module Drivers
                         on_worker_fork after_worker_fork after_deploy port]
       packages 'monit'
 
+      # This is done the first time an instance is setup and then only on demand
+      # after that. We need to invoke the monit start script here because puma
+      # will not startup if no statefile has been created and the puma 'restart'
+      # command won't do that.
+      def setup
+        super
+        add_appserver_monit
+        start_monit
+      end
+
       def configure
         super
         add_appserver_monit

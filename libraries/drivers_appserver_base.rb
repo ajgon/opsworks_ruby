@@ -7,7 +7,9 @@ module Drivers
       include Drivers::Dsl::Output
       include Drivers::Dsl::Packages
 
+      # Hook function called from the 'setup' recipe.
       def setup
+        super
         handle_packages
       end
 
@@ -17,6 +19,7 @@ module Drivers
       end
 
       def before_deploy
+        super
         setup_application_yml
         setup_dot_env
       end
@@ -37,7 +40,8 @@ module Drivers
         raise NotImplementedError
       end
 
-      # Creates a monit config file for managing the appserver.
+      # Creates a monit config file for managing the appserver and then notifies
+      # monit to reload it.
       def add_appserver_monit
         opts = {
           app_shortname: app['shortname'],
@@ -55,9 +59,11 @@ module Drivers
           source "#{opts[:adapter]}.monitrc.erb"
           cookbook opts[:source_cookbook].to_s
           variables opts
+          notifies :run, 'execute[monit reload]', :immediately
         end
       end
 
+      # Immediately attempts to restart the appserver using monit.
       def restart_monit
         return if ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
 
@@ -68,6 +74,15 @@ module Drivers
 
       def unmonitor_monit
         context.execute "monit unmonitor #{adapter}_#{app['shortname']}" do
+          retries 3
+        end
+      end
+
+      # Invoke the monit start command for the appserver. This may only be
+      # needed during the initial setup of the instance. After that the
+      # 'restart' command is sufficient.
+      def start_monit
+        context.execute "monit start #{adapter}_#{app['shortname']}" do
           retries 3
         end
       end

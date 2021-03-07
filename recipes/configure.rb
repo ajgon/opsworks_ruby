@@ -37,6 +37,7 @@ every_enabled_application do |application|
   fire_hook(:configure, items: databases + [source, framework, appserver, worker, webserver])
 
   execute 'monit reload' do
+    action :nothing
     only_if 'which monit'
   end
 end
