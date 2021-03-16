@@ -7,6 +7,7 @@ module Drivers
       include Drivers::Dsl::Packages
 
       def setup
+        super
         handle_packages
       end
 
@@ -14,16 +15,27 @@ module Drivers
 
       protected
 
+      # Adds or updates the monit configs for the worker and notifies monit to
+      # reload the configuration.
       def add_worker_monit
-        opts = { application: app['shortname'], name: app['name'], out: out, deploy_to: deploy_dir(app),
-                 environment: environment, adapter: adapter, app_shortname: app['shortname'],
-                 source_cookbook: worker_monit_template_cookbook }
+        opts = {
+          adapter: adapter,
+          app_shortname: app['shortname'],
+          application: app['shortname'],
+          deploy_to: deploy_dir(app),
+          environment: environment,
+          name: app['name'],
+          out: out,
+          source_cookbook: worker_monit_template_cookbook
+        }
 
-        context.template File.join(node['monit']['basedir'], "#{opts[:adapter]}_#{opts[:application]}.monitrc") do
+        context.template File.join(node['monit']['basedir'],
+                                   "#{opts[:adapter]}_#{opts[:application]}.monitrc") do
           mode '0640'
           source "#{opts[:adapter]}.monitrc.erb"
           cookbook opts[:source_cookbook].to_s
           variables opts
+          notifies :run, 'execute[monit reload]', :immediately
         end
       end
 

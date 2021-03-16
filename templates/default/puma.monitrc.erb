@@ -1,0 +1,11 @@
+<% pid_file = "/run/lock/#{@app_shortname}/#{@appserver_name}.pid" %>
+<% app_dir = File.join(@deploy_to, 'current') %>
+<% config_file = File.join(@deploy_to, 'shared/config/puma.rb') %>
+<% env = @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %>
+<% pumactl = "#{env} bundle exec pumactl -F #{config_file}"%>
+
+check process <%= @appserver_name %>_<%= @app_shortname %> with pidfile <%= pid_file %>
+start program = "/bin/sh -c 'cd <%= app_dir %> && <%= pumactl %> start | logger -t <%= @appserver_name %>-<%= @app_shortname %>'" as uid "<%= node['deployer']['user'] %>" and gid "<%= node['deployer']['group'] %>" with timeout 90 seconds
+restart program = "/bin/sh -c 'cd <%= app_dir %> && <%= pumactl %> restart | logger -t <%= @appserver_name %>-<%= @app_shortname %>'" as uid "<%= node['deployer']['user'] %>" and gid "<%= node['deployer']['group'] %>" with timeout 90 seconds
+stop program = "/bin/sh -c 'cd <%= app_dir %> && <%= pumactl %> stop | logger -t <%= @appserver_name %>-<%= @app_shortname %>'" as uid "<%= node['deployer']['user'] %>" and gid "<%= node['deployer']['group'] %>" with timeout 90 seconds
+group <%= @appserver_name %>_<%= @app_shortname.to_s %>_group
