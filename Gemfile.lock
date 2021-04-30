@@ -208,7 +208,7 @@ GEM
     rake (13.0.3)
     regexp_parser (2.0.3)
     retryable (2.0.4)
-    rexml (3.2.4)
+    rexml (3.2.5)
     ridley (5.1.1)
       addressable
       buff-config (~> 2.0)
