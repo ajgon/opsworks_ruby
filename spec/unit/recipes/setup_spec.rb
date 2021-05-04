@@ -6,8 +6,6 @@
 
 require 'spec_helper'
 
-ALL_APACHE2_MODULES = %w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl].freeze
-
 describe 'opsworks_ruby::setup' do
   let(:chef_runner) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
@@ -517,15 +515,19 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Mysql + S3 + apache2 + resque' do
-    let(:modules_already_enabled) { false }
-
+    let(:modules_to_enable_are_enabled) { false }
+    let(:modules_to_disable_are_enabled) { true }
     before do
       stub_search(:aws_opsworks_app, '*:*')
         .and_return([aws_opsworks_app(app_source: { type: 's3', url: 'http://example.com' })])
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
-      ALL_APACHE2_MODULES.each do |mod|
+      Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
         stub_command("a2enmod #{mod}").and_return(true)
-        stub_command("a2query -m #{mod}").and_return(modules_already_enabled)
+        stub_command("a2query -m #{mod}").and_return(modules_to_enable_are_enabled)
+      end
+      Drivers::Webserver::Apache2::DISABLE_MODULES.each do |mod|
+        stub_command("a2dismod #{mod}").and_return(true)
+        stub_command("a2query -m #{mod}").and_return(modules_to_disable_are_enabled)
       end
     end
 
@@ -550,6 +552,17 @@ describe 'opsworks_ruby::setup' do
     end
 
     context 'debian' do
+      let(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          deploy = node['deploy']
+          deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+          deploy['dummy_project']['webserver']['enable_status'] = false
+          deploy['dummy_project']['worker']['adapter'] = 'resque'
+          deploy['dummy_project']['source'] = {}
+          solo_node.set['deploy'] = deploy
+        end
+      end
+
       it 'installs required packages' do
         expect(chef_run).to install_package('apache2')
         expect(chef_run).to install_package('bzip2')
@@ -569,19 +582,51 @@ describe 'opsworks_ruby::setup' do
         expect(chef_run).to start_service('apache2')
       end
 
-      ALL_APACHE2_MODULES.each do |mod|
+      Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
         it "enables Apache2 module #{mod}" do
           expect(chef_run).to run_execute("a2enmod #{mod}")
         end
       end
 
-      context 'when the modules are already enabled' do
-        let(:modules_already_enabled) { true }
+      Drivers::Webserver::Apache2::DISABLE_MODULES.each do |mod|
+        it "disables Apache2 module #{mod}" do
+          expect(chef_run).to run_execute("a2dismod #{mod}")
+        end
+      end
 
-        ALL_APACHE2_MODULES.each do |mod|
+      context 'when the modules to enable are already enabled' do
+        let(:modules_to_enable_are_enabled) { true }
+
+        Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
           it "does not enable Apache2 module #{mod} again unnecessarily" do
             expect(chef_run).not_to run_execute("a2enmod #{mod}")
           end
+        end
+      end
+
+      context 'when the modules to disable are already disabled' do
+        let(:modules_to_disable_are_enabled) { false }
+
+        Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
+          it "does not disable Apache2 module #{mod} again unnecessarily" do
+            expect(chef_run).not_to run_execute("a2dismod #{mod}")
+          end
+        end
+      end
+
+      context 'when enable_status is set to true' do
+        let(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            app_name = aws_opsworks_app['shortname']
+            solo_node.set['deploy'][app_name]['webserver'] = {
+              'adapter' => 'apache2',
+              'enable_status' => true
+            }
+          end
+        end
+
+        it 'does not disable Apache2 module status' do
+          expect(chef_run).not_to run_execute('a2dismod status')
         end
       end
     end

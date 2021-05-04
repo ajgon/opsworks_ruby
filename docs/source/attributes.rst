@@ -734,6 +734,11 @@ apache
 
   -  **Default**: ``60``
 
+-  |app['webserver']['enable_status']|_
+
+  -  **Default**: ``true``
+  -  Enable or disable apache2 ``mod_status``.
+
 nginx
 ^^^^^
 
@@ -900,6 +905,8 @@ shoryuken
 .. _app['webserver']['log_level']: https://httpd.apache.org/docs/2.4/mod/core.html#loglevel
 .. |app['webserver']['proxy_timeout']| replace:: ``app['webserver']['proxy_timeout']``
 .. _app['webserver']['proxy_timeout']: https://httpd.apache.org/docs/current/mod/mod_proxy.html#proxytimeout
+.. |app['webserver']['enable_status']| replace:: ``app['webserver']['enable_status']``
+.. _app['webserver']['enable_status']: https://httpd.apache.org/docs/current/mod/mod_status.html
 .. _nginx: https://supermarket.chef.io/cookbooks/nginx
 .. _the corresponding docs: https://github.com/chef-cookbooks/nginx#attributes
 .. |app['webserver']['client_body_timeout']| replace:: ``app['webserver']['client_body_timeout']``

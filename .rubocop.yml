@@ -2,6 +2,9 @@
 require:
   - rubocop-performance
 
+Gemspec/DateAssignment:
+  Enabled: true
+
 Layout/BeginEndAlignment:
   Enabled: true
 
@@ -15,6 +18,9 @@ Layout/LineLength:
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
+Layout/SpaceBeforeBrackets:
+  Enabled: false
+
 Lint/AmbiguousAssignment:
   Enabled: true
 
@@ -22,6 +28,9 @@ Lint/BinaryOperatorWithIdenticalOperands:
   Enabled: true
 
 Lint/ConstantDefinitionInBlock:
+  Enabled: true
+
+Lint/DeprecatedConstants:
   Enabled: true
 
 Lint/DeprecatedOpenSSLConstant:
@@ -63,6 +72,9 @@ Lint/HashCompareByIdentity:
 Lint/IdentityComparison:
   Enabled: true
 
+Lint/LambdaWithoutLiteralBlock:
+  Enabled: true
+
 Lint/MissingSuper:
   Enabled: true
 
@@ -72,10 +84,19 @@ Lint/MixedRegexpCaptureTypes:
 Lint/NoReturnInBeginEndBlocks:
   Enabled: true
 
+Lint/NumberedParameterAssignment:
+  Enabled: true
+
+Lint/OrAssignmentToConstant:
+  Enabled: true
+
 Lint/OutOfRangeRegexpRef:
   Enabled: true
 
 Lint/RaiseException:
+  Enabled: true
+
+Lint/RedundantDirGlobSort:
   Enabled: true
 
 Lint/RedundantSafeNavigation:
@@ -84,8 +105,11 @@ Lint/RedundantSafeNavigation:
 Lint/SelfAssignment:
   Enabled: true
 
-Layout/SpaceBeforeBrackets:
-  Enabled: false
+Lint/SymbolConversion:
+  Enabled: true
+
+Lint/TripleQuotes:
+  Enabled: true
 
 Lint/StructNewOverride:
   Enabled: true
@@ -140,10 +164,19 @@ Performance/CollectionLiteralInLoop:
 Performance/ConstantRegexp:
   Enabled: true
 
+Performance/MapCompact:
+  Enabled: true
+
 Performance/MethodObjectAsBlock:
   Enabled: true
 
+Performance/RedundantEqualityComparisonBlock:
+  Enabled: true
+
 Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/RedundantSplitRegexpArgument:
   Enabled: true
 
 Performance/RedundantStringChars:
@@ -194,6 +227,9 @@ Style/DocumentDynamicEvalDefinition:
 Style/Documentation:
   Enabled: false
 
+Style/EndlessMethod:
+  Enabled: true
+
 Style/ExplicitBlockArgument:
   Enabled: true
 
@@ -205,6 +241,9 @@ Style/GlobalStdStream:
 
 Style/HashAsLastArrayItem:
   Enabled: true
+
+Style/HashConversion:
+  Enabled: false
 
 Style/HashEachMethods:
   Enabled: true
@@ -220,6 +259,9 @@ Style/HashTransformKeys:
 
 Style/HashTransformValues:
   Enabled: false
+
+Style/IfWithBooleanLiteralBranches:
+  Enabled: true
 
 Style/KeywordParametersOrder:
   Enabled: true
@@ -261,6 +303,9 @@ Style/SlicingWithRange:
   Enabled: true
 
 Style/SoleNestedConditional:
+  Enabled: true
+
+Style/StringChars:
   Enabled: true
 
 Style/StringConcatenation:

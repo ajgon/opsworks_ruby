@@ -20,7 +20,9 @@ module Drivers
 
       def webserver_config_params
         o = out
-        Hash[WEBSERVER_CONFIG_PARAMS.map { |k| [k, o[k]] }].reject { |_k, v| v.nil? } # rubocop:disable Style/CollectionCompact
+        # rubocop:disable Style/CollectionCompact
+        Hash[WEBSERVER_CONFIG_PARAMS.map { |k| [k, o[k]] }].reject { |_k, v| v.nil? }
+        # rubocop:enable Style/CollectionCompact
       end
     end
   end

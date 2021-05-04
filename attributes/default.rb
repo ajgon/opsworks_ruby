@@ -128,6 +128,7 @@ default['defaults']['webserver']['force_ssl'] = false
 default['defaults']['webserver']['limit_request_body'] = '1048576'
 default['defaults']['webserver']['proxy_timeout'] = '60'
 default['defaults']['webserver']['use_apache2_ppa'] = (node['platform'] == 'ubuntu')
+default['defaults']['webserver']['enable_status'] = true
 
 ## nginx
 

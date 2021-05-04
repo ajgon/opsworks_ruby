@@ -207,12 +207,12 @@ end
 
 describe 'opsworks_ruby::deploy' do
   context 'source' do
-    describe file('/srv/www/other_project/releases/8d756de13b19e9874f3ce7bf22c414b3eb7e8e9c') do
+    describe file('/srv/www/other_project/releases/ed827fe7ecde8925285e2d2b937224d063b1c13c') do
       it { should be_directory }
     end
 
     describe file('/srv/www/other_project/current') do
-      it { should be_linked_to '/srv/www/other_project/releases/8d756de13b19e9874f3ce7bf22c414b3eb7e8e9c' }
+      it { should be_linked_to '/srv/www/other_project/releases/ed827fe7ecde8925285e2d2b937224d063b1c13c' }
     end
 
     describe file('/tmp/ssh-git-wrapper.sh') do

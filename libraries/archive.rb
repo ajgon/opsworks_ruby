@@ -2,7 +2,7 @@
 
 module OpsworksRuby
   class Archive
-    MIME_MAGIC_TABLES ||= [
+    MIME_MAGIC_TABLES = [
       ['application/gzip', [[0, "\037\213".b]]],
       ['application/x-7z-compressed', [[0, "7z\274\257'\034".b]]],
       ['application/x-bzip', [[0, 'BZh'.b]]],
@@ -12,7 +12,7 @@ module OpsworksRuby
       ['application/zip', [[0, "PK\003\004".b]]]
     ].freeze
 
-    TYPES ||= {
+    TYPES = {
       'application/x-bzip-compressed-tar' => [
         %w[tar.bz tar.bz2 tb2 tbz tbz2], %w[application/x-bzip], 'Tar archive (bzip-compressed)'
       ],
@@ -27,7 +27,7 @@ module OpsworksRuby
       ]
     }.freeze
 
-    COMMANDS ||= {
+    COMMANDS = {
       'application/gzip' => 'gunzip -c %s > %s',
       'application/x-7z-compressed' => '7z x -t7z %s -o%s',
       'application/x-bzip' => 'bzip2 -ckd %s > %s',
