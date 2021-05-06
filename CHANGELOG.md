@@ -1,3 +1,12 @@
+## [1.20.3](https://github.com/ajgon/opsworks_ruby/compare/v1.20.2...v1.20.3) (2021-05-06)
+
+
+### Features
+
+* **webserver:** apache2 - configurable `mod_status` ([a82335d](https://github.com/ajgon/opsworks_ruby/commit/a82335d4ef90782dfdbf4fba97690f73d18cc62a)), closes [#259](https://github.com/ajgon/opsworks_ruby/issues/259)
+
+
+
 ## [1.20.2](https://github.com/ajgon/opsworks_ruby/compare/v1.20.1...v1.20.2) (2021-02-07)
 
 
