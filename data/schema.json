@@ -709,6 +709,15 @@
       "description":"This directive allows a user to specifiy a timeout on proxy requests.",
       "url":"https://httpd.apache.org/docs/current/mod/mod_proxy.html#proxytimeout"
     },
+    "enable_status":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "apache2"
+      ],
+      "description":"Enable or disable apache2 mod_status.",
+      "url":"https://httpd.apache.org/docs/current/mod/mod_status.html"
+    },
     "build_type":{
       "type":"string",
       "default":"default",
