@@ -4,7 +4,7 @@
 
 - [deployer](https://supermarket.chef.io/cookbooks/deployer)
 - [ruby-ng](https://supermarket.chef.io/cookbooks/ruby-ng)
-- [nginx (~> 2.7)](https://supermarket.chef.io/cookbooks/nginx)
+- [chef_nginx](https://supermarket.chef.io/cookbooks/chef_nginx)
 
 ## Platform
 

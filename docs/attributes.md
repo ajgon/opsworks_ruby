@@ -320,7 +320,7 @@ is supported.
 - `app['webserver']['build_type']`
     - **Supported values:** `default` or `source`
     - **Default:** `default`
-    - The way the [nginx](https://supermarket.chef.io/cookbooks/nginx) cookbooks handles `nginx` installation.
+    - The way the [chef_nginx](https://supermarket.chef.io/cookbooks/chef_nginx) cookbooks handles `nginx` installation.
       Check out [the corresponding docs](https://github.com/miketheman/nginx/tree/2.7.x#recipes) for more details.
       Never use `node['nginx']['install_method']`, as it will be always overwritten by this attribute.
 
@@ -353,7 +353,7 @@ is supported.
 - [`app['webserver']['send_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#send_timeout)
     - **Default**: `10`
 
-Since this driver is basically a wrapper for [nginx cookbook](https://github.com/miketheman/nginx/tree/2.7.x),
+Since this driver is basically a wrapper for [chef_nginx cookbook](https://github.com/chef-cookbooks/chef_nginx),
 you can also configure [node['nginx'] attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
 as well (notice that `node['deploy'][<application_shortname>]` logic doesn't apply here.)
 

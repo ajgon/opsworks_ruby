@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.4.0](https://github.com/ajgon/opsworks_ruby/compare/v1.3.0...v1.4.0) (2017-03-12)
+
+
+### Bug Fixes
+
+* Bump faraday middleware version ([d508928](https://github.com/ajgon/opsworks_ruby/commit/d508928))
+* Switched `nginx` cookbook to more actively developed `chef_nginx` ([0f4f64c](https://github.com/ajgon/opsworks_ruby/commit/0f4f64c)), closes [#65](https://github.com/ajgon/opsworks_ruby/issues/65)
+
+
+### Features
+
+* **webserver:** Add app specific error log and location for nginx ([a098279](https://github.com/ajgon/opsworks_ruby/commit/a098279))
+* **worker:** Safely quiet and shutdown sidekiq ([c36652f](https://github.com/ajgon/opsworks_ruby/commit/c36652f))
+
+
+### BREAKING CHANGES
+
+* `nginx` cookbook is not a `opsworks_ruby` dependency
+anymore. Now it's `chef_nginx` which is more actively developed.
+Please update your recipe repositories.
+
+
+
+
 ## [1.3.0](https://github.com/ajgon/opsworks_ruby/compare/v1.2.1...v1.3.0) (2017-01-16)
 
 
