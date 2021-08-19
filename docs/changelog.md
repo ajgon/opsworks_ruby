@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.6.0](https://github.com/ajgon/opsworks_ruby/compare/v1.5.0...v1.6.0) (2017-06-03)
+
+
+### Bug Fixes
+
+* **ubuntu:** proper provisioning for ubuntu 16.04 ([ea5b530](https://github.com/ajgon/opsworks_ruby/commit/ea5b530)), closes [#81](https://github.com/ajgon/opsworks_ruby/issues/81)
+
+
+### Features
+
+* **webserver:** Specify upgrade method for nginx ([2624d04](https://github.com/ajgon/opsworks_ruby/commit/2624d04))
+* **logrotate:** rotate all logs in app/log ([4737b49](https://github.com/ajgon/opsworks_ruby/commit/4737b49))
+
+
+### BREAKING CHANGES
+
+* Support for all legacy distributions has been dropped
+off. Currently, only Ubuntu 16.04 and Amazon Linux 2017.03 are
+supported.
+
+This cookbook _should_ work on earlier versions (especially on Ubuntu),
+PR with fixes to them _will_ be accepted, however the core team won't
+include any patches for those distros by they own.
+
+
+
+
 ## [1.5.0](https://github.com/ajgon/opsworks_ruby/compare/v1.4.0...v1.5.0) (2017-04-25)
 
 

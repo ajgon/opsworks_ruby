@@ -358,6 +358,12 @@ is supported.
 - [`app['webserver']['send_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#send_timeout)
     - **Default**: `10`
 
+
+- `app['webserver']['enable_upgrade_method']`
+    - **Supported values:** `true`, `false`
+    - **Default**: `false`
+    - When set to true, enable Websocket's upgrade method such as Rails actionCable.
+
 Since this driver is basically a wrapper for [chef_nginx cookbook](https://github.com/chef-cookbooks/chef_nginx),
 you can also configure [node['nginx'] attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
 as well (notice that `node['deploy'][<application_shortname>]` logic doesn't apply here.)

@@ -10,10 +10,7 @@
 
 This cookbook was tested on the following OpsWorks platforms:
 
-- Amazon Linux 2016.03
-- Amazon Linux 2015.09
-- Amazon Linux 2015.03
-- Ubuntu 14.04 LTS
-- Ubuntu 12.04 LTS
+-  Amazon Linux 2017.03
+-  Ubuntu 16.04 LTS
 
 In addition, all recent Debian family distrubutions are assumed to work.
