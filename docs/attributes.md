@@ -32,6 +32,11 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
       (check [ruby-ng cookbook documentation](https://supermarket.chef.io/cookbooks/ruby-ng)).
       For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.).
 
+-  `node['use-nodejs']`
+    - **Type:** boolean
+    - **Default:** `false`
+    - If enabled, a nodejs and yarn will be installed on a machine, to provide support for webpack and assets precompilation.
+
 ## Cross-application attributes
 
 These attributes can only be set at the server level; they cannot vary from application to application.
@@ -350,6 +355,7 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
   - **Default:** None
   - Bind the appserver to a port on 0.0.0.0. This is useful for serving the application directly from the appserver
     without a web server middleware or separating the web server into its own container or server.
+    This can also be used for running multiple applications on a server when using apache as your webserver.
 
 #### unicorn
 
