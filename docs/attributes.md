@@ -180,6 +180,13 @@ Global parameters apply to the whole application, and can be used by any section
       will result in the `logrotate_app` resource being invoked with the resource value `cookbook 'my_cookbook'`.
     - See [Logrotate Attributes](#logrotate-attributes) for more information on logrotate attribute precedence.
 
+- `app['global']['deploy_revision']`
+    - **Type:** boolean
+    - **Default:** `false`
+    - When set to true, deployments will use the `deploy_revision` provider. The name of a release sub-directory will
+      use a revision identifier rather than a timestamp.
+    - See [the deploy_revision documentation](https://docs-archive.chef.io/release/12-13/resource_deploy.html#deploy-revision)
+      for more information.
 
 ### database
 
@@ -383,16 +390,6 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
     - Which Debian APT package version should be installed from the PPA repo provided by Passenger. Currently this
       defaults to the latest version provided by the Passenger APT PPA. Set this to a non-nil value to lock your
       Passenger installation at a specific version.
-
-- `app['appserver']['after_deploy']`
-    - **Default:** `stop-start`
-    - **Supported values:** `stop-start`, `restart`, `clean-restart`
-    - Tell the appserver how to restart following a deployment.  A `stop-start` will instruct the appserver to stop
-      and then start immediately.  This is can cause requests from the webserver to be dropped since it closes the socket.
-      A `restart` sends a signal to the appserver instructing it to restart while maintaining the open socket.
-      Requests will hang while the app boots, but will not be lost. A `clean-restart` will perform a `stop-start` if the
-      `Gemfile` has changed or a `restart` otherwise.  The behavior of each of these approaches varies between appservers.
-      See their documentation for more details.
 
 - `app['appserver']['port']`
   - **Default:** None
@@ -645,6 +642,19 @@ is supported.
 Since this driver is basically a wrapper for [nginx cookbook](https://github.com/chef-cookbooks/nginx),
 you can also configure [node['nginx'] attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
 as well (notice that `node['deploy'][<application_shortname>]` logic doesn't apply here.)
+
+### worker
+
+Worker configuration. Currently sidekiq, delayed_job, resque, shoryuken.
+
+- `app['webserver']['adapter']`
+    - **Default:** `null`
+    - **Supported values:** `sidekiq`, `delayed_job`, `resque`, `shoryuken` and `null`.
+    - If worker is needed, here it can be set up and configured. `null` means no worker installed.
+
+- `app['worker']['monit_template_cookbook']`
+    - **Default** `opsworks_ruby`
+    - The name of the cookbook from which the worker monit template(s) will be drawn.
 
 #### sidekiq
 
