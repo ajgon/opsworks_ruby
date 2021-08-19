@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.12.0](https://github.com/ajgon/opsworks_ruby/compare/v1.11.0...v1.12.0) (2018-10-03)
+
+
+### Features
+
+* **appserver:** add port configuration ([6540201](https://github.com/ajgon/opsworks_ruby/commit/6540201))
+* **database:** added aurora-postgres as an accepted engine for Postgres RDS ([626a11d](https://github.com/ajgon/opsworks_ruby/commit/626a11d))
+* **webserver:** add support for `force_ssl` attribute ([2281047](https://github.com/ajgon/opsworks_ruby/commit/2281047)), closes [#189](https://github.com/ajgon/opsworks_ruby/issues/189)
+
+
+
+
 ## [1.11.0](https://github.com/ajgon/opsworks_ruby/compare/v1.10.1...v1.11.0) (2018-07-17)
 
 

@@ -145,7 +145,7 @@ connected to your OpsWorks application, you don't need to use them. The chef wil
 for you.
 
 - `app['database']['adapter']`
-    - **Supported values:** `mariadb`, `mysql`, `postgis`, `postgresql`, `sqlite3`, `null`
+    - **Supported values:** `aurora`, `aurora-postgresql`, `mariadb`, `mysql`, `postgis`, `postgresql`, `sqlite3`, `null`
     - **Default:** `sqlite3`
     - ActiveRecord adapter which will be used for database connection. `null` means that no database will be configured,
       and is currently only tested with the `rails` framework.
@@ -346,6 +346,11 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
       `Gemfile` has changed or a `restart` otherwise.  The behavior of each of these approaches varies between appservers.
       See their documentation for more details.
 
+- `app['appserver']['port']`
+  - **Default:** None
+  - Bind the appserver to a port on 0.0.0.0. This is useful for serving the application directly from the appserver
+    without a web server middleware or separating the web server into its own container or server.
+
 #### unicorn
 
 - [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
@@ -462,6 +467,13 @@ is supported.
     - **Default** `443`
     - The port on which the webserver should listen for HTTPs requests, if SSL requests are enabled.
       Note that SSL itself is controlled by the `app['enable_ssl']` setting in Opsworks.
+
+- `app['webserver']['force_ssl']`
+    -  **Supported values:** `true`, `false`
+    -  **Default** `false`
+    -  When this parameter is set to `true` all requests passed to http will
+       be redirected to https, with 301 status code. This works only when SSL
+       in OpsWorks panel is enabled, otherwise it's ommited.
 
 - `app['webserver']['site_config_template']`
     - **Default** `appserver.apache2.conf.erb` or `appserver.nginx.conf.erb`
