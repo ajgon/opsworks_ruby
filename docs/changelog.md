@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.14.0](https://github.com/ajgon/opsworks_ruby/compare/v1.13.0...v1.14.0) (2019-03-06)
+
+
+### Bug Fixes
+
+* Ensure shared/system dir is created ([#197](https://github.com/ajgon/opsworks_ruby/issues/197)) ([7f8cb2e](https://github.com/ajgon/opsworks_ruby/commit/7f8cb2e)), closes [/github.com/ajgon/opsworks_ruby/blob/6e2328941996d98316657d7a52c98de6982068a5/attributes/default.rb#L21](https://github.com//github.com/ajgon/opsworks_ruby/blob/6e2328941996d98316657d7a52c98de6982068a5/attributes/default.rb/issues/L21)
+* Lock the windows cookbook dependency to maintain chef 12 compatibility ([#196](https://github.com/ajgon/opsworks_ruby/issues/196)) ([a2d4a8d](https://github.com/ajgon/opsworks_ruby/commit/a2d4a8d))
+* register gpg public key for nginx on ubuntu18.04LTS ([#201](https://github.com/ajgon/opsworks_ruby/issues/201)) ([1d4705d](https://github.com/ajgon/opsworks_ruby/commit/1d4705d))
+* **apache:** fix infinite redirect loop on apache, when rails `force_ssl` is enabled ([3df3a16](https://github.com/ajgon/opsworks_ruby/commit/3df3a16)), closes [#206](https://github.com/ajgon/opsworks_ruby/issues/206)
+* **appserver:** fixed Puma config compatibility with older versions of Puma ([eebdc23](https://github.com/ajgon/opsworks_ruby/commit/eebdc23)), closes [#207](https://github.com/ajgon/opsworks_ruby/issues/207)
+* **nginx:** add missing `nosniff` header for SSL sessions in nginx ([e61b199](https://github.com/ajgon/opsworks_ruby/commit/e61b199))
+* **setup:** added support for bundler 2.x and rubygems 3.x ([7b781bd](https://github.com/ajgon/opsworks_ruby/commit/7b781bd)), closes [#203](https://github.com/ajgon/opsworks_ruby/issues/203)
+* **webserver:** Align SSL directory between template & driver ([414298e](https://github.com/ajgon/opsworks_ruby/commit/414298e)), closes [#205](https://github.com/ajgon/opsworks_ruby/issues/205)
+
+
+### Features
+
+* **appserver:** re-establish database connections when preloading app ([db17de6](https://github.com/ajgon/opsworks_ruby/commit/db17de6)), closes [#198](https://github.com/ajgon/opsworks_ruby/issues/198)
+* **ruby:** Added support for ruby 2.6 ([27bad91](https://github.com/ajgon/opsworks_ruby/commit/27bad91))
+
+
+
+
 ## [1.13.0](https://github.com/ajgon/opsworks_ruby/compare/v1.12.0...v1.13.0) (2018-11-09)
 
 

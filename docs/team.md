@@ -14,3 +14,4 @@
 - Teruo Adachi ([@interu](https://github.com/interu))
 - Marcos Beirigo ([@marcosbeirigo](https://github.com/marcosbeirigo))
 - John Calvin Young ([@johncalvinyoung](https://github.com/johncalvinyoung))
+- Rich Seviora ([@richseviora](https://github.com/richseviora))
