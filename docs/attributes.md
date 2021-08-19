@@ -8,17 +8,22 @@ Following convention is used: `app == node['deploy'][<application_shortname>]` s
 ## Stack attributes
 
 These attributes are used on Stack/Layer level globally to configure the opsworks_ruby cookbook itself.
-They should'nt be used under ``node['deploy'][<application_shortname>]`` (notice lack of the ``app[]`` convention).
+They should'nt be used under `node['deploy'][<application_shortname>]` (notice lack of the `app[]` convention).
 
-- ``node['applications']``
+- `node['applications']`
+    - An array of application shortnames which should be deployed to given layer. If set, only applications witch `deploy`
+      flag set (on OpsWorks side) included in this list will be deployed. If not set, all `deploy` application will be
+      supported. This parameter mostly matters during the setup phase, since all application in given stack are deployed
+      to the given layer. Using this paramter you can narrow the list to application which you actually intend to use.
+      !!! note
+          **Important** thing is, that when you try to do a manual deploy from OpsWorks of an application, not included
+          in this list - it will be skipped, as this list takes precedence over anything else.
 
-- An array of application shortnames which should be deployed to given layer. If set, only applications witch ``deploy``
-  flag set (on OpsWorks side) included in this list will be deployed. If not set, all ``deploy`` application will be
-  supported. This parameter mostly matters during the setup phase, since all application in given stack are deployed
-  to the given layer. Using this paramter you can narrow the list to application which you actually intend to use.
-  !!! note
-      **Important** thing is, that when you try to do a manual deploy from OpsWorks of an application, not included
-      in this list - it will be skipped, as this list takes precedence over anything else.
+-  `node['ruby-ng']['ruby_version']`
+    - **Type:** string
+    - **Default:** `2.4`
+    - Sets the Ruby version used through the system. See [ruby-ng cookbook documentation](https://supermarket.chef.io/cookbooks/ruby-ng)
+     for more details
 
 ## Application attributes
 
