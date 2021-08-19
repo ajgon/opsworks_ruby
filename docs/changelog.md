@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.5.0](https://github.com/ajgon/opsworks_ruby/compare/v1.4.0...v1.5.0) (2017-04-25)
+
+
+### Features
+
+* **framework:** Allow increased timeout during deploy ([#76](https://github.com/ajgon/opsworks_ruby/issues/76)) ([e216972](https://github.com/ajgon/opsworks_ruby/commit/e216972))
+* **logrotate:** implement logrotate ([86ebc10](https://github.com/ajgon/opsworks_ruby/commit/86ebc10)), closes [#78](https://github.com/ajgon/opsworks_ruby/issues/78)
+
+
+
+
 ## [1.4.0](https://github.com/ajgon/opsworks_ruby/compare/v1.3.0...v1.4.0) (2017-03-12)
 
 

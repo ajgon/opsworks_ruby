@@ -76,6 +76,11 @@ Global parameters apply to the whole application, and can be used by any section
     - **Default:** `true`
     - When set to true, any failed deploy will be removed from `releases` directory.
 
+- `app['global']['logrotate_rotate']`
+    - **Type:** integer
+    - **Default:** `30`
+    - **Important Notice:** The parameter is in days
+
 ### database
 
 Those parameters will be passed without any alteration to the `database.yml` file. Keep in mind, that if you have RDS
