@@ -145,7 +145,7 @@ connected to your OpsWorks application, you don't need to use them. The chef wil
 for you.
 
 - `app['database']['adapter']`
-    - **Supported values:** `mariadb`, `mysql`, `postgresql`, `sqlite3`, `null`
+    - **Supported values:** `mariadb`, `mysql`, `postgis`, `postgresql`, `sqlite3`, `null`
     - **Default:** `sqlite3`
     - ActiveRecord adapter which will be used for database connection. `null` means that no database will be configured,
       and is currently only tested with the `rails` framework.
