@@ -27,3 +27,4 @@
     - [delayed_job](https://github.com/collectiveidea/delayed_job)
     - [resque](https://github.com/resque/resque)
     - [sidekiq](http://sidekiq.org/)
+    - [shoryuken](https://github.com/phstc/shoryuken)

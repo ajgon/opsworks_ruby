@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.13.0](https://github.com/ajgon/opsworks_ruby/compare/v1.12.0...v1.13.0) (2018-11-09)
+
+
+### Bug Fixes
+
+* **db:** Fix typo for aurora postgresql ([1bb2fb5](https://github.com/ajgon/opsworks_ruby/commit/1bb2fb5))
+
+
+### Features
+
+* **worker:** Support Shoryuken worker library ([5359679](https://github.com/ajgon/opsworks_ruby/commit/5359679))
+
+
+
+
 ## [1.12.0](https://github.com/ajgon/opsworks_ruby/compare/v1.11.0...v1.12.0) (2018-10-03)
 
 

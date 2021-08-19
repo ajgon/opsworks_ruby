@@ -598,6 +598,30 @@ as well (notice that `node['deploy'][<application_shortname>]` logic doesn't app
     - **Default:** `*`
     - Array of queues which should be processed by resque
 
+#### shoryuken
+
+- `app['worker']['config']`
+    - Configuration parameters which will be directly passed to the worker. For example, for `shoryuken` they will be
+      serialized to the relevant [shoryuken.yml config file](https://github.com/phstc/shoryuken/wiki/Shoryuken-options).
+
+- `app['worker']['process_count']`
+    - **Default:** `1`
+    - Number of shoryuken runner daemons to start. Shoryuken is multithreaded, so defaults to 1.
+
+- `app['worker']['require']`
+    - Path to require, relative to the currently deployed application directory.
+
+- `app['worker']['require_rails']`
+    - **Supported values:** `true`, `false`
+    - **Default**: `false`
+    - Emits `-R` to require the rails environment on boot.
+
+- `app['worker']['syslog']`
+    - **Supported values:** `true`, `false`
+    - **Default**: `false`
+    - Configures piping shoryuken runner log output to syslog via `logger`
+
+
 ## Logrotate Attributes
 
 Logrotate behaviors occur across multiple drivers, for example webserver and framework. For this reason, the evaluation
