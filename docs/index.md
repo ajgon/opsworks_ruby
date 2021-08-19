@@ -23,6 +23,7 @@ The main documentation for the site is organized into a couple sections:
     - [Deployment fails with errors regarding application code](troubleshooting.md#deployment-fails-with-errors-regarding-application-code)
     - [SSL not working in legacy browsers](troubleshooting.md#ssl-not-working-in-legacy-browsers)
     - [Some applications on my Layer deploys, some of them not](troubleshooting.md#some-applications-on-my-layer-deploys-some-of-them-not)
+    - [Environment variables fail to update on clean restart](troubleshooting.md#environment-variables-fail-to-update-on-clean-restart)
 
 ## Cookbook Documentation
 

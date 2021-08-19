@@ -21,7 +21,7 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
 
 -  `node['ruby-ng']['ruby_version']`
     - **Type:** string
-    - **Default:** `2.4`
+    - **Default:** `2.5`
     - Sets the Ruby version used through the system. See [ruby-ng cookbook documentation](https://supermarket.chef.io/cookbooks/ruby-ng)
      for more details
 
@@ -158,43 +158,67 @@ for you.
 - `app['database'][<any other>]`
     - Any other key-value pair provided here, will be passed directly to the `database.yml`
 
-### scm
+### source
 
 Those parameters can also be determined from OpsWorks application, and usually you don't need to provide them here.
 Currently only `git` is supported.
 
-- `app['scm']['scm_provider']`
-    - **Supported values:** `git`
+- `app['source']['adapter']`
+    - **Supported values:** `git`, `http`, `s3`
     - **Default:** `git`
-    - SCM used by the cookbook to clone the repo.
+    - Source used by the cookbook to fetch the application codebase.
 
-- `app['scm']['remove_scm_files']`
+- `app['source']['url']`
+    - Source code URL (repository URL for SCMs).
+
+#### git
+
+- `app['source']['remove_scm_files']`
     - **Supported values:** `true`, `false`
     - **Default:** `true`
     - If set to true, all SCM leftovers (like `.git`) will be removed.
 
-- `app['scm']['repository']`
-    - Repository URL
-
-- `app['scm']['revision']`
+- `app['source']['revision']`
     - Branch name/SHA1 of commit which should be use as a base of the deployment.
 
-- `app['scm']['ssh_key']`
+- `app['source']['ssh_key']`
     - A private SSH deploy key (the key itself, not the file name), used when fetching repositories via SSH.
 
--   `app['scm']['ssh_wrapper']`
+- `app['source']['ssh_wrapper']`
     - A wrapper script, which will be used by git when fetching repository via SSH. Essentially, a value of `GIT_SSH`
       environment variable. This cookbook provides one of those scripts for you, so you shouldn't alter this variable
       unless you know what you're doing.
 
-- `app['scm']['generated_ssh_wrapper']`
+- `app['source']['generated_ssh_wrapper']`
     - **Default:** `/tmp/ssh-git-wrapper.sh`
     - If the cookbook generates an SSH wrapper for you, this is where it will generate it. For users whose `/tmp`
       partitions are mounted `noexec` (a good security practice to prevent code injection exploits), this attribute
       allows you to override that location to a partition where execution of the generated shell script is allowed.
 
-- `app['scm']['enabled_submodules']`
+- `app['source']['enabled_submodules']`
     - If set to `true`, any submodules included in the repository, will also be fetched.
+
+#### s3
+
+This source expects a packed project in one of the following formats: `bzip2`, `compress`, `gzip`, `tar`, `xz`
+or `zip`. If you are using ubuntu, `7zip` is also supported.
+
+- `app['source']['user']`
+    - `AWS_ACCESS_KEY_ID` with read access to the bucket.
+
+- `app['source']['password']`
+    - `AWS_SECRET_ACCESS_KEY` for given `AWS_ACCESS_KEY_ID`.
+
+#### http
+
+This source expects a packed project in one of the following formats: `bzip2`, `compress`, `gzip`, `tar`, `xz`
+or `zip`. If you are using ubuntu, `7zip` is also supported.
+
+- `app['source']['user']`
+    - If file is hidden behind HTTP BASIC AUTH, this field should contain username.
+
+- `app['source']['password']`
+    -  If file is hidden behind HTTP BASIC AUTH, this field should contain password.
 
 ### framework
 
@@ -464,8 +488,8 @@ is supported.
 - `app['webserver']['build_type']`
     - **Supported values:** `default` or `source`
     - **Default:** `default`
-    - The way the [chef_nginx](https://supermarket.chef.io/cookbooks/chef_nginx) cookbooks handles `nginx` installation.
-      Check out [the corresponding docs](https://github.com/miketheman/nginx/tree/2.7.x#recipes) for more details.
+    - The way the [nginx](https://supermarket.chef.io/cookbooks/nginx) cookbooks handles `nginx` installation.
+      Check out [the corresponding docs](https://github.com/chef-cookbooks/nginx#attributes) for more details.
       Never use `node['nginx']['install_method']`, as it will be always overwritten by this attribute.
 
 - [`app['webserver']['client_body_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_timeout)
@@ -502,7 +526,7 @@ is supported.
     - **Default**: `false`
     - When set to true, enable Websocket's upgrade method such as Rails actionCable.
 
-Since this driver is basically a wrapper for [chef_nginx cookbook](https://github.com/chef-cookbooks/chef_nginx),
+Since this driver is basically a wrapper for [nginx cookbook](https://github.com/chef-cookbooks/nginx),
 you can also configure [node['nginx'] attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
 as well (notice that `node['deploy'][<application_shortname>]` logic doesn't apply here.)
 
