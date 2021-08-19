@@ -8,6 +8,7 @@
 
 - Nick Marden ([@nickmarden](https://github.com/nickmarden))
 - Phong Si ([@phongsi](https://github.com/phongsi))
+- Kevin Olbrich ([@olbrich](https://github.com/olbrich))
 - Kevin Pheasey ([@kpheasey](https://github.com/kpheasey))
 - Nathan Flood ([@npflood](https://github.com/npflood))
 - Teruo Adachi ([@interu](https://github.com/interu))
