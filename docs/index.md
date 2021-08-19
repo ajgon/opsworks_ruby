@@ -32,6 +32,7 @@ The main documentation for the site is organized into a couple sections:
     - [Platform](requirements.md#platform)
 - [Attributes](attributes.md)
     - [Stack attributes](attributes.md#stack-attributes)
+    - [Cross-application attributes](attributes.md#cross-application-attributes)
     - [Application attributes](attributes.md#application-attributes)
     - [Logrotate Attributes](attributes.md#logrotate-attributes)
 - [Recipes](recipes.md)

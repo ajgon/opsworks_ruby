@@ -25,6 +25,20 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
     - Sets the Ruby version used through the system. See [ruby-ng cookbook documentation](https://supermarket.chef.io/cookbooks/ruby-ng)
      for more details
 
+## Cross-application attributes
+
+These attributes can only be set at the server level; they cannot vary from application to application.
+
+### webserver
+
+- `node['defaults']['webserver']['remove_default_sites']`
+    - **Type:** array
+    - **Default:** `%w[default default.conf 000-default 000-default.conf default-ssl default-ssl.conf]`
+    - **Note**: Only applies to Apache2 webserver
+    - A list of "default site" filenames that should be removed (if they exist) from `/etc/{httpd,apache2}/sites-enabled`
+      in order to disable any "default site" provided by the OS-provided Apache2 package. Set this to `nil` or an empty
+      array (`[]`) if you want the default site to be enabled.
+
 ## Application attributes
 
 ### global
