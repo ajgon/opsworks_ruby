@@ -30,7 +30,6 @@ The main documentation for the site is organized into a couple sections:
     - [Cookbooks](requirements.md#cookbooks)
     - [Platform](requirements.md#platform)
 - [Attributes](attributes.md)
-    - [basic](attributes.md#basic)
     - [global](attributes.md#global)
     - [database](attributes.md#database)
     - [scm](attributes.md#scm)

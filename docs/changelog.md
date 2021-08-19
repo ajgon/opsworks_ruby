@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/ajgon/opsworks_ruby/compare/v1.0.0...v1.1.0) (2016-10-21)
+
+
+### Bug Fixes
+
+* Application deployment fix ([7ac4166](https://github.com/ajgon/opsworks_ruby/commit/7ac4166))
+
+
+### BREAKING CHANGES
+
+* `node['applications']` becomes obsolete
+
+
+
+
 ## [1.0.0](https://github.com/ajgon/opsworks_ruby/compare/v0.8.0...v1.0.0) (2016-10-04)
 
 

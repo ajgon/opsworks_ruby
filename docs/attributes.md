@@ -5,12 +5,6 @@ Attributes format follows the guidelines of old Chef 11.x based OpsWorks stack. 
 Following convention is used: `app == node['deploy'][<application_shortname>]` so for example
 `app['framework']['adapter']` actually means `node['deploy'][<application_shortname>]['framework']['adapter']`.
 
-## basic
-
-- `node['applications']`
-    - An array of application shortnames which should be deployed to given layer. If not provided, all detected
-      applications will be deployed.
-
 ## global
 
 Global parameters apply to the whole application, and can be used by any section (framework, appserver etc.).
