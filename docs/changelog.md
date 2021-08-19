@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.16.0](https://github.com/ajgon/opsworks_ruby/compare/v1.15.0...v1.16.0) (2019-09-11)
+
+
+### Bug Fixes
+
+* **webserver:** remove default nginx config from conf.d ([#220](https://github.com/ajgon/opsworks_ruby/issues/220)) ([23929e3](https://github.com/ajgon/opsworks_ruby/commit/23929e3))
+* keep the last `nginx` cookbook version compatible with chef 12 ([b5b13d0](https://github.com/ajgon/opsworks_ruby/commit/b5b13d0)), closes [#222](https://github.com/ajgon/opsworks_ruby/issues/222)
+
+
+### Features
+
+* **setup:** add chef version configuration option ([ffe2b42](https://github.com/ajgon/opsworks_ruby/commit/ffe2b42))
+
+
+
+
 ## [1.15.0](https://github.com/ajgon/opsworks_ruby/compare/v1.14.0...v1.15.0) (2019-07-09)
 
 

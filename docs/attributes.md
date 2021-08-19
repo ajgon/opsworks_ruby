@@ -19,7 +19,7 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
           **Important** thing is, that when you try to do a manual deploy from OpsWorks of an application, not included
           in this list - it will be skipped, as this list takes precedence over anything else.
 
--  `node['ruby-version']`
+- `node['ruby-version']`
 
     !!! note
 
@@ -32,10 +32,22 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
       (check [ruby-ng cookbook documentation](https://supermarket.chef.io/cookbooks/ruby-ng)).
       For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.).
 
--  `node['use-nodejs']`
+- `node['use-nodejs']`
     - **Type:** boolean
     - **Default:** `false`
     - If enabled, a nodejs and yarn will be installed on a machine, to provide support for webpack and assets precompilation.
+
+- `node['chef-version']`
+
+    !!! note
+
+        **Important** plase note, that `true` is hazardous, because it allows uncontrolled upgrade to a potentially
+        major version, i.e. breaking change could occur.
+
+    - **Type:** integer or boolean
+    - **Default:** `false`
+    - If enabled current chef on OpsWorks will be updated to provided version (if integer provided) or the the
+      latest version (if `true`).
 
 ## Cross-application attributes
 
