@@ -5,7 +5,24 @@ Attributes format follows the guidelines of old Chef 11.x based OpsWorks stack. 
 Following convention is used: `app == node['deploy'][<application_shortname>]` so for example
 `app['framework']['adapter']` actually means `node['deploy'][<application_shortname>]['framework']['adapter']`.
 
-## global
+## Stack attributes
+
+These attributes are used on Stack/Layer level globally to configure the opsworks_ruby cookbook itself.
+They should'nt be used under ``node['deploy'][<application_shortname>]`` (notice lack of the ``app[]`` convention).
+
+- ``node['applications']``
+
+- An array of application shortnames which should be deployed to given layer. If set, only applications witch ``deploy``
+  flag set (on OpsWorks side) included in this list will be deployed. If not set, all ``deploy`` application will be
+  supported. This parameter mostly matters during the setup phase, since all application in given stack are deployed
+  to the given layer. Using this paramter you can narrow the list to application which you actually intend to use.
+  !!! note
+      **Important** thing is, that when you try to do a manual deploy from OpsWorks of an application, not included
+      in this list - it will be skipped, as this list takes precedence over anything else.
+
+## Application attributes
+
+### global
 
 Global parameters apply to the whole application, and can be used by any section (framework, appserver etc.).
 
@@ -14,7 +31,7 @@ Global parameters apply to the whole application, and can be used by any section
     - Sets the "deploy environment" for all the app-related (for example `RAILS_ENV` in Rails) actions in the project
       (server, worker, etc.)
 
-## database
+### database
 
 Those parameters will be passed without any alteration to the `database.yml` file. Keep in mind, that if you have RDS
 connected to your OpsWorks application, you don't need to use them. The chef will do all the job, and determine them
@@ -40,7 +57,7 @@ for you.
 - `app['database'][<any other>]`
     - Any other key-value pair provided here, will be passed directly to the `database.yml`
 
-## scm
+### scm
 
 Those parameters can also be determined from OpsWorks application, and usually you don't need to provide them here.
 Currently only `git` is supported.
@@ -72,7 +89,7 @@ Currently only `git` is supported.
 - `app['scm']['enabled_submodules']`
     - If set to `true`, any submodules included in the repository, will also be fetched.
 
-## framework
+### framework
 
 Pre-optimalization for specific frameworks (like migrations, cache etc.). Currently `hanami.rb` and `Rails`
 are supported.
@@ -98,7 +115,7 @@ are supported.
 - `app['framework']['assets_precompilation_command']`
     - A command which will be invoked to precompile assets.
 
-### padrino
+#### padrino
 
 For Padrino, slight adjustments needs to be made. Since there are many database adapters supported, instead of creating
 configuration for each one, the `DATABASE_URL` environmental variable is provided. You need to parse it in your
@@ -114,7 +131,7 @@ ActiveRecord::Base.configurations[:production] = database_url || {
 }
 ```
 
-### rails
+#### rails
 
 - `app['framework']['envs_in_console']`
 
@@ -126,7 +143,7 @@ ActiveRecord::Base.configurations[:production] = database_url || {
     - **Default:** `false`
     - If set to true, `rails console` will be invoked with all application-level environment variables set.
 
-## appserver
+### appserver
 
 Configuration parameters for the ruby application server. Currently `Puma`, `Thin` and `Unicorn` are supported.
 
@@ -159,7 +176,7 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
     - **Default:** `4`
     - Sets the current number of worker processes. Each worker process will serve exactly one client at a time.
 
-### unicorn
+#### unicorn
 
 - [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
     - **Default:** `1024`
@@ -178,7 +195,7 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
 - [`app['appserver']['tries']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
     - **Default:** `5`
 
-### puma
+#### puma
 
 - [`app['appserver']['log_requests']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L56)
     - **Supported values:** `true`, `false`
@@ -190,7 +207,7 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
 - [`app['appserver']['thread_min']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62)
     - **Default:** `0`
 
-### thin
+#### thin
 
 - `app['appserver']['max_connections']`
     - **Default:** `1024`
@@ -204,7 +221,7 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
 - `app['appserver']['worker_processes']`
     - **Default:** `4`
 
-## webserver
+### webserver
 
 Webserver configuration. Proxy passing to application is handled out-of-the-box. Currently Apache2 and nginx
 is supported.
@@ -231,7 +248,7 @@ is supported.
       work with this configuration very well. If your application needs a support for those browsers,
       set this parameter to `true`.
 
-### apache
+#### apache
 
 - `app['webserver']['extra_config']`
     - Raw Apache2 configuration, which will be inserted into `<Virtualhost *:80>` section of the application.
@@ -253,7 +270,7 @@ is supported.
 - [`app['webserver']['proxy_timeout']`](https://httpd.apache.org/docs/current/mod/mod_proxy.html#proxytimeout)
     - **Default**: `60`
 
-### nginx
+#### nginx
 
 - `app['webserver']['build_type']`
     - **Supported values:** `default` or `source`
@@ -295,18 +312,18 @@ Since this driver is basically a wrapper for [nginx cookbook](https://github.com
 you can also configure [node['nginx'] attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
 as well (notice that `node['deploy'][<application_shortname>]` logic doesn't apply here.)
 
-### sidekiq
+#### sidekiq
 
 - `app['worker']['config']`
     - Configuration parameters which will be directly passed to the worker. For example, for `sidekiq` they will be
       serialized to [sidekiq.yml config file](https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file).
 
-### delayed_job
+#### delayed_job
 
 - `app['worker']['queues']`
     - Array of queues which should be processed by delayed_job
 
-### resque
+#### resque
 
 - `app['worker']['workers']`
     - **Default:** `2`

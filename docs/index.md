@@ -22,6 +22,7 @@ The main documentation for the site is organized into a couple sections:
 - [Troubleshooting](troubleshooting.md)
     - [Deployment fails with errors regarding application code](troubleshooting.md#deployment-fails-with-errors-regarding-application-code)
     - [SSL not working in legacy browsers](troubleshooting.md#ssl-not-working-in-legacy-browsers)
+    - [Some applications on my Layer deploys, some of them not](troubleshooting.md#some-applications-on-my-layer-deploys-some-of-them-not)
 
 ## Cookbook Documentation
 
@@ -30,12 +31,8 @@ The main documentation for the site is organized into a couple sections:
     - [Cookbooks](requirements.md#cookbooks)
     - [Platform](requirements.md#platform)
 - [Attributes](attributes.md)
-    - [global](attributes.md#global)
-    - [database](attributes.md#database)
-    - [scm](attributes.md#scm)
-    - [framework](attributes.md#framework)
-    - [appserver](attributes.md#appserver)
-    - [webserver](attributes.md#webserver)
+    - [Stack attributes](attributes.md#stack-attributes)
+    - [Application attributes](attributes.md#application-attributes)
 - [Recipes](recipes.md)
 
 ## About opsworks_ruby
