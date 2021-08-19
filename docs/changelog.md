@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.2.1](https://github.com/ajgon/opsworks_ruby/compare/v1.2.0...v1.2.1) (2016-11-27)
+
+
+### Bug Fixes
+
+* Fixed broken `migration_command` default ([36cdb68](https://github.com/ajgon/opsworks_ruby/commit/36cdb68)), closes [#58](https://github.com/ajgon/opsworks_ruby/issues/58)
+
+
+
+
 ## [1.2.0](https://github.com/ajgon/opsworks_ruby/compare/v1.1.2...v1.2.0) (2016-11-02)
 
 
