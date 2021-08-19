@@ -15,9 +15,24 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
       flag set (on OpsWorks side) included in this list will be deployed. If not set, all `deploy` application will be
       supported. This parameter mostly matters during the setup phase, since all application in given stack are deployed
       to the given layer. Using this paramter you can narrow the list to application which you actually intend to use.
-      !!! note
-          **Important** thing is, that when you try to do a manual deploy from OpsWorks of an application, not included
-          in this list - it will be skipped, as this list takes precedence over anything else.
+
+        !!! note
+
+            **Important** thing is, that when you try to do a manual deploy from OpsWorks of an application, not included
+            in this list - it will be skipped, as this list takes precedence over anything else.
+
+-  `node['ruby-provider']`
+
+    !!! note
+
+        **Important** please note, that **NO** compatibility checks for distro/repositories are performed. It's user
+        responsibility to ensure, that given ruby version from given provider can be installed on given platform.
+        For example `fullstaq` only works on `Ubuntu 18.04` platform, installing it on `16.04` will fail.
+
+    - **Type:** string
+    - **Default:** `ruby-ng`
+    - **Supported values:** `ruby-ng`, `fullstaq`
+    - Sets the rubies packages provider. It configures proper apt repository and package namespaces.
 
 - `node['ruby-version']`
 
@@ -31,6 +46,17 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
     - Sets the Ruby version used through the system. For debian-based distributions, a `ruby-ng` cookbook is used
       (check [ruby-ng cookbook documentation](https://supermarket.chef.io/cookbooks/ruby-ng)).
       For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.).
+
+
+-  `node['ruby-variant']`
+
+    !!! note
+
+        **Important** This option works only when `node['ruby-provider']` is set to `fullstaq`.
+
+    - **Type:** string
+    - **Supported values:** none, `jemalloc`, `malloctrim`
+    - Sets ruby variant for given version.
 
 - `node['use-nodejs']`
     - **Type:** boolean
@@ -453,6 +479,26 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
     - **Default:** `/`
     - Which URL path should be handled by Passenger. This option allows you to configure your application to handle
       only a subset of requests made to your web server. Useful for certain hybrid static/dynamic web sites.
+
+- `app['appserver']['pool_idle_time']`
+    - **Type:** Integer
+    - **Default:** 300
+    - Sets the `PoolIdleTime` parameter
+
+- `app['appserver']['max_request_queue_size']`
+    - **Type:** Integer
+    - **Default:** 100
+    - Sets the `MaxRequestQueueSize` parameter
+
+- `app['appserver']['error_document']`
+    - **Type:** Hash
+    - **Default:** off
+    - Sets the `{ "status": "file" }` parameter e.g. `{ "500": "500.html", "503": "503.html" }`
+
+- `app['appserver']['passenger_max_preloader_idle_time']`
+    - **Type:** Integer
+    - **Default:** 300
+    - Sets the `PassengerMaxPreloaderIdleTime` parameter
 
 ### webserver
 
