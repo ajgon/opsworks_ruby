@@ -187,6 +187,12 @@ Currently only `git` is supported.
       environment variable. This cookbook provides one of those scripts for you, so you shouldn't alter this variable
       unless you know what you're doing.
 
+- `app['scm']['generated_ssh_wrapper']`
+    - **Default:** `/tmp/ssh-git-wrapper.sh`
+    - If the cookbook generates an SSH wrapper for you, this is where it will generate it. For users whose `/tmp`
+      partitions are mounted `noexec` (a good security practice to prevent code injection exploits), this attribute
+      allows you to override that location to a partition where execution of the generated shell script is allowed.
+
 - `app['scm']['enabled_submodules']`
     - If set to `true`, any submodules included in the repository, will also be fetched.
 
