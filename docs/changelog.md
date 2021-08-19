@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.20.2](https://github.com/ajgon/opsworks_ruby/compare/v1.20.1...v1.20.2) (2021-02-07)
+
+
+### Bug Fixes
+
+* run `monit reload` only once, after `configure hook` ([1b784d1](https://github.com/ajgon/opsworks_ruby/commit/1b784d15c7003490ef4691cab29e4a49dec91cd0)), closes [#251](https://github.com/ajgon/opsworks_ruby/issues/251)
+
+
+
+
 ## [1.20.1](https://github.com/ajgon/opsworks_ruby/compare/v1.20.0...v1.20.1) (2020-12-12)
 
 

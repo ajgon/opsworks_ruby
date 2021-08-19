@@ -16,3 +16,4 @@
 - John Calvin Young ([@johncalvinyoung](https://github.com/johncalvinyoung))
 - Rich Seviora ([@richseviora](https://github.com/richseviora))
 - Kazuki Fujii ([@kazukifujii](https://github.com/kazukifujii))
+- Kazuki Nishikawa ([@kzkn](https://github.com/kzkn))
