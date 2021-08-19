@@ -33,6 +33,7 @@ The main documentation for the site is organized into a couple sections:
 - [Attributes](attributes.md)
     - [Stack attributes](attributes.md#stack-attributes)
     - [Application attributes](attributes.md#application-attributes)
+    - [Logrotate Attributes](attributes.md#logrotate-attributes)
 - [Recipes](recipes.md)
 
 ## About opsworks_ruby

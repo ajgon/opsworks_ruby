@@ -37,6 +37,14 @@ Global parameters apply to the whole application, and can be used by any section
     - Sets the "deploy environment" for all the app-related (for example `RAILS_ENV` in Rails) actions in the project
       (server, worker, etc.)
 
+- `app['global']['deploy_dir']`
+    - **Type:** string
+    - **Default:** `/srv/www/app_name`
+    - Determines where the application will be deployed.
+    - Note that if you override this setting, you'll typically want to include the short_name in the setting.
+      In other words, this setting doesn't override the `/srv/www` base directory defafult; it overrides the
+      application-specific `/srv/www/app_name` default.
+
 - `app['global']['symlinks']`
 
     !!! note
@@ -77,9 +85,37 @@ Global parameters apply to the whole application, and can be used by any section
     - When set to true, any failed deploy will be removed from `releases` directory.
 
 - `app['global']['logrotate_rotate']`
+
+    !!! note
+
+        **Important Notice:** The parameter is in days
+
     - **Type:** integer
     - **Default:** `30`
-    - **Important Notice:** The parameter is in days
+    - How many days of logfiles are kept.
+    - See [Logrotate Attributes](#logrotate-attributes) for more information on logrotate attribute precedence.
+
+- `app['global']['logrotate_frequency']`
+    - **Type:** string
+    - **Default:** `daily`
+    - **Supported values:** `daily`, `weekly`, `monthly`, `size X`
+    - How often logrotate runs for the given log(s), either time-based or when the log(s) reach a certain size.
+    - See [Logrotate Attributes](#logrotate-attributes) for more information on logrotate attribute precedence.
+
+- `app['global']['logrotate_options']`
+    - **Type:** Array
+    - **Default:** `%w[missingok compress delaycompress notifempty copytruncate sharedscripts]`
+    - All of the unqualified options (i.e., without arguments) that should be enabled
+      for the specified logrotate configuration.
+    - See [Logrotate Attributes](#logrotate-attributes) for more information on logrotate attribute precedence.
+
+- `app['global']['logrotate_X']`
+    - **Type:** Varies
+    - Any attribute value Y for `logrotate_X` will cause the [logrotate_app](https://github.com/stevendanna/logrotate/blob/master/resources/app.rb)
+      resource _X_ to be called with argument Y. For example setting `logrotate_cookbook` to `'my_cookbook'`
+      will result in the `logrotate_app` resource being invoked with the resource value `cookbook 'my_cookbook'`.
+    - See [Logrotate Attributes](#logrotate-attributes) for more information on logrotate attribute precedence.
+
 
 ### database
 
@@ -88,9 +124,10 @@ connected to your OpsWorks application, you don't need to use them. The chef wil
 for you.
 
 - `app['database']['adapter']`
-    - **Supported values:** `mariadb`, `mysql`, `postgresql`, `sqlite3`
+    - **Supported values:** `mariadb`, `mysql`, `postgresql`, `sqlite3`, `null`
     - **Default:** `sqlite3`
-    - ActiveRecord adapter which will be used for database connection.
+    - ActiveRecord adapter which will be used for database connection. `null` means that no database will be configured,
+      and is currently only tested with the `rails` framework.
 
 - `app['database']['username']`
     - Username used to authenticate to the DB
@@ -165,6 +202,22 @@ are supported.
 - `app['framework']['assets_precompilation_command']`
     - A command which will be invoked to precompile assets.
 
+- `app['framework']['logrotate_name']`
+    - **Type:** string
+    - **Default:** Depends on adapter-specific behaviors
+    - The name of the logrotate_app resource, and generated configuration file, for the specified app framework
+      logrotate configuration.
+    - Unlike other logrotate attributes, this attribute can only be set or overridden at a the app framework level;
+      there are no app-wide or global settings beyond those provided by the framework library
+
+- `app['framework']['logrotate_log_paths']`
+    - **Type:** Array
+    - **Default:** Depends on adapter-specific behaviors
+    - Which log file(s) should be backed up via logrotate. If this parameter evaluates to an empty array, no logs will
+      be backed up for the specified app framework.
+    - Unlike other logrotate attributes, this attribute can only be set or overridden at a the app framework level;
+      there are no app-wide or global settings beyond those provided by the framework library.
+
 #### padrino
 
 For Padrino, slight adjustments needs to be made. Since there are many database adapters supported, instead of creating
@@ -195,11 +248,11 @@ ActiveRecord::Base.configurations[:production] = database_url || {
 
 ### appserver
 
-Configuration parameters for the ruby application server. Currently `Puma`, `Thin` and `Unicorn` are supported.
+Configuration parameters for the ruby application server. Currently `Puma`, `Thin`, `Unicorn` and `Passenger` are supported.
 
 - `app['appserver']['adapter']`
     - **Default:** `puma`
-    - **Supported values:** `puma`, `thin`, `unicorn`, `null`
+    - **Supported values:** `puma`, `thin`, `unicorn`, `passenger`, `null`
     - Server on the application side, which will receive requests from webserver in front. `null` means no appserver enabled.
 
 - `app['appserver']['application_yml']`
@@ -225,6 +278,12 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
 - `app['appserver']['worker_processes']|`
     - **Default:** `4`
     - Sets the current number of worker processes. Each worker process will serve exactly one client at a time.
+
+-  `app['appserver']['passenger_version']`
+    - **Default:** None
+    - Which Debian APT package version should be installed from the PPA repo provided by Passenger. Currently this
+      defaults to the latest version provided by the Passenger APT PPA. Set this to a non-nil value to lock your
+      Passenger installation at a specific version.
 
 #### unicorn
 
@@ -271,6 +330,23 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
 - `app['appserver']['worker_processes']`
     - **Default:** `4`
 
+#### passenger
+
+- `app['appserver']['max_pool_size']`
+    - **Type:** Integer
+    - **Default:** Passenger-provided default (based on server capacity)
+    - Sets the `PassengerMaxPoolSize` parameter
+
+- `app['appserver']['min_instances']`
+    - **Type:** Integer
+    - **Default:** Passenger-provided default (based on server capacity)
+    - Sets the `PassengerMinInstances` parameter
+
+- `app['appserver']['mount_point']`
+    - **Default:** `/`
+    - Which URL path should be handled by Passenger. This option allows you to configure your application to handle
+      only a subset of requests made to your web server. Useful for certain hybrid static/dynamic web sites.
+
 ### webserver
 
 Webserver configuration. Proxy passing to application is handled out-of-the-box. Currently Apache2 and nginx
@@ -279,7 +355,8 @@ is supported.
 - `app['webserver']['adapter']`
     - **Default:** `nginx`
     - **Supported values:** `apache2`, `nginx`, `null`
-    - Webserver in front of the instance. It runs on port 80, and receives all requests from Load Balancer/Internet. `null` means no webserver enabled.
+    - Webserver in front of the instance. It runs on port 80 by default (see `app['webserver']['port']`),
+      and receives all requests from the Load Balancer/Internet. `null` means no webserver enabled.
 
 - `app['webserver']['dhparams']`
     - If you wish to use custom generated DH primes, instead of common ones (which is a very good practice),
@@ -298,14 +375,56 @@ is supported.
       work with this configuration very well. If your application needs a support for those browsers,
       set this parameter to `true`.
 
+- `app['webserver']['port']`
+    - **Default** `80`
+    - The port on which the webserver should listen for HTTP requests.
+
+- `app['webserver']['ssl_port']`
+    - **Default** `443`
+    - The port on which the webserver should listen for HTTPs requests, if SSL requests are enabled.
+      Note that SSL itself is controlled by the `app['enable_ssl']` setting in Opsworks.
+
+- `app['webserver']['site_config_template']`
+    - **Default** `appserver.apache2.conf.erb` or `appserver.nginx.conf.erb`
+    - The name of the cookbook template that should be used to generate per-app configuration stanzas (known as
+      a "site" in apache and nginx configuration parlance). Useful in situations where inserting an `extra_config` text
+      section doesn't provide enough flexibility to customize your per-app webserver configuration stanza to your liking.
+    - Note that when you use a custom site configuration template, you can also choose to define `extra_config` as any
+      data structure (e.g., Hash or even nested Hash) to be interpreted by your custom template. This provides somewhat
+      unlimited flexibility to configure the webserver app configuration however you see fit.
+
+- `app['webserver']['site_config_template_cookbook']`
+    - **Default** `opsworks_ruby`
+    - The name of the cookbook in which the site configuration template can be found. If you override
+      `app['webserver']['site_config_template']` to use a site configuration template from your own cookbook,
+      you'll need to override this setting as well to ensure that the opsworks_ruby cookbook looks for the specified
+      template in your cookbook.
+
+- `app['webserver']['logrotate_name']`
+    - **Type:** string
+    - **Default:** Depends on adapter-specific behaviors
+    - The name of the logrotate_app resource, and generated configuration file, for the specified app webserver
+      logrotate configuration.
+    - Unlike other logrotate attributes, this attribute can only be set or overridden at a the app webserver level;
+      there are no app-wide or global settings beyond those provided by the webserver library
+
+- `app['webserver']['logrotate_log_paths']`
+    - **Type:** Array
+    - **Default:** Depends on adapter-specific behaviors
+    - Which log file(s) should be backed up via logrotate. If this parameter evaluates to an empty array, no logs will
+      be backed up for the specified app webserver.
+    - Unlike other logrotate attributes, this attribute can only be set or overridden at a the app webserver level;
+      there are no app-wide or global settings beyond those provided by the webserver library
+
 #### apache
 
 - `app['webserver']['extra_config']`
-    - Raw Apache2 configuration, which will be inserted into `<Virtualhost *:80>` section of the application.
+    - Raw Apache2 configuration, which will be inserted into `<Virtualhost *:80>` (or other port, if specified)
+      section of the application.
 
 - `app['webserver']['extra_config_ssl']`
-    - Raw Apache2 configuration, which will be inserted into `<Virtualhost *:443>` section of the application.
-      If set to `true`, the `extra_config` will be copied.
+    - Raw Apache2 configuration, which will be inserted into `<Virtualhost *:443>` (or other port, if specified for SSL)
+      section of the application. If set to `true`, the `extra_config` will be copied.
 
 - [`app['webserver']['limit_request_body']`](https://httpd.apache.org/docs/2.4/mod/core.html#limitrequestbody)
     - **Default**: `1048576`
@@ -358,7 +477,6 @@ is supported.
 - [`app['webserver']['send_timeout']`](http://nginx.org/en/docs/http/ngx_http_core_module.html#send_timeout)
     - **Default**: `10`
 
-
 - `app['webserver']['enable_upgrade_method']`
     - **Supported values:** `true`, `false`
     - **Default**: `false`
@@ -388,3 +506,16 @@ as well (notice that `node['deploy'][<application_shortname>]` logic doesn't app
 - `app['worker']['queues']`
     - **Default:** `*`
     - Array of queues which should be processed by resque
+
+## Logrotate Attributes
+
+Logrotate behaviors occur across multiple drivers, for example webserver and framework. For this reason, the evaluation
+order for attribute-driven behaviors is a bit more complex for logrotate than for other options that are either
+entirely global (for example, `global.environment`) or entirely isolated to a single type of driver (`webserver.keepalive_timeout`).
+
+The evaluation rules for logrotate setting _X_ are as follows, from highest priority to lowest priority:
+
+- `app[driver_type]['logrotate_X']`
+- `app['global']['logrotate_X']`
+- `node['defaults'][driver_type]['logrotate_X']`
+- `node['defaults']['global']['logrotate_X']`
