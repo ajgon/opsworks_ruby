@@ -75,9 +75,10 @@ module Drivers
       # If an instance fails to start, the adapter process may not exist
       # and trying to unmonitor it might fail.
       def unmonitor_monit
+        monit_status = "monit status | grep -q #{adapter}_#{app['shortname']}"
         context.execute "monit unmonitor #{adapter}_#{app['shortname']}" do
           retries 3
-          only_if "monit status | grep -q #{adapter}_#{app['shortname']}"
+          only_if monit_status
         end
       end
 
