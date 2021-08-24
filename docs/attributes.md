@@ -399,21 +399,21 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
 
 #### unicorn
 
-- [`app['appserver']['backlog']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+- [`app['appserver']['backlog']`](https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen)
     - **Default:** `1024`
 
-- [`app['appserver']['delay']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+- [`app['appserver']['delay']`](https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen)
     - **Default:** `0.5`
 
-- [`app['appserver']['tcp_nodelay']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+- [`app['appserver']['tcp_nodelay']`](https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen)
     - **Supported values:** `true`, `false`
     - **Default:** `true`
 
-- [`app['appserver']['tcp_nopush']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+- [`app['appserver']['tcp_nopush']`](https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen)
     - **Supported values:** `true`, `false`
     - **Default:** `false`
 
-- [`app['appserver']['tries']`](https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen)
+- [`app['appserver']['tries']`](https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen)
     - **Default:** `5`
 
 #### puma
@@ -428,22 +428,22 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
 - [`app['appserver']['thread_min']`](https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62)
     - **Default:** `0`
 
-- [app['appserver']['on_restart']](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L90)
+- [`app['appserver']['on_restart']`](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L90)
     - Code to run before doing a restart. This code should close log files, database connections, etc.
 
-- [app['appserver']['before_fork']](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L116)
+- [`app['appserver']['before_fork']`](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L116)
     - Code to run immediately before the master starts workers.
 
-- [app['appserver']['on_worker_boot']](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L124)
+- [`app['appserver']['on_worker_boot']`](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L124)
     - Code to run in a worker before it starts serving requests. This is called everytime a worker is to be started.
 
-- [app['appserver']['on_worker_shutdown']](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L132)
+- [`app['appserver']['on_worker_shutdown']`](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L132)
     - Code to run in a worker right before it exits. This is called everytime a worker is to about to shutdown.
 
-- [app['appserver']['on_worker_fork']](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L141)
+- [`app['appserver']['on_worker_fork']`](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L141)
     - Code to run in the master right before a worker is started. The worker's index is passed as an argument. This is called everytime a worker is to be started.
 
-- [app['appserver']['after_worker_fork']](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L150)
+- [`app['appserver']['after_worker_fork']`](https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L150)
     - Code to run in the master after a worker has been started. The worker's index is passed as an argument. This is called everytime a worker is to be started.
 
 #### thin
@@ -521,7 +521,7 @@ is supported.
     - **Supported values:** `true`, `false`
     - **Default:** `false`
     - By default webserver is configured to follow strict SSL security standards,
-      [covered in this article](https://cipherli.st/). However, old browsers (like IE < 9 or Android < 2.2) wouldn't
+      [covered in this article](https://cipherlist.eu/). However, old browsers (like IE < 9 or Android < 2.2) wouldn't
       work with this configuration very well. If your application needs a support for those browsers,
       set this parameter to `true`.
 
@@ -640,7 +640,7 @@ is supported.
     - When set to true, enable Websocket's upgrade method such as Rails actionCable.
 
 Since this driver is basically a wrapper for [nginx cookbook](https://github.com/chef-cookbooks/nginx),
-you can also configure [node['nginx'] attributes](https://github.com/miketheman/nginx/tree/2.7.x#attributes)
+you can also configure [`node['nginx']` attributes](https://github.com/sous-chefs/nginx/tree/v2.7.6#attributes)
 as well (notice that `node['deploy'][<application_shortname>]` logic doesn't apply here.)
 
 ### worker

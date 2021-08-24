@@ -19,6 +19,7 @@
 1. `docker-compose run --rm cookbook conventional-changelog -s -p angular -i CHANGELOG.md`
 1. Commit all the things with `chore: Version bump`
 1. Add new configuration options to `gh-pages-source` if necessary
+1. Deploy new documentation version `mike deploy --prefix docs --update-aliases v<version> latest`
 1. Tag version
 1. Push: `git push origin master --tags`
 1. `docker-compose run --rm cookbook knife cookbook site share opsworks_ruby Applications`

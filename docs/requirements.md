@@ -2,7 +2,6 @@
 
 ## Cookbooks
 
-- [deployer](https://supermarket.chef.io/cookbooks/deployer)
 - [ruby-ng](https://supermarket.chef.io/cookbooks/ruby-ng)
 - [nginx](https://github.com/chef-cookbooks/nginx)
 
