@@ -1539,33 +1539,33 @@ and have this feature enabled, consider disabling it as a first step in your deb
 <h4 id="unicorn">unicorn<a class="headerlink" href="#unicorn" title="Permanent link">&para;</a></h4>
 <ul>
 <li>
-<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['backlog']</code></a></p>
+<p><a href="https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['backlog']</code></a></p>
 <ul>
 <li><strong>Default:</strong> <code>1024</code></li>
 </ul>
 </li>
 <li>
-<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['delay']</code></a></p>
+<p><a href="https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['delay']</code></a></p>
 <ul>
 <li><strong>Default:</strong> <code>0.5</code></li>
 </ul>
 </li>
 <li>
-<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tcp_nodelay']</code></a></p>
+<p><a href="https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tcp_nodelay']</code></a></p>
 <ul>
 <li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
 <li><strong>Default:</strong> <code>true</code></li>
 </ul>
 </li>
 <li>
-<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tcp_nopush']</code></a></p>
+<p><a href="https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tcp_nopush']</code></a></p>
 <ul>
 <li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
 <li><strong>Default:</strong> <code>false</code></li>
 </ul>
 </li>
 <li>
-<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tries']</code></a></p>
+<p><a href="https://yhbt.net/unicorn/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tries']</code></a></p>
 <ul>
 <li><strong>Default:</strong> <code>5</code></li>
 </ul>
@@ -1593,37 +1593,37 @@ and have this feature enabled, consider disabling it as a first step in your deb
 </ul>
 </li>
 <li>
-<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L90">app['appserver']['on_restart']</a></p>
+<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L90"><code>app['appserver']['on_restart']</code></a></p>
 <ul>
 <li>Code to run before doing a restart. This code should close log files, database connections, etc.</li>
 </ul>
 </li>
 <li>
-<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L116">app['appserver']['before_fork']</a></p>
+<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L116"><code>app['appserver']['before_fork']</code></a></p>
 <ul>
 <li>Code to run immediately before the master starts workers.</li>
 </ul>
 </li>
 <li>
-<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L124">app['appserver']['on_worker_boot']</a></p>
+<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L124"><code>app['appserver']['on_worker_boot']</code></a></p>
 <ul>
 <li>Code to run in a worker before it starts serving requests. This is called everytime a worker is to be started.</li>
 </ul>
 </li>
 <li>
-<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L132">app['appserver']['on_worker_shutdown']</a></p>
+<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L132"><code>app['appserver']['on_worker_shutdown']</code></a></p>
 <ul>
 <li>Code to run in a worker right before it exits. This is called everytime a worker is to about to shutdown.</li>
 </ul>
 </li>
 <li>
-<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L141">app['appserver']['on_worker_fork']</a></p>
+<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L141"><code>app['appserver']['on_worker_fork']</code></a></p>
 <ul>
 <li>Code to run in the master right before a worker is started. The worker's index is passed as an argument. This is called everytime a worker is to be started.</li>
 </ul>
 </li>
 <li>
-<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L150">app['appserver']['after_worker_fork']</a></p>
+<p><a href="https://github.com/puma/puma/blob/e4255d03fb57021c96f7d03a3784b21b6e85b35b/examples/config.rb#L150"><code>app['appserver']['after_worker_fork']</code></a></p>
 <ul>
 <li>Code to run in the master after a worker has been started. The worker's index is passed as an argument. This is called everytime a worker is to be started.</li>
 </ul>
@@ -1749,7 +1749,7 @@ is supported.</p>
 <li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
 <li><strong>Default:</strong> <code>false</code></li>
 <li>By default webserver is configured to follow strict SSL security standards,
-  <a href="https://cipherli.st/">covered in this article</a>. However, old browsers (like IE &lt; 9 or Android &lt; 2.2) wouldn't
+  <a href="https://cipherlist.eu/">covered in this article</a>. However, old browsers (like IE &lt; 9 or Android &lt; 2.2) wouldn't
   work with this configuration very well. If your application needs a support for those browsers,
   set this parameter to <code>true</code>.</li>
 </ul>
@@ -1944,7 +1944,7 @@ is supported.</p>
 </li>
 </ul>
 <p>Since this driver is basically a wrapper for <a href="https://github.com/chef-cookbooks/nginx">nginx cookbook</a>,
-you can also configure <a href="https://github.com/miketheman/nginx/tree/2.7.x#attributes">node['nginx'] attributes</a>
+you can also configure <a href="https://github.com/sous-chefs/nginx/tree/v2.7.6#attributes"><code>node['nginx']</code> attributes</a>
 as well (notice that <code>node['deploy'][&lt;application_shortname&gt;]</code> logic doesn't apply here.)</p>
 <h3 id="worker">worker<a class="headerlink" href="#worker" title="Permanent link">&para;</a></h3>
 <p>Worker configuration. Currently sidekiq, delayed_job, resque, shoryuken.</p>
