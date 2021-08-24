@@ -1,0 +1,1518 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Manage OpsWorks instances with ease">
+      
+      
+      
+        <meta name="author" content="Igor Rzegocki">
+      
+      
+        <link rel="canonical" href="https://opsworks_ruby.rzegocki.pl/v1.6.0/attributes/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.4">
+    
+    
+      
+        <title>Attributes - opsworks_ruby</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.f7f47774.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#attributes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="opsworks_ruby" class="md-header__button md-logo" aria-label="opsworks_ruby" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            opsworks_ruby
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Attributes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ajgon/opsworks_ruby/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ajgon/opsworks_ruby
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="opsworks_ruby" class="md-nav__button md-logo" aria-label="opsworks_ruby" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    opsworks_ruby
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ajgon/opsworks_ruby/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ajgon/opsworks_ruby
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        User Documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          User Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        Cookbook Documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cookbook Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Cookbook Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support/" class="md-nav__link">
+        Supported Technologies
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Attributes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Attributes
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stack-attributes" class="md-nav__link">
+    Stack attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-attributes" class="md-nav__link">
+    Application attributes
+  </a>
+  
+    <nav class="md-nav" aria-label="Application attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global" class="md-nav__link">
+    global
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scm" class="md-nav__link">
+    scm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#framework" class="md-nav__link">
+    framework
+  </a>
+  
+    <nav class="md-nav" aria-label="framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#padrino" class="md-nav__link">
+    padrino
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rails" class="md-nav__link">
+    rails
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appserver" class="md-nav__link">
+    appserver
+  </a>
+  
+    <nav class="md-nav" aria-label="appserver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unicorn" class="md-nav__link">
+    unicorn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#puma" class="md-nav__link">
+    puma
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thin" class="md-nav__link">
+    thin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webserver" class="md-nav__link">
+    webserver
+  </a>
+  
+    <nav class="md-nav" aria-label="webserver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apache" class="md-nav__link">
+    apache
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    nginx
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sidekiq" class="md-nav__link">
+    sidekiq
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delayed_job" class="md-nav__link">
+    delayed_job
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resque" class="md-nav__link">
+    resque
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/" class="md-nav__link">
+        Recipes
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        About opsworks_ruby
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About opsworks_ruby" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          About opsworks_ruby
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../team/" class="md-nav__link">
+        Author and Contributors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stack-attributes" class="md-nav__link">
+    Stack attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#application-attributes" class="md-nav__link">
+    Application attributes
+  </a>
+  
+    <nav class="md-nav" aria-label="Application attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#global" class="md-nav__link">
+    global
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database" class="md-nav__link">
+    database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scm" class="md-nav__link">
+    scm
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#framework" class="md-nav__link">
+    framework
+  </a>
+  
+    <nav class="md-nav" aria-label="framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#padrino" class="md-nav__link">
+    padrino
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rails" class="md-nav__link">
+    rails
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#appserver" class="md-nav__link">
+    appserver
+  </a>
+  
+    <nav class="md-nav" aria-label="appserver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unicorn" class="md-nav__link">
+    unicorn
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#puma" class="md-nav__link">
+    puma
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thin" class="md-nav__link">
+    thin
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webserver" class="md-nav__link">
+    webserver
+  </a>
+  
+    <nav class="md-nav" aria-label="webserver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#apache" class="md-nav__link">
+    apache
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    nginx
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sidekiq" class="md-nav__link">
+    sidekiq
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delayed_job" class="md-nav__link">
+    delayed_job
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resque" class="md-nav__link">
+    resque
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ajgon/opsworks_ruby/edit/master/docs/attributes.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="attributes">Attributes<a class="headerlink" href="#attributes" title="Permanent link">&para;</a></h1>
+<p>Attributes format follows the guidelines of old Chef 11.x based OpsWorks stack. So all of them, need to be placed under
+<code>node['deploy'][&lt;application_shortname&gt;]</code>. Attributes (and whole logic of this cookbook) are divided to six sections.
+Following convention is used: <code>app == node['deploy'][&lt;application_shortname&gt;]</code> so for example
+<code>app['framework']['adapter']</code> actually means <code>node['deploy'][&lt;application_shortname&gt;]['framework']['adapter']</code>.</p>
+<h2 id="stack-attributes">Stack attributes<a class="headerlink" href="#stack-attributes" title="Permanent link">&para;</a></h2>
+<p>These attributes are used on Stack/Layer level globally to configure the opsworks_ruby cookbook itself.
+They should'nt be used under <code>node['deploy'][&lt;application_shortname&gt;]</code> (notice lack of the <code>app[]</code> convention).</p>
+<ul>
+<li>
+<p><code>node['applications']</code></p>
+<ul>
+<li>An array of application shortnames which should be deployed to given layer. If set, only applications witch <code>deploy</code>
+  flag set (on OpsWorks side) included in this list will be deployed. If not set, all <code>deploy</code> application will be
+  supported. This parameter mostly matters during the setup phase, since all application in given stack are deployed
+  to the given layer. Using this paramter you can narrow the list to application which you actually intend to use.
+  !!! note
+      <strong>Important</strong> thing is, that when you try to do a manual deploy from OpsWorks of an application, not included
+      in this list - it will be skipped, as this list takes precedence over anything else.</li>
+</ul>
+</li>
+<li>
+<p><code>node['ruby-ng']['ruby_version']</code></p>
+<ul>
+<li><strong>Type:</strong> string</li>
+<li><strong>Default:</strong> <code>2.4</code></li>
+<li>Sets the Ruby version used through the system. See <a href="https://supermarket.chef.io/cookbooks/ruby-ng">ruby-ng cookbook documentation</a>
+ for more details</li>
+</ul>
+</li>
+</ul>
+<h2 id="application-attributes">Application attributes<a class="headerlink" href="#application-attributes" title="Permanent link">&para;</a></h2>
+<h3 id="global">global<a class="headerlink" href="#global" title="Permanent link">&para;</a></h3>
+<p>Global parameters apply to the whole application, and can be used by any section (framework, appserver etc.).</p>
+<ul>
+<li>
+<p><code>app['global']['environment']</code></p>
+<ul>
+<li><strong>Type:</strong> string</li>
+<li><strong>Default:</strong> <code>production</code></li>
+<li>Sets the "deploy environment" for all the app-related (for example <code>RAILS_ENV</code> in Rails) actions in the project
+  (server, worker, etc.)</li>
+</ul>
+</li>
+<li>
+<p><code>app['global']['symlinks']</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Important Notice:</strong> Any values for this parameter will be <em>merged</em> to the defaults</p>
+</div>
+<ul>
+<li><strong>Type:</strong> key-value</li>
+<li><strong>Default:</strong> <code>{ "system": "public/system", "assets": "public/assets", "cache": "tmp/cache", "pids": "tmp/pids", "log": "log" }</code></li>
+<li>List of symlinks created to the <code>shared</code> directory. The format is <code>{"shared_path": "release_path"}</code>. For example
+  <code>{"system", "public/system"}</code> means: Link <code>/src/www/app_name/current/public/system</code> to <code>/src/www/app_name/shared/system</code>.</li>
+</ul>
+</li>
+<li>
+<p><code>app['global']['create_dirs_before_symlink']</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Important Notice:</strong> Any values for this parameter will be <em>appended</em> to the defaults</p>
+</div>
+<ul>
+<li><strong>Type:</strong> array</li>
+<li><strong>Default:</strong> <code>["tmp", "public", "config", "../../shared/cache", "../../shared/assets"]</code></li>
+<li>List of directories to be created before symlinking. Paths are relative to <code>release_path</code>.
+  For example <code>tmp</code> becomes <code>/srv/www/app_name/current/tmp</code>.</li>
+</ul>
+</li>
+<li>
+<p><code>app['global']['purge_before_symlink']</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Important Notice:</strong> Any values for this parameter will be <em>appended</em> to the defaults</p>
+</div>
+<ul>
+<li><strong>Type:</strong> array</li>
+<li><strong>Default:</strong> <code>["log", "tmp/cache", "tmp/pids", "public/system", "public/assets"]</code></li>
+<li>List of directories to be wiped out before symlinking. Paths are relative to <code>release_path</code>.
+  For example <code>tmp</code> becomes <code>/srv/www/app_name/current/tmp</code>.</li>
+</ul>
+</li>
+<li>
+<p><code>app['global']['rollback_on_error']</code></p>
+<ul>
+<li><strong>Type:</strong> boolean</li>
+<li><strong>Default:</strong> <code>true</code></li>
+<li>When set to true, any failed deploy will be removed from <code>releases</code> directory.</li>
+</ul>
+</li>
+<li>
+<p><code>app['global']['logrotate_rotate']</code></p>
+<ul>
+<li><strong>Type:</strong> integer</li>
+<li><strong>Default:</strong> <code>30</code></li>
+<li><strong>Important Notice:</strong> The parameter is in days</li>
+</ul>
+</li>
+</ul>
+<h3 id="database">database<a class="headerlink" href="#database" title="Permanent link">&para;</a></h3>
+<p>Those parameters will be passed without any alteration to the <code>database.yml</code> file. Keep in mind, that if you have RDS
+connected to your OpsWorks application, you don't need to use them. The chef will do all the job, and determine them
+for you.</p>
+<ul>
+<li>
+<p><code>app['database']['adapter']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>mariadb</code>, <code>mysql</code>, <code>postgresql</code>, <code>sqlite3</code></li>
+<li><strong>Default:</strong> <code>sqlite3</code></li>
+<li>ActiveRecord adapter which will be used for database connection.</li>
+</ul>
+</li>
+<li>
+<p><code>app['database']['username']</code></p>
+<ul>
+<li>Username used to authenticate to the DB</li>
+</ul>
+</li>
+<li>
+<p><code>app['database']['password']</code></p>
+<ul>
+<li>Password used to authenticate to the DB</li>
+</ul>
+</li>
+<li>
+<p><code>app['database']['host']</code></p>
+<ul>
+<li>Database host</li>
+</ul>
+</li>
+<li>
+<p><code>app['database']['database']</code></p>
+<ul>
+<li>Database name</li>
+</ul>
+</li>
+<li>
+<p><code>app['database'][&lt;any other&gt;]</code></p>
+<ul>
+<li>Any other key-value pair provided here, will be passed directly to the <code>database.yml</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="scm">scm<a class="headerlink" href="#scm" title="Permanent link">&para;</a></h3>
+<p>Those parameters can also be determined from OpsWorks application, and usually you don't need to provide them here.
+Currently only <code>git</code> is supported.</p>
+<ul>
+<li>
+<p><code>app['scm']['scm_provider']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>git</code></li>
+<li><strong>Default:</strong> <code>git</code></li>
+<li>SCM used by the cookbook to clone the repo.</li>
+</ul>
+</li>
+<li>
+<p><code>app['scm']['remove_scm_files']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>true</code></li>
+<li>If set to true, all SCM leftovers (like <code>.git</code>) will be removed.</li>
+</ul>
+</li>
+<li>
+<p><code>app['scm']['repository']</code></p>
+<ul>
+<li>Repository URL</li>
+</ul>
+</li>
+<li>
+<p><code>app['scm']['revision']</code></p>
+<ul>
+<li>Branch name/SHA1 of commit which should be use as a base of the deployment.</li>
+</ul>
+</li>
+<li>
+<p><code>app['scm']['ssh_key']</code></p>
+<ul>
+<li>A private SSH deploy key (the key itself, not the file name), used when fetching repositories via SSH.</li>
+</ul>
+</li>
+<li>
+<p><code>app['scm']['ssh_wrapper']</code></p>
+<ul>
+<li>A wrapper script, which will be used by git when fetching repository via SSH. Essentially, a value of <code>GIT_SSH</code>
+  environment variable. This cookbook provides one of those scripts for you, so you shouldn't alter this variable
+  unless you know what you're doing.</li>
+</ul>
+</li>
+<li>
+<p><code>app['scm']['enabled_submodules']</code></p>
+<ul>
+<li>If set to <code>true</code>, any submodules included in the repository, will also be fetched.</li>
+</ul>
+</li>
+</ul>
+<h3 id="framework">framework<a class="headerlink" href="#framework" title="Permanent link">&para;</a></h3>
+<p>Pre-optimalization for specific frameworks (like migrations, cache etc.). Currently <code>hanami.rb</code> and <code>Rails</code>
+are supported.</p>
+<ul>
+<li>
+<p><code>app['framework']['adapter']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>null</code>, <code>hanami</code>, <code>padrino</code>, <code>rails</code></li>
+<li><strong>Default:</strong> <code>rails</code></li>
+<li>Ruby framework used in project.</li>
+</ul>
+</li>
+<li>
+<p><code>app['framework']['migrate']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>true</code></li>
+<li>If set to <code>true</code>, migrations will be launch during deployment.</li>
+</ul>
+</li>
+<li>
+<p><code>app['framework']['migration_command']</code></p>
+<ul>
+<li>A command which will be invoked to perform migration. This cookbook comes with predefined migration commands,
+  well suited for the task, and usually you don't have to change this parameter.</li>
+</ul>
+</li>
+<li>
+<p><code>app['framework']['assets_precompile']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>true</code></li>
+</ul>
+</li>
+<li>
+<p><code>app['framework']['assets_precompilation_command']</code></p>
+<ul>
+<li>A command which will be invoked to precompile assets.</li>
+</ul>
+</li>
+</ul>
+<h4 id="padrino">padrino<a class="headerlink" href="#padrino" title="Permanent link">&para;</a></h4>
+<p>For Padrino, slight adjustments needs to be made. Since there are many database adapters supported, instead of creating
+configuration for each one, the <code>DATABASE_URL</code> environmental variable is provided. You need to parse it in your
+<code>config/database.rb</code> file and properly pass to the configuration options.</p>
+<p>For example, for ActiveRecord:</p>
+<pre><code class="language-ruby">database_url = ENV['DATABASE_URL'] &amp;&amp; ActiveRecord::ConnectionAdapters::ConnectionSpecification::ConnectionUrlResolver.new(ENV['DATABASE_URL']).to_hash
+ActiveRecord::Base.configurations[:production] = database_url || {
+  :adapter =&gt; 'sqlite3',
+  :database =&gt; Padrino.root('db', 'dummy_app_production.db')
+}
+</code></pre>
+<h4 id="rails">rails<a class="headerlink" href="#rails" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><code>app['framework']['envs_in_console']</code></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is highly unstable feature. If you experience any troubles with deployments,
+and have this feature enabled, consider disabling it as a first step in your debugging process.</p>
+</div>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>false</code></li>
+<li>If set to true, <code>rails console</code> will be invoked with all application-level environment variables set.</li>
+</ul>
+</li>
+</ul>
+<h3 id="appserver">appserver<a class="headerlink" href="#appserver" title="Permanent link">&para;</a></h3>
+<p>Configuration parameters for the ruby application server. Currently <code>Puma</code>, <code>Thin</code> and <code>Unicorn</code> are supported.</p>
+<ul>
+<li>
+<p><code>app['appserver']['adapter']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>puma</code></li>
+<li><strong>Supported values:</strong> <code>puma</code>, <code>thin</code>, <code>unicorn</code>, <code>null</code></li>
+<li>Server on the application side, which will receive requests from webserver in front. <code>null</code> means no appserver enabled.</li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['application_yml']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>false</code></li>
+<li>Creates a <code>config/application.yml</code> file with all pre-configured environment variables. Useful for gems like
+  <a href="https://github.com/laserlemon/figaro">figaro</a></li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['dot_env']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>false</code></li>
+<li>Creates a <code>.env</code> file with all pre-configured environment variables. Useful for gems like <a href="https://github.com/bkeepers/dotenv">dotenv</a></li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['preload_app']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>true</code></li>
+<li>Enabling this preloads an application before forking worker processes.</li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['timeout']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>50</code></li>
+<li>Sets the timeout of worker processes to seconds.</li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['worker_processes']|</code></p>
+<ul>
+<li><strong>Default:</strong> <code>4</code></li>
+<li>Sets the current number of worker processes. Each worker process will serve exactly one client at a time.</li>
+</ul>
+</li>
+</ul>
+<h4 id="unicorn">unicorn<a class="headerlink" href="#unicorn" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['backlog']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>1024</code></li>
+</ul>
+</li>
+<li>
+<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['delay']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>0.5</code></li>
+</ul>
+</li>
+<li>
+<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tcp_nodelay']</code></a></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>true</code></li>
+</ul>
+</li>
+<li>
+<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tcp_nopush']</code></a></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>false</code></li>
+</ul>
+</li>
+<li>
+<p><a href="https://unicorn.bogomips.org/Unicorn/Configurator.html#method-i-listen"><code>app['appserver']['tries']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>5</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="puma">puma<a class="headerlink" href="#puma" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><a href="https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L56"><code>app['appserver']['log_requests']</code></a></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>false</code></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62"><code>app['appserver']['thread_max']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>16</code></li>
+</ul>
+</li>
+<li>
+<p><a href="https://github.com/puma/puma/blob/c169853ff233dd3b5c4e8ed17e84e1a6d8cb565c/examples/config.rb#L62"><code>app['appserver']['thread_min']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>0</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="thin">thin<a class="headerlink" href="#thin" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><code>app['appserver']['max_connections']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>1024</code></li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['max_persistent_connections']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>512</code></li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['timeout']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>60</code></li>
+</ul>
+</li>
+<li>
+<p><code>app['appserver']['worker_processes']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>4</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="webserver">webserver<a class="headerlink" href="#webserver" title="Permanent link">&para;</a></h3>
+<p>Webserver configuration. Proxy passing to application is handled out-of-the-box. Currently Apache2 and nginx
+is supported.</p>
+<ul>
+<li>
+<p><code>app['webserver']['adapter']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>nginx</code></li>
+<li><strong>Supported values:</strong> <code>apache2</code>, <code>nginx</code>, <code>null</code></li>
+<li>Webserver in front of the instance. It runs on port 80, and receives all requests from Load Balancer/Internet. <code>null</code> means no webserver enabled.</li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['dhparams']</code></p>
+<ul>
+<li>If you wish to use custom generated DH primes, instead of common ones (which is a very good practice),
+  put the contents (not file name) of the <code>dhparams.pem</code> file into this attribute.
+  <a href="https://weakdh.org/sysadmin.html">Read more here.</a></li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['keepalive_timeout']</code></p>
+<ul>
+<li><strong>Default</strong>: <code>15</code></li>
+<li>The number of seconds webserver will wait for a subsequent request before closing the connection.</li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['ssl_for_legacy_browsers']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default:</strong> <code>false</code></li>
+<li>By default webserver is configured to follow strict SSL security standards,
+  <a href="https://cipherli.st/">covered in this article</a>. However, old browsers (like IE &lt; 9 or Android &lt; 2.2) wouldn't
+  work with this configuration very well. If your application needs a support for those browsers,
+  set this parameter to <code>true</code>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="apache">apache<a class="headerlink" href="#apache" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><code>app['webserver']['extra_config']</code></p>
+<ul>
+<li>Raw Apache2 configuration, which will be inserted into <code>&lt;Virtualhost *:80&gt;</code> section of the application.</li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['extra_config_ssl']</code></p>
+<ul>
+<li>Raw Apache2 configuration, which will be inserted into <code>&lt;Virtualhost *:443&gt;</code> section of the application.
+  If set to <code>true</code>, the <code>extra_config</code> will be copied.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://httpd.apache.org/docs/2.4/mod/core.html#limitrequestbody"><code>app['webserver']['limit_request_body']</code></a></p>
+<ul>
+<li><strong>Default</strong>: <code>1048576</code></li>
+</ul>
+</li>
+<li>
+<p><a href="https://httpd.apache.org/docs/2.4/mod/core.html#loglevel"><code>app['webserver']['log_level']</code></a></p>
+<ul>
+<li><strong>Default</strong>: <code>info</code></li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['log_dir']</code></p>
+<ul>
+<li><strong>Default</strong>: <code>/var/log/apache2</code> (debian) or <code>/var/log/httpd</code> (rhel)</li>
+<li>A place to store application-related Apache2 logs.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://httpd.apache.org/docs/current/mod/mod_proxy.html#proxytimeout"><code>app['webserver']['proxy_timeout']</code></a></p>
+<ul>
+<li><strong>Default</strong>: <code>60</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="nginx">nginx<a class="headerlink" href="#nginx" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><code>app['webserver']['build_type']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>default</code> or <code>source</code></li>
+<li><strong>Default:</strong> <code>default</code></li>
+<li>The way the <a href="https://supermarket.chef.io/cookbooks/chef_nginx">chef_nginx</a> cookbooks handles <code>nginx</code> installation.
+  Check out <a href="https://github.com/miketheman/nginx/tree/2.7.x#recipes">the corresponding docs</a> for more details.
+  Never use <code>node['nginx']['install_method']</code>, as it will be always overwritten by this attribute.</li>
+</ul>
+</li>
+<li>
+<p><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_timeout"><code>app['webserver']['client_body_timeout']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>12</code></li>
+</ul>
+</li>
+<li>
+<p><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#client_header_timeout"><code>app['webserver']['client_header_timeout']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>12</code></li>
+</ul>
+</li>
+<li>
+<p><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size"><code>app['webserver']['client_max_body_size']</code></a></p>
+<ul>
+<li><strong>Default:</strong> <code>10m</code></li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['extra_config']</code></p>
+<ul>
+<li>Raw nginx configuration, which will be inserted into <code>server</code> section of the application for HTTP port.</li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['extra_config_ssl']</code></p>
+<ul>
+<li>Raw nginx configuration, which will be inserted into <code>server</code> section of the application for HTTPS port.
+  If set to <code>true</code>, the <code>extra_config</code> will be copied.</li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['log_dir']</code></p>
+<ul>
+<li><strong>Default</strong>: <code>/var/log/nginx</code></li>
+<li>A place to store application-related nginx logs.</li>
+</ul>
+</li>
+<li>
+<p><a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_read_timeout"><code>app['webserver']['proxy_read_timeout']</code></a></p>
+<ul>
+<li><strong>Default</strong>: <code>60</code></li>
+</ul>
+</li>
+<li>
+<p><a href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_send_timeout"><code>app['webserver']['proxy_send_timeout']</code></a></p>
+<ul>
+<li><strong>Default</strong>: <code>60</code></li>
+</ul>
+</li>
+<li>
+<p><a href="http://nginx.org/en/docs/http/ngx_http_core_module.html#send_timeout"><code>app['webserver']['send_timeout']</code></a></p>
+<ul>
+<li><strong>Default</strong>: <code>10</code></li>
+</ul>
+</li>
+<li>
+<p><code>app['webserver']['enable_upgrade_method']</code></p>
+<ul>
+<li><strong>Supported values:</strong> <code>true</code>, <code>false</code></li>
+<li><strong>Default</strong>: <code>false</code></li>
+<li>When set to true, enable Websocket's upgrade method such as Rails actionCable.</li>
+</ul>
+</li>
+</ul>
+<p>Since this driver is basically a wrapper for <a href="https://github.com/chef-cookbooks/chef_nginx">chef_nginx cookbook</a>,
+you can also configure <a href="https://github.com/miketheman/nginx/tree/2.7.x#attributes">node['nginx'] attributes</a>
+as well (notice that <code>node['deploy'][&lt;application_shortname&gt;]</code> logic doesn't apply here.)</p>
+<h4 id="sidekiq">sidekiq<a class="headerlink" href="#sidekiq" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>app['worker']['config']</code><ul>
+<li>Configuration parameters which will be directly passed to the worker. For example, for <code>sidekiq</code> they will be
+  serialized to <a href="https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file">sidekiq.yml config file</a>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="delayed_job">delayed_job<a class="headerlink" href="#delayed_job" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>app['worker']['queues']</code><ul>
+<li>Array of queues which should be processed by delayed_job</li>
+</ul>
+</li>
+</ul>
+<h4 id="resque">resque<a class="headerlink" href="#resque" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><code>app['worker']['workers']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>2</code></li>
+<li>Number of resque workers</li>
+</ul>
+</li>
+<li>
+<p><code>app['worker']['queues']</code></p>
+<ul>
+<li><strong>Default:</strong> <code>*</code></li>
+<li>Array of queues which should be processed by resque</li>
+</ul>
+</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../requirements/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Requirements" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Requirements
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../recipes/" class="md-footer__link md-footer__link--next" aria-label="Next: Recipes" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Recipes
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2016 - 2021 Igor Rzegocki
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.sections", "navigation.top", "search.suggest"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.709b4209.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.febc23d1.min.js"></script>
+      
+    
+  </body>
+</html>
