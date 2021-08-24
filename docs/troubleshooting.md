@@ -9,7 +9,7 @@ and break this file.
 
 ## SSL not working in legacy browsers
 
-By default webserver is configured to follow strict SSL security standards, [covered in this article](https://cipherli.st/).
+By default webserver is configured to follow strict SSL security standards, [covered in this article](https://cipherlist.eu/).
 However, old browsers (like IE < 9 or Android < 2.2) wouldn't work with this configuration very well.
 If your application needs a support for those browsers, set `app['webserver']['ssl_for_legacy_browsers']` to true.
 

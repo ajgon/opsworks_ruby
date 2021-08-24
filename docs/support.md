@@ -16,8 +16,8 @@
 - App server
     - Null (no appserver)
     - [Puma](http://puma.io/)
-    - [Thin](http://code.macournoyer.com/thin/)
-    - [Unicorn](https://unicorn.bogomips.org/)
+    - [Thin](https://github.com/macournoyer/thin)
+    - [Unicorn](https://yhbt.net/unicorn/)
 - Web server
     - Null (no webserver)
     - [Apache2](https://httpd.apache.org/)
@@ -25,6 +25,6 @@
 - Worker
     - Null (no worker)
     - [delayed_job](https://github.com/collectiveidea/delayed_job)
-    - [resque](https://github.com/resque/resque)
+    - [resque](https://resque.github.io/)
     - [sidekiq](http://sidekiq.org/)
     - [shoryuken](https://github.com/phstc/shoryuken)
