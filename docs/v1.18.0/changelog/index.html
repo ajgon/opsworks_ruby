@@ -1,0 +1,2860 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Manage OpsWorks instances with ease">
+      
+      
+      
+        <meta name="author" content="Igor Rzegocki">
+      
+      
+        <link rel="canonical" href="https://opsworks_ruby.rzegocki.pl/v1.18.0/changelog/">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.4">
+    
+    
+      
+        <title>Changelog - opsworks_ruby</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.f7f47774.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="opsworks_ruby" class="md-header__button md-logo" aria-label="opsworks_ruby" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            opsworks_ruby
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ajgon/opsworks_ruby/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ajgon/opsworks_ruby
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="opsworks_ruby" class="md-nav__button md-logo" aria-label="opsworks_ruby" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    opsworks_ruby
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ajgon/opsworks_ruby/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ajgon/opsworks_ruby
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        User Documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          User Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        Troubleshooting
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Cookbook Documentation
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Cookbook Documentation" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Cookbook Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support/" class="md-nav__link">
+        Supported Technologies
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../requirements/" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attributes/" class="md-nav__link">
+        Attributes
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../recipes/" class="md-nav__link">
+        Recipes
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        About opsworks_ruby
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="About opsworks_ruby" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          About opsworks_ruby
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../team/" class="md-nav__link">
+        Author and Contributors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Changelog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Changelog
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1180-2020-02-29" class="md-nav__link">
+    1.18.0 (2020-02-29)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.18.0 (2020-02-29)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1170-2019-11-23" class="md-nav__link">
+    1.17.0 (2019-11-23)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.17.0 (2019-11-23)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_1" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1160-2019-09-11" class="md-nav__link">
+    1.16.0 (2019-09-11)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.16.0 (2019-09-11)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_2" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_2" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1150-2019-07-09" class="md-nav__link">
+    1.15.0 (2019-07-09)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.15.0 (2019-07-09)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_3" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_3" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1140-2019-03-06" class="md-nav__link">
+    1.14.0 (2019-03-06)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.14.0 (2019-03-06)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_4" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_4" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1130-2018-11-09" class="md-nav__link">
+    1.13.0 (2018-11-09)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.13.0 (2018-11-09)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_5" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_5" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1120-2018-10-03" class="md-nav__link">
+    1.12.0 (2018-10-03)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.12.0 (2018-10-03)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_6" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1110-2018-07-17" class="md-nav__link">
+    1.11.0 (2018-07-17)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.11.0 (2018-07-17)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_6" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_7" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_1" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1101-2018-06-24" class="md-nav__link">
+    1.10.1 (2018-06-24)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.10.1 (2018-06-24)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_7" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_8" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1100-2018-06-10" class="md-nav__link">
+    1.10.0 (2018-06-10)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.10.0 (2018-06-10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_8" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_9" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_2" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#191-2018-05-22" class="md-nav__link">
+    1.9.1 (2018-05-22)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9.1 (2018-05-22)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_9" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#190-2018-03-17" class="md-nav__link">
+    1.9.0 (2018-03-17)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9.0 (2018-03-17)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_10" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_10" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_3" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#180-2017-10-23" class="md-nav__link">
+    1.8.0 (2017-10-23)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.8.0 (2017-10-23)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_11" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_11" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#171-2017-09-22" class="md-nav__link">
+    1.7.1 (2017-09-22)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7.1 (2017-09-22)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_12" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_12" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#170-2017-09-05" class="md-nav__link">
+    1.7.0 (2017-09-05)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7.0 (2017-09-05)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_13" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_13" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#160-2017-06-03" class="md-nav__link">
+    1.6.0 (2017-06-03)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6.0 (2017-06-03)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_14" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_14" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_4" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#150-2017-04-25" class="md-nav__link">
+    1.5.0 (2017-04-25)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5.0 (2017-04-25)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_15" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#140-2017-03-12" class="md-nav__link">
+    1.4.0 (2017-03-12)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4.0 (2017-03-12)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_15" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_16" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_5" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#130-2017-01-16" class="md-nav__link">
+    1.3.0 (2017-01-16)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3.0 (2017-01-16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_17" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_6" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#121-2016-11-27" class="md-nav__link">
+    1.2.1 (2016-11-27)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2.1 (2016-11-27)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_16" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#120-2016-11-02" class="md-nav__link">
+    1.2.0 (2016-11-02)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2.0 (2016-11-02)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_17" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_7" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-2016-10-27" class="md-nav__link">
+    1.1.2 (2016-10-27)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1.2 (2016-10-27)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_18" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_18" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-2016-10-21" class="md-nav__link">
+    1.1.1 (2016-10-21)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1.1 (2016-10-21)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_19" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-2016-10-21" class="md-nav__link">
+    1.1.0 (2016-10-21)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1.0 (2016-10-21)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_20" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_8" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-2016-10-04" class="md-nav__link">
+    1.0.0 (2016-10-04)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.0.0 (2016-10-04)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_21" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_19" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-improvements" class="md-nav__link">
+    Performance Improvements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_9" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#080-2016-09-02" class="md-nav__link">
+    0.8.0 (2016-09-02)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.8.0 (2016-09-02)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_22" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_20" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#070-2016-08-29" class="md-nav__link">
+    0.7.0 (2016-08-29)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.7.0 (2016-08-29)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_23" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_21" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060-2016-08-17" class="md-nav__link">
+    0.6.0 (2016-08-17)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.6.0 (2016-08-17)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_10" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050-2016-07-21" class="md-nav__link">
+    0.5.0 (2016-07-21)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.5.0 (2016-07-21)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_22" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#040-2016-06-16" class="md-nav__link">
+    0.4.0 (2016-06-16)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.4.0 (2016-06-16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_23" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#031-2016-06-16" class="md-nav__link">
+    0.3.1 (2016-06-16)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.3.1 (2016-06-16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_24" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030-2016-06-08" class="md-nav__link">
+    0.3.0 (2016-06-08)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.3.0 (2016-06-08)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_24" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_11" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#021-2016-05-11" class="md-nav__link">
+    0.2.1 (2016-05-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020-2016-04-24" class="md-nav__link">
+    0.2.0 (2016-04-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#010-2016-04-23" class="md-nav__link">
+    0.1.0 (2016-04-23)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license/" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1180-2020-02-29" class="md-nav__link">
+    1.18.0 (2020-02-29)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.18.0 (2020-02-29)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1170-2019-11-23" class="md-nav__link">
+    1.17.0 (2019-11-23)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.17.0 (2019-11-23)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_1" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_1" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1160-2019-09-11" class="md-nav__link">
+    1.16.0 (2019-09-11)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.16.0 (2019-09-11)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_2" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_2" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1150-2019-07-09" class="md-nav__link">
+    1.15.0 (2019-07-09)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.15.0 (2019-07-09)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_3" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_3" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1140-2019-03-06" class="md-nav__link">
+    1.14.0 (2019-03-06)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.14.0 (2019-03-06)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_4" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_4" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1130-2018-11-09" class="md-nav__link">
+    1.13.0 (2018-11-09)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.13.0 (2018-11-09)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_5" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_5" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1120-2018-10-03" class="md-nav__link">
+    1.12.0 (2018-10-03)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.12.0 (2018-10-03)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_6" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1110-2018-07-17" class="md-nav__link">
+    1.11.0 (2018-07-17)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.11.0 (2018-07-17)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_6" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_7" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_1" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1101-2018-06-24" class="md-nav__link">
+    1.10.1 (2018-06-24)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.10.1 (2018-06-24)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_7" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_8" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1100-2018-06-10" class="md-nav__link">
+    1.10.0 (2018-06-10)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.10.0 (2018-06-10)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_8" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_9" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_2" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#191-2018-05-22" class="md-nav__link">
+    1.9.1 (2018-05-22)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9.1 (2018-05-22)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_9" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#190-2018-03-17" class="md-nav__link">
+    1.9.0 (2018-03-17)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.9.0 (2018-03-17)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_10" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_10" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_3" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#180-2017-10-23" class="md-nav__link">
+    1.8.0 (2017-10-23)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.8.0 (2017-10-23)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_11" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_11" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#171-2017-09-22" class="md-nav__link">
+    1.7.1 (2017-09-22)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7.1 (2017-09-22)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_12" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_12" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#170-2017-09-05" class="md-nav__link">
+    1.7.0 (2017-09-05)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.7.0 (2017-09-05)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_13" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_13" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#160-2017-06-03" class="md-nav__link">
+    1.6.0 (2017-06-03)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.6.0 (2017-06-03)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_14" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_14" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_4" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#150-2017-04-25" class="md-nav__link">
+    1.5.0 (2017-04-25)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.5.0 (2017-04-25)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_15" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#140-2017-03-12" class="md-nav__link">
+    1.4.0 (2017-03-12)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.4.0 (2017-03-12)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_15" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_16" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_5" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#130-2017-01-16" class="md-nav__link">
+    1.3.0 (2017-01-16)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.3.0 (2017-01-16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_17" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_6" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#121-2016-11-27" class="md-nav__link">
+    1.2.1 (2016-11-27)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2.1 (2016-11-27)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_16" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#120-2016-11-02" class="md-nav__link">
+    1.2.0 (2016-11-02)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.2.0 (2016-11-02)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_17" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_7" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#112-2016-10-27" class="md-nav__link">
+    1.1.2 (2016-10-27)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1.2 (2016-10-27)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_18" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_18" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#111-2016-10-21" class="md-nav__link">
+    1.1.1 (2016-10-21)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1.1 (2016-10-21)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_19" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#110-2016-10-21" class="md-nav__link">
+    1.1.0 (2016-10-21)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.1.0 (2016-10-21)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_20" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_8" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#100-2016-10-04" class="md-nav__link">
+    1.0.0 (2016-10-04)
+  </a>
+  
+    <nav class="md-nav" aria-label="1.0.0 (2016-10-04)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_21" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_19" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-improvements" class="md-nav__link">
+    Performance Improvements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_9" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#080-2016-09-02" class="md-nav__link">
+    0.8.0 (2016-09-02)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.8.0 (2016-09-02)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_22" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_20" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#070-2016-08-29" class="md-nav__link">
+    0.7.0 (2016-08-29)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.7.0 (2016-08-29)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_23" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#features_21" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060-2016-08-17" class="md-nav__link">
+    0.6.0 (2016-08-17)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.6.0 (2016-08-17)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_10" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050-2016-07-21" class="md-nav__link">
+    0.5.0 (2016-07-21)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.5.0 (2016-07-21)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_22" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#040-2016-06-16" class="md-nav__link">
+    0.4.0 (2016-06-16)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.4.0 (2016-06-16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_23" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#031-2016-06-16" class="md-nav__link">
+    0.3.1 (2016-06-16)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.3.1 (2016-06-16)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bug-fixes_24" class="md-nav__link">
+    Bug Fixes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#030-2016-06-08" class="md-nav__link">
+    0.3.0 (2016-06-08)
+  </a>
+  
+    <nav class="md-nav" aria-label="0.3.0 (2016-06-08)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#features_24" class="md-nav__link">
+    Features
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#breaking-changes_11" class="md-nav__link">
+    BREAKING CHANGES
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#021-2016-05-11" class="md-nav__link">
+    0.2.1 (2016-05-11)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#020-2016-04-24" class="md-nav__link">
+    0.2.0 (2016-04-24)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#010-2016-04-23" class="md-nav__link">
+    0.1.0 (2016-04-23)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/ajgon/opsworks_ruby/edit/master/docs/changelog.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
+<h2 id="1180-2020-02-29"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.17.0...v1.18.0">1.18.0</a> (2020-02-29)<a class="headerlink" href="#1180-2020-02-29" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> fix .env and application.yml symlinks creation (<a href="https://github.com/ajgon/opsworks_ruby/commit/05809558c5aa1eb10dd4e883f2e2dcfd7654b712">0580955</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/232">#232</a></li>
+</ul>
+<h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> Add new appserver config params for passenger (<a href="https://github.com/ajgon/opsworks_ruby/issues/227">#227</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/050052148c543c557783589cf0347fd026f16bfd">0500521</a>)</li>
+<li><strong>setup:</strong> add support for fullstaq ruby repos (<a href="https://github.com/ajgon/opsworks_ruby/commit/1489d01c14caf51d2150784db09cfdecfddf281a">1489d01</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/229">#229</a></li>
+</ul>
+<h2 id="1170-2019-11-23"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.16.0...v1.17.0">1.17.0</a> (2019-11-23)<a class="headerlink" href="#1170-2019-11-23" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_1">Bug Fixes<a class="headerlink" href="#bug-fixes_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li>replace symlink options instead of appending them (<a href="https://github.com/ajgon/opsworks_ruby/commit/b2650fbea79c44d4f073c00a511a1017b3d4199f">b2650fb</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/224">#224</a></li>
+</ul>
+<h3 id="features_1">Features<a class="headerlink" href="#features_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>database:</strong> add support for multiple databases per environment (<a href="https://github.com/ajgon/opsworks_ruby/commit/0c7f89fe83933be7ef0cead39363dce7e8fbe346">0c7f89f</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/226">#226</a></li>
+</ul>
+<h3 id="breaking-changes">BREAKING CHANGES<a class="headerlink" href="#breaking-changes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>app['global']['create_dirs_before_symlink']</code>,
+<code>app['global']['purge_before_symlink']</code> and <code>app['global']['symlinks']</code>
+now overrides defaults instead of appending them. If you were relying on
+those options in your Custom JSON, you need to add missing defaults
+manually.</li>
+</ul>
+<p>For example given:</p>
+<pre><code class="language-json">{
+  &quot;deploy&quot;: {
+    &quot;myapp&quot;: {
+      &quot;global&quot;: {
+        &quot;create_dirs_before_symlink&quot;: [&quot;test/create&quot;],
+        &quot;purge_before_symlink&quot;: [&quot;test/purge&quot;],
+        &quot;symlinks&quot;: {
+          &quot;test&quot;: &quot;test/symlinks&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<p>you need to replace it to:</p>
+<pre><code class="language-json">{
+  &quot;deploy&quot;: {
+    &quot;myapp&quot;: {
+      &quot;global&quot;: {
+        &quot;create_dirs_before_symlink&quot;: [&quot;tmp&quot;, &quot;public&quot;, &quot;config&quot;, &quot;../../shared/cache&quot;, &quot;../../shared/assets&quot;, &quot;test/create&quot;],
+        &quot;purge_before_symlink&quot;: [&quot;log&quot;, &quot;tmp/cache&quot;, &quot;tmp/pids&quot;, &quot;public/system&quot;, &quot;public/assets&quot;, &quot;test/purge&quot;],
+        &quot;symlinks&quot;: {
+          &quot;system&quot;: &quot;public/system&quot;,
+          &quot;assets&quot;: &quot;public/assets&quot;,
+          &quot;cache&quot;: &quot;tmp/cache&quot;,
+          &quot;pids&quot;: &quot;tmp/pids&quot;,
+          &quot;log&quot;: &quot;log&quot;,
+          &quot;test&quot;: &quot;test/symlinks&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="1160-2019-09-11"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.15.0...v1.16.0">1.16.0</a> (2019-09-11)<a class="headerlink" href="#1160-2019-09-11" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_2">Bug Fixes<a class="headerlink" href="#bug-fixes_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> remove default nginx config from conf.d (<a href="https://github.com/ajgon/opsworks_ruby/issues/220">#220</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/23929e3">23929e3</a>)</li>
+<li>keep the last <code>nginx</code> cookbook version compatible with chef 12 (<a href="https://github.com/ajgon/opsworks_ruby/commit/b5b13d0">b5b13d0</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/222">#222</a></li>
+</ul>
+<h3 id="features_2">Features<a class="headerlink" href="#features_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>setup:</strong> add chef version configuration option (<a href="https://github.com/ajgon/opsworks_ruby/commit/ffe2b42">ffe2b42</a>)</li>
+</ul>
+<h2 id="1150-2019-07-09"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.14.0...v1.15.0">1.15.0</a> (2019-07-09)<a class="headerlink" href="#1150-2019-07-09" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_3">Bug Fixes<a class="headerlink" href="#bug-fixes_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>apache:</strong> fix apache serving assets rather than proxying to app server (<a href="https://github.com/ajgon/opsworks_ruby/issues/210">#210</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/9dfdeed">9dfdeed</a>)</li>
+<li><strong>appserver:</strong> Compare lockfiles instead of main Gemfile (<a href="https://github.com/ajgon/opsworks_ruby/commit/c02af02">c02af02</a>)</li>
+<li><strong>appserver:</strong> fix duplicate after_fork/on_worker_boot stanzas in appserver configs (<a href="https://github.com/ajgon/opsworks_ruby/commit/c0b0e84">c0b0e84</a>)</li>
+<li><strong>worker:</strong> adapted monit config for sidekiq 6.x (<a href="https://github.com/ajgon/opsworks_ruby/commit/4a58654">4a58654</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/215">#215</a></li>
+<li><strong>worker:</strong> fix sidekiq quiet/shutdown scripts (<a href="https://github.com/ajgon/opsworks_ruby/commit/59198b9">59198b9</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/217">#217</a></li>
+<li><strong>worker:</strong> quieting and stopping sidekiq (<a href="https://github.com/ajgon/opsworks_ruby/commit/efc1231">efc1231</a>)</li>
+</ul>
+<h3 id="features_3">Features<a class="headerlink" href="#features_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>apache:</strong> apache configuration to use appserver’s port provided in custom json (<a href="https://github.com/ajgon/opsworks_ruby/commit/b576788">b576788</a>)</li>
+<li><strong>setup:</strong> add global option for enabling/disabling nodejs (<a href="https://github.com/ajgon/opsworks_ruby/commit/1f1fa4b">1f1fa4b</a>)</li>
+<li><strong>setup:</strong> support for webpacker (<a href="https://github.com/ajgon/opsworks_ruby/commit/569b9bb">569b9bb</a>)</li>
+<li><strong>setup:</strong> use latest nodejs lts 10.15.3 (<a href="https://github.com/ajgon/opsworks_ruby/commit/61bb605">61bb605</a>)</li>
+</ul>
+<h2 id="1140-2019-03-06"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.13.0...v1.14.0">1.14.0</a> (2019-03-06)<a class="headerlink" href="#1140-2019-03-06" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_4">Bug Fixes<a class="headerlink" href="#bug-fixes_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Ensure shared/system dir is created (<a href="https://github.com/ajgon/opsworks_ruby/issues/197">#197</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/7f8cb2e">7f8cb2e</a>), closes <a href="https://github.com//github.com/ajgon/opsworks_ruby/blob/6e2328941996d98316657d7a52c98de6982068a5/attributes/default.rb/issues/L21">/github.com/ajgon/opsworks_ruby/blob/6e2328941996d98316657d7a52c98de6982068a5/attributes/default.rb#L21</a></li>
+<li>Lock the windows cookbook dependency to maintain chef 12 compatibility (<a href="https://github.com/ajgon/opsworks_ruby/issues/196">#196</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/a2d4a8d">a2d4a8d</a>)</li>
+<li>register gpg public key for nginx on ubuntu18.04LTS (<a href="https://github.com/ajgon/opsworks_ruby/issues/201">#201</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/1d4705d">1d4705d</a>)</li>
+<li><strong>apache:</strong> fix infinite redirect loop on apache, when rails <code>force_ssl</code> is enabled (<a href="https://github.com/ajgon/opsworks_ruby/commit/3df3a16">3df3a16</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/206">#206</a></li>
+<li><strong>appserver:</strong> fixed Puma config compatibility with older versions of Puma (<a href="https://github.com/ajgon/opsworks_ruby/commit/eebdc23">eebdc23</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/207">#207</a></li>
+<li><strong>nginx:</strong> add missing <code>nosniff</code> header for SSL sessions in nginx (<a href="https://github.com/ajgon/opsworks_ruby/commit/e61b199">e61b199</a>)</li>
+<li><strong>setup:</strong> added support for bundler 2.x and rubygems 3.x (<a href="https://github.com/ajgon/opsworks_ruby/commit/7b781bd">7b781bd</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/203">#203</a></li>
+<li><strong>webserver:</strong> Align SSL directory between template &amp; driver (<a href="https://github.com/ajgon/opsworks_ruby/commit/414298e">414298e</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/205">#205</a></li>
+</ul>
+<h3 id="features_4">Features<a class="headerlink" href="#features_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> re-establish database connections when preloading app (<a href="https://github.com/ajgon/opsworks_ruby/commit/db17de6">db17de6</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/198">#198</a></li>
+<li><strong>ruby:</strong> Added support for ruby 2.6 (<a href="https://github.com/ajgon/opsworks_ruby/commit/27bad91">27bad91</a>)</li>
+</ul>
+<h2 id="1130-2018-11-09"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.12.0...v1.13.0">1.13.0</a> (2018-11-09)<a class="headerlink" href="#1130-2018-11-09" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_5">Bug Fixes<a class="headerlink" href="#bug-fixes_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>db:</strong> Fix typo for aurora postgresql (<a href="https://github.com/ajgon/opsworks_ruby/commit/1bb2fb5">1bb2fb5</a>)</li>
+</ul>
+<h3 id="features_5">Features<a class="headerlink" href="#features_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>worker:</strong> Support Shoryuken worker library (<a href="https://github.com/ajgon/opsworks_ruby/commit/5359679">5359679</a>)</li>
+</ul>
+<h2 id="1120-2018-10-03"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.11.0...v1.12.0">1.12.0</a> (2018-10-03)<a class="headerlink" href="#1120-2018-10-03" title="Permanent link">&para;</a></h2>
+<h3 id="features_6">Features<a class="headerlink" href="#features_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> add port configuration (<a href="https://github.com/ajgon/opsworks_ruby/commit/6540201">6540201</a>)</li>
+<li><strong>database:</strong> added aurora-postgres as an accepted engine for Postgres RDS (<a href="https://github.com/ajgon/opsworks_ruby/commit/626a11d">626a11d</a>)</li>
+<li><strong>webserver:</strong> add support for <code>force_ssl</code> attribute (<a href="https://github.com/ajgon/opsworks_ruby/commit/2281047">2281047</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/189">#189</a></li>
+</ul>
+<h2 id="1110-2018-07-17"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.10.1...v1.11.0">1.11.0</a> (2018-07-17)<a class="headerlink" href="#1110-2018-07-17" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_6">Bug Fixes<a class="headerlink" href="#bug-fixes_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>add Apache 2.4's "Require all granted" to apache2+passenger config file (<a href="https://github.com/ajgon/opsworks_ruby/issues/171">#171</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/f4e5871">f4e5871</a>)</li>
+<li><strong>webserver:</strong> add <code>X-Content-Type-Options: nosniff</code> to assets served by rails for extra security (<a href="https://github.com/ajgon/opsworks_ruby/commit/07d3336">07d3336</a>)</li>
+</ul>
+<h3 id="features_7">Features<a class="headerlink" href="#features_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> hardened security headers, disabled tls1.0 and tls1.1 for non-legacy SSL config (<a href="https://github.com/ajgon/opsworks_ruby/commit/8351d58">8351d58</a>)</li>
+</ul>
+<h3 id="breaking-changes_1">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> If you are using SSL in your project, TLSv1.0 and
+TLSv1.1 has been disabled for all responses - only TLSv1.2 is served. If
+you still need older ciphers, consider using
+<code>app['webserver']['ssl_for_legacy_browsers']</code> configuration option.</li>
+</ul>
+<h2 id="1101-2018-06-24"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.10.0...v1.10.1">1.10.1</a> (2018-06-24)<a class="headerlink" href="#1101-2018-06-24" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_7">Bug Fixes<a class="headerlink" href="#bug-fixes_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li>do not read pidfile at each stop retry (prevent from early pidfile deletion) (<a href="https://github.com/ajgon/opsworks_ruby/commit/c5f0fe4">c5f0fe4</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/163">#163</a></li>
+<li><strong>framework:</strong> added environment variables context to bundle install (<a href="https://github.com/ajgon/opsworks_ruby/commit/fe01d45">fe01d45</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/167">#167</a></li>
+</ul>
+<h3 id="features_8">Features<a class="headerlink" href="#features_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> support rails restart command on puma. (<a href="https://github.com/ajgon/opsworks_ruby/commit/bb04fb4">bb04fb4</a>)</li>
+<li><strong>db:</strong> added postgis driver (<a href="https://github.com/ajgon/opsworks_ruby/commit/6b3c058">6b3c058</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/165">#165</a></li>
+</ul>
+<h2 id="1100-2018-06-10"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.9.1...v1.10.0">1.10.0</a> (2018-06-10)<a class="headerlink" href="#1100-2018-06-10" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_8">Bug Fixes<a class="headerlink" href="#bug-fixes_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> moved env files creation to <code>before_symlink</code> phase (<a href="https://github.com/ajgon/opsworks_ruby/commit/2ed059d">2ed059d</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/157">#157</a></li>
+<li><strong>setup:</strong> Fixed <code>deployer</code> user setup (<a href="https://github.com/ajgon/opsworks_ruby/commit/9af3651">9af3651</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/159">#159</a></li>
+</ul>
+<h3 id="features_9">Features<a class="headerlink" href="#features_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> add additional puma configuration options (<a href="https://github.com/ajgon/opsworks_ruby/commit/f994e2f">f994e2f</a>)</li>
+<li><strong>ruby:</strong> introduced new <code>ruby-version</code> JSON parameter. (<a href="https://github.com/ajgon/opsworks_ruby/commit/99798ce">99798ce</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/156">#156</a></li>
+</ul>
+<h3 id="breaking-changes_2">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ruby:</strong> If you were using <code>ruby-ng.ruby_version</code> JSON
+configuration parameter in your stack/layer configuration, please change
+it to <code>ruby-version</code>. Since <code>ruby-version</code> is set by default to the
+freshest version of ruby available, you may end up with unexpected
+upgrade of ruby on your system.</li>
+</ul>
+<h2 id="191-2018-05-22"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.9.0...v1.9.1">1.9.1</a> (2018-05-22)<a class="headerlink" href="#191-2018-05-22" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_9">Bug Fixes<a class="headerlink" href="#bug-fixes_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>chef:</strong> Downgraded apt cookbook below version 7 (<a href="https://github.com/ajgon/opsworks_ruby/commit/8ea8eee">8ea8eee</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/151">#151</a></li>
+<li><strong>chef:</strong> Removed broken <code>deployer</code> cookbook (<a href="https://github.com/ajgon/opsworks_ruby/commit/51a4942">51a4942</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/155">#155</a></li>
+</ul>
+<h2 id="190-2018-03-17"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.8.0...v1.9.0">1.9.0</a> (2018-03-17)<a class="headerlink" href="#190-2018-03-17" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_10">Bug Fixes<a class="headerlink" href="#bug-fixes_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> Wait up to 10 sec for graceful shutdown (<a href="https://github.com/ajgon/opsworks_ruby/commit/def1c21">def1c21</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/127">#127</a></li>
+<li><strong>configure:</strong> Don't create pids symlink if it already exists (<a href="https://github.com/ajgon/opsworks_ruby/commit/4671ac9">4671ac9</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/126">#126</a></li>
+<li><strong>appserver:</strong> failed to start appserver. (<a href="https://github.com/ajgon/opsworks_ruby/issues/146">#146</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/4505890">4505890</a>)</li>
+<li><strong>source:</strong> remove temporary directories after deploy (<a href="https://github.com/ajgon/opsworks_ruby/commit/b92417f">b92417f</a>)</li>
+<li><strong>source:</strong> Subdirectories on S3 are now properly handled (<a href="https://github.com/ajgon/opsworks_ruby/commit/9373173">9373173</a>)</li>
+<li><strong>webserver:</strong> Switched <code>chef_nginx</code> back to <code>nginx</code> cookbook (<a href="https://github.com/ajgon/opsworks_ruby/commit/683f840">683f840</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/148">#148</a></li>
+</ul>
+<h3 id="features_10">Features<a class="headerlink" href="#features_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ruby:</strong> Added support for ruby 2.5 (<a href="https://github.com/ajgon/opsworks_ruby/commit/2fd887a">2fd887a</a>)</li>
+<li><strong>source:</strong> Added support for HTTP (<a href="https://github.com/ajgon/opsworks_ruby/commit/34829f2">34829f2</a>)</li>
+<li><strong>source:</strong> Added support for S3 (<a href="https://github.com/ajgon/opsworks_ruby/commit/019c0ad">019c0ad</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/133">#133</a></li>
+</ul>
+<h3 id="breaking-changes_3">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>source:</strong> <code>app['scm']</code> has been renamed to <code>app['source']</code>. This
+only affects the Custom JSON files, so if you were using this block
+there, you should change it. If you were using OpsWorks git configurator
+(which is probably 99.99% true), this change wouldn't affect you.</li>
+</ul>
+<h2 id="180-2017-10-23"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.7.1...v1.8.0">1.8.0</a> (2017-10-23)<a class="headerlink" href="#180-2017-10-23" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_11">Bug Fixes<a class="headerlink" href="#bug-fixes_11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>moved all pid-related files from shared/pids to /run/lock (<a href="https://github.com/ajgon/opsworks_ruby/commit/bc9daf0">bc9daf0</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/92">#92</a></li>
+<li><strong>db:</strong> Respect database port provided by RDS (<a href="https://github.com/ajgon/opsworks_ruby/issues/124">#124</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/7aeb78e">7aeb78e</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/123">#123</a></li>
+<li><strong>logrotate:</strong> remove duplicate log entry in config file generated from webserver service install (<a href="https://github.com/ajgon/opsworks_ruby/commit/eabf207">eabf207</a>)</li>
+<li><strong>worker:</strong> quiet_sidekiq now uses sidekiqctl instead of kill -USR1 which is deprectaed (<a href="https://github.com/ajgon/opsworks_ruby/commit/1e9e32b">1e9e32b</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/93">#93</a></li>
+</ul>
+<h3 id="features_11">Features<a class="headerlink" href="#features_11" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>scm:</strong> Support configurable location of git_ssh_wrapper (<a href="https://github.com/ajgon/opsworks_ruby/issues/121">#121</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/de153bf">de153bf</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/120">#120</a></li>
+</ul>
+<h2 id="171-2017-09-22"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.7.0...v1.7.1">1.7.1</a> (2017-09-22)<a class="headerlink" href="#171-2017-09-22" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_12">Bug Fixes<a class="headerlink" href="#bug-fixes_12" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> do not unnecessarily restart webserver (<a href="https://github.com/ajgon/opsworks_ruby/commit/db15b26">db15b26</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/114">#114</a></li>
+<li><strong>webserver:</strong> Only remove default enabled sites (<a href="https://github.com/ajgon/opsworks_ruby/commit/ef085a0">ef085a0</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/111">#111</a></li>
+</ul>
+<h3 id="features_12">Features<a class="headerlink" href="#features_12" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> remove version info on Apache/Nginx (<a href="https://github.com/ajgon/opsworks_ruby/commit/6aba9f3">6aba9f3</a>)</li>
+</ul>
+<h2 id="170-2017-09-05"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.6.0...v1.7.0">1.7.0</a> (2017-09-05)<a class="headerlink" href="#170-2017-09-05" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_13">Bug Fixes<a class="headerlink" href="#bug-fixes_13" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> passing USER and HOME environment variables to appserver process (<a href="https://github.com/ajgon/opsworks_ruby/commit/43210bc">43210bc</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/85">#85</a></li>
+<li><strong>db:</strong> safer migration/setup command (<a href="https://github.com/ajgon/opsworks_ruby/commit/19bf034">19bf034</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/58">#58</a></li>
+<li><strong>overcommit:</strong> disable fasterer warning that was causing commits to fail (<a href="https://github.com/ajgon/opsworks_ruby/commit/7752706">7752706</a>)</li>
+<li>missing databag caused maximum_override integration failure (<a href="https://github.com/ajgon/opsworks_ruby/commit/1be29e1">1be29e1</a>)</li>
+</ul>
+<h3 id="features_13">Features<a class="headerlink" href="#features_13" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver+webserver:</strong> add apache2 + passenger support (<a href="https://github.com/ajgon/opsworks_ruby/commit/43c61f9">43c61f9</a>)</li>
+<li><strong>database:</strong> support null database driver (<a href="https://github.com/ajgon/opsworks_ruby/commit/29e1040">29e1040</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/98">#98</a></li>
+<li><strong>global:</strong> support per-application deploy directory (<a href="https://github.com/ajgon/opsworks_ruby/commit/28cb797">28cb797</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/95">#95</a></li>
+<li><strong>logrotate:</strong> support arbitrary logrotate customization (<a href="https://github.com/ajgon/opsworks_ruby/commit/fa95ab0">fa95ab0</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/107">#107</a></li>
+<li><strong>webserver:</strong> allow extensible webserver site customization (<a href="https://github.com/ajgon/opsworks_ruby/commit/4efd130">4efd130</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/100">#100</a></li>
+<li><strong>webserver:</strong> server_tokens off on Nginx (<a href="https://github.com/ajgon/opsworks_ruby/issues/91">#91</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/5568f6c">5568f6c</a>)</li>
+</ul>
+<h2 id="160-2017-06-03"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.5.0...v1.6.0">1.6.0</a> (2017-06-03)<a class="headerlink" href="#160-2017-06-03" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_14">Bug Fixes<a class="headerlink" href="#bug-fixes_14" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ubuntu:</strong> proper provisioning for ubuntu 16.04 (<a href="https://github.com/ajgon/opsworks_ruby/commit/ea5b530">ea5b530</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/81">#81</a></li>
+</ul>
+<h3 id="features_14">Features<a class="headerlink" href="#features_14" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> Specify upgrade method for nginx (<a href="https://github.com/ajgon/opsworks_ruby/commit/2624d04">2624d04</a>)</li>
+<li><strong>logrotate:</strong> rotate all logs in app/log (<a href="https://github.com/ajgon/opsworks_ruby/commit/4737b49">4737b49</a>)</li>
+</ul>
+<h3 id="breaking-changes_4">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Support for all legacy distributions has been dropped
+off. Currently, only Ubuntu 16.04 and Amazon Linux 2017.03 are
+supported.</li>
+</ul>
+<p>This cookbook <em>should</em> work on earlier versions (especially on Ubuntu),
+PR with fixes to them <em>will</em> be accepted, however the core team won't
+include any patches for those distros by they own.</p>
+<h2 id="150-2017-04-25"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.4.0...v1.5.0">1.5.0</a> (2017-04-25)<a class="headerlink" href="#150-2017-04-25" title="Permanent link">&para;</a></h2>
+<h3 id="features_15">Features<a class="headerlink" href="#features_15" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>framework:</strong> Allow increased timeout during deploy (<a href="https://github.com/ajgon/opsworks_ruby/issues/76">#76</a>) (<a href="https://github.com/ajgon/opsworks_ruby/commit/e216972">e216972</a>)</li>
+<li><strong>logrotate:</strong> implement logrotate (<a href="https://github.com/ajgon/opsworks_ruby/commit/86ebc10">86ebc10</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/78">#78</a></li>
+</ul>
+<h2 id="140-2017-03-12"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.3.0...v1.4.0">1.4.0</a> (2017-03-12)<a class="headerlink" href="#140-2017-03-12" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_15">Bug Fixes<a class="headerlink" href="#bug-fixes_15" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Bump faraday middleware version (<a href="https://github.com/ajgon/opsworks_ruby/commit/d508928">d508928</a>)</li>
+<li>Switched <code>nginx</code> cookbook to more actively developed <code>chef_nginx</code> (<a href="https://github.com/ajgon/opsworks_ruby/commit/0f4f64c">0f4f64c</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/65">#65</a></li>
+</ul>
+<h3 id="features_16">Features<a class="headerlink" href="#features_16" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> Add app specific error log and location for nginx (<a href="https://github.com/ajgon/opsworks_ruby/commit/a098279">a098279</a>)</li>
+<li><strong>worker:</strong> Safely quiet and shutdown sidekiq (<a href="https://github.com/ajgon/opsworks_ruby/commit/c36652f">c36652f</a>)</li>
+</ul>
+<h3 id="breaking-changes_5">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_5" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>nginx</code> cookbook is not a <code>opsworks_ruby</code> dependency
+anymore. Now it's <code>chef_nginx</code> which is more actively developed.
+Please update your recipe repositories.</li>
+</ul>
+<h2 id="130-2017-01-16"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.2.1...v1.3.0">1.3.0</a> (2017-01-16)<a class="headerlink" href="#130-2017-01-16" title="Permanent link">&para;</a></h2>
+<h3 id="features_17">Features<a class="headerlink" href="#features_17" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> Allowed deploy_before_restart on null appserver (<a href="https://github.com/ajgon/opsworks_ruby/commit/b0375a6">b0375a6</a>)</li>
+<li><strong>database:</strong> Added aurora as allowed engine for mysql2 adapter (<a href="https://github.com/ajgon/opsworks_ruby/commit/a2789f0">a2789f0</a>)</li>
+<li><strong>ruby:</strong> Added support for ruby 2.4 (<a href="https://github.com/ajgon/opsworks_ruby/commit/a89451f">a89451f</a>)</li>
+</ul>
+<h3 id="breaking-changes_6">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_6" title="Permanent link">&para;</a></h3>
+<ul>
+<li>ruby: Ruby 2.4 is now a default Ruby interpreter</li>
+</ul>
+<h2 id="121-2016-11-27"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.2.0...v1.2.1">1.2.1</a> (2016-11-27)<a class="headerlink" href="#121-2016-11-27" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_16">Bug Fixes<a class="headerlink" href="#bug-fixes_16" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Fixed broken <code>migration_command</code> default (<a href="https://github.com/ajgon/opsworks_ruby/commit/36cdb68">36cdb68</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/58">#58</a></li>
+</ul>
+<h2 id="120-2016-11-02"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.1.2...v1.2.0">1.2.0</a> (2016-11-02)<a class="headerlink" href="#120-2016-11-02" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_17">Bug Fixes<a class="headerlink" href="#bug-fixes_17" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Moved global deploy parameters to <code>app['global']</code> section (<a href="https://github.com/ajgon/opsworks_ruby/commit/b4f8d6b">b4f8d6b</a>)</li>
+</ul>
+<h3 id="breaking-changes_7">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_7" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>app['create_dirs_before_symlink']</code>, <code>app['purge_before_symlink']</code>, <code>app['rollback_on_error']</code> and <code>app['symlinks']</code>
+are now <code>app['global']['create_dirs_before_symlink']</code>, <code>app['global']['purge_before_symlink']</code>,
+<code>app['global']['rollback_on_error']</code> and <code>app['global']['symlink']</code>. The old format still works, but it shows
+DEPRECATION warning. It will be removed in one of the next major releases.</li>
+</ul>
+<h2 id="112-2016-10-27"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.1.1...v1.1.2">1.1.2</a> (2016-10-27)<a class="headerlink" href="#112-2016-10-27" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_18">Bug Fixes<a class="headerlink" href="#bug-fixes_18" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>webserver:</strong> Improved apache2 support (<a href="https://github.com/ajgon/opsworks_ruby/commit/4293bff">4293bff</a>)</li>
+<li><code>node['applications']</code> are back (<a href="https://github.com/ajgon/opsworks_ruby/commit/5fc42c3">5fc42c3</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/55">#55</a></li>
+</ul>
+<h3 id="features_18">Features<a class="headerlink" href="#features_18" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>app['rollback_on_error']</code> implemented (<a href="https://github.com/ajgon/opsworks_ruby/commit/e6934a7">e6934a7</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/54">#54</a></li>
+</ul>
+<h2 id="111-2016-10-21"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.1.0...v1.1.1">1.1.1</a> (2016-10-21)<a class="headerlink" href="#111-2016-10-21" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_19">Bug Fixes<a class="headerlink" href="#bug-fixes_19" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>deploy:</strong> Fixed deploy callbacks launching order (<a href="https://github.com/ajgon/opsworks_ruby/commit/81d31c9">81d31c9</a>)</li>
+</ul>
+<h2 id="110-2016-10-21"><a href="https://github.com/ajgon/opsworks_ruby/compare/v1.0.0...v1.1.0">1.1.0</a> (2016-10-21)<a class="headerlink" href="#110-2016-10-21" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_20">Bug Fixes<a class="headerlink" href="#bug-fixes_20" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Application deployment fix (<a href="https://github.com/ajgon/opsworks_ruby/commit/7ac4166">7ac4166</a>)</li>
+</ul>
+<h3 id="breaking-changes_8">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_8" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>node['applications']</code> becomes obsolete</li>
+</ul>
+<h2 id="100-2016-10-04"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.8.0...v1.0.0">1.0.0</a> (2016-10-04)<a class="headerlink" href="#100-2016-10-04" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_21">Bug Fixes<a class="headerlink" href="#bug-fixes_21" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>monit reload</code> and <code>monit restart</code> order (<a href="https://github.com/ajgon/opsworks_ruby/commit/2c4a84a">2c4a84a</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/29">#29</a></li>
+<li><strong>appserver:</strong> Removed <code>accept_filter</code> from unicorn configurator (<a href="https://github.com/ajgon/opsworks_ruby/commit/76a7f36">76a7f36</a>)</li>
+<li><strong>framework:</strong> Added missing <code>deploy_environment</code> to <code>null</code> framework (<a href="https://github.com/ajgon/opsworks_ruby/commit/673a21d">673a21d</a>)</li>
+<li><strong>framework:</strong> Fixed <code>envs_in_console</code> for <code>rails</code> (<a href="https://github.com/ajgon/opsworks_ruby/commit/f8856c8">f8856c8</a>)</li>
+</ul>
+<h3 id="features_19">Features<a class="headerlink" href="#features_19" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>appserver:</strong> "Puma" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/f6e80ad">f6e80ad</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/38">#38</a></li>
+<li><strong>appserver:</strong> "Thin" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/9667939">9667939</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/39">#39</a></li>
+<li><strong>appserver:</strong> Switched default appserver from <code>unicorn</code> to <code>puma</code> (<a href="https://github.com/ajgon/opsworks_ruby/commit/0e72200">0e72200</a>)</li>
+<li><strong>framework:</strong> "hanami.rb" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/23fdd04">23fdd04</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/43">#43</a></li>
+<li><strong>framework:</strong> "Null" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/b9e7b63">b9e7b63</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/47">#47</a></li>
+<li><strong>framework:</strong> "Padrino" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/a240d92">a240d92</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/44">#44</a></li>
+<li><strong>framework:</strong> Environemnt variables in <code>rails console</code> (<a href="https://github.com/ajgon/opsworks_ruby/commit/89252b3">89252b3</a>)</li>
+<li><strong>global:</strong> Moved <code>app['environment']</code> to <code>app['global']['environment']</code> (<a href="https://github.com/ajgon/opsworks_ruby/commit/432a21c">432a21c</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/50">#50</a></li>
+<li><strong>webserver:</strong> "Apache2" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/1ca5b0b">1ca5b0b</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/40">#40</a></li>
+<li><strong>worker:</strong> "delayed_job" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/7235720">7235720</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/42">#42</a></li>
+<li><strong>worker:</strong> "resque" support added (<a href="https://github.com/ajgon/opsworks_ruby/commit/ccc13e4">ccc13e4</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/41">#41</a></li>
+</ul>
+<h3 id="performance-improvements">Performance Improvements<a class="headerlink" href="#performance-improvements" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Added <code>fasterer</code> gem to overcommit (<a href="https://github.com/ajgon/opsworks_ruby/commit/c1ed974">c1ed974</a>)</li>
+</ul>
+<h3 id="breaking-changes_9">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li>global: If you were using an <code>app['environment']</code> variable (for example to set env to
+staging), please update your stack/layer JSONs to <code>app['global']['environment']</code>.</li>
+<li>appserver: Unicorn is no longer a default appserver, in favor of Puma. If you have a working
+instances which were relying on that, you have to either set <code>app['appserver']['adapter'] =
+'unicorn'</code> in your stack/layer JSON file, or switch the app server in your application</li>
+<li>webserver: <code>sites-available</code> and <code>sites-enabled</code> file names format
+changed. From this commit, the <code>*.conf</code> extension is appended. If you
+plan to update your cookbooks on productional environments, don't forget
+to remove the old ones, otherwise you will end up with two the same
+configurations in different files, which cause <code>nginx</code> to fail.</li>
+</ul>
+<p>If you start noticing <code>duplicate upstream</code> errors, this is probably due
+this case.</p>
+<h2 id="080-2016-09-02"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.7.0...v0.8.0">0.8.0</a> (2016-09-02)<a class="headerlink" href="#080-2016-09-02" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_22">Bug Fixes<a class="headerlink" href="#bug-fixes_22" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Switched from <code>nginx reload</code> to <code>nginx restart</code> after succesful deploy/undeploy (<a href="https://github.com/ajgon/opsworks_ruby/commit/16ab9d1">16ab9d1</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/36">#36</a></li>
+</ul>
+<h3 id="features_20">Features<a class="headerlink" href="#features_20" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Added GIT_SSH support for bundle install (<a href="https://github.com/ajgon/opsworks_ruby/commit/232e8ac">232e8ac</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/37">#37</a></li>
+<li>Caches bundler installs to speed up deployments (<a href="https://github.com/ajgon/opsworks_ruby/commit/baa0f44">baa0f44</a>)</li>
+<li>Implemented configurable RAILS_ENV (<a href="https://github.com/ajgon/opsworks_ruby/commit/2567b71">2567b71</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/34">#34</a></li>
+</ul>
+<h2 id="070-2016-08-29"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.4.0...v0.7.0">0.7.0</a> (2016-08-29)<a class="headerlink" href="#070-2016-08-29" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_23">Bug Fixes<a class="headerlink" href="#bug-fixes_23" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Moved extra env files creation, later in the stack (before_restart) (<a href="https://github.com/ajgon/opsworks_ruby/commit/8a5223f">8a5223f</a>)</li>
+<li>Reload monit after restarting services (<a href="https://github.com/ajgon/opsworks_ruby/commit/eaa2aab">eaa2aab</a>)</li>
+<li>Set the default DB adapter to <code>sqlite3</code> (<a href="https://github.com/ajgon/opsworks_ruby/commit/b4b1ee4">b4b1ee4</a>)</li>
+<li>specify bundle path on bundle install (<a href="https://github.com/ajgon/opsworks_ruby/commit/b9d4335">b9d4335</a>)</li>
+</ul>
+<h3 id="features_21">Features<a class="headerlink" href="#features_21" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Added support for gems like figaro and dotenv (<a href="https://github.com/ajgon/opsworks_ruby/commit/c989494">c989494</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/28">#28</a></li>
+</ul>
+<h2 id="060-2016-08-17"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.5.0...v0.6.0">0.6.0</a> (2016-08-17)<a class="headerlink" href="#060-2016-08-17" title="Permanent link">&para;</a></h2>
+<h3 id="breaking-changes_10">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_10" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Removed <code>application_ruby</code> cookbook dependency</li>
+</ul>
+<h2 id="050-2016-07-21"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.4.0...v0.5.0">0.5.0</a> (2016-07-21)<a class="headerlink" href="#050-2016-07-21" title="Permanent link">&para;</a></h2>
+<h3 id="features_22">Features<a class="headerlink" href="#features_22" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Added configuration for isolated worker servers w/o app/webserver (<a href="https://github.com/ajgon/opsworks_ruby/commit/56642f1">56642f1</a>)</li>
+<li>Added monit compatibility with amazon linux (<a href="https://github.com/ajgon/opsworks_ruby/commit/2ef12b9">2ef12b9</a>)</li>
+</ul>
+<h2 id="040-2016-06-16"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.3.1...v0.4.0">0.4.0</a> (2016-06-16)<a class="headerlink" href="#040-2016-06-16" title="Permanent link">&para;</a></h2>
+<h3 id="features_23">Features<a class="headerlink" href="#features_23" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Enables drivers to be attached to before_<em> and after_</em> deploy events (<a href="https://github.com/ajgon/opsworks_ruby/commit/fa8e605">fa8e605</a>)</li>
+</ul>
+<h2 id="031-2016-06-16"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.3.0...v0.3.1">0.3.1</a> (2016-06-16)<a class="headerlink" href="#031-2016-06-16" title="Permanent link">&para;</a></h2>
+<h3 id="bug-fixes_24">Bug Fixes<a class="headerlink" href="#bug-fixes_24" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Change path to 500.html to be in the "current" dir (<a href="https://github.com/ajgon/opsworks_ruby/commit/4aeac7f">4aeac7f</a>)</li>
+<li>Support for multiple RDSes with multiple applications (<a href="https://github.com/ajgon/opsworks_ruby/commit/a23df47">a23df47</a>)</li>
+</ul>
+<h2 id="030-2016-06-08"><a href="https://github.com/ajgon/opsworks_ruby/compare/v0.2.1...v0.3.0">0.3.0</a> (2016-06-08)<a class="headerlink" href="#030-2016-06-08" title="Permanent link">&para;</a></h2>
+<h3 id="features_24">Features<a class="headerlink" href="#features_24" title="Permanent link">&para;</a></h3>
+<ul>
+<li>eliminate RDS requirement (<a href="https://github.com/ajgon/opsworks_ruby/commit/daa4254">daa4254</a>)</li>
+</ul>
+<h3 id="breaking-changes_11">BREAKING CHANGES<a class="headerlink" href="#breaking-changes_11" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Sqlite3 is no longer set as the default database
+adapter.</li>
+</ul>
+<p>In order to use sqlite as the database adapter it must be defined
+in the node.</p>
+<h2 id="021-2016-05-11">0.2.1 (2016-05-11)<a class="headerlink" href="#021-2016-05-11" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Added environment variables support for assets precompile (<a href="https://github.com/ajgon/opsworks_ruby/commit/f24e742">f24e742</a>)</li>
+<li>Added optional removal of scm files (<a href="https://github.com/ajgon/opsworks_ruby/commit/82b25ec">82b25ec</a>)</li>
+<li>Added support for custom configuration in nginx (<a href="https://github.com/ajgon/opsworks_ruby/commit/448019a">448019a</a>)</li>
+<li>Fixed deploy environment (<a href="https://github.com/ajgon/opsworks_ruby/commit/bf843aa">bf843aa</a>)</li>
+<li>Fixed nginx defaults order (<a href="https://github.com/ajgon/opsworks_ruby/commit/af560db">af560db</a>)</li>
+<li>Fixed sidekiq config builder (<a href="https://github.com/ajgon/opsworks_ruby/commit/a32b410">a32b410</a>)</li>
+</ul>
+<h2 id="020-2016-04-24">0.2.0 (2016-04-24)<a class="headerlink" href="#020-2016-04-24" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Added MariaDB Driver support (<a href="https://github.com/ajgon/opsworks_ruby/commit/197b7de">197b7de</a>)</li>
+<li>Added multi-platform support (<a href="https://github.com/ajgon/opsworks_ruby/commit/6118154">6118154</a>)</li>
+<li>Added MySQL Driver support (<a href="https://github.com/ajgon/opsworks_ruby/commit/72d4b9f">72d4b9f</a>)</li>
+<li>Added Sqlite Driver support (<a href="https://github.com/ajgon/opsworks_ruby/commit/3ecb321">3ecb321</a>)</li>
+<li>Minor bugfixes, resolves #19 (<a href="https://github.com/ajgon/opsworks_ruby/commit/9f8615f">9f8615f</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/19">#19</a></li>
+</ul>
+<h2 id="010-2016-04-23">0.1.0 (2016-04-23)<a class="headerlink" href="#010-2016-04-23" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>configure</code> recipe initial implementation (<a href="https://github.com/ajgon/opsworks_ruby/commit/c57f71e">c57f71e</a>)</li>
+<li>Added assets precompilation support. Resolves #12 (<a href="https://github.com/ajgon/opsworks_ruby/commit/b8d8ff5">b8d8ff5</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/12">#12</a></li>
+<li>Added auto-start of nginx to setup phase. Resolves #15 (<a href="https://github.com/ajgon/opsworks_ruby/commit/fbb07dc">fbb07dc</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/15">#15</a></li>
+<li>Added basic documentation (<a href="https://github.com/ajgon/opsworks_ruby/commit/235519f">235519f</a>)</li>
+<li>Added code quality tools (<a href="https://github.com/ajgon/opsworks_ruby/commit/730857f">730857f</a>)</li>
+<li>Added core_ext specs. Resolves #7 (<a href="https://github.com/ajgon/opsworks_ruby/commit/b089eb3">b089eb3</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/7">#7</a></li>
+<li>Added DHparams and nginx version detection support. Resolves #8 and resolves #9 (<a href="https://github.com/ajgon/opsworks_ruby/commit/4e60594">4e60594</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/8">#8</a> <a href="https://github.com/ajgon/opsworks_ruby/issues/9">#9</a></li>
+<li>Added missing specs (<a href="https://github.com/ajgon/opsworks_ruby/commit/ff85e4f">ff85e4f</a>)</li>
+<li>Added nginx reload after deploy. Resolves #13 (<a href="https://github.com/ajgon/opsworks_ruby/commit/f1bc277">f1bc277</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/13">#13</a></li>
+<li>Added ruby and bundler installation to setup phase (<a href="https://github.com/ajgon/opsworks_ruby/commit/0182e70">0182e70</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/5">#5</a> <a href="https://github.com/ajgon/opsworks_ruby/issues/6">#6</a></li>
+<li>Added symlinking defaults. Resolves #16 (<a href="https://github.com/ajgon/opsworks_ruby/commit/4a1edd9">4a1edd9</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/16">#16</a></li>
+<li>Added travis config and coveralls support (<a href="https://github.com/ajgon/opsworks_ruby/commit/a782a64">a782a64</a>)</li>
+<li>Added undeploy recipe (<a href="https://github.com/ajgon/opsworks_ruby/commit/aba311b">aba311b</a>)</li>
+<li>Added webserver setup (nginx) (<a href="https://github.com/ajgon/opsworks_ruby/commit/1581def">1581def</a>)</li>
+<li>Added workers support. Resolves #18 (<a href="https://github.com/ajgon/opsworks_ruby/commit/05e3a75">05e3a75</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/18">#18</a></li>
+<li>Appserver implemented (unicorn) (<a href="https://github.com/ajgon/opsworks_ruby/commit/bbb79cc">bbb79cc</a>)</li>
+<li>Basic SCM support implemented (<a href="https://github.com/ajgon/opsworks_ruby/commit/bcab3d7">bcab3d7</a>)</li>
+<li>Finished database support in recipes (<a href="https://github.com/ajgon/opsworks_ruby/commit/cf955a0">cf955a0</a>)</li>
+<li>Fixed appserver restart sequence (<a href="https://github.com/ajgon/opsworks_ruby/commit/9a75f9c">9a75f9c</a>)</li>
+<li>Fixed nginx defaults. Resolves #14 and resolves #17 (<a href="https://github.com/ajgon/opsworks_ruby/commit/8320f3b">8320f3b</a>), closes <a href="https://github.com/ajgon/opsworks_ruby/issues/14">#14</a> <a href="https://github.com/ajgon/opsworks_ruby/issues/17">#17</a></li>
+<li>Fixes on bugs detected while deploying to real OpsWorks (<a href="https://github.com/ajgon/opsworks_ruby/commit/035363b">035363b</a>)</li>
+<li>Initial commit (<a href="https://github.com/ajgon/opsworks_ruby/commit/d8bed5c">d8bed5c</a>)</li>
+<li>Initial version, with simple postgresql driver introduced (<a href="https://github.com/ajgon/opsworks_ruby/commit/5d00083">5d00083</a>)</li>
+<li>Moved DB packages installation from configure to setup (<a href="https://github.com/ajgon/opsworks_ruby/commit/e23f2d4">e23f2d4</a>)</li>
+<li>Moved libraries to flat directory structure, because AWS chef hates us (<a href="https://github.com/ajgon/opsworks_ruby/commit/e6aa211">e6aa211</a>)</li>
+<li>Rails deploy hooks implemented (<a href="https://github.com/ajgon/opsworks_ruby/commit/79d2d64">79d2d64</a>)</li>
+<li>Recipes cleanup: added missing actions and shutdown recipe (<a href="https://github.com/ajgon/opsworks_ruby/commit/9eb9bb8">9eb9bb8</a>)</li>
+<li>Reorganized appserver cookbooks, added bundle install to deploy (<a href="https://github.com/ajgon/opsworks_ruby/commit/2e9947b">2e9947b</a>)</li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../team/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Author and Contributors" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Author and Contributors
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../license/" class="md-footer__link md-footer__link--next" aria-label="Next: License" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              License
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2016 - 2021 Igor Rzegocki
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.sections", "navigation.top", "search.suggest"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.709b4209.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.febc23d1.min.js"></script>
+      
+    
+  </body>
+</html>
