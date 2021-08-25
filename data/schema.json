@@ -1,0 +1,866 @@
+{
+  "server":{
+    "ruby-provider":{
+      "type":"string",
+      "values":[
+        "ruby-ng",
+        "fullstaq"
+      ],
+      "default":"ruby-ng",
+      "description":"Sets the rubies packages provider. It configures proper apt repository and package namespaces."
+    },
+    "ruby-variant":{
+      "type":"string",
+      "values":[
+        "null",
+        "jemalloc",
+        "malloctrim"
+      ],
+      "default":"null",
+      "description":"Sets ruby variant for given version."
+    },
+    "ruby-version":{
+      "type":"string",
+      "default":"2.6",
+      "description":"Sets the Ruby version used through the system. For debian-based distributions, a `ruby-ng` cookbook is used. For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.)."
+    },
+    "use-nodejs":{
+      "type":"boolean",
+      "default": false,
+      "description":"If enabled, a nodejs and yarn will be installed on a machine, to provide support for webpack and assets precompilation."
+    },
+    "chef-version":{
+      "type":"integer",
+      "default":12,
+      "description":"If enabled current chef on OpsWorks will be updated to provided version."
+    }
+  },
+  "global":{
+    "environment":{
+      "type":"string",
+      "default":"production",
+      "description":"Sets the \"deploy environment\" for all the app-related (for example RAILS_ENV in Rails) actions in the project (server, worker, etc.)."
+    },
+    "deploy_dir":{
+      "type":"string",
+      "description":"Determines where the application will be deployed. Note that if you override this setting, you'll typically want to include the short_name in the setting. In other words, this setting doesn't override the `/srv/www` base directory defafult; it overrides the application-specific `/srv/www/app_name` default."
+    },
+    "symlinks":{
+      "type":"json",
+      "default":{},
+      "description":"List of symlinks created to the shared directory. The format is {\"shared_path\": \"release_path\"}. Any values for this parameter will be merged to the defaults."
+    },
+    "create_dirs_before_symlink":{
+      "type":"json",
+      "default":[],
+      "description":"List of directories to be created before symlinking. Paths are relative to release_path. Any values for this parameter will be appended to the defaults."
+    },
+    "purge_before_symlink":{
+      "type":"json",
+      "default":[],
+      "description":"List of directories to be wiped out before symlinking. Paths are relative to release_path. Any values for this parameter will be appended to the defaults."
+    },
+    "rollback_on_error":{
+      "type":"boolean",
+      "default":true,
+      "description":"When set to true, any failed deploy will be removed from releases directory."
+    },
+    "logrotate_rotate":{
+      "type":"integer",
+      "default":30,
+      "description":"How many days of logfiles are kept. The parameter is in days."
+    },
+    "logrotate_frequency":{
+      "type":"string",
+      "default":"daily",
+      "description":"How often logrotate runs for the given log(s), either time-based or when the log(s) reach a certain size."
+    },
+    "logrotate_options":{
+      "type":"json",
+      "default":["missingok", "compress", "delaycompress", "notifempty", "copytruncate", "sharedscripts"],
+      "description":"All of the unqualified options (i.e., without arguments) that should be enabled for the specified logrotate configuration."
+    }
+  },
+  "database":{
+    "adapter":{
+      "type":"string",
+      "values":[
+        "aurora",
+        "aurora-postgresql",
+        "mariadb",
+        "mysql",
+        "postgis",
+        "postgresql",
+        "sqlite3",
+        "null"
+      ],
+      "default":"sqlite3",
+      "description":"ActiveRecord adapter which will be used for database connection. `null` means that no database will be configured, and is currently only tested with the `rails` framework."
+    },
+    "username":{
+      "type":"string",
+      "depends": [
+        "mariadb",
+        "mysql",
+        "postgresql"
+      ],
+      "description":"Username used to authenticate to the DB."
+    },
+    "password":{
+      "type":"string",
+      "depends": [
+        "mariadb",
+        "mysql",
+        "postgresql"
+      ],
+      "description":"Password used to authenticate to the DB."
+    },
+    "host":{
+      "type":"string",
+      "depends": [
+        "mariadb",
+        "mysql",
+        "postgresql"
+      ],
+      "description":"Database host."
+    },
+    "database":{
+      "type":"string",
+      "description":"Database name."
+    }
+  },
+  "source":{
+    "adapter":{
+      "type":"string",
+      "values":[
+        "git",
+        "http",
+        "s3"
+      ],
+      "default":"git",
+      "description":"Source used by the cookbook to fetch the application codebase."
+    },
+    "url":{
+      "type":"string",
+      "description":"Source code URL (repository URL for SCMs)."
+    },
+    "remove_scm_files":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "git"
+      ],
+      "description":"If set to true, all SCM leftovers (like .git) will be removed."
+    },
+    "revision":{
+      "type":"string",
+      "depends":[
+        "git"
+      ],
+      "description":"Branch name/SHA1 of commit which should be used as a base of the deployment."
+    },
+    "ssh_key":{
+      "type":"text",
+      "depends":[
+        "git"
+      ],
+      "description":"A private SSH deploy key (the key itself, not the file name), used when fetching repositories via SSH."
+    },
+    "ssh_wrapper":{
+      "type":"string",
+      "default":"/tmp/ssh-git-wrapper.sh",
+      "depends":[
+        "git"
+      ],
+      "description":"A wrapper script, which will be used by git when fetching repository via SSH. Essentially, a value of GIT_SSH environment variable. This cookbook provides one of those scripts for you, so you shouldn't alter this variable unless you know what you're doing."
+    },
+    "generated_ssh_wrapper":{
+      "type":"string",
+      "default":"/tmp/ssh-git-wrapper.sh",
+      "depends":[
+        "git"
+      ],
+      "description":"If the cookbook generates an SSH wrapper for you, this is where it will generate it. For users whose /tmp partitions are mounted ``noexec`` (a good security practice to prevent code injection exploits), this attribute allows you to override that location to a partition where execution of the generated shell script is allowed."
+    },
+    "enable_submodules":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "git"
+      ],
+      "description":"If set to true, any submodules included in the repository, will also be fetched."
+    },
+    "user":{
+      "type":"string",
+      "depends":[
+        "http",
+        "s3"
+      ],
+      "description":"If file is hidden behind HTTP BASIC AUTH, this field should contain username."
+    },
+    "password":{
+      "type":"string",
+      "depends":[
+        "http",
+        "s3"
+      ],
+      "description":"If file is hidden behind HTTP BASIC AUTH, this field should contain password."
+    }
+  },
+  "framework":{
+    "adapter":{
+      "type":"string",
+      "values":[
+        "null",
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "default":"rails",
+      "description":"Ruby framework used in project."
+    },
+    "migrate":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"If set to true, migrations will be launched during deployment."
+    },
+    "migration_command":{
+      "type":"string",
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"A command which will be invoked to perform migration. This cookbook comes with predefined migration commands, well suited for the task, and usually you don't have to change this parameter."
+    },
+    "assets_precompile":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"If set to true, assets will be compiled during development."
+    },
+    "assets_precompilation_command":{
+      "type":"string",
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"A command which will be invoked to precompile assets."
+    },
+    "logrotate_name":{
+      "type":"string",
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"The name of the logrotate_app resource, and generated configuration file, for the specified app framework logrotate configuration. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app framework level; there are no app-wide or global settings beyond those provided by the framework library."
+    },
+    "logrotate_log_paths":{
+      "type":"json",
+      "default":[],
+      "depends":[
+        "hanami",
+        "padrino",
+        "rails"
+      ],
+      "description":"Which log file(s) should be backed up via logrotate. If this parameter evaluates to an empty array, no logs will be backed up for the specified app framework. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app framework level; there are no app-wide or global settings beyond those provided by the framework library."
+    },
+    "envs_in_console":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "rails"
+      ],
+      "description":"If set to true, rails console will be invoked with all application-level environment variables set."
+    }
+  },
+  "appserver":{
+    "adapter":{
+      "type":"string",
+      "values":[
+        "null",
+        "passenger",
+        "puma",
+        "thin",
+        "unicorn"
+      ],
+      "default":"puma",
+      "description":"Server on the application side, which will receive requests from webserver in front. null means no appserver enabled. Note: Passenger is available for apache2 webserver and on Debian-based systems only! This configurator doesn't check that, so please keep that in mind and select proper webserver and OS."
+    },
+    "application_yml":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "passenger",
+        "puma",
+        "thin",
+        "unicorn"
+      ],
+      "description":"Creates a config/application.yml file with all pre-configured environment variables. Useful for gems like figaro.",
+      "url":"https://github.com/laserlemon/figaro"
+    },
+    "dot_env":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "passenger",
+        "puma",
+        "thin",
+        "unicorn"
+      ],
+      "description":"Creates a .env file with all pre-configured environment variables. Useful for gems like dotenv.",
+      "url":"https://github.com/bkeepers/dotenv"
+    },
+    "backlog":{
+      "type":"integer",
+      "default":1024,
+      "depends":[
+        "unicorn"
+      ],
+      "description":"This is the backlog of the listen() syscall."
+    },
+    "delay":{
+      "type":"float",
+      "default":0.5,
+      "depends":[
+        "unicorn"
+      ],
+      "description":"Seconds to wait between successive tries."
+    },
+    "preload_app":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "puma",
+        "unicorn"
+      ],
+      "description":"Enabling this preloads an application before forking worker processes."
+    },
+    "tcp_nodelay":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "unicorn"
+      ],
+      "description":"Disables Nagle's algorithm on TCP sockets if true."
+    },
+    "tcp_nopush":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "unicorn"
+      ],
+      "description":"Enables/disables TCP_CORK in Linux or TCP_NOPUSH in FreeBSD."
+    },
+    "tries":{
+      "type":"integer",
+      "default":5,
+      "depends":[
+        "unicorn"
+      ],
+      "description":"Times to retry binding a socket if it is already in use."
+    },
+    "timeout":{
+      "type":"integer",
+      "default":50,
+      "depends":[
+        "puma",
+        "thin",
+        "unicorn"
+      ],
+      "description":"Sets the timeout of worker processes to seconds."
+    },
+    "worker_processes":{
+      "type":"integer",
+      "default":4,
+      "depends":[
+        "puma",
+        "thin",
+        "unicorn"
+      ],
+      "description":"Sets the current number of worker processes. Each worker process will serve exactly one client at a time."
+    },
+    "log_requests":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "puma"
+      ],
+      "description":"Enable request logging."
+    },
+    "thread_max":{
+      "type":"integer",
+      "default":16,
+      "depends":[
+        "puma"
+      ],
+      "description":"Maximum number of threads to use to answer requests."
+    },
+    "thread_min":{
+      "type":"integer",
+      "default":0,
+      "depends":[
+        "puma"
+      ],
+      "description":"Minimum number of threads to use to answer requests."
+    },
+    "on_restart":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run before doing a restart. This code should close log files, database connections, etc."
+    },
+    "before_fork":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run immediately before the master starts workers."
+    },
+    "on_worker_boot":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in a worker before it starts serving requests. This is called everytime a worker is to be started."
+    },
+    "on_worker_shutdown":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in a worker right before it exits. This is called everytime a worker is to about to shutdown."
+    },
+    "on_worker_fork":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in the master right before a worker is started. The worker's index is passed as an argument. This is called everytime a worker is to be started."
+    },
+    "after_worker_fork":{
+      "type":"string",
+      "depends":[
+        "puma"
+      ],
+      "description":"Code to run in the master after a worker has been started. The worker's index is passed as an argument. This is called everytime a worker is to be started."
+    },
+    "max_connections":{
+      "type":"integer",
+      "default":1024,
+      "depends":[
+        "thin"
+      ],
+      "description":"Maximum connections."
+    },
+    "max_persistent_connections":{
+      "type":"integer",
+      "default":512,
+      "depends":[
+        "thin"
+      ],
+      "description":"Maximum persistent connections."
+    },
+    "passenger_version":{
+      "type":"string",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Which Debian APT package version should be installed from the PPA repo provided by Passenger. Currently this defaults to the latest repo provided by Passenger. Currently this defaults to the latest value to lock your Passenger installation at a specific version."
+    },
+    "port":{
+      "type":"integer",
+      "description": "Bind the appserver to a port on 0.0.0.0. This is useful for serving the application directly from the appserver without a web server middleware or separating the web server into its own container or server."
+    },
+    "max_pool_size":{
+      "type":"integer",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PassengerMaxPoolSize` parameter.",
+      "url":"https://www.phusionpassenger.com/library/config/apache/reference/#passengermaxpoolsize"
+    },
+    "min_instances":{
+      "type":"integer",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PassengerMinInstances` parameter.",
+      "url":"https://www.phusionpassenger.com/library/config/apache/reference/#passengermininstances"
+    },
+    "mount_point":{
+      "type":"string",
+      "default":"/",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Which URL path should be handled by Passenger. This option allows you to configure your application to handle only a subset of requests made to your web server. Useful for certain hybrid static/dynamic web sites."
+    },
+    "pool_idle_time":{
+      "type":"integer",
+      "default":300,
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PoolIdleTime` parameter."
+    },
+    "max_request_queue_size":{
+      "type":"integer",
+      "default":100,
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `MaxRequestQueueSize` parameter."
+    },
+    "error_document":{
+      "type":"json",
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `{ \"status\": \"file\" }` parameter e.g. `{ \"500\": \"500.html\", \"503\": \"503.html\" }`."
+    },
+    "passenger_max_preloader_idle_time":{
+      "type":"integer",
+      "default":300,
+      "depends":[
+        "passenger"
+      ],
+      "description":"Sets the `PassengerMaxPreloaderIdleTime` parameter."
+    }
+  },
+  "webserver":{
+    "adapter":{
+      "type":"string",
+      "values":[
+        "null",
+        "apache2",
+        "nginx"
+      ],
+      "default":"nginx",
+      "description":"Webserver in front of the instance. It runs on port 80 by default, and receives all requests from the Load Balancer/Internet. null means no webserver enabled."
+    },
+    "dhparams":{
+      "type":"text",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"If you wish to use custom generated DH primes, instead of common ones (which is a very good practice), put the contents (not file name) of the dhparams.pem file into this attribute.",
+      "url":"https://weakdh.org/sysadmin.html"
+    },
+    "ssl_for_legacy_browsers":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"By default webserver is configured to follow strict SSL security standards. However, old browsers (like IE < 9 or Android < 2.2) wouldn't work with this configuration very well. If your application needs a support for those browsers, set this parameter to true.",
+      "url":"https://cipherli.st/"
+    },
+    "port":{
+      "type":"integer",
+      "default":80,
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The port on which the webserver should listen for HTTP requests."
+    },
+    "ssl_port":{
+      "type":"integer",
+      "default":443,
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The port on which the webserver should listen for HTTPs requests, if SSL requests are enabled. Note that SSL itself is controlled by the `app['enable_ssl']` setting in Opsworks."
+    },
+    "force_ssl":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"When this parameter is set to `true` all requests passed to http will be redirected to https, with 301 status code. This works only when SSL in OpsWorks panel is enabled, otherwise it's ommited."
+    },
+    "site_config_template":{
+      "type":"text",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The name of the cookbook template that should be used to generate per-app configuration stanzas (known as a \"site\" in apache and nginx configuration parlance). Useful in situations where inserting an `extra_config` text section doesn't provide enough flexibility to customize your per-app webserver configuration stanza to your liking. Note that when you use a custom site configuration template, you can also choose to define `extra_config` as any data structure (e.g., Hash or even nested Hash) to be interpreted by your custom template. This provides somewhat unlimited flexibility to configure the webserver appconfiguration however you see fit."
+    },
+    "site_config_template_cookbook":{
+      "type":"string",
+      "default":"opsworks_ruby",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The name of the cookbook in which the site configuration template can be found. If you override `app['webserver']['site_config_template']` to use a site configuration template from your own cookbook, you'll need to use a site configuration template from your own cookbook, you'll need to looks for the specified template in your cookbook."
+    },
+    "logrotate_name":{
+      "type":"string",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The name of the logrotate_app resource, and generated configuration file, for the specified app webserver logrotate configuration. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app webserver level; there are no app-wide or global settings beyond those provided by the webserver library."
+    },
+    "logrotate_log_paths":{
+      "type":"json",
+      "default":[],
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"Which log file(s) should be backed up via logrotate. If this parameter evaluates to an empty array, no logs will be backed up for the specified app webserver. Unlike other logrotate attributes, this attribute can only be set or overridden at a the app webserver level; there are no app-wide or global settings beyond those provided by the webserver library."
+    },
+    "extra_config":{
+      "type":"text",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"Raw configuration, which will be inserted into \"<Virtualhost *:80>\" (apache) or \"server\" port 80 (nginx) section of the application."
+    },
+    "extra_config_ssl":{
+      "type":"text",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"Raw configuration, which will be inserted into \"<VirtualHost *:443>\" (apache) or \"server\" port 443 (nginx) section of the application. If set to true, the extra_config will be copied."
+    },
+    "keepalive_timeout":{
+      "type":"integer",
+      "default":15,
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"The number of seconds webserver will wait for a subsequent request before closing the connection."
+    },
+    "log_dir":{
+      "type":"string",
+      "depends":[
+        "apache2",
+        "nginx"
+      ],
+      "description":"A place to store application-related logs."
+    },
+    "limit_request_body":{
+      "type":"integer",
+      "default":1048576,
+      "depends":[
+        "apache2"
+      ],
+      "description":"This directive specifies the number of bytes from 0 (meaning unlimited) to 2147483647 (2GB) that are allowed in a request body.",
+      "url":"https://httpd.apache.org/docs/2.4/mod/core.html#limitrequestbody"
+    },
+    "log_level":{
+      "type":"string",
+      "default":"info",
+      "values":[
+        "emerg",
+        "alert",
+        "crit",
+        "error",
+        "warn",
+        "notice",
+        "info",
+        "debug",
+        "trace1",
+        "trace2",
+        "trace3",
+        "trace4",
+        "trace5",
+        "trace6",
+        "trace7",
+        "trace8"
+      ],
+      "depends":[
+        "apache2"
+      ],
+      "description":"Adjusts the verbosity of the messages recorded in the error logs.",
+      "url":"https://httpd.apache.org/docs/2.4/mod/core.html#loglevel"
+    },
+    "proxy_timeout":{
+      "type":"integer",
+      "default":60,
+      "depends":[
+        "apache2"
+      ],
+      "description":"This directive allows a user to specifiy a timeout on proxy requests.",
+      "url":"https://httpd.apache.org/docs/current/mod/mod_proxy.html#proxytimeout"
+    },
+    "enable_status":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "apache2"
+      ],
+      "description":"Enable or disable apache2 mod_status.",
+      "url":"https://httpd.apache.org/docs/current/mod/mod_status.html"
+    },
+    "build_type":{
+      "type":"string",
+      "default":"default",
+      "values":[
+        "default",
+        "source"
+      ],
+      "depends":[
+        "nginx"
+      ],
+      "description":"The way the nginx cookbooks handles nginx installation.",
+      "url":"https://github.com/miketheman/nginx/tree/2.7.x#recipes"
+    },
+    "client_body_timeout":{
+      "type":"integer",
+      "default":12,
+      "depends":[
+        "nginx"
+      ],
+      "description":"Defines a timeout for reading client request body.",
+      "url":"http://nginx.org/en/docs/http/ngx_http_core_module.html#client_body_timeout"
+    },
+    "client_header_timeout":{
+      "type":"integer",
+      "default":12,
+      "depends":[
+        "nginx"
+      ],
+      "description":"Defines a timeout for reading client request header.",
+      "url":"http://nginx.org/en/docs/http/ngx_http_core_module.html#client_header_timeout"
+    },
+    "client_max_body_size":{
+      "type":"string",
+      "default":"10m",
+      "depends":[
+        "nginx"
+      ],
+      "description":"Sets the maximum allowed size of the client request body.",
+      "url":"http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size"
+    },
+    "proxy_read_timeout":{
+      "type":"integer",
+      "default":60,
+      "depends":[
+        "nginx"
+      ],
+      "description":"Defines a timeout for reading a response from the proxied server.",
+      "url":"http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_read_timeout"
+    },
+    "proxy_send_timeout":{
+      "type":"integer",
+      "default":60,
+      "depends":[
+        "nginx"
+      ],
+      "description":"Sets a timeout for transmitting a request to the proxied server.",
+      "url":"http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_send_timeout"
+    },
+    "send_timeout":{
+      "type":"integer",
+      "default":10,
+      "depends":[
+        "nginx"
+      ],
+      "description":"Sets a timeout for transmitting a response to the client.",
+      "url":"http://nginx.org/en/docs/http/ngx_http_core_module.html#send_timeout"
+    }
+  },
+  "worker":{
+    "adapter":{
+      "type":"string",
+      "values":[
+        "null",
+        "delayed_job",
+        "resque",
+        "shoryuken",
+        "sidekiq"
+      ],
+      "default":"null",
+      "description":"Worker used to perform background tasks. null means no worker enabled."
+    },
+    "process_count":{
+      "type":"integer",
+      "default":2,
+      "depends":[
+        "delayed_job",
+        "resque",
+        "shoryuken",
+        "sidekiq"
+      ],
+      "description":"How many separate worker processes will be launched."
+    },
+    "syslog":{
+      "type":"boolean",
+      "default":true,
+      "depends":[
+        "delayed_job",
+        "resque",
+        "shoryuken",
+        "sidekiq"
+      ],
+      "description":"Determines if worker should output to syslog."
+    },
+    "config":{
+      "type":"json",
+      "default":{},
+      "depends":[
+        "shoryuken",
+        "sidekiq"
+      ],
+      "description":"Configuration parameters which will be directly passed to the worker. Please use a valid JSON here.",
+      "url":"https://github.com/mperham/sidekiq/wiki/Advanced-Options#the-sidekiq-configuration-file"
+    },
+    "queues":{
+      "type":"string",
+      "depends":[
+        "delayed_job",
+        "resque"
+      ],
+      "description":"Coma separated list of queues which should be processed by worker."
+    },
+    "workers":{
+      "type":"integer",
+      "default":2,
+      "depends":[
+        "resque"
+      ],
+      "description":"Number of resque workers."
+    },
+    "require":{
+      "type":"string",
+      "depends":[
+        "shoryuken"
+      ],
+      "description":"Path to require, relative to the currently deployed application directory."
+    },
+    "require_rails":{
+      "type":"boolean",
+      "default":false,
+      "depends":[
+        "shoryuken"
+      ],
+      "description":"Emits -R to require the rails environment on boot."
+    }
+  }
+}

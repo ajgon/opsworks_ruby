@@ -1,0 +1,11 @@
+---
+version: '2'
+
+services:
+  cookbook_web:
+    build: .
+    volumes:
+      - ".:/app"
+      - "~/.ssh:/root/.ssh"
+    ports:
+      - "4000:4000"

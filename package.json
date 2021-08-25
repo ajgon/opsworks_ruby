@@ -1,0 +1,22 @@
+{
+  "name": "opsworks_ruby_pages",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^3.6.1",
+    "eslint-config-jquery": "^1.0.0",
+    "jshint": "^2.9.3",
+    "jsl": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajgon/opsworks_ruby.git"
+  },
+  "author": "Igor Rzegocki <igor@rzegocki.pl>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ajgon/opsworks_ruby/issues"
+  },
+  "homepage": "https://github.com/ajgon/opsworks_ruby#readme"
+}
