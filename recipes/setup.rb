@@ -119,6 +119,15 @@ end
 
 execute 'yum-config-manager --enable epel' if node['platform_family'] == 'rhel'
 
+cookbook_file 'nginx_signing_key' do
+  path '/var/lib/aws/opsworks/nginx_signing.key'
+  source 'nginx_signing.key'
+  owner 'root'
+  group 'aws'
+  mode '0644'
+end
+
+
 every_enabled_application do |application|
   databases = []
   every_enabled_rds(self, application) do |rds|
