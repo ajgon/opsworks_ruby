@@ -7,19 +7,6 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::deploy' do
-  let(:chef_runner) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-      deploy = node['deploy']
-      deploy['dummy_project']['source'].delete('ssh_wrapper')
-      solo_node.set['deploy'] = deploy
-    end
-  end
-  let(:chef_run) do
-    chef_runner.converge(described_recipe)
-  end
-  let(:chef_run_rhel) do
-    chef_runner_rhel.converge(described_recipe)
-  end
   let(:monit_installed) { false }
   before do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
@@ -27,24 +14,26 @@ describe 'opsworks_ruby::deploy' do
     stub_command('which monit').and_return(monit_installed)
   end
 
-  it 'includes recipes' do
-    expect(chef_run).to include_recipe('opsworks_ruby::configure')
-  end
-
   context 'DEPRECATION' do
-    let(:chef_runner) do
+    cached(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['keep_releases'] = 10
         solo_node.set['deploy'] = deploy
       end
     end
-    let(:chef_runner_rhel) do
+    cached(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['keep_releases'] = 10
         solo_node.set['deploy'] = deploy
       end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
     end
     let(:logs) { [] }
 
@@ -71,7 +60,24 @@ describe 'opsworks_ruby::deploy' do
   end
 
   context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['source'].delete('ssh_wrapper')
+        solo_node.set['deploy'] = deploy
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
     let(:monit_installed) { true }
+
+    it 'includes recipes' do
+      expect(chef_run).to include_recipe('opsworks_ruby::configure')
+    end
 
     it 'creates git wrapper script' do
       expect(chef_run).to create_template('/tmp/ssh-git-wrapper.sh')
@@ -108,7 +114,7 @@ describe 'opsworks_ruby::deploy' do
     end
 
     context 'with nodejs enabled' do
-      let(:chef_runner) do
+      cached(:chef_runner) do
         ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
           deploy = node['deploy']
           deploy['dummy_project']['source'].delete('ssh_wrapper')
@@ -118,6 +124,9 @@ describe 'opsworks_ruby::deploy' do
           solo_node.set['deploy'] = deploy
           solo_node.set['use-nodejs'] = true
         end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
       end
 
       it 'performs a deploy' do
@@ -156,13 +165,16 @@ describe 'opsworks_ruby::deploy' do
     end
 
     context 'when the location of the generated Git SSH wrapper is overridden' do
-      let(:chef_runner) do
+      cached(:chef_runner) do
         ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
           deploy = node['deploy']
           deploy['dummy_project']['source'].delete('ssh_wrapper')
           deploy['dummy_project']['source']['generated_ssh_wrapper'] = '/var/tmp/my-git-ssh-wrapper.sh'
           solo_node.set['deploy'] = deploy
         end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
       end
 
       it 'creates git wrapper script in the specified location' do
@@ -178,7 +190,7 @@ describe 'opsworks_ruby::deploy' do
   end
 
   context 'Puma + S3 + Apache + resque' do
-    let(:chef_runner) do
+    cached(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['source'] = {
@@ -193,7 +205,7 @@ describe 'opsworks_ruby::deploy' do
         solo_node.set['deploy'] = deploy
       end
     end
-    let(:chef_runner_rhel) do
+    cached(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['source'] = {
@@ -207,6 +219,12 @@ describe 'opsworks_ruby::deploy' do
         deploy['dummy_project']['worker']['adapter'] = 'resque'
         solo_node.set['deploy'] = deploy
       end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
     end
     let(:monit_installed) { true }
     let(:tmpdir) { '/tmp/opsworks_ruby' }
@@ -266,7 +284,7 @@ describe 'opsworks_ruby::deploy' do
   end
 
   context 'Thin + http + delayed_job' do
-    let(:chef_runner) do
+    cached(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['source'] = {
@@ -280,7 +298,7 @@ describe 'opsworks_ruby::deploy' do
         solo_node.set['deploy'] = deploy
       end
     end
-    let(:chef_runner_rhel) do
+    cached(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['source'] = {
@@ -293,6 +311,12 @@ describe 'opsworks_ruby::deploy' do
         deploy['dummy_project']['worker']['adapter'] = 'delayed_job'
         solo_node.set['deploy'] = deploy
       end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
     end
     let(:monit_installed) { true }
     let(:tmpdir) { '/tmp/opsworks_ruby' }
@@ -388,18 +412,17 @@ describe 'opsworks_ruby::deploy' do
                                                        ])
     end
 
-    let(:chef_runner) do
-      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-        solo_node.set['lsb'] = node['lsb']
-        solo_node.set['deploy'] = { 'a1' => {} }
-        solo_node.set['deploy']['a1']['global']['deploy_dir'] = deploy_dir if deploy_dir
-        solo_node.set['deploy']['a1']['global']['deploy_revision'] = deploy_revision if deploy_revision
-      end
-    end
 
     context 'when deploy_dir is not specified' do
-      let(:deploy_dir) { nil }
-      let(:deploy_revision) { false }
+      cached(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = { 'a1' => {} }
+        end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
+      end
 
       it 'deploys a1 using the default deploy directory of /srv/www' do
         expect(chef_run).to create_directory('/srv/www/a1/shared')
@@ -415,8 +438,16 @@ describe 'opsworks_ruby::deploy' do
     end
 
     context 'when a deploy_dir is specified' do
-      let(:deploy_dir) { '/some/other/path/to/a1' }
-      let(:deploy_revision) { false }
+      cached(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = { 'a1' => {} }
+          solo_node.set['deploy']['a1']['global']['deploy_dir'] = '/some/other/path/to/a1'
+        end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
+      end
 
       it 'deploys a1 using the provided deploy directory instead' do
         expect(chef_run).to create_directory('/some/other/path/to/a1/shared')

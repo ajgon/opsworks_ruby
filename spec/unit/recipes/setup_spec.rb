@@ -7,24 +7,6 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::setup' do
-  let(:chef_runner) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-      solo_node.set['deploy'] = node['deploy']
-      solo_node.set['lsb'] = node['lsb']
-    end
-  end
-  let(:chef_run) do
-    chef_runner.converge(described_recipe)
-  end
-  let(:chef_runner_rhel) do
-    ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-      solo_node.set['deploy'] = node['deploy']
-    end
-  end
-  let(:chef_run_rhel) do
-    chef_runner_rhel.converge(described_recipe)
-  end
-
   before do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
@@ -33,16 +15,15 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Patches' do
-    let(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-        solo_node.set['patches'] = {
-          'chef12_ssl_fix' => chef12_ssl_fix
-        }
-      end.converge(described_recipe)
-    end
-    let(:chef12_ssl_fix) { true }
-
     context 'when fix ssl certificates is enabled' do
+      cached(:chef_run) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['patches'] = {
+            'chef12_ssl_fix' => true
+          }
+        end.converge(described_recipe)
+      end
+
       it 'fixes SSL certificates' do
         expect(chef_run).to create_remote_file('/opt/chef/embedded/ssl/certs/cacert.pem')
           .with(
@@ -55,7 +36,14 @@ describe 'opsworks_ruby::setup' do
     end
 
     context 'when fix ssl certificates is disabled' do
-      let(:chef12_ssl_fix) { false }
+      cached(:chef_run) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['patches'] = {
+            'chef12_ssl_fix' => false
+          }
+        end.converge(described_recipe)
+      end
+
       it 'does not fix SSL certificates' do
         expect(chef_run).not_to create_remote_file('/opt/chef/embedded/ssl/certs/cacert.pem')
       end
@@ -63,6 +51,24 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Chef version' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+        solo_node.set['lsb'] = node['lsb']
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+      end
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+
     it 'not set' do
       expect(chef_run).not_to create_directory('/opt/aws/opsworks/current/plugins')
     end
@@ -97,6 +103,24 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Deployer' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+        solo_node.set['lsb'] = node['lsb']
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+      end
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+
     it 'debian user' do
       expect(chef_run).to create_group('deploy').with(gid: 5000)
       expect(chef_run).to create_user('deploy').with(
@@ -119,7 +143,7 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Ruby fullstaq' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['ruby'] = { 'version' => '2.6' }
         solo_node.set['lsb'] = node['lsb']
@@ -255,6 +279,12 @@ describe 'opsworks_ruby::setup' do
 
       it 'adds fullstaq apt repository' do
         keyurl = 'https://raw.githubusercontent.com/fullstaq-labs/fullstaq-ruby-server-edition/main/fullstaq-ruby.asc'
+        chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '3.0' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+        end.converge(described_recipe)
 
         expect(chef_run).to add_apt_repository('fullstaq-ruby').with(
           uri: 'https://apt.fullstaqruby.org',
@@ -272,7 +302,7 @@ describe 'opsworks_ruby::setup' do
     end
 
     context 'rhel' do
-      let(:chef_run_rhel) do
+      cached(:chef_run_rhel) do
         ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
           solo_node.set['ruby'] = { 'version' => '2.6' }
           solo_node.set['lsb'] = node['lsb']
@@ -469,6 +499,24 @@ describe 'opsworks_ruby::setup' do
         stub_const('Gem::VERSION', '2.7.8')
       end
 
+      cached(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['lsb'] = node['lsb']
+        end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
+      end
+      cached(:chef_runner_rhel) do
+        ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['deploy'] = node['deploy']
+        end
+      end
+      cached(:chef_run_rhel) do
+        chef_runner_rhel.converge(described_recipe)
+      end
+
       it 'debian bundler' do
         expect(chef_run).to install_gem_package(:bundler).with(version: '~> 1')
         expect(chef_run).to create_link('/usr/local/bin/bundle').with(to: '/usr/bin/bundle')
@@ -483,6 +531,24 @@ describe 'opsworks_ruby::setup' do
     context 'when rubygems version is >= 3' do
       before do
         stub_const('Gem::VERSION', '3.0.2')
+      end
+
+      cached(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['lsb'] = node['lsb']
+        end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
+      end
+      cached(:chef_runner_rhel) do
+        ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['deploy'] = node['deploy']
+        end
+      end
+      cached(:chef_run_rhel) do
+        chef_runner_rhel.converge(described_recipe)
       end
 
       it 'debian bundler' do
@@ -500,6 +566,16 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'debian preparations' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+        solo_node.set['lsb'] = node['lsb']
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+
     it 'javascript-common' do
       expect(chef_run).to purge_apt_package('javascript-common')
     end
@@ -513,18 +589,50 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'epel' do
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+      end
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+
     it 'rhel' do
       expect(chef_run_rhel).to run_execute('yum-config-manager --enable epel')
     end
   end
 
   context 'apt_repository' do
+
     context 'debian' do
-      it 'installs the PPA apt repository for Apache2' do
-        expect(chef_run).to add_apt_repository('apache2')
+      context 'when use_apache2_ppa is set to true' do
+        cached(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            solo_node.set['deploy'] = node['deploy']
+            solo_node.set['lsb'] = node['lsb']
+          end
+        end
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
+        end
+
+        it 'installs the PPA apt repository for Apache2' do
+          expect(chef_run).to add_apt_repository('apache2')
+        end
       end
 
       context 'when use_apache2_ppa is set to false' do
+        cached(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            solo_node.set['deploy'] = node['deploy']
+            solo_node.set['lsb'] = node['lsb']
+          end
+        end
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
+        end
+
         before do
           chef_runner.node.set['defaults']['webserver']['use_apache2_ppa'] = false
         end
@@ -536,6 +644,15 @@ describe 'opsworks_ruby::setup' do
     end
 
     context 'rhel' do
+      cached(:chef_runner_rhel) do
+        ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['deploy'] = node['deploy']
+        end
+      end
+      cached(:chef_run_rhel) do
+        chef_runner_rhel.converge(described_recipe)
+      end
+
       it 'does not install the PPA apt repository for Apache2' do
         expect(chef_run_rhel).not_to add_apt_repository('apache2')
       end
@@ -543,6 +660,24 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'Postgresql + git + nginx + sidekiq' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+        solo_node.set['lsb'] = node['lsb']
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+      end
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+
     it 'installs required packages for debian' do
       expect(chef_run).to install_package('nginx')
       expect(chef_run).to install_package('zlib1g-dev')
@@ -587,7 +722,7 @@ describe 'opsworks_ruby::setup' do
       end
     end
 
-    let(:chef_runner) do
+    cached(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
@@ -597,7 +732,7 @@ describe 'opsworks_ruby::setup' do
       end
     end
 
-    let(:chef_runner_rhel) do
+    cached(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['webserver']['adapter'] = 'apache2'
@@ -607,51 +742,90 @@ describe 'opsworks_ruby::setup' do
       end
     end
 
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+
     context 'debian' do
-      let(:chef_runner) do
-        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-          deploy = node['deploy']
-          deploy['dummy_project']['webserver']['adapter'] = 'apache2'
-          deploy['dummy_project']['webserver']['enable_status'] = false
-          deploy['dummy_project']['worker']['adapter'] = 'resque'
-          deploy['dummy_project']['source'] = {}
-          solo_node.set['deploy'] = deploy
+      context 'basic' do
+        cached(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            deploy = node['deploy']
+            deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+            deploy['dummy_project']['webserver']['enable_status'] = false
+            deploy['dummy_project']['worker']['adapter'] = 'resque'
+            deploy['dummy_project']['source'] = {}
+            solo_node.set['deploy'] = deploy
+          end
         end
-      end
-
-      it 'installs required packages' do
-        expect(chef_run).to install_package('apache2')
-        expect(chef_run).to install_package('bzip2')
-        expect(chef_run).to install_package('git')
-        expect(chef_run).to install_package('gzip')
-        expect(chef_run).not_to install_package('libapache2-mod-passenger')
-        expect(chef_run).to install_package('libmysqlclient-dev')
-        expect(chef_run).to install_package('monit')
-        expect(chef_run).to install_package('p7zip')
-        expect(chef_run).to install_package('redis-server')
-        expect(chef_run).to install_package('tar')
-        expect(chef_run).to install_package('unzip')
-        expect(chef_run).to install_package('xz-utils')
-      end
-
-      it 'defines service which starts apache2' do
-        expect(chef_run).to start_service('apache2')
-      end
-
-      Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
-        it "enables Apache2 module #{mod}" do
-          expect(chef_run).to run_execute("a2enmod #{mod}")
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
         end
-      end
 
-      Drivers::Webserver::Apache2::DISABLE_MODULES.each do |mod|
-        it "disables Apache2 module #{mod}" do
-          expect(chef_run).to run_execute("a2dismod #{mod}")
+        it 'installs required packages' do
+          expect(chef_run).to install_package('apache2')
+          expect(chef_run).to install_package('bzip2')
+          expect(chef_run).to install_package('git')
+          expect(chef_run).to install_package('gzip')
+          expect(chef_run).not_to install_package('libapache2-mod-passenger')
+          expect(chef_run).to install_package('libmysqlclient-dev')
+          expect(chef_run).to install_package('monit')
+          expect(chef_run).to install_package('p7zip')
+          expect(chef_run).to install_package('redis-server')
+          expect(chef_run).to install_package('tar')
+          expect(chef_run).to install_package('unzip')
+          expect(chef_run).to install_package('xz-utils')
+        end
+
+        it 'defines service which starts apache2' do
+          expect(chef_run).to start_service('apache2')
+        end
+
+        Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
+          it "enables Apache2 module #{mod}" do
+            expect(chef_run).to run_execute("a2enmod #{mod}")
+          end
+        end
+
+        Drivers::Webserver::Apache2::DISABLE_MODULES.each do |mod|
+          it "disables Apache2 module #{mod}" do
+            expect(chef_run).to run_execute("a2dismod #{mod}")
+          end
         end
       end
 
       context 'when the modules to enable are already enabled' do
         let(:modules_to_enable_are_enabled) { true }
+        before do
+          stub_search(:aws_opsworks_app, '*:*')
+            .and_return([aws_opsworks_app(app_source: { type: 's3', url: 'http://example.com' })])
+          stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
+          Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
+            stub_command("a2enmod #{mod}").and_return(true)
+            stub_command("a2query -m #{mod}").and_return(modules_to_enable_are_enabled)
+          end
+          Drivers::Webserver::Apache2::DISABLE_MODULES.each do |mod|
+            stub_command("a2dismod #{mod}").and_return(true)
+            stub_command("a2query -m #{mod}").and_return(modules_to_disable_are_enabled)
+          end
+        end
+        cached(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            deploy = node['deploy']
+            deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+            deploy['dummy_project']['webserver']['enable_status'] = false
+            deploy['dummy_project']['worker']['adapter'] = 'resque'
+            deploy['dummy_project']['source'] = {}
+            solo_node.set['deploy'] = deploy
+          end
+        end
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
+        end
 
         Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
           it "does not enable Apache2 module #{mod} again unnecessarily" do
@@ -662,6 +836,32 @@ describe 'opsworks_ruby::setup' do
 
       context 'when the modules to disable are already disabled' do
         let(:modules_to_disable_are_enabled) { false }
+        before do
+          stub_search(:aws_opsworks_app, '*:*')
+            .and_return([aws_opsworks_app(app_source: { type: 's3', url: 'http://example.com' })])
+          stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance(engine: 'mysql')])
+          Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
+            stub_command("a2enmod #{mod}").and_return(true)
+            stub_command("a2query -m #{mod}").and_return(modules_to_enable_are_enabled)
+          end
+          Drivers::Webserver::Apache2::DISABLE_MODULES.each do |mod|
+            stub_command("a2dismod #{mod}").and_return(true)
+            stub_command("a2query -m #{mod}").and_return(modules_to_disable_are_enabled)
+          end
+        end
+        cached(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            deploy = node['deploy']
+            deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+            deploy['dummy_project']['webserver']['enable_status'] = false
+            deploy['dummy_project']['worker']['adapter'] = 'resque'
+            deploy['dummy_project']['source'] = {}
+            solo_node.set['deploy'] = deploy
+          end
+        end
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
+        end
 
         Drivers::Webserver::Apache2::ENABLE_MODULES.each do |mod|
           it "does not disable Apache2 module #{mod} again unnecessarily" do
@@ -671,7 +871,7 @@ describe 'opsworks_ruby::setup' do
       end
 
       context 'when enable_status is set to true' do
-        let(:chef_runner) do
+        cached(:chef_runner) do
           ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
             app_name = aws_opsworks_app['shortname']
             solo_node.set['deploy'][app_name]['webserver'] = {
@@ -679,6 +879,9 @@ describe 'opsworks_ruby::setup' do
               'enable_status' => true
             }
           end
+        end
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
         end
 
         it 'does not disable Apache2 module status' do
@@ -720,6 +923,9 @@ describe 'opsworks_ruby::setup' do
           chef_runner.node.set['deploy']['dummy_project']['appserver']['adapter'] = 'passenger'
           chef_runner.node.set['defaults']['appserver']['passenger_version'] = '1.2.3'
         end
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
+        end
 
         it 'activates the passenger APT repo' do
           expect(chef_run).to add_apt_repository('passenger')
@@ -733,6 +939,9 @@ describe 'opsworks_ruby::setup' do
       context 'rhel' do
         before do
           chef_runner_rhel.node.set['deploy']['dummy_project']['appserver']['adapter'] = 'passenger'
+        end
+        cached(:chef_run_rhel) do
+          chef_runner_rhel.converge(described_recipe)
         end
 
         it 'raises an exception' do
@@ -749,16 +958,22 @@ describe 'opsworks_ruby::setup' do
     temp_node['dummy_project']['worker']['adapter'] = 'delayed_job'
     temp_node['dummy_project']['source'] = {}
 
-    let(:chef_runner) do
+    cached(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['deploy'] = temp_node
         solo_node.set['lsb'] = node['lsb']
       end
     end
-    let(:chef_runner_rhel) do
+    cached(:chef_runner_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
         solo_node.set['deploy'] = temp_node
       end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
     end
 
     before do
