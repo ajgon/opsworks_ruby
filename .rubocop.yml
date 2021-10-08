@@ -11,6 +11,9 @@ Layout/BeginEndAlignment:
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: true
+
 Layout/LineLength:
   Max: 120
   Enabled: true
@@ -22,6 +25,11 @@ Layout/SpaceBeforeBrackets:
   Enabled: false
 
 Lint/AmbiguousAssignment:
+  Enabled: true
+
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: true
+Lint/AmbiguousRange:
   Enabled: true
 
 Lint/BinaryOperatorWithIdenticalOperands:
@@ -63,6 +71,9 @@ Lint/EmptyConditionalBody:
 Lint/EmptyFile:
   Enabled: true
 
+Lint/EmptyInPattern:
+  Enabled: true
+
 Lint/FloatComparison:
   Enabled: true
 
@@ -70,6 +81,9 @@ Lint/HashCompareByIdentity:
   Enabled: true
 
 Lint/IdentityComparison:
+  Enabled: true
+
+Lint/IncompatibleIoSelectWithFiberScheduler:
   Enabled: true
 
 Lint/LambdaWithoutLiteralBlock:
@@ -100,6 +114,9 @@ Lint/RedundantDirGlobSort:
   Enabled: true
 
 Lint/RedundantSafeNavigation:
+  Enabled: true
+
+Lint/RequireRelativeSelfPath:
   Enabled: true
 
 Lint/SelfAssignment:
@@ -197,6 +214,9 @@ Performance/StringInclude:
 Performance/Sum:
   Enabled: true
 
+Security/IoMethods:
+  Enabled: true
+
 Style/AccessorGrouping:
   Enabled: true
 
@@ -263,7 +283,13 @@ Style/HashTransformValues:
 Style/IfWithBooleanLiteralBranches:
   Enabled: true
 
+Style/InPatternThen:
+  Enabled: true
+
 Style/KeywordParametersOrder:
+  Enabled: true
+
+Style/MultilineInPatternThen:
   Enabled: true
 
 Style/NegatedIfElseCondition:
@@ -272,7 +298,15 @@ Style/NegatedIfElseCondition:
 Style/NilLambda:
   Enabled: true
 
+Style/NumberedParameters:
+  Enabled: true
+Style/NumberedParametersLimit:
+  Enabled: true
+
 Style/OptionalBooleanParameter:
+  Enabled: true
+
+Style/QuotedSymbols:
   Enabled: true
 
 Style/RedundantArgument:
@@ -296,6 +330,12 @@ Style/RedundantRegexpEscape:
 Style/RedundantSelfAssignment:
   Enabled: true
 
+Style/RedundantSelfAssignmentBranch:
+  Enabled: true
+
+Style/SelectByRegexp:
+  Enabled: true
+
 Style/SingleArgumentDig:
   Enabled: true
 
@@ -317,6 +357,7 @@ Style/SwapValues:
 AllCops:
   TargetRubyVersion: 2.6
   DisplayCopNames: true
+  SuggestExtensions: false
 
   Exclude:
     - libraries/provider_*.rb

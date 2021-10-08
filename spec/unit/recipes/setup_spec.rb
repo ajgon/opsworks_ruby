@@ -154,7 +154,7 @@ describe 'opsworks_ruby::setup' do
 
     let(:expected_path) do
       '/usr/lib/fullstaq-ruby/versions/2.6/bin:' \
-      '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
+        '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games'
     end
 
     it 'install gnupg2' do
@@ -604,7 +604,6 @@ describe 'opsworks_ruby::setup' do
   end
 
   context 'apt_repository' do
-
     context 'debian' do
       context 'when use_apache2_ppa is set to true' do
         cached(:chef_runner) do

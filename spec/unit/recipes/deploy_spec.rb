@@ -412,7 +412,6 @@ describe 'opsworks_ruby::deploy' do
                                                        ])
     end
 
-
     context 'when deploy_dir is not specified' do
       cached(:chef_runner) do
         ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
