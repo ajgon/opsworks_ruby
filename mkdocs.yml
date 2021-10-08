@@ -1,4 +1,4 @@
-site_name: opsworks_ruby
+---
 # Project information
 site_name: opsworks_ruby
 site_url: https://opsworks_ruby.rzegocki.pl/
@@ -15,18 +15,18 @@ copyright: Copyright &copy; 2016 - 2021 Igor Rzegocki
 nav:
   - 'Home': index.md
   - 'User Documentation':
-    - 'Getting Started': getting-started.md
-    - 'Troubleshooting': troubleshooting.md
+      - 'Getting Started': getting-started.md
+      - 'Troubleshooting': troubleshooting.md
   - 'Cookbook Documentation':
-    - 'Supported Technologies': support.md
-    - 'Requirements': requirements.md
-    - 'Attributes': attributes.md
-    - 'Recipes': recipes.md
+      - 'Supported Technologies': support.md
+      - 'Requirements': requirements.md
+      - 'Attributes': attributes.md
+      - 'Recipes': recipes.md
   - 'About opsworks_ruby':
-    - 'Contributing': contributing.md
-    - 'Author and Contributors': team.md
-    - 'Changelog': changelog.md
-    - 'License': license.md
+      - 'Contributing': contributing.md
+      - 'Author and Contributors': team.md
+      - 'Changelog': changelog.md
+      - 'License': license.md
 
 plugins:
   - search

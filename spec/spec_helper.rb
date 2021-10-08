@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+$VERBOSE = nil
+
 require 'chefspec'
 require 'chefspec/berkshelf'
 require 'pathname'

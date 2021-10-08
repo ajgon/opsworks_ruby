@@ -18,9 +18,10 @@ RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
 RUN locale-gen
 ENV LC_ALL en_US.UTF-8
 
-RUN curl -o /tmp/chefdk.deb https://packages.chef.io/files/stable/chefdk/1.6.11/debian/8/chefdk_1.6.11-1_amd64.deb && \
-    dpkg -i /tmp/chefdk.deb && \
-    rm -rf /tmp/chefdk.deb
+RUN echo 'deb [trusted=yes] https://packages.chef.io/repos/apt/stable bionic main' > /etc/apt/sources.list.d/chefdk.list && \
+    curl -s https://packages.chef.io/chef.asc | apt-key add - && \
+    apt-get update && \
+    apt-get install --yes chefdk
 
 ENV APP_HOME /cookbooks/opsworks_ruby
 RUN mkdir -p "$APP_HOME"
@@ -45,5 +46,7 @@ RUN printf "cookbook_path \"/cookbooks\"\n" >> /root/.chef/knife.rb
 COPY README.md $APP_HOME/
 COPY metadata.rb $APP_HOME/
 COPY Berksfile* $APP_HOME/
+
+ENV CHEF_LICENSE=accept
 RUN chef exec berks
 
