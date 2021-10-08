@@ -12,6 +12,9 @@ default['deployer']['user'] = 'deploy'
 default['deployer']['group'] = 'deploy'
 default['deployer']['home'] = "/home/#{default['deployer']['user']}"
 
+# fixes
+default['patches']['chef12_ssl_fix'] = true
+
 # ruby
 default['apt']['compile_time_update'] = true
 default['build-essential']['compile_time'] = true

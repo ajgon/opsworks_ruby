@@ -32,6 +32,36 @@ describe 'opsworks_ruby::setup' do
     stub_command('which nginx').and_return(false)
   end
 
+  context 'Patches' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['patches'] = {
+          'chef12_ssl_fix' => chef12_ssl_fix
+        }
+      end.converge(described_recipe)
+    end
+    let(:chef12_ssl_fix) { true }
+
+    context 'when fix ssl certificates is enabled' do
+      it 'fixes SSL certificates' do
+        expect(chef_run).to create_remote_file('/opt/chef/embedded/ssl/certs/cacert.pem')
+          .with(
+            source: 'file:///etc/ssl/certs/ca-certificates.crt',
+            owner: 'root',
+            group: 'root',
+            mode: '0644'
+          )
+      end
+    end
+
+    context 'when fix ssl certificates is disabled' do
+      let(:chef12_ssl_fix) { false }
+      it 'does not fix SSL certificates' do
+        expect(chef_run).not_to create_remote_file('/opt/chef/embedded/ssl/certs/cacert.pem')
+      end
+    end
+  end
+
   context 'Chef version' do
     it 'not set' do
       expect(chef_run).not_to create_directory('/opt/aws/opsworks/current/plugins')

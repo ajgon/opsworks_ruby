@@ -75,6 +75,24 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
     - If enabled current chef on OpsWorks will be updated to provided version (if integer provided) or the the
       latest version (if `true`).
 
+### Patches
+
+Chef 12 (which AWS opsworks ruby is based on) is EOL. It uses old libraries and dependencies, which will start be more
+and more problematic. "Patches" section of config is an attempt to workaround this - as long, as it's possible.
+
+!!! note
+
+    All of those options are set to `true` by default and it's strongly discouraged to disable them. However if you have
+    any problems with anything those patches touch, disabling them, is a first step to troubleshoot them.
+
+- `node['patches']['chef12_ssl_fix']`
+
+    - **Type:** boolean
+    - **Default:** `true`
+    - Chef 12 OpenSSL provide very old certificates list - most of them are expired now. This fix, force chef to use
+      more recent list (and valid) list.
+      See [Issue #268](https://github.com/ajgon/opsworks_ruby/issues/268) for more information.
+
 ## Cross-application attributes
 
 These attributes can only be set at the server level; they cannot vary from application to application.
