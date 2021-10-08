@@ -1,5 +1,27 @@
 # Changelog
 
+# [1.21.0](https://github.com/ajgon/opsworks_ruby/compare/v1.20.3...v1.21.0) (2021-10-08)
+
+
+### Bug Fixes
+
+* patch broken SSL certificates list ([4887cf5](https://github.com/ajgon/opsworks_ruby/commit/4887cf5dcb87dd417e3c6657f41bdb5166b113ef)), closes [#268](https://github.com/ajgon/opsworks_ruby/issues/268)
+* update rubies for ruby-nq and fullstack, set default ruby to 2.7 ([09ba7e1](https://github.com/ajgon/opsworks_ruby/commit/09ba7e190e78cf79a7e42fde3cb0cc86d11aa836)), closes [#266](https://github.com/ajgon/opsworks_ruby/issues/266)
+
+
+### BREAKING CHANGES
+
+* By default new list of SSL certificates is used.
+
+It should not affect any of your current deployments, but if you start
+seeing SSL errors, the first thing you should check, is disabling
+`node['patches']['chef12_ssl_fix']` option.
+
+See https://github.com/ajgon/opsworks_ruby/issues/268 for more
+information.
+
+
+
 ## [1.20.3](https://github.com/ajgon/opsworks_ruby/compare/v1.20.2...v1.20.3) (2021-05-06)
 
 
