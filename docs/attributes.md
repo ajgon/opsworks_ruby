@@ -42,7 +42,7 @@ They should'nt be used under `node['deploy'][<application_shortname>]` (notice l
         (for example `ruby-ng` gets freshest versions of ruby way earlier than Amazon Linux).
 
     - **Type:** string
-    - **Default:** `2.6`
+    - **Default:** `3.0`
     - Sets the Ruby version used through the system. For debian-based distributions, a `ruby-ng` cookbook is used
       (check [ruby-ng cookbook documentation](https://supermarket.chef.io/cookbooks/ruby-ng)).
       For Amazon Linux, packages provided by distribution (i.e. `ruby23`, `ruby23-devel` etc.).

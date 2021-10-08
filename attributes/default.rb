@@ -18,7 +18,7 @@ default['patches']['chef12_ssl_fix'] = true
 # ruby
 default['apt']['compile_time_update'] = true
 default['build-essential']['compile_time'] = true
-default['ruby-version'] = node['ruby'].try(:[], 'version') || '2.6'
+default['ruby-version'] = node['ruby'].try(:[], 'version') || '2.7'
 default['ruby-provider'] = 'ruby-ng'
 default['nginx']['source']['modules'] = %w[
   nginx::http_ssl_module nginx::http_realip_module nginx::http_gzip_static_module nginx::headers_more_module

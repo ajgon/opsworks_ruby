@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::setup' do
-  describe package('ruby2.6') do
+  describe package('ruby2.7') do
     it { should be_installed }
   end
 
