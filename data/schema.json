@@ -35,6 +35,13 @@
       "description":"If enabled current chef on OpsWorks will be updated to provided version."
     }
   },
+  "patches":{
+    "chef12_ssl_fix":{
+      "type":"boolean",
+      "default":true,
+      "description":"Chef 12 OpenSSL provide very old certificates list - most of them are expired now. This fix, force chef to use more recent list (and valid) list."
+    }
+  },
   "global":{
     "environment":{
       "type":"string",

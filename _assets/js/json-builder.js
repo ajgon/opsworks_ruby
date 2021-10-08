@@ -276,8 +276,17 @@
               !( $.isPlainObject( data[ key ] ) && $.isEmptyObject( data[ key ] ) )
             )
           ) {
-            if( pair[ 0 ] == 'server' ) {
-              this.output[ pair[ 1 ] ] = data[ key ];
+            if( pair[ 0 ] == 'server' || pair [ 0 ] == 'patches' ) {
+              if( pair [ 0 ] == 'server' ) {
+                this.output[ pair[ 1 ] ] = this.output[ pair[ 1 ] ] || {};
+              } else {
+                this.output[ pair[ 0 ] ] = this.output[ pair[ 0 ] ] || {};
+                if ( pair[ 1 ] ) {
+                  this.output[ pair[ 0 ] ][ pair[ 1 ] ] = data[ key ];
+                } else {
+                  this.output[ pair[ 0 ] ] = data[ key ];
+                }
+              }
             } else {
               output[ pair[ 0 ] ] = output[ pair[ 0 ] ] || {};
               if ( pair[ 1 ] ) {
