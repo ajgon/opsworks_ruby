@@ -4,5 +4,7 @@ version: '2'
 services:
   cookbook:
     build: .
+    ports:
+      - "8000:8000"
     volumes:
       - ".:/cookbooks/opsworks_ruby"

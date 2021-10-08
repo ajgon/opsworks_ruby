@@ -4,22 +4,21 @@
 
 1. Make changes
 1. Commit those changes
-1. Make sure Travis turns green
+1. Make sure GitHub Actions turns green
 1. Make sure Coverage remains 100%
 1. Bump version in `package.json`
 1. Bump version in `metadata.rb`
-1. Bump version in `docs/source/config.py`
-1. Add contributors to `README.md` and `docs/source/team.rst` if necessary
+1. Add contributors to `README.md` and `docs/team.md` if necessary
 1. `echo -n "<your chef login>"` > .chef.login
-1. Put your chef private key associated with `opsworks_ruby` cookbook as `client.pem`
-   file into project directory
+1. Put your chef private key associated with `opsworks_ruby` cookbook as `client.pem` file into project directory
 1. `docker-compose run --rm cookbook bundle update`
 1. `docker-compose build`
 1. Run [Unit Testing and Linting](TESTING.md#unit-testing-and-linting)
 1. `docker-compose run --rm cookbook conventional-changelog -s -p angular -i CHANGELOG.md`
+1. Properly copy paste new entries in `CHANGELOG.md` to `docs/changelog.md`
 1. Commit all the things with `chore: Version bump`
 1. Add new configuration options to `gh-pages-source` if necessary
-1. Deploy new documentation version `mike deploy --prefix docs --update-aliases v<version> latest`
+1. Deploy new documentation version `docker-compose run cookbook mike deploy --prefix docs --update-aliases v<version> latest`
 1. Tag version
 1. Push: `git push origin master --tags`
 1. `docker-compose run --rm cookbook knife cookbook site share opsworks_ruby Applications`
