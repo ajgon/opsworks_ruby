@@ -68,8 +68,8 @@ module Drivers
 
         def dummy_git_command
           "cd #{dummy_repository_dir} && git init && git config user.name 'Chef' && " \
-          'git config user.email \'chef@localhost\' && git add -A && ' \
-          'git commit --author=\'Chef <>\' -m \'dummy repo\' -an'
+            'git config user.email \'chef@localhost\' && git add -A && ' \
+            'git commit --author=\'Chef <>\' -m \'dummy repo\' -an'
         end
 
         def archive_file_dir

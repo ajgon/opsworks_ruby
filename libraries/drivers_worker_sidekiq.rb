@@ -64,8 +64,8 @@ module Drivers
 
       def send_signal_to_sidekiq(process_number, signal = nil)
         "/bin/su - #{node['deployer']['user']} -c \"ps -ax | grep 'bundle exec sidekiq' | " \
-        "grep sidekiq_#{process_number}.yml | grep -v grep | awk '{print \\$1}' | " \
-        "xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill#{" -#{signal}" if signal}\""
+          "grep sidekiq_#{process_number}.yml | grep -v grep | awk '{print \\$1}' | " \
+          "xargs --no-run-if-empty pgrep -P | xargs --no-run-if-empty kill#{" -#{signal}" if signal}\""
       end
 
       def configuration

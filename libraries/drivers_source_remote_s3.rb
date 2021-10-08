@@ -40,8 +40,8 @@ module Drivers
           # scheme, userinfo, host, port, registry | path, opaque, query, fragment
 
           components = URI.split(uri)
-          base_uri = URI::HTTP.new(*(components.take(5) + [nil] * 4))
-          remote_path = URI::HTTP.new(*([nil] * 5 + components.drop(5)))
+          base_uri = URI::HTTP.new(*(components.take(5) + ([nil] * 4)))
+          remote_path = URI::HTTP.new(*(([nil] * 5) + components.drop(5)))
 
           virtual_host_match =
             base_uri.host.match(/\A(.+)\.s3(?:[-.](?:ap|eu|sa|us)-(?:.+-)\d|-external-1)?\.amazonaws\.com/i)
