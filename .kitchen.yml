@@ -87,6 +87,7 @@ suites:
       - recipe[opsworks_ruby::setup]
       - recipe[opsworks_ruby::deploy]
     attributes:
+      'ruby-version': '2.6'
       deploy:
         dummy_project:
           framework:
@@ -220,4 +221,4 @@ suites:
           webserver:
             adapter: 'apache2'
             port: 8081
-      'ruby-version': '2.6'
+      'ruby-version': '2.7'

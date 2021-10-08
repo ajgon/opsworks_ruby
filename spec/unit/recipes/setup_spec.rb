@@ -185,6 +185,13 @@ describe 'opsworks_ruby::setup' do
       end
 
       it 'installs ruby 2.6' do
+        chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.6' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+        end.converge(described_recipe)
+
         expect(chef_run).to install_package('fullstaq-ruby-2.6')
       end
 
@@ -198,6 +205,52 @@ describe 'opsworks_ruby::setup' do
         end.converge(described_recipe)
 
         expect(chef_run).to install_package('fullstaq-ruby-2.6-jemalloc')
+      end
+
+      it 'installs ruby 2.7' do
+        chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.7' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+        end.converge(described_recipe)
+
+        expect(chef_run).to install_package('fullstaq-ruby-2.7')
+      end
+
+      it 'installs ruby 2.7 with variant' do
+        chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.7' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+          solo_node.set['ruby-variant'] = 'jemalloc'
+        end.converge(described_recipe)
+
+        expect(chef_run).to install_package('fullstaq-ruby-2.7-jemalloc')
+      end
+
+      it 'installs ruby 3.0' do
+        chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '3.0' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+        end.converge(described_recipe)
+
+        expect(chef_run).to install_package('fullstaq-ruby-3.0')
+      end
+
+      it 'installs ruby 3.0 with variant' do
+        chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '3.0' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+          solo_node.set['ruby-variant'] = 'jemalloc'
+        end.converge(described_recipe)
+
+        expect(chef_run).to install_package('fullstaq-ruby-3.0-jemalloc')
       end
 
       it 'adds fullstaq apt repository' do
@@ -252,6 +305,13 @@ describe 'opsworks_ruby::setup' do
       end
 
       it 'installs ruby 2.6' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.6' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+        end.converge(described_recipe)
+
         expect(chef_run_rhel).to install_package('fullstaq-ruby-2.6')
       end
 
@@ -265,6 +325,52 @@ describe 'opsworks_ruby::setup' do
         end.converge(described_recipe)
 
         expect(chef_run_rhel).to install_package('fullstaq-ruby-2.6-jemalloc')
+      end
+
+      it 'installs ruby 2.7' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.7' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+        end.converge(described_recipe)
+
+        expect(chef_run_rhel).to install_package('fullstaq-ruby-2.7')
+      end
+
+      it 'installs ruby 2.7 with variant' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.7' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+          solo_node.set['ruby-variant'] = 'jemalloc'
+        end.converge(described_recipe)
+
+        expect(chef_run_rhel).to install_package('fullstaq-ruby-2.7-jemalloc')
+      end
+
+      it 'installs ruby 3.0' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '3.0' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+        end.converge(described_recipe)
+
+        expect(chef_run_rhel).to install_package('fullstaq-ruby-3.0')
+      end
+
+      it 'installs ruby 3.0 with variant' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '3.0' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+          solo_node.set['ruby-provider'] = 'fullstaq'
+          solo_node.set['ruby-variant'] = 'jemalloc'
+        end.converge(described_recipe)
+
+        expect(chef_run_rhel).to install_package('fullstaq-ruby-3.0-jemalloc')
       end
 
       it 'adds fullstaq yum repository' do
@@ -283,61 +389,6 @@ describe 'opsworks_ruby::setup' do
   context 'Rubies' do
     context 'Debian' do
       context 'ruby-ng' do
-        it 'installs ruby 2.0' do
-          chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-            solo_node.set['ruby'] = { 'version' => '2.0' }
-            solo_node.set['lsb'] = node['lsb']
-            solo_node.set['deploy'] = node['deploy']
-          end.converge(described_recipe)
-
-          expect(chef_run).to install_package('ruby2.0')
-          expect(chef_run).to install_package('ruby2.0-dev')
-        end
-
-        it 'installs ruby 2.1' do
-          chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-            solo_node.set['ruby'] = { 'version' => '2.1' }
-            solo_node.set['lsb'] = node['lsb']
-            solo_node.set['deploy'] = node['deploy']
-          end.converge(described_recipe)
-
-          expect(chef_run).to install_package('ruby2.1')
-          expect(chef_run).to install_package('ruby2.1-dev')
-        end
-
-        it 'installs ruby 2.2' do
-          chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-            solo_node.set['ruby'] = { 'version' => '2.2' }
-            solo_node.set['lsb'] = node['lsb']
-            solo_node.set['deploy'] = node['deploy']
-          end.converge(described_recipe)
-
-          expect(chef_run).to install_package('ruby2.2')
-          expect(chef_run).to install_package('ruby2.2-dev')
-        end
-
-        it 'installs ruby 2.3' do
-          chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-            solo_node.set['ruby'] = { 'version' => '2.3' }
-            solo_node.set['lsb'] = node['lsb']
-            solo_node.set['deploy'] = node['deploy']
-          end.converge(described_recipe)
-
-          expect(chef_run).to install_package('ruby2.3')
-          expect(chef_run).to install_package('ruby2.3-dev')
-        end
-
-        it 'installs ruby 2.4' do
-          chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-            solo_node.set['ruby'] = { 'version' => '2.4' }
-            solo_node.set['lsb'] = node['lsb']
-            solo_node.set['deploy'] = node['deploy']
-          end.converge(described_recipe)
-
-          expect(chef_run).to install_package('ruby2.4')
-          expect(chef_run).to install_package('ruby2.4-dev')
-        end
-
         it 'installs ruby 2.5' do
           chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
             solo_node.set['ruby'] = { 'version' => '2.5' }
@@ -350,73 +401,30 @@ describe 'opsworks_ruby::setup' do
         end
 
         it 'installs ruby 2.6' do
+          chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            solo_node.set['ruby'] = { 'version' => '2.6' }
+            solo_node.set['lsb'] = node['lsb']
+            solo_node.set['deploy'] = node['deploy']
+          end.converge(described_recipe)
+
           expect(chef_run).to install_package('ruby2.6')
           expect(chef_run).to install_package('ruby2.6-dev')
+        end
+
+        it 'installs ruby 2.7' do
+          chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            solo_node.set['ruby'] = { 'version' => '2.7' }
+            solo_node.set['lsb'] = node['lsb']
+            solo_node.set['deploy'] = node['deploy']
+          end.converge(described_recipe)
+
+          expect(chef_run).to install_package('ruby2.7')
+          expect(chef_run).to install_package('ruby2.7-dev')
         end
       end
     end
 
     context 'rhel' do
-      it 'installs ruby 2.0' do
-        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.0' }
-          solo_node.set['lsb'] = node['lsb']
-          solo_node.set['deploy'] = node['deploy']
-        end.converge(described_recipe)
-
-        expect(chef_run_rhel).to install_package('ruby20')
-        expect(chef_run_rhel).to install_package('ruby20-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.0')
-      end
-
-      it 'installs ruby 2.1' do
-        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.1' }
-          solo_node.set['lsb'] = node['lsb']
-          solo_node.set['deploy'] = node['deploy']
-        end.converge(described_recipe)
-
-        expect(chef_run_rhel).to install_package('ruby21')
-        expect(chef_run_rhel).to install_package('ruby21-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.1')
-      end
-
-      it 'installs ruby 2.2' do
-        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.2' }
-          solo_node.set['lsb'] = node['lsb']
-          solo_node.set['deploy'] = node['deploy']
-        end.converge(described_recipe)
-
-        expect(chef_run_rhel).to install_package('ruby22')
-        expect(chef_run_rhel).to install_package('ruby22-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.2')
-      end
-
-      it 'installs ruby 2.3' do
-        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.3' }
-          solo_node.set['lsb'] = node['lsb']
-          solo_node.set['deploy'] = node['deploy']
-        end.converge(described_recipe)
-
-        expect(chef_run_rhel).to install_package('ruby23')
-        expect(chef_run_rhel).to install_package('ruby23-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.3')
-      end
-
-      it 'installs ruby 2.4' do
-        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
-          solo_node.set['ruby'] = { 'version' => '2.4' }
-          solo_node.set['lsb'] = node['lsb']
-          solo_node.set['deploy'] = node['deploy']
-        end.converge(described_recipe)
-
-        expect(chef_run_rhel).to install_package('ruby24')
-        expect(chef_run_rhel).to install_package('ruby24-devel')
-        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.4')
-      end
-
       it 'installs ruby 2.5' do
         chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
           solo_node.set['ruby'] = { 'version' => '2.5' }
@@ -430,9 +438,27 @@ describe 'opsworks_ruby::setup' do
       end
 
       it 'installs ruby 2.6' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.6' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+        end.converge(described_recipe)
+
         expect(chef_run_rhel).to install_package('ruby26')
         expect(chef_run_rhel).to install_package('ruby26-devel')
         expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.6')
+      end
+
+      it 'installs ruby 2.7' do
+        chef_run_rhel = ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+          solo_node.set['ruby'] = { 'version' => '2.7' }
+          solo_node.set['lsb'] = node['lsb']
+          solo_node.set['deploy'] = node['deploy']
+        end.converge(described_recipe)
+
+        expect(chef_run_rhel).to install_package('ruby27')
+        expect(chef_run_rhel).to install_package('ruby27-devel')
+        expect(chef_run_rhel).to run_execute('/usr/sbin/alternatives --set ruby /usr/bin/ruby2.7')
       end
     end
   end
