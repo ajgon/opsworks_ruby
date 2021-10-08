@@ -7,23 +7,6 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::configure' do
-  let(:chef_runner) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-      solo_node.set['deploy'] = node['deploy']
-      solo_node.set['nginx'] = node['nginx']
-    end
-  end
-  let(:chef_run) do
-    chef_runner.converge(described_recipe)
-  end
-  let(:chef_runner_rhel) do
-    ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
-      solo_node.set['deploy'] = node['deploy']
-    end
-  end
-  let(:chef_run_rhel) do
-    chef_runner_rhel.converge(described_recipe)
-  end
   let(:monit_installed) { false }
   before do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
@@ -32,6 +15,24 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'context savvy' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+        solo_node.set['nginx'] = node['nginx']
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+      end
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+
     it 'creates shared' do
       expect(chef_run).to create_directory("/srv/www/#{aws_opsworks_app['shortname']}/shared")
     end
@@ -67,6 +68,23 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'Postgresql + Git + Unicorn + Nginx + Rails + Sidekiq' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+        solo_node.set['nginx'] = node['nginx']
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
+        solo_node.set['deploy'] = node['deploy']
+      end
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
     let(:monit_installed) { true }
 
     it 'creates proper database.yml template with connection options' do
@@ -79,7 +97,7 @@ describe 'opsworks_ruby::configure' do
     end
 
     context 'custom database config' do
-      let(:chef_runner) do
+      cached(:chef_runner) do
         ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
           app_name = aws_opsworks_app['shortname']
           solo_node.set['deploy'][app_name]['database'] = {
@@ -87,6 +105,9 @@ describe 'opsworks_ruby::configure' do
             'secondary' => { 'test' => 2 }
           }
         end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
       end
 
       it 'creates proper database.yml template when multi-level config is provided' do
@@ -114,7 +135,7 @@ describe 'opsworks_ruby::configure' do
 
     context 'when the logrotate settings are overridden by attributes at various levels of precedence' do
       let(:logrotate_paths) { %w[/some/path/to/a.log] }
-      let(:chef_runner) do
+      cached(:chef_runner) do
         ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
           solo_node.set['defaults']['global']['logrotate_cookbook']          = 'default_global_cookbook'
           solo_node.set['defaults']['global']['logrotate_template_name']     = 'default_global_template.erb'
@@ -141,6 +162,9 @@ describe 'opsworks_ruby::configure' do
 
           solo_node.set['nginx'] = node['nginx']
         end
+      end
+      cached(:chef_run) do
+        chef_runner.converge(described_recipe)
       end
 
       it 'configures logrotate for the app framework using the provided framework and global settings' do
@@ -174,6 +198,37 @@ describe 'opsworks_ruby::configure' do
 
       context 'when the set of logrotate paths empty' do
         let(:logrotate_paths) { [] }
+        cached(:chef_runner) do
+          ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+            solo_node.set['defaults']['global']['logrotate_cookbook']          = 'default_global_cookbook'
+            solo_node.set['defaults']['global']['logrotate_template_name']     = 'default_global_template.erb'
+            solo_node.set['defaults']['global']['logrotate_template_owner']    = 'me'
+            solo_node.set['defaults']['global']['logrotate_template_group']    = 'a_group'
+            solo_node.set['defaults']['global']['logrotate_template_mode']     = '0700'
+            solo_node.set['defaults']['global']['logrotate_options']           = %w[a b c d]
+            solo_node.set['defaults']['framework']['logrotate_rotate']         = 60
+            solo_node.set['defaults']['framework']['logrotate_template_name']  = 'some_template.erb'
+
+            app_name = aws_opsworks_app['shortname']
+            solo_node.set['deploy'][app_name]['global']['logrotate_name']              = 'app_global_name'
+            solo_node.set['deploy'][app_name]['global']['logrotate_cookbook']          = 'app_global_cookbook'
+            solo_node.set['deploy'][app_name]['global']['logrotate_rotate']            = 45
+            solo_node.set['deploy'][app_name]['global']['logrotate_template_mode']     = '0750'
+            solo_node.set['deploy'][app_name]['framework']['logrotate_name']           = 'myapp'
+            solo_node.set['deploy'][app_name]['framework']['logrotate_cookbook']       = 'other_cookbook'
+            solo_node.set['deploy'][app_name]['framework']['logrotate_log_paths']      = logrotate_paths
+            solo_node.set['deploy'][app_name]['framework']['logrotate_frequency']      = 'weekly'
+            solo_node.set['deploy'][app_name]['framework']['logrotate_rotate']         = 15
+            solo_node.set['deploy'][app_name]['framework']['logrotate_template_owner'] = 'you'
+            solo_node.set['deploy'][app_name]['framework']['logrotate_template_mode']  = '0755'
+            solo_node.set['deploy'][app_name]['framework']['logrotate_options']        = %w[g h i j]
+
+            solo_node.set['nginx'] = node['nginx']
+          end
+        end
+        cached(:chef_run) do
+          chef_runner.converge(described_recipe)
+        end
 
         it 'does not create any logrotate file' do
           expect(chef_run).not_to enable_logrotate_app('myapp')
@@ -495,7 +550,7 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'Mysql + Puma + Apache2 + hanami.rb + resque' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
@@ -769,7 +824,7 @@ describe 'opsworks_ruby::configure' do
     end
 
     context 'rhel' do
-      let(:chef_run_rhel) do
+      cached(:chef_run_rhel) do
         ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
           deploy = node['deploy']
           deploy['dummy_project']['appserver']['adapter'] = 'puma'
@@ -880,7 +935,7 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'Postgres (postgis) + Passenger + Apache2' do
-    let(:chef_runner) do
+    cached(:chef_runner) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['database'] = {
@@ -903,7 +958,7 @@ describe 'opsworks_ruby::configure' do
         solo_node.set['deploy'] = deploy
       end
     end
-    let(:chef_run) { chef_runner.converge(described_recipe) }
+    cached(:chef_run) { chef_runner.converge(described_recipe) }
 
     before do
       stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
@@ -986,10 +1041,32 @@ describe 'opsworks_ruby::configure' do
     end
 
     context 'when default ports are overridden' do
-      before do
-        chef_runner.node.set['deploy'][aws_opsworks_app['shortname']]['webserver']['port'] = 8080
-        chef_runner.node.set['deploy'][aws_opsworks_app['shortname']]['webserver']['ssl_port'] = 8443
+      cached(:chef_runner) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          deploy = node['deploy']
+          deploy['dummy_project']['database'] = {
+            'adapter' => 'postgis',
+            'username' => 'dbuser',
+            'password' => '03c1bc98cdd5eb2f9c75',
+            'host' => 'dummy-project.c298jfowejf.us-west-2.rds.amazon.com',
+            'port' => 3265
+          }
+          deploy['dummy_project']['appserver']['adapter'] = 'passenger'
+          deploy['dummy_project']['appserver']['max_pool_size'] = 10
+          deploy['dummy_project']['appserver']['min_instances'] = 5
+          deploy['dummy_project']['appserver']['mount_point'] = '/some/mount/point'
+          deploy['dummy_project']['appserver']['pool_idle_time'] = 300
+          deploy['dummy_project']['appserver']['max_request_queue_size'] = 100
+          deploy['dummy_project']['appserver']['error_document'] = { "503": '503.html', "504": '504.html' }
+          deploy['dummy_project']['appserver']['passenger_max_preloader_idle_time'] = 300
+          deploy['dummy_project']['webserver']['adapter'] = 'apache2'
+          deploy['dummy_project']['webserver']['port'] = 8080
+          deploy['dummy_project']['webserver']['ssl_port'] = 8443
+          deploy['dummy_project']['global']['environment'] = 'production'
+          solo_node.set['deploy'] = deploy
+        end
       end
+      cached(:chef_run) { chef_runner.converge(described_recipe) }
 
       it 'listens on the specified ports rather than the default ports' do
         f = "/etc/apache2/sites-available/#{aws_opsworks_app['shortname']}.conf"
@@ -1016,13 +1093,13 @@ describe 'opsworks_ruby::configure' do
         }
       )
     end
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['deploy'] = dummy_node['deploy']
         solo_node.set['nginx'] = node['nginx']
       end.converge(described_recipe)
     end
-    let(:chef_run_rhel) do
+    cached(:chef_run_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
         solo_node.set['deploy'] = dummy_node['deploy']
         solo_node.set['nginx'] = node['nginx']
@@ -1294,7 +1371,7 @@ describe 'opsworks_ruby::configure' do
              }
            })
     end
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['deploy'] = supplied_node['deploy']
       end.converge(described_recipe)
@@ -1330,6 +1407,11 @@ describe 'opsworks_ruby::configure' do
                }
              })
       end
+      cached(:chef_run) do
+        ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+          solo_node.set['deploy'] = supplied_node['deploy']
+        end.converge(described_recipe)
+      end
 
       before do
         stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(data_sources: [])])
@@ -1349,7 +1431,7 @@ describe 'opsworks_ruby::configure' do
   end
 
   context 'empty node[\'deploy\']' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         solo_node.set['lsb'] = node['lsb']
       end.converge(described_recipe)

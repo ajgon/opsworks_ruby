@@ -4,7 +4,7 @@
 
 ```
 docker-compose run --rm -e SKIP="AuthorName AuthorEmail" cookbook \
-bash -c "overcommit --sign && overcommit -r && rspec"
+bash -c "chef exec bundle exec overcommit --sign && chef exec bundle exec overcommit -r && chef exec bundle exec rspec"
 ```
 
 ## Integration Testing

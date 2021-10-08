@@ -16,12 +16,13 @@ RUN echo 'deb https://deb.nodesource.com/node_14.x buster main' > /etc/apt/sourc
     rm -rf /var/lib/apt/lists/*
 RUN gem update --no-document --system
 RUN npm install -g conventional-changelog-cli
+RUN pip3 install mike mkdocs-material yamllint
 
 RUN echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen
 RUN locale-gen
 ENV LC_ALL en_US.UTF-8
 
-RUN pip3 install mike mkdocs-material yamllint
+ENV CHEF_LICENSE=accept
 RUN echo 'deb [trusted=yes] https://packages.chef.io/repos/apt/stable bionic main' > /etc/apt/sources.list.d/chefdk.list && \
     curl -s https://packages.chef.io/chef.asc | apt-key add - && \
     apt-get update && \
@@ -33,8 +34,7 @@ RUN mkdir -p "$APP_HOME"
 COPY Gemfile* $APP_HOME/
 WORKDIR $APP_HOME
 
-RUN gem install bundler -v "$(cat Gemfile.lock | grep 'BUNDLED WITH' -A2 | tail -n 1)"
-RUN bundle install -j 4
+RUN chef exec bundle install -j 4
 
 COPY package.json $APP_HOME/
 RUN npm install
@@ -49,6 +49,5 @@ COPY README.md $APP_HOME/
 COPY metadata.rb $APP_HOME/
 COPY Berksfile* $APP_HOME/
 
-ENV CHEF_LICENSE=accept
 RUN chef exec berks
 

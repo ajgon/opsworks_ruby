@@ -7,19 +7,20 @@
 require 'spec_helper'
 
 describe 'opsworks_ruby::undeploy' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
-      deploy = node['deploy']
-      deploy['dummy_project']['source'].delete('ssh_wrapper')
-      solo_node.set['deploy'] = deploy
-    end.converge(described_recipe)
-  end
   before do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
   end
 
   context 'Postgresql + Git + Unicorn + Nginx + Sidekiq' do
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['source'].delete('ssh_wrapper')
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+
     it 'performs a rollback' do
       undeploy = chef_run.deploy(aws_opsworks_app['shortname'])
       service = chef_run.service('nginx')
@@ -38,7 +39,7 @@ describe 'opsworks_ruby::undeploy' do
   end
 
   context 'Puma + Apache + resque' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
@@ -47,7 +48,7 @@ describe 'opsworks_ruby::undeploy' do
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
-    let(:chef_run_rhel) do
+    cached(:chef_run_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'puma'
@@ -78,7 +79,7 @@ describe 'opsworks_ruby::undeploy' do
   end
 
   context 'Thin + delayed_job' do
-    let(:chef_run) do
+    cached(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'thin'
@@ -86,7 +87,7 @@ describe 'opsworks_ruby::undeploy' do
         solo_node.set['deploy'] = deploy
       end.converge(described_recipe)
     end
-    let(:chef_run_rhel) do
+    cached(:chef_run_rhel) do
       ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
         deploy = node['deploy']
         deploy['dummy_project']['appserver']['adapter'] = 'thin'
