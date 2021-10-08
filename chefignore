@@ -58,7 +58,6 @@ Procfile
 .rubocop.yml
 spec/*
 Rakefile
-.travis.yml
 .foodcritic
 .codeclimate.yml
 

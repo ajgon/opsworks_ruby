@@ -1,0 +1,107 @@
+---
+name: opsworks_ruby CI
+
+'on':
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Install tools
+        run: |
+          sudo apt-get install --yes python3-pip python3-setuptools python3-yaml
+          sudo gem install bundler -v 1.17.3
+          pip3 install --user yamllint
+      - uses: actions/checkout@v2
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: |
+            vendor/bundle
+          key: ${{ runner.os }}-lint-${{ hashFiles('Gemfile.lock') }}
+      - name: Install gems
+        run: bundle install --jobs=5 --retry=5 --path=vendor/bundle --without=chef
+      - name: Run linters via overcommit
+        run: |
+          git config --global user.email 'git@github.com'
+          git config --global user.name 'GitHub Actions'
+          bundle exec overcommit --sign
+          bundle exec overcommit --sign pre-commit
+          bundle exec overcommit -r
+  unit-tests:
+    runs-on: ubuntu-18.04
+    env:
+      CHEF_LICENSE: accept
+    steps:
+      - name: Add chef repo
+        uses: myci-actions/add-deb-repo@10
+        with:
+          repo: deb [trusted=yes] https://packages.chef.io/repos/apt/stable bionic main
+          repo-name: chefdk
+          keys-asc: https://packages.chef.io/chef.asc
+      - name: Install tools
+        run: |
+          sudo apt-get install --yes chefdk
+      - uses: actions/checkout@v2
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: |
+            vendor/bundle
+          key: ${{ runner.os }}-unit-${{ hashFiles('Gemfile.lock') }}
+      - name: Install gems
+        run: chef exec bundle install --jobs=5 --retry=5 --path=vendor/bundle
+      - name: Run unit tests
+        run: |
+          chef exec bundle exec rspec
+  integration:
+    runs-on: ubuntu-18.04
+    env:
+      CHEF_LICENSE: accept
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+    strategy:
+      fail-fast: false
+      matrix:
+        instance:
+          - default-ubuntu-1804
+          - all-options-ubuntu-1804
+          - default-with-shoryuken-and-fullstaq-ubuntu-1804
+          - http-unicorn-apache-hanami-resque-ubuntu-1804
+          - s3-thin-nginx-padrino-delayed-job-ubuntu-1804
+          - nullified-ubuntu-1804
+          - maximum-override-ubuntu-1804
+
+    steps:
+      - name: Add chef repo
+        uses: myci-actions/add-deb-repo@10
+        with:
+          repo: deb [trusted=yes] https://packages.chef.io/repos/apt/stable bionic main
+          repo-name: chefdk
+          keys-asc: https://packages.chef.io/chef.asc
+      - name: Install tools
+        run: |
+          sudo apt-get install --yes chefdk
+      - uses: actions/checkout@v2
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: |
+            vendor/bundle
+          key: ${{ runner.os }}-integration-${{ hashFiles('Gemfile.lock') }}
+      - name: Install gems
+        run: chef exec bundle install --jobs=5 --retry=5
+      - name: Run integration tests
+        run: |
+          sudo iptables -L DOCKER || sudo iptables -N DOCKER
+          ruby test/integration/update_data_bag.rb
+          chef exec bundle exec rake integration:docker[${{ matrix.instance }}]
