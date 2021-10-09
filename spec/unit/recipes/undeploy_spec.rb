@@ -59,6 +59,7 @@ describe 'opsworks_ruby::undeploy' do
     end
 
     before do
+      allow(File).to receive(:exist?).and_call_original
       # Pretend that the server is running for testing purposes.
       allow(File).to receive(:exist?).with("/var/run/lock/#{aws_opsworks_app['shortname']}/puma.pid").and_return(true)
     end
