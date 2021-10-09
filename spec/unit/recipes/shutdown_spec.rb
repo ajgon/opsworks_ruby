@@ -16,6 +16,8 @@ describe 'opsworks_ruby::shutdown' do
     stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app])
     stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([aws_opsworks_rds_db_instance])
     stub_command('monit status | grep -q puma_dummy_project').and_return(true)
+    stub_command('monit status | grep -q thin_dummy_project').and_return(true)
+    stub_command('monit status | grep -q unicorn_dummy_project').and_return(true)
   end
 
   it 'works' do

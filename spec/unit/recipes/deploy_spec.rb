@@ -266,18 +266,18 @@ describe 'opsworks_ruby::deploy' do
       deploy_debian = chef_run.deploy(aws_opsworks_app['shortname'])
 
       expect(deploy_debian).to notify('service[apache2]').to(:reload).delayed
-      expect(chef_run).to run_execute('monit restart puma_dummy_project')
+      expect(chef_run).to run_execute('monit start puma_dummy_project')
     end
 
     it 'performs a deploy on rhel' do
       deploy_rhel = chef_run_rhel.deploy(aws_opsworks_app['shortname'])
 
       expect(deploy_rhel).to notify('service[httpd]').to(:reload).delayed
-      expect(chef_run_rhel).to run_execute('monit restart puma_dummy_project')
+      expect(chef_run_rhel).to run_execute('monit start puma_dummy_project')
     end
 
     it 'restarts puma and resques via monit' do
-      expect(chef_run).to run_execute("monit restart puma_#{aws_opsworks_app['shortname']}")
+      expect(chef_run).to run_execute("monit start puma_#{aws_opsworks_app['shortname']}")
       expect(chef_run).to run_execute("monit restart resque_#{aws_opsworks_app['shortname']}-1")
       expect(chef_run).to run_execute("monit restart resque_#{aws_opsworks_app['shortname']}-2")
     end
