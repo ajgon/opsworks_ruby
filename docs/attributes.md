@@ -505,6 +505,10 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
     - **Default:** 100
     - Sets the `MaxRequestQueueSize` parameter
 
+- `app['appserver']['monit_template_cookbook']`
+    - **Default** `opsworks_ruby`
+    - The name of the cookbook from which the worker monit template(s) will be drawn.
+
 - `app['appserver']['error_document']`
     - **Type:** Hash
     - **Default:** off
