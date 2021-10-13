@@ -448,7 +448,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group sidekiq_dummy_project_group')
-        expect(chef_run_rhel).to run_execute('monit reload')
+        expect(
+          chef_run_rhel.template("/etc/monit.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
+        ).to notify('execute[monit reload]')
       end
 
       it 'creates unicorn.monitrc conf' do
@@ -520,7 +522,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run)
           .to render_file("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group sidekiq_dummy_project_group')
-        expect(chef_run).to run_execute('monit reload')
+        expect(
+          chef_run.template("/etc/monit/conf.d/sidekiq_#{aws_opsworks_app['shortname']}.monitrc")
+        ).to notify('execute[monit reload]')
       end
 
       it 'creates unicorn.monitrc conf' do
@@ -794,7 +798,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content('group resque_dummy_project_group')
-      expect(chef_run).to run_execute('monit reload')
+      expect(
+        chef_run.template("/etc/monit/conf.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+      ).to notify('execute[monit reload]')
     end
 
     it 'creates puma.monitrc conf' do
@@ -804,23 +810,13 @@ describe 'opsworks_ruby::configure' do
         .with_content('check process puma_dummy_project with pidfile /run/lock/dummy_project/puma.pid')
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
-        .with_content(
-          'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-          'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-          'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" ' \
-          'HOME="/home/deploy" USER="deploy" bundle exec puma ' \
-          '-C /srv/www/dummy_project/shared/config/puma.rb ' \
-          '| logger -t puma-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
-        )
-      expect(chef_run)
-        .to render_file("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
-        .with_content(
-          'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/puma.pid ' \
-          '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
-        )
-      expect(chef_run)
-        .to render_file("/etc/monit/conf.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
-        .with_content('group puma_dummy_project_group')
+        .with_content <<~MONITRC
+          check process puma_dummy_project with pidfile /run/lock/dummy_project/puma.pid
+          start program = "/bin/sh -c 'cd /srv/www/dummy_project/current && ENV_VAR1="test" ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" bundle exec pumactl -F /srv/www/dummy_project/shared/config/puma.rb start | logger -t puma-dummy_project'" as uid "deploy" and gid "deploy" with timeout 90 seconds
+          restart program = "/bin/sh -c 'cd /srv/www/dummy_project/current && ENV_VAR1="test" ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" bundle exec pumactl -F /srv/www/dummy_project/shared/config/puma.rb restart | logger -t puma-dummy_project'" as uid "deploy" and gid "deploy" with timeout 90 seconds
+          stop program = "/bin/sh -c 'cd /srv/www/dummy_project/current && ENV_VAR1="test" ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" bundle exec pumactl -F /srv/www/dummy_project/shared/config/puma.rb stop | logger -t puma-dummy_project'" as uid "deploy" and gid "deploy" with timeout 90 seconds
+          group puma_dummy_project_group
+        MONITRC
     end
 
     context 'rhel' do
@@ -887,7 +883,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group resque_dummy_project_group')
-        expect(chef_run_rhel).to run_execute('monit reload')
+        expect(
+          chef_run_rhel.template("/etc/monit.d/resque_#{aws_opsworks_app['shortname']}.monitrc")
+        ).to notify('execute[monit reload]')
       end
 
       it 'renders apache2 configuration files in proper place' do
@@ -913,23 +911,13 @@ describe 'opsworks_ruby::configure' do
           .with_content('check process puma_dummy_project with pidfile /run/lock/dummy_project/puma.pid')
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content(
-            'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
-            'ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@' \
-            'dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" ' \
-            'HOME="/home/deploy" USER="deploy" bundle exec puma ' \
-            '-C /srv/www/dummy_project/shared/config/puma.rb ' \
-            '| logger -t puma-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
-          )
-        expect(chef_run_rhel)
-          .to render_file("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content(
-            'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/puma.pid ' \
-            '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
-          )
-        expect(chef_run_rhel)
-          .to render_file("/etc/monit.d/puma_#{aws_opsworks_app['shortname']}.monitrc")
-          .with_content('group puma_dummy_project_group')
+          .with_content <<~MONITRC
+            check process puma_dummy_project with pidfile /run/lock/dummy_project/puma.pid
+            start program = "/bin/sh -c 'cd /srv/www/dummy_project/current && ENV_VAR1="test" ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" bundle exec pumactl -F /srv/www/dummy_project/shared/config/puma.rb start | logger -t puma-dummy_project'" as uid "deploy" and gid "deploy" with timeout 90 seconds
+            restart program = "/bin/sh -c 'cd /srv/www/dummy_project/current && ENV_VAR1="test" ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" bundle exec pumactl -F /srv/www/dummy_project/shared/config/puma.rb restart | logger -t puma-dummy_project'" as uid "deploy" and gid "deploy" with timeout 90 seconds
+            stop program = "/bin/sh -c 'cd /srv/www/dummy_project/current && ENV_VAR1="test" ENV_VAR2="some data" HANAMI_ENV="staging" DATABASE_URL="mysql2://dbuser:03c1bc98cdd5eb2f9c75@dummy-project.c298jfowejf.us-west-2.rds.amazon.com:3265/dummydb" HOME="/home/deploy" USER="deploy" bundle exec pumactl -F /srv/www/dummy_project/shared/config/puma.rb stop | logger -t puma-dummy_project'" as uid "deploy" and gid "deploy" with timeout 90 seconds
+            group puma_dummy_project_group
+          MONITRC
       end
     end
   end
@@ -1241,7 +1229,9 @@ describe 'opsworks_ruby::configure' do
       expect(chef_run)
         .to render_file("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
         .with_content('group delayed_job_dummy_project_group')
-      expect(chef_run).to run_execute('monit reload')
+      expect(
+        chef_run.template("/etc/monit/conf.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+      ).to notify('execute[monit reload]')
     end
 
     it 'creates thin.monitrc conf' do
@@ -1324,7 +1314,9 @@ describe 'opsworks_ruby::configure' do
         expect(chef_run_rhel)
           .to render_file("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
           .with_content('group delayed_job_dummy_project_group')
-        expect(chef_run_rhel).to run_execute('monit reload')
+        expect(
+          chef_run_rhel.template("/etc/monit.d/delayed_job_#{aws_opsworks_app['shortname']}.monitrc")
+        ).to notify('execute[monit reload]')
       end
 
       it 'creates thin.monitrc conf' do

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/MethodLength
 def aws_opsworks_rds_db_instance(override = {})
   item = {
     rds_db_instance_arn: 'arn:aws:rds:us-west-2:850906259207:db:dummy-project',
@@ -17,4 +16,3 @@ def aws_opsworks_rds_db_instance(override = {})
 
   JSON.parse(item.to_json)
 end
-# rubocop:enable Metrics/MethodLength

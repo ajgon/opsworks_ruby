@@ -2,7 +2,7 @@
 
 module Drivers
   module Webserver
-    class Apache2 < Drivers::Webserver::Base # rubocop:disable Metrics/ClassLength
+    class Apache2 < Drivers::Webserver::Base
       ENABLE_MODULES = %w[expires headers lbmethod_byrequests proxy proxy_balancer proxy_http rewrite ssl].freeze
       DISABLE_MODULES = %w[status].freeze
 

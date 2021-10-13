@@ -50,4 +50,3 @@ COPY metadata.rb $APP_HOME/
 COPY Berksfile* $APP_HOME/
 
 RUN chef exec berks
-

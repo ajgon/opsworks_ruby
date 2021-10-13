@@ -58,6 +58,12 @@ describe 'opsworks_ruby::undeploy' do
       end.converge(described_recipe)
     end
 
+    before do
+      allow(File).to receive(:exist?).and_call_original
+      # Pretend that the server is running for testing purposes.
+      allow(File).to receive(:exist?).with("/var/run/lock/#{aws_opsworks_app['shortname']}/puma.pid").and_return(true)
+    end
+
     it 'performs a rollback on debian' do
       undeploy_debian = chef_run.deploy(aws_opsworks_app['shortname'])
 

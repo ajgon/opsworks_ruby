@@ -207,3 +207,9 @@ every_enabled_application do |application|
 
   fire_hook(:setup, items: databases + [source, framework, appserver, worker, webserver])
 end
+
+# setup hooks for appservers and workers may need to reload monit configs
+execute 'monit reload' do
+  action :nothing
+  only_if 'which monit'
+end

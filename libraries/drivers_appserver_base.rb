@@ -7,7 +7,9 @@ module Drivers
       include Drivers::Dsl::Output
       include Drivers::Dsl::Packages
 
+      # Hook function called from the 'setup' recipe.
       def setup
+        super
         handle_packages
       end
 
@@ -17,6 +19,7 @@ module Drivers
       end
 
       def before_deploy
+        super
         setup_application_yml
         setup_dot_env
       end
@@ -37,18 +40,30 @@ module Drivers
         raise NotImplementedError
       end
 
+      # Creates a monit config file for managing the appserver and then notifies
+      # monit to reload it.
       def add_appserver_monit
-        opts = { app_shortname: app['shortname'], appserver_name: adapter, appserver_command: appserver_command,
-                 deploy_to: deploy_dir(app), environment: environment }
-
-        file_path = File.join(node['monit']['basedir'], "#{opts[:appserver_name]}_#{opts[:app_shortname]}.monitrc")
+        opts = {
+          app_shortname: app['shortname'],
+          adapter: adapter,
+          appserver_command: appserver_command,
+          appserver_name: adapter,
+          deploy_to: deploy_dir(app),
+          environment: environment,
+          source_cookbook: appserver_monit_template_cookbook
+        }
+        file_path = File.join(node['monit']['basedir'],
+                              "#{opts[:appserver_name]}_#{opts[:app_shortname]}.monitrc")
         context.template file_path do
           mode '0640'
-          source 'appserver.monitrc.erb'
+          source "#{opts[:adapter]}.monitrc.erb"
+          cookbook opts[:source_cookbook].to_s
           variables opts
+          notifies :run, 'execute[monit reload]', :immediately
         end
       end
 
+      # Immediately attempts to restart the appserver using monit.
       def restart_monit
         return if ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
 
@@ -57,13 +72,37 @@ module Drivers
         end
       end
 
+      # If an instance fails to start, the adapter process may not exist
+      # and trying to unmonitor it might fail.
       def unmonitor_monit
+        monit_status = "monit status | grep -q #{adapter}_#{app['shortname']}"
         context.execute "monit unmonitor #{adapter}_#{app['shortname']}" do
+          retries 3
+          only_if monit_status
+        end
+      end
+
+      # Invoke the monit start command for the appserver. This may only be
+      # needed during the initial setup of the instance. After that the
+      # 'restart' command is sufficient.
+      def start_monit
+        context.execute "monit start #{adapter}_#{app['shortname']}" do
           retries 3
         end
       end
 
       private
+
+      # Overriding the appserver monit configs can be useful to provide more
+      # fine-grained control over how the appserver starts, stops and restarts.
+      # It can also allow additional configuration to provide alerting.
+      #
+      # @return [String] configured cookbook to pull custom appserver monit
+      #   configs from. Defaults to `opsworks_ruby`.
+      def appserver_monit_template_cookbook
+        node['deploy'][app['shortname']].try(:[], driver_type).try(:[],
+                                                                   'monit_template_cookbook') || context.cookbook_name
+      end
 
       def add_appserver_config
         opts = { deploy_dir: deploy_dir(app), out: out, deploy_env: deploy_env,
