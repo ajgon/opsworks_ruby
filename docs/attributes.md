@@ -390,12 +390,12 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
     - **Default:** `false`
     - Creates a `.env` file with all pre-configured environment variables. Useful for gems like [dotenv](https://github.com/bkeepers/dotenv)
 
--   `app['appserver']['preload_app']`
+- `app['appserver']['preload_app']`
     - **Supported values:** `true`, `false`
     - **Default:** `true`
     - Enabling this preloads an application before forking worker processes.
 
--   `app['appserver']['timeout']`
+- `app['appserver']['timeout']`
     - **Default:** `50`
     - Sets the timeout of worker processes to seconds.
 
@@ -403,7 +403,7 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
     - **Default:** `4`
     - Sets the current number of worker processes. Each worker process will serve exactly one client at a time.
 
--  `app['appserver']['passenger_version']`
+- `app['appserver']['passenger_version']`
     - **Default:** None
     - Which Debian APT package version should be installed from the PPA repo provided by Passenger. Currently this
       defaults to the latest version provided by the Passenger APT PPA. Set this to a non-nil value to lock your
@@ -414,6 +414,10 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
   - Bind the appserver to a port on 0.0.0.0. This is useful for serving the application directly from the appserver
     without a web server middleware or separating the web server into its own container or server.
     This can also be used for running multiple applications on a server when using apache as your webserver.
+
+- `app['appserver']['monit_template_cookbook']`
+    - **Default** `opsworks_ruby`
+    - The name of the cookbook from which the appserver monit template(s) will be drawn.
 
 #### unicorn
 
@@ -504,10 +508,6 @@ Configuration parameters for the ruby application server. Currently `Puma`, `Thi
     - **Type:** Integer
     - **Default:** 100
     - Sets the `MaxRequestQueueSize` parameter
-
-- `app['appserver']['monit_template_cookbook']`
-    - **Default** `opsworks_ruby`
-    - The name of the cookbook from which the worker monit template(s) will be drawn.
 
 - `app['appserver']['error_document']`
     - **Type:** Hash

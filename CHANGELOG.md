@@ -1,3 +1,12 @@
+## [1.21.1](https://github.com/ajgon/opsworks_ruby/compare/v1.21.0...v1.21.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* modify the restart process for puma so that it can do a proper restart instead of killing and restarting the app ([#257](https://github.com/ajgon/opsworks_ruby/issues/257)) ([035ffb9](https://github.com/ajgon/opsworks_ruby/commit/035ffb9f286187a323c2b77b7fa15f5b89d52b71))
+
+
+
 # [1.21.0](https://github.com/ajgon/opsworks_ruby/compare/v1.20.3...v1.21.0) (2021-10-08)
 
 
