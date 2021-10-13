@@ -398,6 +398,16 @@
       ],
       "description":"Sets the current number of worker processes. Each worker process will serve exactly one client at a time."
     },
+    "monit_template_cookbook":{
+      "type":"string",
+      "default":"opsworks_ruby",
+      "depends":[
+        "puma",
+        "thin",
+        "unicorn"
+      ],
+      "description":"The name of the cookbook from which the appserver monit template(s) will be drawn."
+    },
     "log_requests":{
       "type":"boolean",
       "default":false,
@@ -827,6 +837,17 @@
         "sidekiq"
       ],
       "description":"Determines if worker should output to syslog."
+    },
+    "monit_template_cookbook":{
+      "type":"string",
+      "default":"opsworks_ruby",
+      "depends":[
+        "delayed_job",
+        "resque",
+        "shoryuken",
+        "sidekiq"
+      ],
+      "description":"The name of the cookbook from which the worker monit template(s) will be drawn."
     },
     "config":{
       "type":"json",
