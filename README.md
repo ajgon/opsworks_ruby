@@ -3,7 +3,6 @@
 [![Chef cookbook](https://img.shields.io/cookbook/v/opsworks_ruby.svg)](https://supermarket.chef.io/cookbooks/opsworks_ruby)
 [![Build Status](https://github.com/ajgon/opsworks_ruby/actions/workflows/main.yml/badge.svg)](https://github.com/ajgon/opsworks_ruby/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/ajgon/opsworks_ruby/badge.svg?branch=master)](https://coveralls.io/github/ajgon/opsworks_ruby?branch=master)
-[![Documentation Status](https://readthedocs.org/projects/opsworks-ruby/badge/?version=latest)](http://opsworks-ruby.readthedocs.io/en/latest/?badge=latest)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![license](https://img.shields.io/github/license/ajgon/opsworks_ruby.svg?maxAge=2592000)](https://opsworks-ruby.mit-license.org/)
 
@@ -11,8 +10,8 @@ A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon Op
 
 ## Quick Start
 
-Refer to [Getting Started](http://opsworks-ruby.readthedocs.io/en/latest/getting_started.html)
-guide in [documentation](http://opsworks-ruby.readthedocs.io/en/latest/index.html).
+Refer to [Getting Started](https://opsworks-ruby.rzegocki.pl/docs/latest/getting-started/)
+guide in [documentation](https://opsworks-ruby.rzegocki.pl/docs/latest/).
 
 ## Development
 
