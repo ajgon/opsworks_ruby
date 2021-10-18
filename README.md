@@ -11,8 +11,8 @@ A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon Op
 
 ## Quick Start
 
-Refer to [Getting Started](http://opsworks-ruby.readthedocs.io/en/latest/getting_started.html)
-guide in [documentation](http://opsworks-ruby.readthedocs.io/en/latest/index.html).
+Refer to [Getting Started](https://opsworks-ruby.rzegocki.pl/docs/latest/getting-started/)
+guide in [documentation](https://opsworks-ruby.rzegocki.pl/docs/latest/).
 
 ## Development
 
