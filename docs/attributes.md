@@ -667,11 +667,11 @@ as well (notice that `node['deploy'][<application_shortname>]` logic doesn't app
 
 ### worker
 
-Worker configuration. Currently sidekiq, delayed_job, resque, shoryuken.
+Worker configuration. Currently sidekiq, delayed_job, resque, shoryuken, good_job.
 
 - `app['webserver']['adapter']`
     - **Default:** `null`
-    - **Supported values:** `sidekiq`, `delayed_job`, `resque`, `shoryuken` and `null`.
+    - **Supported values:** `sidekiq`, `delayed_job`, `resque`, `shoryuken`, `good_job`, and `null`.
     - If worker is needed, here it can be set up and configured. `null` means no worker installed.
 
 - `app['worker']['monit_template_cookbook']`
@@ -721,6 +721,11 @@ Worker configuration. Currently sidekiq, delayed_job, resque, shoryuken.
     - **Supported values:** `true`, `false`
     - **Default**: `false`
     - Configures piping shoryuken runner log output to syslog via `logger`
+
+#### good_job
+
+- `app['worker']['queues']`
+    - Array of queues which should be processed by good_job
 
 
 ## Logrotate Attributes
