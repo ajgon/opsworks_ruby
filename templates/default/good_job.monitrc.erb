@@ -7,7 +7,7 @@
 
   check process good_job_<%= identifier.to_s %>
   with pidfile <%= pid_file %>
-  start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %> bin/good_job start --pidfile=<%= pid_file %> <%= queues.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
+  start program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %> bundle exec good_job start --daemonize --pidfile=<%= pid_file %> <%= queues.to_s %> <%= syslog.to_s %>'" with timeout 90 seconds
   stop program = "/bin/su - <%= node['deployer']['user'] %> -c 'cd <%= File.join(@deploy_to, 'current') %> && <%= @environment.map {|k,v| "#{k}=\"#{v}\""}.join(' ') %> cat <%= pid_file %> | xargs --no-run-if-empty kill -QUIT'" with timeout 90 seconds
   group good_job_<%= @application.to_s %>_group
 

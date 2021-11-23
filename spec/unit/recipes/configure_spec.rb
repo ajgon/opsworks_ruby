@@ -1470,7 +1470,7 @@ describe 'opsworks_ruby::configure' do
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
-          'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/good_job start ' \
+          'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
           '--pidfile=/run/lock/dummy_project/good_job.0.pid --queues=test_queue' \
           ' 2>&1 | logger -t good_job-dummy_project-1\'" with timeout 90 seconds'
         )
@@ -1494,7 +1494,7 @@ describe 'opsworks_ruby::configure' do
         .with_content(
           'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
           'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
-          'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/good_job start ' \
+          'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
           '--pidfile=/run/lock/dummy_project/good_job.1.pid --queues=test_queue' \
           ' 2>&1 | logger -t good_job-dummy_project-2\'" with timeout 90 seconds'
         )
@@ -1555,7 +1555,7 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
-            'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/good_job start ' \
+            'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
             '--pidfile=/run/lock/dummy_project/good_job.0.pid --queues=test_queue' \
             ' 2>&1 | logger -t good_job-dummy_project-1\'" with timeout 90 seconds'
           )
@@ -1579,7 +1579,7 @@ describe 'opsworks_ruby::configure' do
           .with_content(
             'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
             'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
-            'data.sqlite3" HOME="/home/deploy" USER="deploy" bin/good_job start ' \
+            'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
             '--pidfile=/run/lock/dummy_project/good_job.1.pid --queues=test_queue' \
             ' 2>&1 | logger -t good_job-dummy_project-2\'" with timeout 90 seconds'
           )
