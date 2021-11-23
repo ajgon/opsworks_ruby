@@ -1347,6 +1347,287 @@ describe 'opsworks_ruby::configure' do
     end
   end
 
+  context 'Sqlite3 + Thin + padrino + good_job' do
+    let(:dummy_node) do
+      node(
+        deploy: {
+          dummy_project: {
+            database: { adapter: 'sqlite3' },
+            global: { environment: 'staging' },
+            appserver: node['deploy']['dummy_project']['appserver'].merge('adapter' => 'thin'),
+            webserver: node['deploy']['dummy_project']['webserver'],
+            framework: node['deploy']['dummy_project']['framework'].merge('adapter' => 'padrino'),
+            worker: node['deploy']['dummy_project']['worker'].merge('adapter' => 'good_job')
+          }
+        }
+      )
+    end
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = dummy_node['deploy']
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        solo_node.set['deploy'] = dummy_node['deploy']
+        solo_node.set['nginx'] = node['nginx']
+      end.converge(described_recipe)
+    end
+    let(:monit_installed) { true }
+
+    before do
+      stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(data_sources: [])])
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
+    end
+
+    it 'creates proper thin.yml file' do
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('servers: 4')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content("socket: \"/srv/www/#{aws_opsworks_app['shortname']}/shared/sockets/thin.sock\"")
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('environment: "staging"')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('max_conns: 4096')
+      expect(chef_run)
+        .to render_file("/srv/www/#{aws_opsworks_app['shortname']}/shared/config/thin.yml")
+        .with_content('timeout: 60')
+    end
+
+    it 'creates nginx thin proxy handler config' do
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.0.sock fail_timeout=0;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.1.sock fail_timeout=0;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.2.sock fail_timeout=0;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.3.sock fail_timeout=0;')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('server unix:/srv/www/dummy_project/shared/sockets/thin.4.sock fail_timeout=0;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('error_log /var/log/nginx/dummy-project.example.com-ssl.error.log debug;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('upstream thin_dummy-project.example.com {')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('client_max_body_size 125m;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('client_body_timeout 30;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('keepalive_timeout 65;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('ssl_certificate_key /etc/nginx/ssl/dummy-project.example.com.key;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('ssl_dhparam /etc/nginx/ssl/dummy-project.example.com.dhparams.pem;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('ssl_ecdh_curve secp384r1;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('ssl_stapling on;')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('ssl_session_tickets off;')
+      expect(chef_run)
+        .to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('extra_config {}')
+      expect(chef_run)
+        .not_to render_file("/etc/nginx/sites-available/#{aws_opsworks_app['shortname']}.conf")
+        .with_content('extra_config_ssl {}')
+      expect(chef_run).to create_link("/etc/nginx/sites-enabled/#{aws_opsworks_app['shortname']}.conf")
+    end
+
+    it 'creates good_job.monitrc conf' do
+      expect(chef_run).to create_template("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process good_job_dummy_project-1')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('with pidfile /run/lock/dummy_project/good_job.0.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+          'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
+          '--pidfile=/run/lock/dummy_project/good_job.0.pid --queues=test_queue' \
+          ' 2>&1 | logger -t good_job-dummy_project-1\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+          'data.sqlite3" HOME="/home/deploy" USER="deploy" cat /run/lock/dummy_project/good_job.0.pid | ' \
+          'xargs --no-run-if-empty kill -QUIT\'" ' \
+          'with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process good_job_dummy_project-2')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('with pidfile /run/lock/dummy_project/good_job.1.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+          'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
+          '--pidfile=/run/lock/dummy_project/good_job.1.pid --queues=test_queue' \
+          ' 2>&1 | logger -t good_job-dummy_project-2\'" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+          'data.sqlite3" HOME="/home/deploy" USER="deploy" cat /run/lock/dummy_project/good_job.1.pid | ' \
+          'xargs --no-run-if-empty kill -QUIT\'" ' \
+          'with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('group good_job_dummy_project_group')
+      expect(
+        chef_run.template("/etc/monit/conf.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+      ).to notify('execute[monit reload]')
+    end
+
+    it 'creates thin.monitrc conf' do
+      expect(chef_run).to create_template("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('check process thin_dummy_project with pidfile /run/lock/dummy_project/thin.pid')
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+          'ENV_VAR2="some data" RACK_ENV="staging" ' \
+          'DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3" ' \
+          'HOME="/home/deploy" USER="deploy" bundle exec thin ' \
+          '-C /srv/www/dummy_project/shared/config/thin.yml start ' \
+          '| logger -t thin-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content(
+          'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/thin.pid ' \
+          '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+        )
+      expect(chef_run)
+        .to render_file("/etc/monit/conf.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        .with_content('group thin_dummy_project_group')
+    end
+
+    context 'rhel' do
+      it 'creates good_job.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process good_job_dummy_project-1')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('with pidfile /run/lock/dummy_project/good_job.0.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+            'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
+            '--pidfile=/run/lock/dummy_project/good_job.0.pid --queues=test_queue' \
+            ' 2>&1 | logger -t good_job-dummy_project-1\'" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+            'data.sqlite3" HOME="/home/deploy" USER="deploy" cat /run/lock/dummy_project/good_job.0.pid | ' \
+            'xargs --no-run-if-empty kill -QUIT\'" ' \
+            'with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process good_job_dummy_project-2')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('with pidfile /run/lock/dummy_project/good_job.1.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+            'data.sqlite3" HOME="/home/deploy" USER="deploy" bundle exec good_job start --daemonize ' \
+            '--pidfile=/run/lock/dummy_project/good_job.1.pid --queues=test_queue' \
+            ' 2>&1 | logger -t good_job-dummy_project-2\'" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop program = "/bin/su - deploy -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RACK_ENV="staging" DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/' \
+            'data.sqlite3" HOME="/home/deploy" USER="deploy" cat /run/lock/dummy_project/good_job.1.pid | ' \
+            'xargs --no-run-if-empty kill -QUIT\'" ' \
+            'with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group good_job_dummy_project_group')
+        expect(
+          chef_run_rhel.template("/etc/monit.d/good_job_#{aws_opsworks_app['shortname']}.monitrc")
+        ).to notify('execute[monit reload]')
+      end
+
+      it 'creates thin.monitrc conf' do
+        expect(chef_run_rhel).to create_template("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('check process thin_dummy_project with pidfile /run/lock/dummy_project/thin.pid')
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'start program = "/bin/sh -c \'cd /srv/www/dummy_project/current && ENV_VAR1="test" ' \
+            'ENV_VAR2="some data" RACK_ENV="staging" ' \
+            'DATABASE_URL="sqlite:///srv/www/dummy_project/shared/db/data.sqlite3" ' \
+            'HOME="/home/deploy" USER="deploy" bundle exec thin ' \
+            '-C /srv/www/dummy_project/shared/config/thin.yml start ' \
+            '| logger -t thin-dummy_project\'" as uid "deploy" and gid "deploy" with timeout 90 seconds'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content(
+            'stop program = "/bin/sh -c \'cat /run/lock/dummy_project/thin.pid ' \
+            '| xargs --no-run-if-empty kill -QUIT; sleep 5\'" as uid "deploy" and gid "deploy"'
+          )
+        expect(chef_run_rhel)
+          .to render_file("/etc/monit.d/thin_#{aws_opsworks_app['shortname']}.monitrc")
+          .with_content('group thin_dummy_project_group')
+      end
+    end
+  end
+
   context 'No RDS (Database defined in node)' do
     let(:supplied_node) do
       node(deploy: {

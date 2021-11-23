@@ -116,6 +116,38 @@ describe 'opsworks_ruby::undeploy' do
     end
   end
 
+  context 'Thin + good_job' do
+    cached(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['appserver']['adapter'] = 'thin'
+        deploy['dummy_project']['worker']['adapter'] = 'good_job'
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['appserver']['adapter'] = 'thin'
+        deploy['dummy_project']['worker']['adapter'] = 'good_job'
+        solo_node.set['deploy'] = deploy
+      end.converge(described_recipe)
+    end
+
+    it 'performs a rollback on debian' do
+      expect(chef_run).to run_execute('monit restart thin_dummy_project')
+    end
+
+    it 'performs a rollback on rhel' do
+      expect(chef_run_rhel).to run_execute('monit restart thin_dummy_project')
+    end
+
+    it 'restarts good_jobs via monit' do
+      expect(chef_run).to run_execute("monit restart good_job_#{aws_opsworks_app['shortname']}-1")
+      expect(chef_run).to run_execute("monit restart good_job_#{aws_opsworks_app['shortname']}-2")
+    end
+  end
+
   it 'empty node[\'deploy\']' do
     chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']

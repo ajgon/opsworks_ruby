@@ -1005,6 +1005,61 @@ describe 'opsworks_ruby::setup' do
     end
   end
 
+  context 'Sqlite + http + good_job' do
+    temp_node = node['deploy']
+    temp_node['dummy_project']['database'] = {}
+    temp_node['dummy_project']['database']['adapter'] = 'sqlite'
+    temp_node['dummy_project']['worker']['adapter'] = 'good_job'
+    temp_node['dummy_project']['source'] = {}
+
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        solo_node.set['deploy'] = temp_node
+        solo_node.set['lsb'] = node['lsb']
+      end
+    end
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2015.03') do |solo_node|
+        solo_node.set['deploy'] = temp_node
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+
+    before do
+      stub_search(:aws_opsworks_app, '*:*')
+        .and_return([aws_opsworks_app(app_source: { type: 'archive', url: 'http://example.com' })])
+      stub_search(:aws_opsworks_rds_db_instance, '*:*').and_return([])
+    end
+
+    it 'installs required packages for debian' do
+      expect(chef_run).to install_package('bzip2')
+      expect(chef_run).to install_package('git')
+      expect(chef_run).to install_package('gzip')
+      expect(chef_run).to install_package('p7zip')
+      expect(chef_run).to install_package('tar')
+      expect(chef_run).to install_package('unzip')
+      expect(chef_run).to install_package('xz-utils')
+      expect(chef_run).to install_package('libsqlite3-dev')
+      expect(chef_run).to install_package('monit')
+    end
+
+    it 'installs required packages for rhel' do
+      expect(chef_run_rhel).to install_package('bzip2')
+      expect(chef_run_rhel).to install_package('git')
+      expect(chef_run_rhel).to install_package('gzip')
+      expect(chef_run_rhel).to install_package('monit')
+      expect(chef_run_rhel).to install_package('sqlite-devel')
+      expect(chef_run_rhel).to install_package('tar')
+      expect(chef_run_rhel).to install_package('unzip')
+      expect(chef_run_rhel).to install_package('xz')
+    end
+  end
+
   it 'empty node[\'deploy\']' do
     chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']

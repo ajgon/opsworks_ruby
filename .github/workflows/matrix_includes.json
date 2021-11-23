@@ -1,0 +1,24 @@
+[
+  {
+    "instance": "default-ubuntu-1804",
+    "runOn": "always"
+  }, {
+    "instance": "all-options-ubuntu-1804",
+    "runOn": "always"
+  }, {
+    "instance": "default-with-shoryuken-and-fullstaq-ubuntu-1804",
+    "runOn": "always"
+  }, {
+    "instance": "http-unicorn-apache-hanami-resque-ubuntu-1804",
+    "runOn": "always"
+  }, {
+    "instance": "s3-thin-nginx-padrino-delayed-job-ubuntu-1804",
+    "runOn": "master"
+  }, {
+    "instance": "nullified-ubuntu-1804",
+    "runOn": "always"
+  }, {
+    "instance": "maximum-override-ubuntu-1804",
+    "runOn": "always"
+  }
+]

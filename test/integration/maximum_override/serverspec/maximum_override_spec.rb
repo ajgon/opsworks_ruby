@@ -203,16 +203,26 @@ describe 'opsworks_ruby::configure' do
       end
     end
   end
+
+  context 'worker' do
+    describe file('/etc/monit/conf.d/good_job_other_project.monitrc') do
+      its(:content) do
+        should include 'bundle exec good_job start --daemonize --pidfile=/run/lock/other_project/good_job.0.pid ' \
+                       '--queues=default,mailers 2>&1 | logger -t good_job-other_project-1'
+      end
+      its(:content) { should include 'cat /run/lock/other_project/good_job.0.pid | xargs --no-run-if-empty kill -QUIT' }
+    end
+  end
 end
 
 describe 'opsworks_ruby::deploy' do
   context 'source' do
-    describe file('/srv/www/other_project/releases/ed827fe7ecde8925285e2d2b937224d063b1c13c') do
+    describe file('/srv/www/other_project/releases/71e83483cca3c0087e7a26b3cf3a7b609d196805') do
       it { should be_directory }
     end
 
     describe file('/srv/www/other_project/current') do
-      it { should be_linked_to '/srv/www/other_project/releases/ed827fe7ecde8925285e2d2b937224d063b1c13c' }
+      it { should be_linked_to '/srv/www/other_project/releases/71e83483cca3c0087e7a26b3cf3a7b609d196805' }
     end
 
     describe file('/tmp/ssh-git-wrapper.sh') do
@@ -253,6 +263,12 @@ describe 'opsworks_ruby::deploy' do
 
     describe file('/srv/www/yet_another_project/current/config/database.yml') do
       it { should be_symlink }
+    end
+  end
+
+  context 'worker' do
+    describe command('pgrep -f good_job') do
+      its(:stdout) { should match(/(?:[0-9]+)/) }
     end
   end
 end

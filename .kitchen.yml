@@ -209,6 +209,12 @@ suites:
             logrotate_template_owner: 'root'
             port: 8080
             ssl_port: 8443
+          worker:
+            adapter: 'good_job'
+            process_count: 1
+            queues:
+              - default
+              - mailers
         yet_another_project:
           appserver:
             adapter: 'unicorn'

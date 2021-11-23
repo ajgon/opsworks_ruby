@@ -28,3 +28,4 @@
     - [resque](https://resque.github.io/)
     - [sidekiq](http://sidekiq.org/)
     - [shoryuken](https://github.com/phstc/shoryuken)
+    - [good_job](https://github.com/bensheldon/good_job)
