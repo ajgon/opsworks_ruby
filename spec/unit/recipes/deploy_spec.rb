@@ -364,6 +364,87 @@ describe 'opsworks_ruby::deploy' do
     end
   end
 
+  context 'Thin + http + good_job' do
+    cached(:chef_runner) do
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['source'] = {
+          'adapter' => 'http',
+          'user' => 'user',
+          'password' => 'password',
+          'url' => 'https://example.com/path/project.zip'
+        }
+        deploy['dummy_project']['appserver']['adapter'] = 'thin'
+        deploy['dummy_project']['worker']['adapter'] = 'good_job'
+        solo_node.set['deploy'] = deploy
+      end
+    end
+    cached(:chef_runner_rhel) do
+      ChefSpec::SoloRunner.new(platform: 'amazon', version: '2016.03') do |solo_node|
+        deploy = node['deploy']
+        deploy['dummy_project']['source'] = {
+          'adapter' => 'http',
+          'user' => 'user',
+          'password' => 'password',
+          'url' => 'https://example.com/path/project.zip'
+        }
+        deploy['dummy_project']['appserver']['adapter'] = 'thin'
+        deploy['dummy_project']['worker']['adapter'] = 'good_job'
+        solo_node.set['deploy'] = deploy
+      end
+    end
+    cached(:chef_run) do
+      chef_runner.converge(described_recipe)
+    end
+    cached(:chef_run_rhel) do
+      chef_runner_rhel.converge(described_recipe)
+    end
+    let(:monit_installed) { true }
+    let(:tmpdir) { '/tmp/opsworks_ruby' }
+
+    before do
+      allow(Dir).to receive(:mktmpdir).and_return(tmpdir)
+      stub_search(:aws_opsworks_app, '*:*').and_return([aws_opsworks_app(app_source: {})])
+    end
+
+    it 'downloads project file from http' do
+      expect(chef_run).to create_remote_file(File.join(tmpdir, 'archive', 'project.zip')).with(
+        source: 'https://user:password@example.com/path/project.zip',
+        owner: 'deploy',
+        group: 'www-data',
+        mode: '0600'
+      )
+    end
+
+    it 'creates temporary archive directories' do
+      expect(chef_run).to create_directory(tmpdir)
+      expect(chef_run).to create_directory(File.join(tmpdir, 'archive'))
+      expect(chef_run).to create_directory(File.join(tmpdir, 'archive.d'))
+    end
+
+    it 'creates dummy git repository' do
+      expect(chef_run).to run_execute(
+        "cd #{File.join(tmpdir, 'archive.d')} && git init && " \
+        'git config user.name \'Chef\' && git config user.email \'chef@localhost\' && ' \
+        'git add -A && git commit --author=\'Chef <>\' -m \'dummy repo\' -an'
+      )
+    end
+
+    it 'performs a deploy on debian' do
+      expect(chef_run).to run_execute('monit restart thin_dummy_project')
+    end
+
+    it 'performs a deploy on rhel' do
+      expect(chef_run_rhel).to run_execute('monit restart thin_dummy_project')
+    end
+
+    it 'restarts thin and good_jobs via monit' do
+      expect(chef_run).to run_execute("monit restart thin_#{aws_opsworks_app['shortname']}")
+      expect(chef_run).to run_execute("monit restart good_job_#{aws_opsworks_app['shortname']}-1")
+      expect(chef_run).to run_execute("monit restart good_job_#{aws_opsworks_app['shortname']}-2")
+    end
+  end
+
   it 'empty node[\'deploy\']' do
     chef_run = ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04') do |solo_node|
       solo_node.set['lsb'] = node['lsb']
