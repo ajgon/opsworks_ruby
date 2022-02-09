@@ -809,6 +809,7 @@
       "values":[
         "null",
         "delayed_job",
+        "good_job",
         "resque",
         "shoryuken",
         "sidekiq"
@@ -821,6 +822,7 @@
       "default":2,
       "depends":[
         "delayed_job",
+        "good_job",
         "resque",
         "shoryuken",
         "sidekiq"
@@ -832,6 +834,7 @@
       "default":true,
       "depends":[
         "delayed_job",
+        "good_job",
         "resque",
         "shoryuken",
         "sidekiq"
@@ -863,6 +866,7 @@
       "type":"string",
       "depends":[
         "delayed_job",
+        "good_job",
         "resque"
       ],
       "description":"Coma separated list of queues which should be processed by worker."
