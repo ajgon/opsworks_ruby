@@ -17,3 +17,4 @@
 - Rich Seviora ([@richseviora](https://github.com/richseviora))
 - Kazuki Fujii ([@kazukifujii](https://github.com/kazukifujii))
 - Kazuki Nishikawa ([@kzkn](https://github.com/kzkn))
+- Josh Burks ([@dotnofoolin](https://github.com/dotnofoolin))

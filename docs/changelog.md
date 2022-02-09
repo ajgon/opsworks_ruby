@@ -1,3 +1,17 @@
+## [1.22.0](https://github.com/ajgon/opsworks_ruby/compare/v1.21.1...v1.22.0) (2022-02-09)
+
+
+### Bug Fixes
+
+* **appserver:** use `pumactl start` for restart if the `puma.state` file does not exists ([#276](https://github.com/ajgon/opsworks_ruby/issues/276)) ([c2c8713](https://github.com/ajgon/opsworks_ruby/commit/c2c8713f2afc22cb7e566ff3060a028b0b329fd0)), closes [#274](https://github.com/ajgon/opsworks_ruby/issues/274)
+
+
+### Features
+
+* **worker:** add `good_job` support ([af98d67](https://github.com/ajgon/opsworks_ruby/commit/af98d67be6cacfc2e54a61138757e7f84521f626))
+
+
+
 ## [1.21.1](https://github.com/ajgon/opsworks_ruby/compare/v1.21.0...v1.21.1) (2021-10-13)
 
 
