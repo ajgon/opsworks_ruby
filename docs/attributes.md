@@ -669,7 +669,7 @@ as well (notice that `node['deploy'][<application_shortname>]` logic doesn't app
 
 Worker configuration. Currently sidekiq, delayed_job, resque, shoryuken.
 
-- `app['webserver']['adapter']`
+- `app['worker']['adapter']`
     - **Default:** `null`
     - **Supported values:** `sidekiq`, `delayed_job`, `resque`, `shoryuken` and `null`.
     - If worker is needed, here it can be set up and configured. `null` means no worker installed.
