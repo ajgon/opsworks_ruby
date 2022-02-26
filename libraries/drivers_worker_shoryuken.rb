@@ -47,7 +47,7 @@ module Drivers
       def quiet_shoryuken
         (1..process_count).each do |process_number|
           pid_file = pid_file(process_number)
-          next unless File.file?(pid_file) && pid_exists?(File.open(pid_file).read)
+          next unless File.file?(pid_file) && pid_exists?(File.read(pid_file))
 
           Chef::Log.info("Quiet shoryuken process #{pid_file}")
           context.execute "/bin/su - #{node['deployer']['user']} -c 'kill -s USR1 $(cat #{pid_file})'"
@@ -58,7 +58,7 @@ module Drivers
         (1..process_count).each do |process_number|
           pid_file = pid_file(process_number)
 
-          next unless File.file?(pid_file) && pid_exists?(File.open(pid_file).read)
+          next unless File.file?(pid_file) && pid_exists?(File.read(pid_file))
 
           Chef::Log.info("Kill shoryuken process: #{pid_file}")
           context.execute(
