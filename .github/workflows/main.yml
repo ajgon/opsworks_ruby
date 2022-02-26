@@ -14,7 +14,7 @@ name: opsworks_ruby CI
 
 jobs:
   lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Install tools
         run: |
@@ -38,7 +38,7 @@ jobs:
           bundle exec overcommit --sign pre-commit
           bundle exec overcommit -r
   unit-tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       CHEF_LICENSE: accept
     steps:

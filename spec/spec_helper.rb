@@ -6,8 +6,16 @@ require 'chefspec'
 require 'chefspec/berkshelf'
 require 'pathname'
 
+class DummyContext
+  attr_accessor :node
+
+  def initialize(node)
+    @node = node
+  end
+end
+
 def dummy_context(node)
-  OpenStruct.new(node: node)
+  DummyContext.new(node)
 end
 
 def fixture_path(*path)

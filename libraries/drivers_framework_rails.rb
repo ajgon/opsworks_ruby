@@ -63,7 +63,7 @@ module Drivers
 
         contents = File.read(application_rb_path).sub(/(^(?:module|class).*$)/, "#{env_code}\n\\1")
 
-        File.open(application_rb_path, 'w') { |file| file.write(contents) }
+        File.write(application_rb_path, contents)
       end
 
       def environment

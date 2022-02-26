@@ -5,6 +5,12 @@ require:
 Gemspec/DateAssignment:
   Enabled: true
 
+Gemspec/DeprecatedAttributeAssignment:
+  Enabled: true
+
+Gemspec/RequireMFA:
+  Enabled: true
+
 Layout/BeginEndAlignment:
   Enabled: true
 
@@ -116,6 +122,9 @@ Lint/RedundantDirGlobSort:
 Lint/RedundantSafeNavigation:
   Enabled: true
 
+Lint/RefinementImportMethods:
+  Enabled: true
+
 Lint/RequireRelativeSelfPath:
   Enabled: true
 
@@ -152,6 +161,9 @@ Lint/UnreachableLoop:
 Lint/UselessMethodDefinition:
   Enabled: true
 
+Lint/UselessRuby2Keywords:
+  Enabled: true
+
 Lint/UselessTimes:
   Enabled: true
 
@@ -186,6 +198,9 @@ Performance/BlockGivenWithExplicitBlock:
 Performance/CollectionLiteralInLoop:
   Enabled: true
 
+Performance/ConcurrentMonotonicTime:
+  Enabled: true
+
 Performance/ConstantRegexp:
   Enabled: true
 
@@ -216,10 +231,16 @@ Performance/SortReverse:
 Performance/Squeeze:
   Enabled: true
 
+Performance/StringIdentifierArgument:
+  Enabled: true
+
 Performance/StringInclude:
   Enabled: true
 
 Performance/Sum:
+  Enabled: true
+
+Security/CompoundHash:
   Enabled: true
 
 Security/IoMethods:
@@ -235,6 +256,9 @@ Style/ArrayCoercion:
   Enabled: true
 
 Style/BisectedAttrAccessor:
+  Enabled: true
+
+Naming/BlockForwarding:
   Enabled: true
 
 Style/CaseLikeIf:
@@ -258,10 +282,22 @@ Style/Documentation:
 Style/EndlessMethod:
   Enabled: true
 
+Style/EnvHome:
+  Enabled: true
+
 Style/ExplicitBlockArgument:
   Enabled: true
 
 Style/ExponentialNotation:
+  Enabled: true
+
+Style/FetchEnvVar:
+  Enabled: true
+
+Style/FileRead:
+  Enabled: true
+
+Style/FileWrite:
   Enabled: true
 
 Style/GlobalStdStream:
@@ -297,10 +333,19 @@ Style/InPatternThen:
 Style/KeywordParametersOrder:
   Enabled: true
 
+Style/MapCompactWithConditionalBlock:
+  Enabled: true
+
+Style/MapToHash:
+  Enabled: true
+
 Style/MultilineInPatternThen:
   Enabled: true
 
 Style/NegatedIfElseCondition:
+  Enabled: true
+
+Style/NestedFileDirname:
   Enabled: true
 
 Style/NilLambda:
@@ -308,7 +353,14 @@ Style/NilLambda:
 
 Style/NumberedParameters:
   Enabled: true
+
 Style/NumberedParametersLimit:
+  Enabled: true
+
+Style/ObjectThen:
+  Enabled: true
+
+Style/OpenStructUse:
   Enabled: true
 
 Style/OptionalBooleanParameter:
@@ -327,6 +379,9 @@ Style/RedundantFetchBlock:
   Enabled: true
 
 Style/RedundantFileExtensionInRequire:
+  Enabled: true
+
+Style/RedundantInitialize:
   Enabled: true
 
 Style/RedundantRegexpCharacterClass:
