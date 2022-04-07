@@ -64,12 +64,14 @@ module Drivers
       end
 
       # Immediately attempts to restart the appserver using monit.
-      def restart_monit
+      def restart_monit(pidfile = nil)
         return if ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
 
-        context.execute "monit restart #{adapter}_#{app['shortname']}" do
-          retries 3
-        end
+        @monit_hook = {
+          restart: true,
+          pidfile: pidfile,
+          apps: ["#{adapter}_#{app['shortname']}"]
+        }
       end
 
       # If an instance fails to start, the adapter process may not exist
@@ -85,9 +87,10 @@ module Drivers
       # Invoke the monit start command for the appserver. This may only be
       # needed during the initial setup of the instance. After that the
       # 'restart' command is sufficient.
-      def start_monit
+      def start_monit(pidfile = nil)
         context.execute "monit start #{adapter}_#{app['shortname']}" do
           retries 3
+          creates pidfile unless pidfile.to_s.empty?
         end
       end
 

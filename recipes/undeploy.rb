@@ -35,4 +35,5 @@ every_enabled_application do |application|
   end
 
   fire_hook(:after_undeploy, items: databases + [source, framework, appserver, worker, webserver])
+  handle_monit_hook([appserver, worker, webserver])
 end
