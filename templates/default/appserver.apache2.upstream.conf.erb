@@ -40,7 +40,7 @@ Listen <%= @out[:port] %>
   <LocationMatch "/(assets|packs)/">
     ExpiresActive on
 
-    Header set Cache-Control "public"
+    Header set Cache-Control "public, max-age=31536000, immutable"
     Header set Access-Control-Allow-Origin "*"
     Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
     Header set Access-Control-Expose-Headers "ETag"
@@ -129,7 +129,7 @@ SSLStaplingCache "shmcb:logs/stapling-cache(150000)"
   <LocationMatch "/(assets|packs)/">
     ExpiresActive on
 
-    Header set Cache-Control "public"
+    Header set Cache-Control "public, max-age=31536000, immutable"
     Header set Access-Control-Allow-Origin "*"
     Header set Access-Control-Allow-Methods "GET, PUT, POST, DELETE"
     Header set Access-Control-Expose-Headers "ETag"
