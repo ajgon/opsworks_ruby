@@ -49,7 +49,7 @@ module Drivers
           appserver_command: appserver_command,
           appserver_name: adapter,
           deploy_to: deploy_dir(app),
-          environment: environment,
+          environment: embed_environment_in_monit? ? environment : {},
           source_cookbook: appserver_monit_template_cookbook
         }
         file_path = File.join(node['monit']['basedir'],
@@ -61,6 +61,10 @@ module Drivers
           variables opts
           notifies :run, 'execute[monit reload]', :immediately
         end
+      end
+
+      def embed_environment_in_monit?
+        !raw_out[:dot_env]
       end
 
       # Immediately attempts to restart the appserver using monit.
