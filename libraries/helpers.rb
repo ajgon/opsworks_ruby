@@ -53,6 +53,19 @@ def fire_hook(name, options)
   end
 end
 
+def handle_monit_hook(servers)
+  servers.each do |server|
+    next unless server.monit_hook[:restart]
+
+    server.monit_hook[:apps].each do |app|
+      server.context.execute "monit restart #{app}" do
+        retries 3
+        only_if { ::File.exist?(server.monit_hook[:pidfile]) } unless server.monit_hook[:pidfile].to_s.empty?
+      end
+    end
+  end
+end
+
 def www_group
   value_for_platform_family(
     'debian' => 'www-data'

@@ -2,7 +2,7 @@
 
 module Drivers
   class Base
-    attr_reader :app, :options, :configuration_data_source
+    attr_reader :app, :options, :configuration_data_source, :monit_hook
     attr_accessor :context
 
     def initialize(context, app, options = {})
@@ -10,6 +10,7 @@ module Drivers
       @app = app
       @options = options
       @configuration_data_source = validate_app_engine
+      @monit_hook = { restart: false, pidfile: nil, apps: [] }
     end
 
     def self.allowed_engines(*engines)

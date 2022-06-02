@@ -43,14 +43,16 @@ module Drivers
         node['deploy'][app['shortname']][driver_type]['monit_template_cookbook'] || context.cookbook_name
       end
 
-      def restart_monit
+      def restart_monit(pidfile = nil)
         return if ENV['TEST_KITCHEN'] # Don't like it, but we can't run multiple processes in Docker on travis
 
-        (1..process_count).each do |process_number|
-          context.execute "monit restart #{adapter}_#{app['shortname']}-#{process_number}" do
-            retries 3
+        @monit_hook = {
+          restart: true,
+          pidfile: pidfile,
+          apps: (1..process_count).to_a.map do |process_number|
+            "#{adapter}_#{app['shortname']}-#{process_number}"
           end
-        end
+        }
       end
 
       def unmonitor_monit
