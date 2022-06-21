@@ -12,8 +12,8 @@
     "instance": "http-unicorn-apache-hanami-resque-ubuntu-1804",
     "runOn": "always"
   }, {
-    "instance": "s3-thin-nginx-padrino-delayed-job-ubuntu-1804",
-    "runOn": "master"
+    "instance": "http-thin-nginx-padrino-delayed-job-ubuntu-1804",
+    "runOn": "always"
   }, {
     "instance": "nullified-ubuntu-1804",
     "runOn": "always"
