@@ -106,5 +106,4 @@ jobs:
       - name: Run integration tests
         run: |
           sudo iptables -L DOCKER || sudo iptables -N DOCKER
-          ruby test/integration/update_data_bag.rb
           chef exec bundle exec rake integration:docker[${{ matrix.instance }}]
