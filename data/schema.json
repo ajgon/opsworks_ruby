@@ -817,6 +817,11 @@
       "default":"null",
       "description":"Worker used to perform background tasks. null means no worker enabled."
     },
+    "dot_env":{
+      "type":"boolean",
+      "default": false,
+      "description":"Creates a `.env` file with all pre-configured environment variables. Useful for gems like dotenv."
+    },
     "process_count":{
       "type":"integer",
       "default":2,
