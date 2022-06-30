@@ -1,3 +1,12 @@
+## [1.23.0](https://github.com/ajgon/opsworks_ruby/compare/v1.22.0...v1.23.0) (2022-06-30)
+
+
+### Features
+
+* **worker:** worker option to use dot env ([#289](https://github.com/ajgon/opsworks_ruby/issues/289)) ([ba3d312](https://github.com/ajgon/opsworks_ruby/commit/ba3d312427bfd543dea4b857fea5c7a44a0a4fa6))
+
+
+
 ## [1.22.0](https://github.com/ajgon/opsworks_ruby/compare/v1.21.1...v1.22.0) (2022-02-09)
 
 

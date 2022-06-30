@@ -1,4 +1,4 @@
-FROM ruby:2.7-buster
+FROM ruby:2.7-bullseye
 
 RUN printf "deb http://deb.debian.org/debian testing main\ndeb http://deb.debian.org/debian testing-updates main" >> /etc/apt/sources.list
 RUN apt-get update && \
