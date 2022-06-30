@@ -129,26 +129,18 @@ module Drivers
         return unless raw_out[:application_yml]
 
         append_to_overwritable_defaults('symlinks', 'config/application.yml' => 'config/application.yml')
-        env_config(source_file: 'config/application.yml', destination_file: 'config/application.yml')
+        env_config(
+          source_file: 'config/application.yml',
+          destination_file: 'config/application.yml',
+          environment: environment
+        )
       end
 
       def setup_dot_env
         return unless raw_out[:dot_env]
 
         append_to_overwritable_defaults('symlinks', 'dot_env' => '.env')
-        env_config(source_file: 'dot_env', destination_file: 'dot_env')
-      end
-
-      def env_config(options = { source_file: nil, destination_file: nil })
-        deploy_to = deploy_dir(app)
-        env = environment
-
-        context.template File.join(deploy_to, 'shared', options[:destination_file]) do
-          owner node['deployer']['user']
-          group www_group
-          source "#{File.basename(options[:source_file])}.erb"
-          variables environment: env
-        end
+        env_config(source_file: 'dot_env', destination_file: 'dot_env', environment: environment)
       end
 
       def environment

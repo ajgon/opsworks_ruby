@@ -146,3 +146,15 @@ def append_to_overwritable_defaults(field, options) # rubocop:disable Metrics/Ab
   end
   node.default['deploy'][app['shortname']]['global'][field].merge!(options)
 end
+
+def env_config(options = { source_file: nil, destination_file: nil, environment: {} })
+  deploy_to = deploy_dir(app)
+  env = environment
+
+  context.template File.join(deploy_to, 'shared', options[:destination_file]) do
+    owner node['deployer']['user']
+    group www_group
+    source "#{File.basename(options[:source_file])}.erb"
+    variables environment: env
+  end
+end

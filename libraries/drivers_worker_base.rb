@@ -22,6 +22,7 @@ module Drivers
 
       # Adds or updates the monit configs for the worker and notifies monit to
       # reload the configuration.
+      # rubocop:disable Metrics/AbcSize
       def add_worker_monit
         opts = {
           adapter: adapter,
@@ -43,6 +44,7 @@ module Drivers
           notifies :run, 'execute[monit reload]', :immediately
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       def embed_environment_in_monit?
         !raw_out[:dot_env]
@@ -52,19 +54,7 @@ module Drivers
         return unless raw_out[:dot_env]
 
         append_to_overwritable_defaults('symlinks', 'dot_env' => '.env')
-        env_config(source_file: 'dot_env', destination_file: 'dot_env')
-      end
-
-      def env_config(options = { source_file: nil, destination_file: nil })
-        deploy_to = deploy_dir(app)
-        env = environment
-
-        context.template File.join(deploy_to, 'shared', options[:destination_file]) do
-          owner node['deployer']['user']
-          group www_group
-          source "#{File.basename(options[:source_file])}.erb"
-          variables environment: env
-        end
+        env_config(source_file: 'dot_env', destination_file: 'dot_env', environment: environment)
       end
 
       def worker_monit_template_cookbook

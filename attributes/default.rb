@@ -170,6 +170,7 @@ default['defaults']['framework']['envs_in_console'] = false
 default['defaults']['worker']['adapter'] = 'null'
 default['defaults']['worker']['process_count'] = 2
 default['defaults']['worker']['syslog'] = true
+default['defaults']['worker']['dot_env'] = false
 
 default['monit']['basedir'] = if platform?('centos', 'redhat', 'fedora', 'amazon')
                                 '/etc/monit.d'
