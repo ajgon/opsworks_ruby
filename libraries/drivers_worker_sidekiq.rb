@@ -14,6 +14,7 @@ module Drivers
       end
 
       def before_deploy
+        super
         quiet_sidekiq
       end
 

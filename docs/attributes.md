@@ -678,6 +678,11 @@ Worker configuration. Currently sidekiq, delayed_job, resque, shoryuken, good_jo
     - **Default** `opsworks_ruby`
     - The name of the cookbook from which the worker monit template(s) will be drawn.
 
+- `app['worker']['dot_env']`
+    - **Supported values:** `true`, `false`
+    - **Default:** `false`
+    - Creates a `.env` file with all pre-configured environment variables. Useful for gems like [dotenv](https://github.com/bkeepers/dotenv)
+
 #### sidekiq
 
 - `app['worker']['config']`

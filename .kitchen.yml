@@ -57,6 +57,7 @@ suites:
             extra_config_ssl: true
           worker:
             adapter: "sidekiq"
+            dot_env: true
             config:
               concurency: 5
               verbose: true

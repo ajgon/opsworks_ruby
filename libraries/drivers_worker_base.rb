@@ -11,19 +11,25 @@ module Drivers
         handle_packages
       end
 
+      def before_deploy
+        super
+        setup_dot_env
+      end
+
       def validate_app_engine; end
 
       protected
 
       # Adds or updates the monit configs for the worker and notifies monit to
       # reload the configuration.
+      # rubocop:disable Metrics/AbcSize
       def add_worker_monit
         opts = {
           adapter: adapter,
           app_shortname: app['shortname'],
           application: app['shortname'],
           deploy_to: deploy_dir(app),
-          environment: environment,
+          environment: embed_environment_in_monit? ? environment : { 'RAILS_ENV' => deploy_env },
           name: app['name'],
           out: out,
           source_cookbook: worker_monit_template_cookbook
@@ -37,6 +43,18 @@ module Drivers
           variables opts
           notifies :run, 'execute[monit reload]', :immediately
         end
+      end
+      # rubocop:enable Metrics/AbcSize
+
+      def embed_environment_in_monit?
+        !raw_out[:dot_env]
+      end
+
+      def setup_dot_env
+        return unless raw_out[:dot_env]
+
+        append_to_overwritable_defaults('symlinks', 'dot_env' => '.env')
+        env_config(source_file: 'dot_env', destination_file: 'dot_env', environment: environment)
       end
 
       def worker_monit_template_cookbook
