@@ -149,7 +149,7 @@ end
 
 def env_config(options = { source_file: nil, destination_file: nil, environment: {} })
   deploy_to = deploy_dir(app)
-  env = environment
+  env = options[:environment]
 
   context.template File.join(deploy_to, 'shared', options[:destination_file]) do
     owner node['deployer']['user']
