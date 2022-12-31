@@ -1,0 +1,9 @@
+---
+:orm: activerecord
+:test: none
+:mock: none
+:script: none
+:renderer: none
+:stylesheet: none
+:namespace: DummyApp
+:migration_format: number

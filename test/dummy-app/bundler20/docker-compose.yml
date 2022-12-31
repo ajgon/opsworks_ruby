@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  redis:
+    image: redis
+    expose:
+        - 6379
+  app:
+    build: .
+    volumes:
+      - ".:/app"
+    links:
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379

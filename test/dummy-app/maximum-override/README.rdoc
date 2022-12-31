@@ -1,0 +1,5 @@
+# dumber-app
+
+An extremely simple Rails app that requires no database.
+
+It probably doesn't do anything useful.
