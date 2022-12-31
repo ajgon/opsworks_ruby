@@ -1,17 +1,20 @@
 # opsworks\_ruby Cookbook
 
 [![Chef cookbook](https://img.shields.io/cookbook/v/opsworks_ruby.svg)](https://supermarket.chef.io/cookbooks/opsworks_ruby)
-[![Build Status](https://github.com/ajgon/opsworks_ruby/actions/workflows/main.yml/badge.svg)](https://github.com/ajgon/opsworks_ruby/actions/workflows/main.yml)
-[![Coverage Status](https://coveralls.io/repos/github/ajgon/opsworks_ruby/badge.svg?branch=master)](https://coveralls.io/github/ajgon/opsworks_ruby?branch=master)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![license](https://img.shields.io/github/license/ajgon/opsworks_ruby.svg?maxAge=2592000)](https://opsworks-ruby.mit-license.org/)
 
 A [chef](https://www.chef.io/) cookbook to deploy Ruby applications to Amazon OpsWorks.
 
+## NO LONGER MAINTAINED ##
+
+🚧 THIS PROJECT IS DEPRECATED 🚧
+
+[Why?](https://github.com/ajgon/opsworks_ruby/issues/294)
+
 ## Quick Start
 
-Refer to [Getting Started](https://opsworks-ruby.rzegocki.pl/docs/latest/getting-started/)
-guide in [documentation](https://opsworks-ruby.rzegocki.pl/docs/latest/).
+Refer to [Getting Started](https://github.com/ajgon/opsworks_ruby/blob/master/docs/getting-started.md)
+guide in [documentation](https://github.com/ajgon/opsworks_ruby/blob/master/docs/index.md).
 
 ## Development
 

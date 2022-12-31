@@ -10,10 +10,9 @@ from OpsWorks panel - you don't have to do anything else with those recipes.
 
 ## Quick Start
 
-Alternativelly, you can use a [JSON configurator](http://opsworks-ruby.rzegocki.pl/configuration-builder), which is
-a nice tool which would help you quickly generate Stack/Layer JSON (and hassle free). It supports, all the configuration
-parameters in most of the cases. If you wish to configure multiple apps, use the generator for each one of them
-separately.
+~~Alternativelly, you can use a JSON configurator, which is a nice tool which would help you quickly generate
+Stack/Layer JSON (and hassle free). It supports, all the configuration parameters in most of the cases. If you
+wish to configure multiple apps, use the generator for each one of them separately.~~
 
 ## Full configuration
 
